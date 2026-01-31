@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotions - KINKA.FR</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="/asset/css/page_promotion.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur...">
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html" class="active">Promotions</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                </button>
+                <a href="/page_profil.html">
+                    <button class="icon-btn">
+                        <span class="material-symbols-outlined">person</span>
+                    </button>
+                </a>
+                <a href="/pageLogIn.html">
+                    <button class="connect-btn">Se connecter</button>
+                </a>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container-promotion">
+        
+        <!-- BANNIÈRE PROMOTION -->
+        <section class="promotion-hero">
+            <div class="hero-content">
+                <div class="hero-left">
+                    <div class="promotion-badge">
+                        <span>-50%</span>
+                    </div>
+                    <h1>Sur le <span class="highlight">2ᵉ tome</span><br>éligible</h1>
+                    <p class="hero-subtitle">Construisez votre collection avec les meilleurs prix : One Piece, Jujutsu Kaisen, Blue Lock, Chainsaw Man, My Hero Academia et plus de 500 tomes en réduction.</p>
+                    
+                    <div class="promotion-features">
+                        <div class="feature">Neuf & occasion éligibles</div>
+                        <div class="feature">Expédition suivie en 48h</div>
+                        <div class="feature">Cumulable avec Premium</div>
+                    </div>
+                    
+                    <button class="btn-view-selection">
+                        Voir la sélection<br>
+                        <span class="btn-subtitle">shonen</span>
+                    </button>
+                    
+                    <p class="promotion-note">Remise appliquée automatiquement au panier · Sans code ni inscription</p>
+                </div>
+                
+                <div class="hero-right">
+                    <img src="/asset/image/bannière_poster.jpg" alt="Bannière manga">
+                </div>
+            </div>
+            
+            <div class="hero-tags">
+                <span class="tag">TITRES EN PROMO</span>
+                <span class="tag">RÉDUCTION MOYENNE</span>
+                <span class="tag">TEMPS RESTANT</span>
+            </div>
+        </section>
+
+        <!-- PROMOTIONS EN COURS -->
+        <section class="promotions-section">
+            <div class="promotions-header">
+                <h2>PROMOTIONS EN COURS</h2>
+                <h3>Toutes les offres Manga Market</h3>
+                <p class="promotions-subtitle">Sélectionnez un type d'offre pour filtrer instantanément les résultats.</p>
+            </div>
+            
+            <div class="promotions-tabs">
+                <button class="tab-btn">Tout</button>
+                <button class="tab-btn">Shonen</button>
+                <button class="tab-btn">Seinen & Mature</button>
+                <button class="tab-btn">Shojo & Josei</button>
+                <button class="tab-btn">Coffrets & packs</button>
+                <button class="tab-btn">Occasion</button>
+                <button class="tab-btn">16 campagnes actives · Dernière mise à jour il y a 3h</button>
+            </div>
+            
+            <div class="promotions-filters">
+                <div class="filter-left">
+                    <button class="filter-icon">
+                        <span class="material-symbols-outlined">local_fire_department</span>
+                    </button>
+                    <button class="filter-btn active">Meilleures remises</button>
+                    <button class="filter-btn">Nouveautés</button>
+                    <button class="filter-btn">Séries longues</button>
+                    <button class="filter-btn">Séries courtes</button>
+                    <button class="filter-btn">Moins de 5€</button>
+                    <button class="filter-btn">Éligible Premium</button>
+                </div>
+                <div class="filter-right">
+                    <span>Trier par :</span>
+                    <select class="sort-select">
+                        <option>Plus récent</option>
+                        <option>Date de sortie</option>
+                        <option>Popularité</option>
+                        <option>Prix croissant</option>
+                        <option>Prix décroissant</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- CARTES PROMOTIONS -->
+        <section class="promo-cards">
+            <div class="promo-card">
+                <div class="promo-card-header">
+                    <h3>Sélection coups de cœur libraires</h3>
+                    <a href="#" class="curated-link">Choix du moment</a>
+                </div>
+                <p class="promo-card-subtitle">Une sélection éditorialisée par l'équipe Manga Market.</p>
+                
+                <div class="promo-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Réduction moyenne</span>
+                        <span class="stat-value">-35%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">25 séries</span>
+                        <span class="stat-value-small">mises en avant</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">7 jours</span>
+                        <span class="stat-value-small">restants</span>
+                    </div>
+                </div>
+                
+                <p class="promo-tip">Astuce : combinez cette sélection avec votre abonnement Premium pour maximiser les économies.</p>
+            </div>
+
+            <div class="promo-card premium">
+                <div class="promo-card-header">
+                    <h3>Cumul avec Premium</h3>
+                    <span class="premium-badge">+30% off Premium</span>
+                </div>
+                <p class="promo-card-subtitle">Les membres Premium bénéficient de remises supplémentaires sur une sélection spéciale de promotions.</p>
+                
+                <div class="promo-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Économie moyenne</span>
+                        <span class="stat-value">-12€</span>
+                        <span class="stat-sublabel">/ commande</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">180+</span>
+                        <span class="stat-value-small">séries éligibles</span>
+                    </div>
+                </div>
+                
+                <p class="promo-update">Mise à jour quotidienne</p>
+            </div>
+        </section>
+
+        <!-- COLLECTIONS EN AVANT -->
+        <section class="collections-section">
+            <div class="collections-header">
+                <h3>Collections en avant</h3>
+                <a href="#" class="update-link">Mise à jour quotidienne</a>
+            </div>
+            <p class="collections-subtitle">Accédez directement aux meilleures offres par thématique.</p>
+            
+            <div class="collections-list">
+                <div class="collection-item">
+                    <strong>Starter pack Shonen</strong>
+                    <span>10 tomes pour -40%</span>
+                </div>
+                <div class="collection-item">
+                    <strong>Grands classiques</strong>
+                    <span>Naruto, One Piece, Bleach</span>
+                </div>
+                <div class="collection-item">
+                    <strong>Dark Seinen</strong>
+                    <span>Tokyo Ghoul, Berserk, Monster</span>
+                </div>
+                <div class="collection-item">
+                    <strong>Romance & Slice of life</strong>
+                    <span>jusqu'à -30°</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUITS EN PROMOTION -->
+        <section class="promotion-products">
+            <div class="products-grid">
+                <!-- Produit 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">One Piece - Tome 105</h3>
+                        <p class="product-author">Eiichiro Oda</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/Tokyo-Revengers-Tome-24.jpg" alt="Tokyo Revengers - T.24">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Tokyo Revengers - T.24</h3>
+                        <p class="product-author">Ken Wakui</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/My-Hero-Academia-T24.jpg" alt="My Hero Academia - T.24">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">My Hero Academia - T.24</h3>
+                        <p class="product-author">Kohei Horikoshi</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/Blue-Lock-14.jpg" alt="Blue Lock - Tome 14">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Blue Lock - Tome 14</h3>
+                        <p class="product-author">Muneyuki Kaneshiro</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/Dandadan-T05.jpg" alt="Dandadan - Tome 05">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Dandadan - Tome 05</h3>
+                        <p class="product-author">Yukinobu Tatsu</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/Berserk-Tome-41.jpg" alt="Berserk - Tome 41">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Berserk - Tome 41</h3>
+                        <p class="product-author">Kentaro Miura</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 7 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/Demon-Slayer-T23.jpg" alt="Demon Slayer - T.23">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Demon Slayer - T.23</h3>
+                        <p class="product-author">Koyoharu Gotouge</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 8 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge">-30%</span>
+                        <img src="/asset/image/Kaiju-N-8-T07.jpg" alt="Kaiju No.8 - Tome 07">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Kaiju No.8 - Tome 07</h3>
+                        <p class="product-author">Naoya Matsumoto</p>
+                        <div class="product-footer">
+                            <div class="product-pricing">
+                                <span class="product-price">4,83€</span>
+                                <span class="product-old-price">6,90€</span>
+                                <span class="product-discount">-30%</span>
+                            </div>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="/page_accueil.html">Accueil</a></li>
+                    <li><a href="/page_catalogue.html">Catalogue</a></li>
+                    <li><a href="/page_promotion.html">Promotions</a></li>
+                    <li><a href="/page_coffret.html">Coffrets</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="/pageLogIn.html">Connexion</a></li>
+                    <li><a href="/pageSignUp.html">Inscription</a></li>
+                    <li><a href="#">Mon panier</a></li>
+                    <li><a href="#">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="/page_faq.html">FAQ</a></li>
+                    <li><a href="/page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="/page_cgv.html">CGV</a></li>
+                    <li><a href="/page_cgu.html">CGU</a></li>
+                    <li><a href="/page_retour.html">Politique de retour</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p class="contact-info">support@kinka.fr</p>
+                <div class="social-icons">
+                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

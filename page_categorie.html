@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manga Shonen - KINKA.FR</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="/asset/css/page_catégorie.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur...">
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html">Promotions</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                </button>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn">Se connecter</button>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        
+        <!-- HERO BANNER CATEGORIE -->
+        <section class="hero-categorie">
+            <div class="hero-background">
+                <img src="/asset/image/catégorie_shonen.webp" alt="Manga Shonen">
+            </div>
+            <div class="hero-overlay">
+                <div class="hero-content-categorie">
+                    <span class="badge-categorie">CATÉGORIE PHARE</span>
+                    <h1>Manga Shonen</h1>
+                    <p>Plongez au cœur de l'action, de l'aventure et du dépassement de soi. Découvrez les plus grands héros, les combats épiques et les amitiés indéfectibles qui font la légende du manga Shonen.</p>
+                    <div class="hero-buttons-categorie">
+                        <button class="btn-primary">Voir les best-sellers</button>
+                        <button class="btn-secondary">Découvrez les nouveautés</button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-box">
+                            <span class="stat-number">1240+</span>
+                            <span class="stat-label">Séries disponibles</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-number">85</span>
+                            <span class="stat-label">Éditeurs</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-number">4.8/5</span>
+                            <span class="stat-label">Note moyenne</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-offer">
+                    <h3>Résumé de l'offre</h3>
+                    <p>Accédez au moins à 1 shonen ancien, éligibles au panier, le moins cher passe automatiquement à -50%.</p>
+                    <ul>
+                        <li>Valable sur une large sélection de titres shonen populaires.</li>
+                        <li>Limité à 10 tomes remisés par commande.</li>
+                        <li>Non cumulable avec d'autres codes promotionnels.</li>
+                    </ul>
+                    <p class="offer-code"><strong>Code informant :</strong><br>SHONEN50</p>
+                    <a href="#" class="offer-link">Conditions</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTRES PAR TAGS -->
+        <section class="section-filtres">
+            <div class="filtres-container">
+                <button class="filtre-tag active">Tous (240)</button>
+                <button class="filtre-tag">Action & Aventure</button>
+                <button class="filtre-tag">Sport</button>
+                <button class="filtre-tag">Fantastique</button>
+                <button class="filtre-tag">Comédie</button>
+                <button class="filtre-tag">Arts Martiaux</button>
+                <button class="filtre-tag">Science-Fiction</button>
+                <button class="filtre-tag">Trier par : Popularité ▼</button>
+            </div>
+        </section>
+
+        <!-- LAYOUT SIDEBAR + CONTENU -->
+        <div class="content-layout">
+            
+            <!-- SIDEBAR FILTRES -->
+            <aside class="sidebar-filtres">
+                <div class="filtre-section">
+                    <h3>Affiner la recherche</h3>
+                    <p class="filtre-desc">Utilisez nos filtres ci-dessous pour trouver le tome parfait.</p>
+                </div>
+
+                <div class="filtre-section">
+                    <h4>État</h4>
+                    <div class="filtre-options">
+                        <label class="filtre-checkbox">
+                            <input type="checkbox" checked>
+                            <span>Neuf</span>
+                        </label>
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Très bon état</span>
+                        </label>
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Bon état</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filtre-section">
+                    <h4>Disponibilité</h4>
+                    <div class="filtre-options">
+                        <label class="filtre-checkbox">
+                            <input type="checkbox" checked>
+                            <span>En stock</span>
+                        </label>
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Précommande</span>
+                        </label>
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Rééditions</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filtre-section">
+                    <h4>Prix</h4>
+                    <div class="filtre-prix">
+                        <input type="range" min="0" max="20" value="15" class="price-slider">
+                        <div class="prix-labels">
+                            <span>3.50 €</span>
+                            <span>15.00 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filtre-section">
+                    <h4>Éditeurs</h4>
+                    <div class="filtre-options">
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Glénat</span>
+                        </label>
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Kana</span>
+                        </label>
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Ki-oon</span>
+                        </label>
+                        <label class="filtre-checkbox">
+                            <input type="checkbox">
+                            <span>Pika</span>
+                        </label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CONTENU PRINCIPAL -->
+            <div class="main-content-categorie">
+                
+                <!-- EN-TÊTE SECTION -->
+                <div class="section-header-categorie">
+                    <div>
+                        <h2 class="section-title">Sélection Shonen</h2>
+                        <p class="section-subtitle">Affichage des tomes les plus recherchés par la communauté Manga Market.</p>
+                    </div>
+                    <div class="view-options">
+                        <button class="view-btn active">Grille</button>
+                        <button class="view-btn">Liste</button>
+                    </div>
+                </div>
+
+                <!-- GRILLE DE PRODUITS -->
+                <div class="products-grid-categorie">
+                    <!-- Produit 1 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 2 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 3 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 4 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 5 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 6 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 7 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 8 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 9 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 10 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="product-badge">NOUVEAU</span>
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="/page_accueil.html">Accueil</a></li>
+                    <li><a href="/page_catalogue.html">Catalogue</a></li>
+                    <li><a href="/page_promotion.html">Promotions</a></li>
+                    <li><a href="/page_coffret.html">Coffrets</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="/pageLogIn.html">Connexion</a></li>
+                    <li><a href="/pageSignUp.html">Inscription</a></li>
+                    <li><a href="/page_panier.html">Mon panier</a></li>
+                    <li><a href="/page_suivi_commande.html">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="/page_faq.html">FAQ</a></li>
+                    <li><a href="/page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="/page_cgv.html">CGV</a></li>
+                    <li><a href="/page_cgu.html">CGU</a></li>
+                    <li><a href="/page_retour.html">Politique de retour</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p class="contact-info">support@kinkai.fr</p>
+                <div class="social-icons">
+                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

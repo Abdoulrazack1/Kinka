@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche "one piece" - KINKA.FR</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="/asset/css/page_recherche.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." value="one piece">
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html">Promotions</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                </button>
+                <a href="/page_profil.html">
+                    <button class="icon-btn">
+                        <span class="material-symbols-outlined">person</span>
+                    </button>
+                </a>
+                <a href="/pageLogIn.html">
+                    <button class="connect-btn">Se connecter</button>
+                </a>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        
+        <!-- SEARCH RESULTS HEADER -->
+        <section class="search-header">
+            <div class="results-info">
+                <p class="results-label">Résultats de recherche pour</p>
+                <h1 class="search-query">"one piece"</h1>
+                <p class="results-count">24 mangas trouvés</p>
+            </div>
+            
+            <div class="search-tags">
+                <button class="tag active">Shōnen</button>
+                <button class="tag">Aventure</button>
+                <button class="tag">Eiichiro Oda</button>
+            </div>
+        </section>
+
+        <div class="search-layout">
+            
+            <!-- SIDEBAR FILTERS -->
+            <aside class="filters-sidebar">
+                <div class="filters-header">
+                    <h2>Filtrer les résultats</h2>
+                    <button class="reset-filters">Réinitialiser</button>
+                </div>
+
+                <!-- Disponibilité -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Disponibilité</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-custom"></span>
+                            <span>En stock</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span>Précommande</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span>Occasion</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Prix -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Prix</h3>
+                    <div class="price-range">
+                        <input type="number" placeholder="3,90 €" class="price-input">
+                        <span>-</span>
+                        <input type="number" placeholder="59,90 €" class="price-input">
+                    </div>
+                    <div class="price-slider">
+                        <div class="slider-track"></div>
+                        <div class="slider-fill"></div>
+                        <input type="range" min="0" max="100" value="0" class="slider-input">
+                        <input type="range" min="0" max="100" value="100" class="slider-input">
+                    </div>
+                </div>
+
+                <!-- Type de produit -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Type de produit</h3>
+                    <div class="filter-options">
+                        <label class="filter-option pill active">
+                            <input type="radio" name="type" checked>
+                            <span>Tomes à l'unité</span>
+                        </label>
+                        <label class="filter-option pill">
+                            <input type="radio" name="type">
+                            <span>Coffrets</span>
+                        </label>
+                        <label class="filter-option pill">
+                            <input type="radio" name="type">
+                            <span>Éditions collector</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- État -->
+                <div class="filter-group">
+                    <h3 class="filter-title">État</h3>
+                    <div class="filter-options">
+                        <label class="filter-option pill active">
+                            <input type="radio" name="etat" checked>
+                            <span>Neuf</span>
+                        </label>
+                        <label class="filter-option pill">
+                            <input type="radio" name="etat">
+                            <span>Très bon état</span>
+                        </label>
+                        <label class="filter-option pill">
+                            <input type="radio" name="etat">
+                            <span>Bon état</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Éditeur -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Éditeur</h3>
+                    <select class="filter-select">
+                        <option value="">Glénat, Shueisha...</option>
+                        <option value="glenat">Glénat</option>
+                        <option value="ki-oon">Ki-oon</option>
+                        <option value="kurokawa">Kurokawa</option>
+                    </select>
+                </div>
+            </aside>
+
+            <!-- RESULTS AREA -->
+            <div class="results-area">
+                
+                <!-- Results toolbar -->
+                <div class="results-toolbar">
+                    <p class="results-summary">24 résultats • triés par pertinence</p>
+                    <div class="toolbar-actions">
+                        <span class="sort-label">Tri :</span>
+                        <select class="sort-select">
+                            <option>Meilleures ventes</option>
+                            <option>Prix croissant</option>
+                            <option>Prix décroissant</option>
+                            <option>Nouveautés</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="products-grid">
+                    
+                    <!-- Produit 1 -->
+                    <div class="product-card">
+                        <a href="/page_produit.html">
+                            <div class="product-image">
+                                <span class="product-badge stock">En stock</span>
+                                <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 1">
+                                <div class="product-synopsis">
+                                    <p>Le début de l'aventure de Luffy qui rêve de devenir le Roi des Pirates !</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">One Piece - Tome 1</h3>
+                                <p class="product-meta">Eiichiro Oda • Shonen • Glénat</p>
+                                <div class="product-footer">
+                                    <div class="price-box">
+                                        <span class="product-price">6,90 €</span>
+                                        <span class="badge-sale">TOP VENTE</span>
+                                    </div>
+                                    <button class="add-to-cart">+</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Produit 2 -->
+                    <div class="product-card">
+                        <a href="/page_produit.html">
+                            <div class="product-image">
+                                <span class="product-badge promo">-20%</span>
+                                <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 100">
+                                <div class="product-synopsis">
+                                    <p>Le tome 100 légendaire qui célèbre la saga de Luffy et son équipage !</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">One Piece - Tome 100</h3>
+                                <p class="product-meta">Édition collector • Couverture rigide</p>
+                                <div class="product-footer">
+                                    <div class="price-box">
+                                        <span class="product-price-old">14,90 €</span>
+                                        <span class="product-price">11,90 €</span>
+                                    </div>
+                                    <button class="add-to-cart">+</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Produit 3 -->
+                    <div class="product-card">
+                        <a href="/page_produit.html">
+                            <div class="product-image">
+                                <span class="product-badge coffret">COFFRET</span>
+                                <img src="/asset/image/manga-store.jpg" alt="Coffret One Piece - East Blue">
+                                <div class="product-synopsis">
+                                    <p>Coffret contenant les 12 premiers tomes + poster exclusif de la saga East Blue !</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Coffret One Piece - East Blue</h3>
+                                <p class="product-meta">Tomes 1 à 12 • Poster exclusif</p>
+                                <div class="product-footer">
+                                    <div class="price-box">
+                                        <span class="product-price-old">74,00 €</span>
+                                        <span class="product-price">59,90 €</span>
+                                    </div>
+                                    <button class="add-to-cart">+</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Produit 4 -->
+                    <div class="product-card">
+                        <a href="/page_produit.html">
+                            <div class="product-image">
+                                <span class="product-badge stock">En stock</span>
+                                <span class="product-badge fidelity">+1 point fidélité</span>
+                                <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 45">
+                                <div class="product-synopsis">
+                                    <p>L'équipage de Luffy affronte les défis du Nouveau Monde dans ce tome épique !</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">One Piece - Tome 45 (Occ...)</h3>
+                                <p class="product-meta">Très bon état • Reconditionné</p>
+                                <div class="product-footer">
+                                    <div class="price-box">
+                                        <span class="product-price">4,50 €</span>
+                                    </div>
+                                    <button class="add-to-cart">+</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Produit 5 -->
+                    <div class="product-card">
+                        <a href="/page_produit.html">
+                            <div class="product-image">
+                                <span class="product-badge nouveau">NOUVEAU</span>
+                                <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 50">
+                                <div class="product-synopsis">
+                                    <p>Découvrez les nouveaux développements de l'arc Wano dans ce tome intense !</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">One Piece - Tome 50</h3>
+                                <p class="product-meta">En stock • Livraison 48h</p>
+                                <div class="product-footer">
+                                    <div class="price-box">
+                                        <span class="product-price">6,90 €</span>
+                                    </div>
+                                    <button class="add-to-cart">+</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Produit 6 -->
+                    <div class="product-card">
+                        <a href="/page_produit.html">
+                            <div class="product-image">
+                                <img src="/asset/image/one-piece-red.jpg" alt="One Piece RED">
+                                <div class="product-synopsis">
+                                    <p>Le guide officiel du film One Piece RED avec des illustrations exclusives !</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">One Piece RED</h3>
+                                <p class="product-meta">Guide officiel de la série</p>
+                                <div class="product-footer">
+                                    <div class="price-box">
+                                        <span class="product-price">12,50 €</span>
+                                        <span class="stock-info">Plus que 3 en stock</span>
+                                    </div>
+                                    <button class="add-to-cart">+</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-section">
+                    <button class="btn-load-more">
+                        <span class="material-symbols-outlined">expand_more</span>
+                        Affiner encore la recherche
+                    </button>
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <button class="page-btn">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <span class="page-dots">...</span>
+                    <button class="page-btn">12</button>
+                    <button class="page-btn">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="/page_accueil.html">Accueil</a></li>
+                    <li><a href="/page_catalogue.html">Catalogue</a></li>
+                    <li><a href="/page_promotion.html">Promotions</a></li>
+                    <li><a href="/page_coffrets.html">Coffrets</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="/pageLogIn.html">Connexion</a></li>
+                    <li><a href="/pageSignUp.html">Inscription</a></li>
+                    <li><a href="#">Mon panier</a></li>
+                    <li><a href="#">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="/page_faq.html">FAQ</a></li>
+                    <li><a href="/page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="/page_cgv.html">CGV</a></li>
+                    <li><a href="/page_cgu.html">CGU</a></li>
+                    <li><a href="/page_retour.html">Politique de retour</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p class="contact-info">support@kinka.fr</p>
+                <div class="social-icons">
+                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
