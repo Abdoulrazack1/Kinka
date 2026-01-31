@@ -48,9 +48,7 @@ body::after {
     pointer-events: none;
 }
 
-/* ========================================
-   KEYFRAMES ANIMATIONS ESSENTIELLES
-   ======================================== */
+/* KEYFRAMES ANIMATIONS ESSENTIELLES */
 @keyframes rotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
