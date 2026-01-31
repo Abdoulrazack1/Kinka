@@ -1,0 +1,1672 @@
+/* RESET ET BASE */
+* {
+    margin: 0;                             /* Supprime toutes les marges par défaut */
+    padding: 0;                            /* Supprime tous les paddings par défaut */
+    box-sizing: border-box;                /* Inclut padding et border dans les dimensions */
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Police système moderne */
+    background: #fafafa;                   /* Fond gris très clair */
+    color: #1a1a1a;                        /* Couleur de texte noir profond */
+    transition: all 0.3s ease;             /* Transition douce pour tous les changements */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ANIMATED BACKGROUND PATTERNS */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(224, 59, 139, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(224, 59, 139, 0.03) 0%, transparent 50%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 35px,
+            rgba(224, 59, 139, 0.02) 35px,
+            rgba(224, 59, 139, 0.02) 70px
+        );
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ========================================
+   KEYFRAMES ANIMATIONS ESSENTIELLES
+   ======================================== */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes gradient {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(224, 59, 139, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(224, 59, 139, 0.6); }
+}
+
+/* HEADER */
+header {
+    background: white;                     /* Fond blanc pour l'en-tête */
+    padding: 0.8rem 3rem;                  /* Padding interne de l'en-tête */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Ombre légère sous l'en-tête */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: sticky;                      /* Position sticky pour rester en haut */
+    top: 0;                                /* Collé en haut de la page */
+    z-index: 1000;                         /* S'assure d'être au-dessus des autres éléments */
+}
+
+header:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12); /* Ombre plus prononcée au survol */
+}
+
+nav {
+    display: flex;                         /* Utilise Flexbox pour la disposition */
+    justify-content: space-between;        /* Espace entre les éléments enfants */
+    align-items: center;                   /* Centre verticalement les éléments */
+    max-width: 1600px;                     /* Largeur maximale de la navigation */
+    margin: 0 auto;                        /* Centre la navigation horizontalement */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+/* LOGO - Style du logo Kinka */
+.logo {
+    display: flex;                         /* Flexbox pour aligner l'image et le texte */
+    align-items: center;                   /* Centre verticalement les éléments */
+    gap: 0.6rem;                           /* Espacement entre l'image et le texte */
+    text-decoration: none;                 /* Supprime le soulignement du lien */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.logo:hover {
+    transform: translateY(-2px);           /* Légère élévation au survol */
+}
+
+.logo-image {
+    width: 35px;                           /* Largeur fixe de l'image du logo */
+    height: 35px;                          /* Hauteur fixe de l'image du logo */
+    object-fit: contain;                   /* Ajuste l'image sans la déformer */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.logo:hover .logo-image {
+    transform: scale(1.1) rotate(-5deg);   /* Zoom et rotation légère au survol */
+}
+
+.logo-text {
+    font-size: 1.15rem;                    /* Taille de police du texte du logo */
+    font-weight: 700;                      /* Texte en gras */
+    color: #1a1a1a;                        /* Couleur noire pour le texte */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.logo:hover .logo-text {
+    color: #E03B8B;                        /* Change en rose au survol */
+}
+
+.logo-text .fr {
+    color: #E03B8B;                        /* La partie .fr est toujours en rose */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.logo:hover .logo-text .fr {
+    transform: scale(1.1);
+}
+
+/* SEARCH BAR - Barre de recherche */
+.search-bar {
+    flex: 0 1 500px;                       /* Largeur flexible avec base de 500px */
+    margin: 0 2.5rem;                      /* Marges horizontales */
+    position: relative;                    /* Position relative pour l'icône */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.search-bar input {
+    width: 100%;                           /* Prend toute la largeur disponible */
+    padding: 0.65rem 1rem 0.65rem 2.5rem;  /* Padding avec espace pour l'icône */
+    border: 1px solid #e8e8e8;             /* Bordure grise claire */
+    border-radius: 6px;                    /* Coins arrondis */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    background: #fafafa;                   /* Fond gris très clair */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.search-bar input:hover {
+    border-color: #E03B8B;                 /* Bordure rose au survol */
+    background: white;                     /* Fond blanc au survol */
+}
+
+.search-bar input:focus {
+    outline: none;                         /* Supprime le contour par défaut */
+    border-color: #E03B8B;                 /* Bordure rose au focus */
+    background: white;                     /* Fond blanc au focus */
+    box-shadow: 0 0 0 3px rgba(224, 59, 139, 0.1); /* Ombre rose subtile */
+    animation: glow 2s ease infinite;
+}
+
+.search-bar input::placeholder {
+    color: #9e9e9e;                        /* Couleur grise pour le placeholder */
+}
+
+.search-icon {
+    position: absolute;                    /* Position absolue dans la barre */
+    left: 0.9rem;                          /* Position depuis la gauche */
+    top: 50%;                              /* Centre verticalement */
+    transform: translateY(-50%);           /* Ajuste le centrage vertical */
+    color: #9e9e9e;                        /* Couleur grise pour l'icône */
+    font-size: 1.2rem;                     /* Taille de l'icône */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    pointer-events: none;
+}
+
+.search-bar:hover .search-icon,
+.search-bar input:focus ~ .search-icon {
+    color: #E03B8B;                        /* Change en rose au survol/focus */
+}
+
+/* NAV MENU - Menu de navigation */
+.nav-menu {
+    display: flex;                         /* Flexbox pour les liens de navigation */
+    gap: 2.5rem;                           /* Espacement entre les liens */
+    align-items: center;                   /* Centre verticalement */
+    margin-right: auto;                    /* Pousse les éléments à droite */
+    margin-left: 2.5rem;                   /* Marge à gauche */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.nav-menu a {
+    text-decoration: none;                 /* Supprime le soulignement */
+    color: #1a1a1a;                        /* Couleur noire pour les liens */
+    font-size: 0.9rem;                     /* Taille de police réduite */
+    font-weight: 500;                      /* Poids de police moyen */
+    position: relative;                    /* Position relative pour le pseudo-élément */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.nav-menu a::after {
+    content: '';                           /* Contenu vide pour le pseudo-élément */
+    position: absolute;                    /* Position absolue sous le lien */
+    bottom: -5px;                          /* Positionne 5px sous le lien */
+    left: 0;                               /* Aligné à gauche */
+    width: 0;                              /* Largeur initiale nulle (invisible) */
+    height: 2px;                           /* Hauteur de 2px */
+    background: #E03B8B;                   /* Couleur rose pour la ligne */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: #E03B8B;                        /* Change en rose au survol */
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+    width: 100%;                           /* Étend la ligne sur toute la largeur au survol */
+}
+
+/* NAV ACTIONS - Boutons d'action du header */
+.nav-actions {
+    display: flex;                         /* Flexbox pour les boutons d'action */
+    gap: 0.6rem;                           /* Espacement entre les boutons */
+    align-items: center;                   /* Centre verticalement */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.icon-btn {
+    width: 40px;                           /* Largeur fixe pour les boutons icônes */
+    height: 40px;                          /* Hauteur fixe pour les boutons icônes */
+    border: 1px solid #e8e8e8;             /* Bordure grise claire */
+    border-radius: 6px;                    /* Coins arrondis */
+    display: flex;                         /* Flexbox pour centrer l'icône */
+    align-items: center;                   /* Centre verticalement l'icône */
+    justify-content: center;               /* Centre horizontalement l'icône */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    background: white;                     /* Fond blanc */
+    font-size: 1.15rem;                    /* Taille de l'icône */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;
+    overflow: hidden;
+}
+
+.icon-btn .material-symbols-outlined {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover .material-symbols-outlined {
+    color: #E03B8B;
+}
+
+.icon-btn:hover {
+    border-color: #E03B8B;                 /* Bordure rose au survol */
+    transform: translateY(-3px);           /* Légère élévation au survol */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Ombre au survol */
+}
+
+.icon-btn:active {
+    transform: translateY(-1px);           /* Légère élévation lors du clic */
+}
+
+.connect-btn {
+    background: #E03B8B;                   /* Fond rose pour le bouton connexion */
+    color: white;                          /* Texte blanc */
+    padding: 0.65rem 1.8rem;               /* Padding interne */
+    border: none;                          /* Pas de bordure */
+    border-radius: 6px;                    /* Coins arrondis */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    font-weight: 500;                      /* Poids de police moyen */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    margin: 0 0.6rem;                      /* Marges horizontales */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;
+    overflow: hidden;
+    animation: pulse 3s ease infinite;
+}
+
+.connect-btn:hover {
+    background: #c42e75;                   /* Fond rose foncé au survol */
+    transform: translateY(-3px);           /* Légère élévation au survol */
+    box-shadow: 0 6px 20px rgba(224, 59, 139, 0.4); /* Ombre rose au survol */
+    animation: bounce 0.6s ease;
+}
+
+.connect-btn:active {
+    transform: translateY(-1px);           /* Légère élévation lors du clic */
+}
+
+/* CONTAINER - Conteneur principal */
+.container {
+    max-width: 1600px;                     /* Largeur maximale du contenu */
+    margin: 0 auto;                        /* Centre horizontalement */
+    padding: 0;                            /* Pas de padding */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+/* HERO MAISON EDITION - Bannière principale de la maison d'édition */
+.hero-maison {
+    position: relative;                    /* Position relative pour les enfants absolus */
+    height: 450px;                         /* Hauteur fixe de la bannière */
+    overflow: hidden;                      /* Cache les débordements */
+    margin-bottom: 3rem;                   /* Marge en bas */
+}
+
+.hero-background {
+    position: absolute;                    /* Position absolue pour le fond */
+    top: 0;                                /* Positionne en haut */
+    left: 0;                               /* Positionne à gauche */
+    width: 100%;                           /* Prend toute la largeur */
+    height: 100%;                          /* Prent toute la hauteur */
+}
+
+.hero-background img {
+    width: 100%;                           /* Image couvre toute la largeur */
+    height: 100%;                          /* Image couvre toute la hauteur */
+    object-fit: cover;                     /* Couvre l'espace sans déformation */
+    filter: brightness(0.7);               /* Assombrit légèrement l'image */
+}
+
+.hero-overlay {
+    position: relative;                    /* Position relative pour le contenu */
+    z-index: 2;                            /* Au-dessus de l'image de fond */
+    height: 100%;                          /* Prend toute la hauteur */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%); /* Dégradé noir transparent */
+}
+
+.maison-header {
+    max-width: 1600px;                     /* Largeur maximale du contenu */
+    margin: 0 auto;                        /* Centre horizontalement */
+    padding: 3rem;                         /* Padding interne */
+    height: 100%;                          /* Prend toute la hauteur */
+    display: flex;                         /* Flexbox pour la disposition */
+    align-items: center;                   /* Centre verticalement */
+    gap: 2.5rem;                           /* Espacement entre les éléments */
+}
+
+.maison-logo-large {
+    width: 120px;                          /* Largeur fixe du logo */
+    height: 120px;                         /* Hauteur fixe du logo */
+    background: white;                     /* Fond blanc pour le logo */
+    border-radius: 20px;                   /* Coins très arrondis */
+    padding: 1rem;                         /* Padding interne */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3); /* Ombre portée */
+    flex-shrink: 0;                        /* Empêche le rétrécissement */
+    display: flex;                         /* Flexbox pour centrer l'image */
+    align-items: center;                   /* Centre verticalement */
+    justify-content: center;               /* Centre horizontalement */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.maison-logo-large:hover {
+    transform: scale(1.05) rotate(-3deg);  /* Zoom et rotation légère au survol */
+    animation: rotate 10s linear infinite;
+}
+
+.maison-logo-large img {
+    width: 100%;                           /* Image prend toute la largeur */
+    height: 100%;                          /* Image prend toute la hauteur */
+    object-fit: contain;                   /* Ajuste l'image sans déformation */
+}
+
+.maison-intro {
+    color: white;                          /* Texte blanc */
+}
+
+.maison-intro h1 {
+    font-size: 2.5rem;                     /* Taille de police importante */
+    margin-bottom: 1rem;                   /* Marge en bas */
+    font-weight: 700;                      /* Texte en gras */
+    background: linear-gradient(135deg, #ffffff, #E03B8B, #ffffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 8s ease infinite;
+}
+
+.maison-intro h1:hover {
+    animation-duration: 3s;
+}
+
+.maison-intro p {
+    font-size: 1rem;                       /* Taille de police normale */
+    line-height: 1.6;                      /* Hauteur de ligne augmentée */
+    margin-bottom: 1.5rem;                 /* Marge en bas */
+    max-width: 700px;                      /* Largeur maximale du paragraphe */
+    opacity: 0.95;                         /* Légère transparence */
+}
+
+.maison-stats {
+    display: flex;                         /* Flexbox pour les statistiques */
+    gap: 2.5rem;                           /* Espacement entre les éléments */
+    margin-bottom: 2rem;                   /* Marge en bas */
+}
+
+.stat-item {
+    display: flex;                         /* Flexbox pour l'icône et le texte */
+    align-items: center;                   /* Centre verticalement */
+    gap: 0.5rem;                           /* Espacement entre l'icône et le texte */
+}
+
+.stat-icon {
+    font-size: 1.2rem;                     /* Taille de l'icône */
+}
+
+.stat-value {
+    font-size: 0.95rem;                    /* Taille de police réduite */
+    font-weight: 600;                      /* Texte semi-gras */
+}
+
+.maison-actions {
+    display: flex;                         /* Flexbox pour les boutons */
+    gap: 1rem;                             /* Espacement entre les boutons */
+}
+
+.btn-follow {
+    background: #E03B8B;                   /* Fond rose pour le bouton */
+    color: white;                          /* Texte blanc */
+    padding: 0.85rem 1.8rem;               /* Padding interne */
+    border: none;                          /* Pas de bordure */
+    border-radius: 6px;                    /* Coins arrondis */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    font-weight: 500;                      /* Poids de police moyen */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;
+    overflow: hidden;
+    animation: pulse 3s ease infinite;
+}
+
+.btn-follow:hover {
+    background: #c42e75;                   /* Fond rose foncé au survol */
+    transform: translateY(-3px);           /* Légère élévation au survol */
+    box-shadow: 0 8px 25px rgba(224, 59, 139, 0.5); /* Ombre rose au survol */
+    animation: bounce 0.6s ease;
+}
+
+.btn-catalog {
+    background: rgba(255,255,255,0.2);     /* Fond blanc semi-transparent */
+    color: white;                          /* Texte blanc */
+    padding: 0.85rem 1.8rem;               /* Padding interne */
+    border: 1px solid rgba(255,255,255,0.4); /* Bordure blanche semi-transparente */
+    border-radius: 6px;                    /* Coins arrondis */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    font-weight: 500;                      /* Poids de police moyen */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.btn-catalog:hover {
+    background: rgba(255,255,255,0.35);    /* Fond plus opaque au survol */
+    border-color: rgba(255,255,255,0.7);   /* Bordure plus visible au survol */
+    transform: translateY(-3px);           /* Légère élévation au survol */
+    box-shadow: 0 8px 25px rgba(255,255,255,0.3); /* Ombre blanche au survol */
+    animation: bounce 0.6s ease;
+}
+
+/* CONTENT LAYOUT - Disposition principale avec sidebar */
+.content-layout {
+    max-width: 1600px;                     /* Largeur maximale du contenu */
+    margin: 0 auto;                        /* Centre horizontalement */
+    padding: 0 3rem;                       /* Padding horizontal seulement */
+    display: grid;                         /* Grille CSS pour la disposition */
+    grid-template-columns: 250px 1fr;      /* Sidebar + contenu principal */
+    gap: 3rem;                             /* Espacement entre les colonnes */
+    margin-bottom: 4rem;                   /* Marge en bas */
+}
+
+/* SIDEBAR - Barre latérale de filtres */
+.sidebar {
+    position: sticky;                      /* Position sticky pour suivre le défilement */
+    top: 100px;                            /* Position depuis le haut */
+    height: fit-content;                   /* Hauteur adaptée au contenu */
+}
+
+.sidebar-section {
+    background: white;                     /* Fond blanc */
+    padding: 1.5rem;                       /* Padding interne */
+    border-radius: 12px;                   /* Coins arrondis */
+    margin-bottom: 1.5rem;                 /* Marge en bas entre les sections */
+    border: 1px solid #f0f0f0;             /* Bordure grise très claire */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.sidebar-section:hover {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08); /* Ombre au survol */
+}
+
+.sidebar-section h3 {
+    font-size: 0.75rem;                    /* Taille de police réduite */
+    font-weight: 700;                      /* Texte en gras */
+    text-transform: uppercase;             /* Texte en majuscules */
+    letter-spacing: 0.5px;                 /* Espacement entre les lettres */
+    color: #666;                           /* Couleur grise */
+    margin-bottom: 1rem;                   /* Marge en bas */
+}
+
+.collection-list,
+.author-list {
+    list-style: none;                      /* Supprime les puces de liste */
+}
+
+.collection-list li,
+.author-list li {
+    margin-bottom: 0.7rem;                 /* Marge en bas entre les éléments */
+}
+
+.collection-list a,
+.author-list a {
+    text-decoration: none;                 /* Supprime le soulignement */
+    color: #525252;                        /* Couleur grise pour les liens */
+    font-size: 0.9rem;                     /* Taille de police réduite */
+    display: flex;                         /* Flexbox pour aligner texte et nombre */
+    justify-content: space-between;        /* Texte à gauche, nombre à droite */
+    align-items: center;                   /* Centre verticalement */
+    padding: 0.5rem 0.7rem;                /* Padding interne */
+    border-radius: 6px;                    /* Coins arrondis */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    gap: 0.8rem;                           /* Espacement entre le texte et le nombre */
+}
+
+.collection-list a:hover,
+.author-list a:hover {
+    background: #FFF5F9;                   /* Fond rose très clair au survol */
+    color: #E03B8B;                        /* Texte rose au survol */
+    transform: translateX(5px);            /* Décalage vers la droite au survol */
+}
+
+.collection-list a.active {
+    background: #FFF5F9;                   /* Fond rose très clair pour l'élément actif */
+    color: #E03B8B;                        /* Texte rose pour l'élément actif */
+    font-weight: 600;                      /* Texte semi-gras pour l'élément actif */
+}
+
+.count {
+    font-size: 0.75rem;                    /* Taille de police réduite pour le nombre */
+    color: #999;                           /* Couleur grise claire */
+    background: #f5f5f5;                   /* Fond gris très clair */
+    padding: 0.2rem 0.5rem;                /* Padding interne réduit */
+    border-radius: 12px;                   /* Coins très arrondis */
+    min-width: 36px;                       /* Largeur minimale pour uniformité */
+    text-align: center;                    /* Centre le texte horizontalement */
+    flex-shrink: 0;                        /* Empêche le rétrécissement */
+}
+
+.collection-list a.active .count {
+    background: #E03B8B;                   /* Fond rose pour le nombre de l'élément actif */
+    color: white;                          /* Texte blanc pour le nombre de l'élément actif */
+}
+
+.sidebar-section.newsletter {
+    background: linear-gradient(135deg, #E03B8B 0%, #c42e75 100%); /* Dégradé rose */
+    color: white;                          /* Texte blanc */
+}
+
+.sidebar-section.newsletter h3 {
+    color: white;                          /* Titre en blanc */
+}
+
+.sidebar-section.newsletter p {
+    font-size: 0.85rem;                    /* Taille de police réduite */
+    line-height: 1.5;                      /* Hauteur de ligne augmentée */
+    margin-bottom: 1rem;                   /* Marge en bas */
+    opacity: 0.95;                         /* Légère transparence */
+}
+
+.btn-newsletter {
+    background: white;                     /* Fond blanc */
+    color: #E03B8B;                        /* Texte rose */
+    padding: 0.7rem 1.2rem;                /* Padding interne */
+    border: none;                          /* Pas de bordure */
+    border-radius: 6px;                    /* Coins arrondis */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    font-weight: 600;                      /* Texte en gras */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    width: 100%;                           /* Prend toute la largeur */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.btn-newsletter:hover {
+    transform: translateY(-2px);           /* Légère élévation au survol */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Ombre au survol */
+    background: #E03B8B;
+    color: white;
+    animation: bounce 0.6s ease;
+}
+
+/* MAIN CONTENT - Contenu principal */
+.main-content {
+    min-width: 0;                          /* Permet au contenu de rétrécir si nécessaire */
+}
+
+/* SECTION HEADER - En-tête des sections */
+.section-header {
+    display: flex;                         /* Flexbox pour aligner titre et lien */
+    justify-content: space-between;        /* Titre à gauche, lien à droite */
+    align-items: center;                   /* Centre verticalement */
+    margin-bottom: 1.8rem;                 /* Marge en bas */
+}
+
+.section-title {
+    font-size: 1.5rem;                     /* Taille de police pour les titres de section */
+    font-weight: 700;                      /* Texte en gras */
+    color: #1a1a1a;                        /* Couleur noire */
+    position: relative;                    /* Position relative pour le pseudo-élément */
+    display: inline-block;                 /* Permet d'appliquer des transformations */
+    background: linear-gradient(135deg, #1a1a1a, #E03B8B, #1a1a1a);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 8s ease infinite;
+}
+
+.section-title:hover {
+    animation-duration: 3s;
+}
+
+.section-title::after {
+    content: '';                           /* Contenu vide pour le pseudo-élément */
+    position: absolute;                    /* Position absolue par rapport au titre */
+    bottom: -5px;                          /* Positionne 5px sous le titre */
+    left: 0;                               /* Aligné à gauche */
+    width: 50px;                           /* Largeur initiale de 50px */
+    height: 3px;                           /* Hauteur de 3px */
+    background: #E03B8B;                   /* Couleur rose pour la ligne */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.section-header:hover .section-title::after {
+    width: 100%;                           /* Étend la ligne sur toute la largeur au survol */
+}
+
+.view-all {
+    color: #E03B8B;                        /* Texte rose pour le lien "Voir tout" */
+    text-decoration: none;                 /* Supprime le soulignement */
+    font-weight: 500;                      /* Poids de police moyen */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    position: relative;                    /* Position relative pour la flèche */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.view-all::after {
+    content: '→';                          /* Ajoute une flèche après le texte */
+    margin-left: 5px;                      /* Espacement entre le texte et la flèche */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.view-all:hover {
+    transform: translateX(5px);            /* Décalage vers la droite au survol */
+    animation: bounce 0.6s ease;
+}
+
+.view-all:hover::after {
+    margin-left: 10px;                     /* Augmente l'espacement au survol */
+}
+
+/* SERIES INCONTOURNABLES - Section des séries phares */
+.section-series-incontournables {
+    margin-bottom: 4rem;                   /* Marge en bas de la section */
+    position: relative;
+    overflow: hidden;
+}
+
+/* EFFET DE SHIMMER SUR LES SECTIONS PRINCIPALES  */
+.section-series-incontournables::before,
+.section-univers::before,
+.section-dernieres-sorties::before,
+.section-coffret::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(224, 59, 139, 0.05), transparent);
+    transition: left 0.8s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.section-series-incontournables:hover::before,
+.section-univers:hover::before,
+.section-dernieres-sorties:hover::before,
+.section-coffret:hover::before {
+    left: 100%;
+}
+
+.series-grid {
+    display: grid;                         /* Grille CSS pour les cartes de série */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de largeur égale */
+    gap: 1.5rem;                           /* Espacement entre les cartes */
+}
+
+.series-card {
+    background: white;                     /* Fond blanc pour les cartes */
+    border-radius: 12px;                   /* Coins arrondis */
+    overflow: hidden;                      /* Cache les débordements */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    border: 1px solid #f0f0f0;             /* Bordure grise très claire */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;                    /* Position relative pour le pseudo-élément */
+    text-decoration: none;
+}
+
+.series-card::before {
+    content: '';                           /* Contenu vide pour le pseudo-élément */
+    position: absolute;                    /* Position absolue pour couvrir la carte */
+    top: 0;                                /* Positionne en haut */
+    left: 0;                               /* Positionne à gauche */
+    right: 0;                              /* Positionne à droite */
+    bottom: 0;                             /* Positionne en bas */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%); /* Dégradé blanc */
+    opacity: 0;                            /* Initialement transparent */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    z-index: 1;                            /* Au-dessus de l'image mais sous le texte */
+    pointer-events: none;                  /* Permet les clics à travers cet élément */
+}
+
+.series-card:hover::before {
+    opacity: 1;                            /* Rend le dégradé visible au survol */
+}
+
+.series-card:hover {
+    transform: translateY(-10px);          /* Légère élévation au survol */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15); /* Ombre prononcée au survol */
+    border-color: #E03B8B;                 /* Bordure rose au survol */
+}
+
+/* EFFET ROTATE SUR LES CARTES   */
+.series-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(224, 59, 139, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: all 0.6s ease;
+    pointer-events: none;
+}
+
+.series-card:hover::after {
+    opacity: 1;
+    animation: rotate 20s linear infinite;
+}
+
+.series-card .product-image {
+    width: 100%;                           /* Prend toute la largeur */
+    height: 300px;                         /* Hauteur fixe pour les images */
+    background: #f5f5f5;                   /* Fond gris très clair */
+    position: relative;                    /* Position relative pour le pseudo-élément */
+    overflow: hidden;                      /* Cache les débordements */
+}
+
+.series-card .product-image img {
+    width: 100%;                           /* Image prend toute la largeur */
+    height: 100%;                          /* Image prend toute la hauteur */
+    object-fit: cover;                     /* Couvre l'espace sans déformation */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.series-card:hover .product-image img {
+    transform: scale(1.1);                 /* Zoom léger sur l'image au survol */
+}
+
+.series-info {
+    padding: 1.2rem;                       /* Padding interne */
+    position: relative;                    /* Position relative pour le z-index */
+    z-index: 2;                            /* Au-dessus du pseudo-élément */
+}
+
+.series-badge {
+    display: inline-block;                 /* Affiche comme un bloc en ligne */
+    padding: 0.3rem 0.8rem;                /* Padding interne */
+    border-radius: 4px;                    /* Coins arrondis */
+    font-size: 0.7rem;                     /* Taille de police réduite */
+    font-weight: 600;                      /* Texte semi-gras */
+    text-transform: uppercase;             /* Texte en majuscules */
+    margin-bottom: 0.7rem;                 /* Marge en bas */
+    transition: all 0.3s ease;
+    animation: pulse 2s ease infinite;
+}
+
+.series-badge:hover {
+    animation: bounce 0.6s ease;
+}
+
+.series-badge.shonen {
+    background: #E03B8B;                   /* Fond rose pour les badges shonen */
+    color: white;                          /* Texte blanc pour les badges shonen */
+}
+
+.series-badge.fantasy {
+    background: #6B46C1;                   /* Fond violet pour les badges fantasy */
+    color: white;                          /* Texte blanc pour les badges fantasy */
+}
+
+.series-title {
+    font-size: 1.1rem;                     /* Taille de police pour le titre */
+    font-weight: 700;                      /* Texte en gras */
+    margin-bottom: 0.5rem;                 /* Marge en bas */
+    color: #1a1a1a;                        /* Couleur noire */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.series-card:hover .series-title {
+    color: #E03B8B;                        /* Change en rose au survol */
+    animation: bounce 0.6s ease;
+}
+
+.series-desc {
+    font-size: 0.85rem;                    /* Taille de police réduite */
+    color: #666;                           /* Couleur grise */
+    line-height: 1.5;                      /* Hauteur de ligne augmentée */
+}
+
+/* PARCOURIR PAR UNIVERS - Section des catégories d'univers */
+.section-univers {
+    margin-bottom: 4rem;                   /* Marge en bas de la section */
+    position: relative;
+    overflow: hidden;
+}
+
+.univers-grid {
+    display: grid;                         /* Grille CSS pour les cartes d'univers */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de largeur égale */
+    gap: 1.5rem;                           /* Espacement entre les cartes */
+}
+
+.univers-card {
+    position: relative;                    /* Position relative pour l'overlay */
+    height: 200px;                         /* Hauteur fixe */
+    border-radius: 12px;                   /* Coins arrondis */
+    overflow: hidden;                      /* Cache les débordements */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    text-decoration: none;                 /* Supprime le soulignement */
+    display: block;                        /* Affiche comme un bloc */
+}
+
+.univers-card:hover {
+    transform: translateY(-5px);           /* Légère élévation au survol */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Ombre au survol */
+}
+
+.univers-card img {
+    width: 100%;                           /* Image prend toute la largeur */
+    height: 100%;                          /* Image prend toute la hauteur */
+    object-fit: cover;                     /* Couvre l'espace sans déformation */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.univers-card:hover img {
+    transform: scale(1.1);                 /* Zoom léger sur l'image au survol */
+}
+
+.univers-overlay {
+    position: absolute;                    /* Position absolue sur l'image */
+    bottom: 0;                             /* Positionne en bas */
+    left: 0;                               /* Positionne à gauche */
+    right: 0;                              /* Positionne à droite */
+    padding: 1.5rem;                       /* Padding interne */
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%); /* Dégradé noir transparent */
+    color: white;                          /* Texte blanc */
+}
+
+.univers-overlay h3 {
+    font-size: 1.3rem;                     /* Taille de police pour le titre */
+    font-weight: 700;                      /* Texte en gras */
+}
+
+/* DERNIERES SORTIES - Section des nouvelles sorties */
+.section-dernieres-sorties {
+    margin-bottom: 4rem;                   /* Marge en bas de la section */
+    position: relative;
+    overflow: hidden;
+}
+
+.products-grid {
+    display: grid;                         /* Grille CSS pour les produits */
+    grid-template-columns: repeat(4, 1fr); /* 4 colonnes de largeur égale */
+    gap: 1.2rem;                           /* Espacement entre les produits */
+}
+
+.product-card {
+    background: white;                     /* Fond blanc pour les cartes */
+    border-radius: 10px;                   /* Coins arrondis */
+    overflow: hidden;                      /* Cache les débordements */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    border: 1px solid #f0f0f0;             /* Bordure grise très claire */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;                    /* Position relative pour le pseudo-élément */
+    text-decoration: none;
+}
+
+.product-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-card::before {
+    content: '';                           /* Contenu vide pour le pseudo-élément */
+    position: absolute;                    /* Position absolue pour couvrir la carte */
+    top: 0;                                /* Positionne en haut */
+    left: 0;                               /* Positionne à gauche */
+    right: 0;                              /* Positionne à droite */
+    bottom: 0;                             /* Positionne en bas */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%); /* Dégradé blanc */
+    opacity: 0;                            /* Initialement transparent */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    z-index: 1;                            /* Au-dessus de l'image mais sous le synopsis */
+    pointer-events: none;                  /* Permet les clics à travers cet élément */
+}
+
+.product-card:hover::before {
+    opacity: 1;                            /* Rend le dégradé visible au survol */
+}
+
+.product-card:hover {
+    transform: translateY(-10px);          /* Légère élévation au survol */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15); /* Ombre prononcée au survol */
+    border-color: #E03B8B;                 /* Bordure rose au survol */
+}
+
+/* EFFET ROTATE SUR LES CARTES PRODUIT  */
+.product-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(224, 59, 139, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: all 0.6s ease;
+    pointer-events: none;
+}
+
+.product-card:hover::after {
+    opacity: 1;
+    animation: rotate 20s linear infinite;
+}
+
+.product-image {
+    width: 100%;                           /* Prend toute la largeur */
+    height: 340px;                         /* Hauteur fixe pour les images */
+    background: #f5f5f5;                   /* Fond gris très clair */
+    position: relative;                    /* Position relative pour les enfants absolus */
+    overflow: hidden;                      /* Cache les débordements */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.product-image img {
+    width: 100%;                           /* Image prend toute la largeur */
+    height: 100%;                          /* Image prend toute la hauteur */
+    object-fit: cover;                     /* Couvre l'espace sans déformation */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.1);                 /* Zoom léger sur l'image au survol */
+}
+
+/* PRODUCT SYNOPSIS - Synopsis qui apparaît au survol */
+.product-synopsis {
+    position: absolute;                    /* Position absolue sur l'image */
+    bottom: 0;                             /* Positionne en bas */
+    left: 0;                               /* Positionne à gauche */
+    right: 0;                              /* Positionne à droite */
+    color: white;                          /* Texte blanc */
+    padding: 1.2rem;                       /* Padding interne */
+    transform: translateY(100%);           /* Cache en bas initialement */
+    opacity: 0;                            /* Initialement transparent */
+    transition: all 0.4s ease;             /* Transition plus longue pour l'animation */
+    z-index: 3;                            /* Au-dessus de l'image et du badge */
+    max-height: 60%;                       /* Hauteur maximale de 60% */
+    overflow-y: auto;                      /* Défilement vertical si nécessaire */
+    box-sizing: border-box;                /* Inclut le padding dans la hauteur */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+}
+
+.product-synopsis p {
+    font-size: 0.85rem;                    /* Taille de police réduite */
+    line-height: 1.4;                      /* Hauteur de ligne */
+    margin: 0;                             /* Supprime les marges */
+    font-weight: 500;                      /* Poids de police moyen */
+    display: -webkit-box;                  /* Utilise le modèle de boîte flexible */
+    -webkit-line-clamp: 4;                 /* Limite à 4 lignes maximum */
+    line-clamp: 4;                         /* Standard pour limiter les lignes */
+    -webkit-box-orient: vertical;          /* Orientation verticale pour la troncature */
+    overflow: hidden;                      /* Cache le texte qui dépasse */
+    text-overflow: ellipsis;               /* Ajoute "..." à la fin du texte tronqué */
+}
+
+.product-card:hover .product-synopsis {
+    transform: translateY(0);              /* Remonte à sa position normale */
+    opacity: 1;                            /* Rend visible */
+}
+
+.product-badge {
+    position: absolute;                    /* Position absolue sur l'image */
+    top: 0.6rem;                           /* Positionne en haut */
+    left: 0.6rem;                          /* Positionne à gauche */
+    background: #E03B8B;                   /* Fond rose */
+    color: white;                          /* Texte blanc */
+    padding: 0.3rem 0.7rem;                /* Padding interne */
+    border-radius: 4px;                    /* Coins arrondis */
+    font-size: 0.7rem;                     /* Taille de police réduite */
+    font-weight: 600;                      /* Texte semi-gras */
+    text-transform: uppercase;             /* Texte en majuscules */
+    z-index: 2;                            /* Au-dessus de l'image mais sous le synopsis */
+    transition: all 0.3s ease;
+    animation: pulse 2s ease infinite;
+}
+
+.product-badge:hover {
+    animation: bounce 0.6s ease;
+}
+
+.product-badge.bestseller {
+    background: #E03B8B;                   /* Même couleur que par défaut */
+}
+
+.product-info {
+    padding: 0.9rem;                       /* Padding interne */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.product-title {
+    font-size: 0.9rem;                     /* Taille de police réduite */
+    font-weight: 600;                      /* Texte semi-gras */
+    margin-bottom: 0.2rem;                 /* Petite marge en bas */
+    color: #1a1a1a;                        /* Couleur noire */
+    white-space: nowrap;                   /* Empêche le retour à la ligne */
+    overflow: hidden;                      /* Cache le texte qui dépasse */
+    text-overflow: ellipsis;               /* Ajoute "..." à la fin du texte tronqué */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.product-card:hover .product-title {
+    color: #E03B8B;                        /* Change en rose au survol */
+}
+
+.product-author {
+    color: #757575;                        /* Couleur grise */
+    font-size: 0.8rem;                     /* Taille de police réduite */
+    margin-bottom: 0.7rem;                 /* Marge en bas */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.product-card:hover .product-author {
+    color: #E03B8B;                        /* Change en rose au survol */
+}
+
+.product-footer {
+    display: flex;                         /* Flexbox pour aligner prix et bouton */
+    justify-content: space-between;        /* Prix à gauche, bouton à droite */
+    align-items: center;                   /* Centre verticalement */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.product-price {
+    font-size: 1.1rem;                     /* Taille de police pour le prix */
+    font-weight: 700;                      /* Texte en gras */
+    color: #1a1a1a;                        /* Couleur noire */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;
+}
+
+.product-card:hover .product-price {
+    color: #E03B8B;                        /* Change en rose au survol */
+    transform: scale(1.1);                 /* Zoom léger au survol */
+    animation: bounce 0.5s ease;
+}
+
+.add-to-cart {
+    width: 34px;                           /* Largeur fixe pour le bouton */
+    height: 34px;                          /* Hauteur fixe pour le bouton */
+    background: #E03B8B;                   /* Fond rose */
+    color: white;                          /* Texte blanc */
+    border: none;                          /* Pas de bordure */
+    border-radius: 6px;                    /* Coins arrondis */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    font-size: 1rem;                       /* Taille de l'icône "+" */
+    display: flex;                         /* Flexbox pour centrer l'icône */
+    align-items: center;                   /* Centre verticalement l'icône */
+    justify-content: center;               /* Centre horizontalement l'icône */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;
+    overflow: hidden;
+}
+
+.add-to-cart:hover {
+    background: #c42e75;                   /* Fond rose foncé au survol */
+    transform: scale(1.15);                /* Zoom léger au survol */
+    box-shadow: 0 5px 15px rgba(224, 59, 139, 0.4); /* Ombre rose au survol */
+    animation: bounce 0.6s ease;
+}
+
+.add-to-cart:active {
+    transform: scale(0.95);                /* Réduction légère lors du clic */
+}
+
+/* EFFET DE CERCLE AU CLIC POUR ADD TO CART */
+.add-to-cart::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.4s ease;
+}
+
+.add-to-cart:active::after {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+}
+
+.product-link {
+    text-decoration: none;                 /* Supprime le soulignement */
+    color: inherit;                        /* Hérite la couleur du parent */
+    display: block;                        /* Affiche comme un bloc */
+}
+
+.product-link:hover .product-image img {
+    transform: scale(1.05);                /* Zoom léger au survol */
+    transition: transform 0.3s ease;       /* Transition uniquement pour la transformation */
+}
+
+/* COFFRET COLLECTOR - Section du coffret collector */
+.section-coffret {
+    margin-bottom: 4rem;                   /* Marge en bas de la section */
+    position: relative;
+    overflow: hidden;
+}
+
+.coffret-card {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Dégradé bleu foncé */
+    border-radius: 15px;                   /* Coins arrondis */
+    padding: 3rem;                         /* Padding interne important */
+    display: grid;                         /* Grille CSS pour la disposition */
+    grid-template-columns: 1fr 300px;      /* Contenu à gauche, image à droite */
+    gap: 3rem;                             /* Espacement entre les colonnes */
+    align-items: center;                   /* Centre verticalement les éléments */
+    position: relative;                    /* Position relative pour les transformations */
+    overflow: hidden;                      /* Cache les débordements */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.coffret-card:hover {
+    transform: translateY(-5px);           /* Légère élévation au survol */
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3); /* Ombre prononcée au survol */
+}
+
+.coffret-content {
+    color: white;                          /* Texte blanc */
+}
+
+.coffret-badge {
+    background: #E03B8B;                   /* Fond rose pour le badge */
+    color: white;                          /* Texte blanc */
+    padding: 0.4rem 1rem;                  /* Padding interne */
+    border-radius: 4px;                    /* Coins arrondis */
+    font-size: 0.75rem;                    /* Taille de police réduite */
+    font-weight: 600;                      /* Texte semi-gras */
+    text-transform: uppercase;             /* Texte en majuscules */
+    display: inline-block;                 /* Affiche comme un bloc en ligne */
+    margin-bottom: 1rem;                   /* Marge en bas */
+    animation: pulse 2s ease infinite;
+}
+
+.coffret-badge:hover {
+    animation: bounce 0.6s ease;
+}
+
+.coffret-content h2 {
+    font-size: 2rem;                       /* Taille de police importante */
+    margin-bottom: 1rem;                   /* Marge en bas */
+    font-weight: 700;                      /* Texte en gras */
+    background: linear-gradient(135deg, #ffffff, #E03B8B, #ffffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 8s ease infinite;
+}
+
+.coffret-content h2:hover {
+    animation-duration: 3s;
+}
+
+.coffret-content p {
+    font-size: 0.95rem;                    /* Taille de police réduite */
+    line-height: 1.6;                      /* Hauteur de ligne augmentée */
+    margin-bottom: 1.8rem;                 /* Marge en bas */
+    opacity: 0.95;                         /* Légère transparence */
+}
+
+.btn-coffret {
+    background: #E03B8B;                   /* Fond rose pour le bouton */
+    color: white;                          /* Texte blanc */
+    padding: 0.85rem 1.8rem;               /* Padding interne */
+    border: none;                          /* Pas de bordure */
+    border-radius: 6px;                    /* Coins arrondis */
+    cursor: pointer;                       /* Curseur de type pointeur */
+    font-weight: 500;                      /* Poids de police moyen */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+    position: relative;
+    overflow: hidden;
+    animation: pulse 3s ease infinite;
+}
+
+.btn-coffret:hover {
+    background: #c42e75;                   /* Fond rose foncé au survol */
+    transform: translateY(-3px);           /* Légère élévation au survol */
+    box-shadow: 0 8px 25px rgba(224, 59, 139, 0.5); /* Ombre rose au survol */
+    animation: bounce 0.6s ease;
+}
+
+.btn-coffret:active {
+    transform: translateY(-1px);           /* Légère élévation lors du clic */
+}
+
+/* EFFET DE CERCLE AU HOVER POUR LES BOUTONS PRINCIPAUX - DEPUIS PAGE ACCUEIL */
+.connect-btn::before,
+.btn-follow::before,
+.btn-coffret::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    pointer-events: none;
+}
+
+.connect-btn:hover::before,
+.btn-follow:hover::before,
+.btn-coffret:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.coffret-image {
+    width: 300px;                          /* Largeur fixe pour l'image */
+    height: 400px;                         /* Hauteur fixe pour l'image */
+    border-radius: 12px;                   /* Coins arrondis */
+    overflow: hidden;                      /* Cache les débordements */
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4); /* Ombre prononcée */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.coffret-card:hover .coffret-image {
+    transform: scale(1.05) rotate(-2deg);  /* Zoom et rotation légère au survol */
+}
+
+.coffret-image img {
+    width: 100%;                           /* Image prend toute la largeur */
+    height: 100%;                          /* Image prend toute la hauteur */
+    object-fit: cover;                     /* Couvre l'espace sans déformation */
+}
+
+/* FOOTER - Pied de page */
+footer {
+    background: #FFF5F9;                   /* Fond rose très clair */
+    color: #0F1724;                        /* Couleur bleu foncé pour le texte */
+    padding: 3.5rem 3rem 1.8rem;           /* Padding interne */
+    margin-top: 5rem;                      /* Marge en haut importante */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.footer-content {
+    max-width: 1600px;                     /* Largeur maximale du contenu */
+    margin: 0 auto;                        /* Centre horizontalement */
+    display: grid;                         /* Grille CSS pour la disposition */
+    grid-template-columns: 2fr 1fr 1fr 1.2fr 1.2fr; /* 5 colonnes avec largeurs différentes */
+    gap: 3rem;                             /* Espacement entre les colonnes */
+    margin-bottom: 2.5rem;                 /* Marge en bas */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.footer-section h4 {
+    font-size: 1rem;                       /* Taille de police pour les titres */
+    margin-bottom: 1.2rem;                 /* Marge en bas */
+    font-weight: 600;                      /* Texte semi-gras */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.footer-section:hover h4 {
+    color: #E03B8B;                        /* Change en rose au survol */
+}
+
+.footer-section ul {
+    list-style: none;                      /* Supprime les puces de liste */
+}
+
+.footer-section ul li {
+    margin-bottom: 0.7rem;                 /* Marge en bas entre les éléments */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.footer-section ul li a {
+    color: rgba(82, 82, 82, 0.65);         /* Couleur grise avec transparence */
+    text-decoration: none;                 /* Supprime le soulignement */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.footer-section ul li a:hover {
+    color: #E03B8B;                        /* Change en rose au survol */
+    transform: translateX(5px);            /* Décalage vers la droite au survol */
+    animation: bounce 0.6s ease;
+}
+
+.footer-logo {
+    display: flex;                         /* Flexbox pour aligner l'image et le texte */
+    align-items: center;                   /* Centre verticalement */
+    gap: 0.6rem;                           /* Espacement entre l'image et le texte */
+    margin-bottom: 1rem;                   /* Marge en bas */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.footer-logo:hover {
+    transform: translateX(5px);            /* Décalage vers la droite au survol */
+    animation: bounce 0.6s ease;
+}
+
+.footer-logo .logo-image {
+    width: 30px;                           /* Largeur réduite pour le logo */
+    height: 30px;                          /* Hauteur réduite pour le logo */
+}
+
+.footer-description {
+    color: #6B7280;                        /* Couleur grise pour la description */
+    font-size: 1rem;                       /* Taille de police normale */
+    line-height: 1.7;                      /* Hauteur de ligne augmentée */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.contact-info {
+    color: #6B7280;                        /* Couleur grise pour les infos de contact */
+    font-size: 0.875rem;                   /* Taille de police réduite */
+    margin-bottom: 1rem;                   /* Marge en bas */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.contact-info:hover {
+    color: #E03B8B;                        /* Change en rose au survol */
+}
+
+.social-icons {
+    display: flex;                         /* Flexbox pour les icônes sociales */
+    gap: 0.7rem;                           /* Espacement entre les icônes */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.social-icons a {
+    width: 36px;                           /* Largeur fixe pour les liens */
+    height: 36px;                          /* Hauteur fixe pour les liens */
+    background: rgba(255,255,255,0.1);     /* Fond blanc très transparent */
+    border-radius: 6px;                    /* Coins arrondis */
+    display: flex;                         /* Flexbox pour centrer les icônes */
+    align-items: center;                   /* Centre verticalement */
+    justify-content: center;               /* Centre horizontalement */
+    text-decoration: none;                 /* Supprime le soulignement */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.social-icons a img {
+    width: 20px;                           /* Largeur fixe pour les icônes */
+    height: 20px;                          /* Hauteur fixe pour les icônes */
+    object-fit: contain;                   /* Ajuste les icônes sans déformation */
+}
+
+.social-icons a:hover {
+    background: #E03B8B;                   /* Fond rose au survol */
+    transform: translateY(-5px);           /* Légère élévation au survol */
+    box-shadow: 0 5px 15px rgba(224, 59, 139, 0.4); /* Ombre rose au survol */
+    animation: bounce 0.6s ease;
+}
+
+.footer-bottom {
+    max-width: 1600px;                     /* Largeur maximale */
+    margin: 0 auto;                        /* Centre horizontalement */
+    padding-top: 2rem;                     /* Padding en haut */
+    border-top: 1px solid rgba(0,0,0,0.1); /* Ligne de séparation grise claire */
+    text-align: center;                    /* Centre le texte */
+    transition: all 0.3s ease;             /* Transition pour tous les changements */
+}
+
+.footer-bottom p {
+    color: rgba(0,0,0,0.45);               /* Couleur grise avec transparence */
+    font-size: 0.8rem;                     /* Taille de police réduite */
+}
+
+/* MEDIA QUERIES TABLETTE - 769px à 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .content-layout {
+        grid-template-columns: 220px 1fr;  /* Sidebar plus étroite */
+        gap: 2rem;                         /* Espacement réduit */
+        padding: 0 1.5rem;                 /* Padding horizontal réduit */
+    }
+
+    .series-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes au lieu de 3 */
+    }
+
+    .univers-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes au lieu de 3 */
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 colonnes au lieu de 4 */
+    }
+
+    .coffret-card {
+        grid-template-columns: 1fr;        /* Une seule colonne */
+        padding: 2rem;                     /* Padding réduit */
+    }
+
+    .coffret-image {
+        width: 100%;                       /* Largeur à 100% */
+        max-width: 300px;                  /* Largeur maximale de 300px */
+        margin: 0 auto;                    /* Centre l'image */
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr); /* 3 colonnes au lieu de 5 */
+        gap: 2rem;                         /* Espacement réduit */
+    }
+}
+
+/* MEDIA QUERIES MOBILE - max 768px */
+@media (max-width: 768px) {
+    body {
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    header {
+        padding: 0.8rem 1rem;              /* Padding réduit sur mobile */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    nav {
+        flex-wrap: wrap;                   /* Permet le retour à la ligne */
+        gap: 0.6rem;                       /* Espacement réduit */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .logo-text {
+        font-size: 1.1rem;                 /* Taille de police réduite */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .logo-image {
+        width: 30px;                       /* Largeur réduite */
+        height: 30px;                      /* Hauteur réduite */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .search-bar {
+        order: 3;                          /* Place la barre de recherche en dernier */
+        width: 100%;                       /* Prend toute la largeur */
+        max-width: 100%;                   /* Largeur maximale à 100% */
+        margin: 0;                         /* Supprime les marges */
+        flex: 1 1 100%;                    /* Flexibilité complète */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .search-bar input {
+        font-size: 0.85rem;                /* Taille de police réduite */
+        padding: 0.6rem 1rem 0.6rem 2.3rem; /* Ajustement du padding */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .nav-menu {
+        display: none;                     /* Cache le menu de navigation */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .nav-actions {
+        gap: 0.4rem;                       /* Espacement réduit */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .icon-btn {
+        width: 36px;                       /* Largeur réduite */
+        height: 36px;                      /* Hauteur réduite */
+        font-size: 1rem;                   /* Taille de l'icône réduite */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .icon-btn .material-symbols-outlined {
+        font-size: 1.1rem;
+    }
+
+    .connect-btn {
+        padding: 0.6rem 1.2rem;            /* Padding réduit */
+        font-size: 0.8rem;                 /* Taille de police réduite */
+        margin: 0 0.4rem;                  /* Marge réduite */
+        transition: all 0.3s ease;         /* Transition pour tous les changements */
+    }
+
+    .hero-maison {
+        height: 350px;                     /* Hauteur réduite sur mobile */
+    }
+
+    .maison-header {
+        flex-direction: column;            /* Disposition verticale */
+        text-align: center;                /* Centre le texte */
+        padding: 2rem 1rem;                /* Padding réduit */
+    }
+
+    .maison-logo-large {
+        width: 100px;                      /* Largeur réduite */
+        height: 100px;                     /* Hauteur réduite */
+    }
+
+    .maison-intro h1 {
+        font-size: 1.8rem;                 /* Taille de police réduite */
+    }
+
+    .maison-intro p {
+        font-size: 0.9rem;                 /* Taille de police réduite */
+    }
+
+    .maison-stats {
+        flex-direction: column;            /* Disposition verticale */
+        gap: 1rem;                         /* Espacement réduit */
+    }
+
+    .maison-actions {
+        flex-direction: column;            /* Disposition verticale */
+        width: 100%;                       /* Prend toute la largeur */
+    }
+
+    .btn-follow,
+    .btn-catalog {
+        width: 100%;                       /* Boutons prennent toute la largeur */
+    }
+
+    .content-layout {
+        grid-template-columns: 1fr;        /* Une seule colonne */
+        padding: 0 1rem;                   /* Padding réduit */
+        gap: 2rem;                         /* Espacement réduit */
+    }
+
+    .sidebar {
+        position: static;                  /* Plus sticky sur mobile */
+    }
+
+    .collection-list a,
+    .author-list a {
+        padding: 0.5rem;                   /* Padding réduit */
+        gap: 0.5rem;                       /* Espacement réduit */
+    }
+
+    .count {
+        font-size: 0.7rem;                 /* Taille de police réduite */
+        padding: 0.15rem 0.4rem;           /* Padding réduit */
+        min-width: 32px;                   /* Largeur minimale réduite */
+    }
+
+    .series-grid {
+        grid-template-columns: 1fr;        /* Une seule colonne */
+    }
+
+    .univers-grid {
+        grid-template-columns: 1fr;        /* Une seule colonne */
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur mobile */
+        gap: 1rem;                         /* Espacement réduit */
+    }
+
+    .product-image {
+        height: 280px;                     /* Hauteur réduite sur mobile */
+    }
+
+    .product-synopsis {
+        padding: 1rem;                     /* Padding réduit */
+        font-size: 0.75rem;                /* Taille de police réduite */
+    }
+
+    .product-synopsis p {
+        font-size: 0.75rem;                /* Taille de police réduite */
+        line-height: 1.3;                  /* Hauteur de ligne réduite */
+        -webkit-line-clamp: 3;             /* Limite à 3 lignes sur mobile */
+        line-clamp: 3;                     /* Standard pour limiter à 3 lignes */
+    }
+
+    .product-info {
+        padding: 0.7rem;                   /* Padding réduit */
+    }
+
+    .product-title {
+        font-size: 0.85rem;                /* Taille de police réduite */
+    }
+
+    .product-author {
+        font-size: 0.75rem;                /* Taille de police réduite */
+    }
+
+    .product-price {
+        font-size: 1rem;                   /* Taille de police réduite */
+    }
+
+    .coffret-card {
+        grid-template-columns: 1fr;        /* Une seule colonne */
+        padding: 2rem 1.5rem;              /* Padding réduit */
+    }
+
+    .coffret-content h2 {
+        font-size: 1.5rem;                 /* Taille de police réduite */
+    }
+
+    .coffret-image {
+        width: 100%;                       /* Largeur à 100% */
+        height: 350px;                     /* Hauteur réduite */
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;        /* Une seule colonne */
+        gap: 2rem;                         /* Espacement réduit */
+    }
+
+    .footer-logo .logo-image {
+        width: 26px;                       /* Largeur réduite */
+        height: 26px;                      /* Hauteur réduite */
+    }
+
+    .footer-description {
+        font-size: 0.9rem;                 /* Taille de police réduite */
+    }
+
+    footer {
+        padding: 2rem 1rem 1rem;           /* Padding réduit */
+        margin-top: 3rem;                  /* Marge réduite */
+    }
+}
