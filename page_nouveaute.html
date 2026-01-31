@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveautés - KINKA.FR</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="/asset/css/page_nouveaute.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur...">
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html">Promotions</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                </button>
+                <a href="/page_profil.html"><button class="icon-btn">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                </a>
+                <a href="/pageLogIn.html"><button class="connect-btn">Se connecter</button></a>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-container">
+        
+        <!-- BANNIÈRE HERO -->
+        <section class="hero-banner">
+            <div class="hero-badge">
+                <span class="material-symbols-outlined">inventory_2</span>
+                Sorties Officielles
+            </div>
+            <div class="hero-date">
+                <span class="material-symbols-outlined">calendar_today</span>
+                24 Mai 2025
+            </div>
+            
+            <div class="hero-text">
+                <h1>Les pépites de la <span class="highlight">semaine</span><br>viennent d'arriver.</h1>
+                <p class="hero-description">Découvrez en avant-première les toutes dernières sorties, les rééditions exclusives et les éditions collectors limitées. Une sélection soignée pour les collectionneurs exigeants.</p>
+                <button class="hero-btn">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                    Voir le planning complet
+                </button>
+            </div>
+            
+            <div class="hero-product">
+                <div class="product-image">
+                    <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 108">
+                    <div class="product-synopsis">
+                        <p>One Piece Tome 108 : L'ultime confrontation entre Luffy et ses ennemis ! Un tome explosif avec des révélations majeures sur le One Piece et le destin du monde.</p>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">One Piece - Tome 108</h3>
+                    <p class="product-author">Eiichiro Oda · Glénat</p>
+                    <div class="product-footer">
+                        <span class="product-price">6,99 €</span>
+                        <button class="add-to-cart">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="content-wrapper">
+            
+            <!-- SIDEBAR FILTRES -->
+            <aside class="sidebar">
+                
+                <!-- Disponibilité -->
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3>DISPONIBILITÉ</h3>
+                    </div>
+                    <div class="filter-content">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" checked>
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">En stock</span>
+                            <span class="filter-count">142</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Précommandes</span>
+                            <span class="filter-count">34</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- État -->
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3>ÉTAT</h3>
+                    </div>
+                    <div class="filter-content">
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Neuf</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Occasion (Comme neuf)</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Occasion (Très bon)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Éditeurs -->
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3>ÉDITEURS</h3>
+                    </div>
+                    <div class="filter-content">
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Glénat</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Pika Édition</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Ki-oon</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Kurokawa</span>
+                        </label>
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- CONTENU PRINCIPAL -->
+            <div class="main-content">
+                
+                <!-- En-tête catalogue -->
+                <div class="catalog-header">
+                    <div class="catalog-title">
+                        <h2>Tous les mangas</h2>
+                        <span class="catalog-count">(142)</span>
+                    </div>
+                    <div class="catalog-sort">
+                        <span>Trier par:</span>
+                        <select class="sort-select">
+                            <option>Plus récents</option>
+                            <option>Prix croissant</option>
+                            <option>Prix décroissant</option>
+                            <option>Popularité</option>
+                            <option>Nom A-Z</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grille de produits -->
+                <div class="products-grid">
+                    
+                    <!-- Produit 1 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                            <div class="product-synopsis">
+                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano ! Un tome chargé en rebondissements et révélations sur le One Piece.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">One Piece - Tome 105</h3>
+                            <p class="product-author">Eiichiro Oda</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 2 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/Tokyo-Revengers-Tome-24.jpg" alt="Jujutsu Kaisen - T.20">
+                            <div class="product-synopsis">
+                                <p>La bataille contre Sukuna atteint son paroxysme dans ce tome explosif ! Yuji et ses alliés doivent mettre fin au règne du Roi des Fléaux.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Jujutsu Kaisen - T.20</h3>
+                            <p class="product-author">Gege Akutami</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.90 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 3 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/Berserk-Tome-41.jpg" alt="Berserk - Tome 41">
+                            <div class="product-synopsis">
+                                <p>Guts poursuit sa quête de vengeance dans ce tome sombre et captivant. La confrontation avec Griffith approche, et le destin du monde est en jeu.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Berserk - Tome 41</h3>
+                            <p class="product-author">Kentaro Miura</p>
+                            <div class="product-footer">
+                                <span class="product-price">9.15 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 4 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/Dandadan-T05.jpg" alt="Dandadan - Tome 05">
+                            <div class="product-synopsis">
+                                <p>Entre aliens et fantômes, l'aventure déjantée continue de plus belle ! Momo et Okarun découvrent de nouvelles menaces surnaturelles.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Dandadan - Tome 05</h3>
+                            <p class="product-author">Yukinobu Tatsu</p>
+                            <div class="product-footer">
+                                <span class="product-price">7.29 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 5 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/Tokyo-Revengers-Tome-24.jpg" alt="Jujutsu Kaisen - Tome 01">
+                            <div class="product-synopsis">
+                                <p>Découvrez les débuts de Yuji Itadori dans ce premier tome palpitant ! Le destin d'un lycéen bascule lorsqu'il avale un doigt maudit.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Jujutsu Kaisen - Tome 01</h3>
+                            <p class="product-author">Gege Akutami</p>
+                            <div class="product-footer">
+                                <span class="product-price">7.29 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 6 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/My-Hero-Academia-T24.jpg" alt="My Hero Academia - T.24">
+                            <div class="product-synopsis">
+                                <p>Les héros affrontent une menace sans précédent dans ce tome intense ! La bataille pour l'avenir de la société des héros atteint son point culminant.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">My Hero Academia - T.24</h3>
+                            <p class="product-author">Kohei Horikoshi</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.60 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SECTION PREMIUM -->
+                <section class="premium-section">
+                    <div class="premium-badge">PREMIUM</div>
+                    <h2>Rejoignez le Club Kinkai.</h2>
+                    <p>Livraison gratuite sans minimum, -30% sur le neuf, et accès aux ventes privées 24h avant tout le monde.</p>
+                    <button class="premium-btn">Découvrir l'offre</button>
+                </section>
+
+                <!-- Grille de produits suite -->
+                <div class="products-grid">
+                    
+                    <!-- Produit 7 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/Dandadan-T05.jpg" alt="Dandadan - Tome 05">
+                            <div class="product-synopsis">
+                                <p>Entre aliens et fantômes, l'aventure déjantée continue de plus belle ! Momo et Okarun découvrent de nouvelles menaces surnaturelles.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Dandadan - Tome 05</h3>
+                            <p class="product-author">Yukinobu Tatsu</p>
+                            <div class="product-footer">
+                                <span class="product-price">7.29 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 8 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/Tokyo-Revengers-Tome-24.jpg" alt="Jujutsu Kaisen - Tome 01">
+                            <div class="product-synopsis">
+                                <p>Découvrez les débuts de Yuji Itadori dans ce premier tome palpitant ! Le destin d'un lycéen bascule lorsqu'il avale un doigt maudit.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Jujutsu Kaisen - Tome 01</h3>
+                            <p class="product-author">Gege Akutami</p>
+                            <div class="product-footer">
+                                <span class="product-price">7.29 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 9 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/asset/image/My-Hero-Academia-T24.jpg" alt="My Hero Academia - T.24">
+                            <div class="product-synopsis">
+                                <p>Les héros affrontent une menace sans précédent dans ce tome intense ! La bataille pour l'avenir de la société des héros atteint son point culminant.</p>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">My Hero Academia - T.24</h3>
+                            <p class="product-author">Kohei Horikoshi</p>
+                            <div class="product-footer">
+                                <span class="product-price">6.60 €</span>
+                                <button class="add-to-cart">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <button class="pagination-btn">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <span class="pagination-dots">...</span>
+                    <button class="pagination-btn">12</button>
+                    <button class="pagination-btn">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="/page_accueil.html">Accueil</a></li>
+                    <li><a href="/page_catalogue.html">Catalogue</a></li>
+                    <li><a href="/page_promotion.html">Promotions</a></li>
+                    <li><a href="/page_coffret.html">Coffrets</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="/pageLogIn.html">Connexion</a></li>
+                    <li><a href="/pageSignUp.html">Inscription</a></li>
+                    <li><a href="#">Mon panier</a></li>
+                    <li><a href="#">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="/page_faq.html">FAQ</a></li>
+                    <li><a href="/page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="/page_cgv.html">CGV</a></li>
+                    <li><a href="/page_cgu.html">CGU</a></li>
+                    <li><a href="#">Politique de retour</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p class="contact-info">support@kinka.fr</p>
+                <div class="social-icons">
+                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

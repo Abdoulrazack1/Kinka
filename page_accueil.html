@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KINKA.FR - Votre boutique de référence pour l'achat de mangas</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="/asset/css/page_accueil.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur...">
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html">Promotions</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                </button>
+                <a href="/page_profil.html"><button class="icon-btn">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                </a>
+                <a href="/pageLogIn.html"><button class="connect-btn">Se connecter</button></a>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        
+        <!-- HERO BANNER AVEC CARROUSEL - CORRIGÉ -->
+        <section class="hero-banner">
+            <!-- Slide 1 - Chainsaw Man -->
+            <div class="hero-slide slide-1 active">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">TENDANCE ACTUELLE</span>
+                    <h1>Chainsaw Man</h1>
+                    <p>Découvrez les derniers tomes de la série phénomène de Tatsuki Fujimoto.<br>Disponible dès maintenant en édition collector.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 13
+                        </button>
+                        <button class="btn-secondary">Voir la collection</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2 - Jujutsu Kaisen -->
+            <div class="hero-slide slide-2">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">PHÉNOMÈNE MONDIAL</span>
+                    <h1>Jujutsu Kaisen</h1>
+                    <p>Plongez dans l'univers des exorcistes et des malédictions.<br>L'intégrale de la saison 2 disponible en pré-commande.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 20
+                        </button>
+                        <button class="btn-secondary">Voir la collection</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3 - My Hero Academia -->
+            <div class="hero-slide slide-3">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">SÉRIE CULTE</span>
+                    <h1>My Hero Academia</h1>
+                    <p>Rejoignez les élèves de U.A. dans leur quête pour devenir les plus grands héros.<br>Édition spéciale 10ème anniversaire.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 37
+                        </button>
+                        <button class="btn-secondary">Voir la collection</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAISONS D'ÉDITION -->
+        <section class="section-maisons-edition">
+            <div class="section-header">
+                <h2 class="section-title">Maisons d'édition</h2>
+                <a href="/page_maison_edition.html" class="view-all">Voir tout</a>
+            </div>
+        
+            <div class="maisons-grid">
+                <!-- Maison 1 -->
+                <a href="/page_maisons_edition.html" class="maison-card">
+                    <img src="/asset/image/logo-glenat.png" alt="Logo Glenat" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Glenat</h3>
+                        <p class="maison-series">Dragon Ball, One Piece, D.Gray-Man</p>
+                    </div>
+                </a>
+
+                <!-- Maison 2 -->
+                <a href="/page_maisons_edition.html" class="maison-card">
+                    <img src="/asset/image/logo-delcourt-tonkam.jpg" alt="Logo Delcourt-Tonkam" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Delcourt-Tonkam</h3>
+                        <p class="maison-series">Vagabond, Jojo's Bizarre Aventure</p>
+                    </div>
+                </a>
+
+                <!-- Maison 3 -->
+                <a href="/page_maisons_edition.html" class="maison-card">
+                    <img src="/asset/image/logo_kurokawa.jpg" alt="Logo Kurokawa" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Kurokawa</h3>
+                        <p class="maison-series">Ajin, Ascend Man, Milk Puzzle</p>
+                    </div>
+                </a>
+
+                <!-- Maison 4 -->
+                <a href="/page_maison_détail.html" class="maison-card">
+                    <img src="/asset/image/logo_kioon.jpg" alt="Logo Ki-oon" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Ki-oon</h3>
+                        <p class="maison-series">My Hero Academia, Jujutsu Kaisen (FR)</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- DERNIÈRES NOUVEAUTÉS -->
+        <section class="section-nouveautes">
+            <div class="section-header">
+                <h2 class="section-title">Dernières Nouveautés</h2>
+                <a href="#" class="view-all">Voir tout</a>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Produit 1 -->
+                <div class="product-card">
+                    <a href="/page_produit.html">
+                    <div class="product-image">
+                        <span class="product-badge">NOUVEAU</span>
+                        <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
+                        <div class="product-synopsis">
+                            <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">One Piece - Tome 105</h3>
+                        <p class="product-author">Eiichiro Oda</p>
+                        <div class="product-footer">
+                            <span class="product-price">6.90 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+                <!-- Produit 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/asset/image/jjk tome 20.jpg" alt="Jujutsu Kaisen - T.20">
+                        <div class="product-synopsis">
+                            <p>La bataille contre Sukuna atteint son paroxysme dans ce tome explosif !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Jujutsu Kaisen - T.20</h3>
+                        <p class="product-author">Gege Akutami</p>
+                        <div class="product-footer">
+                            <span class="product-price">6.90 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge bestseller">#10</span>
+                        <img src="/asset/image/Spyxfamily_tome10.jpg" alt="Spy x Family - Tome 10">
+                    <div class="product-synopsis">
+                            <p>De nouvelles missions hilarantes attendent la famille Forger !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Spy x Family - Tome 10</h3>
+                        <p class="product-author">Tatsuya Endo</p>
+                        <div class="product-footer">
+                            <span class="product-price">7.20 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/asset/image/Blue-Lock-14.jpg" alt="Blue Lock - Tome 14">
+                        <div class="product-synopsis">
+                            <p>L'intensité monte d'un cran dans ce match décisif pour devenir le meilleur attaquant !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Blue Lock - Tome 14</h3>
+                        <p class="product-author">Muneyuki Kaneshiro</p>
+                        <div class="product-footer">
+                            <span class="product-price">7.20 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/asset/image/Dandadan-T05.jpg" alt="Dandadan - Tome 05">
+                        <div class="product-synopsis">
+                            <p>Entre aliens et fantômes, l'aventure déjantée continue de plus belle !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Dandadan - Tome 05</h3>
+                        <p class="product-author">Yukinobu Tatsu</p>
+                        <div class="product-footer">
+                            <span class="product-price">7.29 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTIONS PROMOTIONNELLES -->
+        <section class="promo-sections">
+            <div class="promo-card promo-dark">
+                <div class="promo-content">
+                    <h3>Coffrets Intégrale</h3>
+                    <p>Offrez-vous l'intégrale de vos séries préférées.</p>
+                    <a href="/page_coffret.html">
+                    <button class="btn-promo">Voir les coffrets</button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="promo-card promo-purple">
+                <div class="promo-content">
+                    <h3>Abonnement Premium</h3>
+                    <p>Livraison gratuite et -5% sur tout le site.</p>
+                    <a href="/page_premium.html">
+                    <button class="btn-promo-alt">S'abonner</button>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATÉGORIES DE MANGAS -->
+        <section class="section-categories">
+            <div class="section-header">
+                <h2 class="section-title">Catégories de mangas</h2>
+            </div>
+            <p class="section-subtitle">Explorez les univers qui te correspondent</p>
+            
+            <div class="categories-grid">
+                <!-- Catégorie 1 -->
+                <div class="category-card">
+                    <a href="/page_categorie.html">
+                        <img src="/asset/image/catégorie_shonen.webp" alt="Shōnen">
+                        <div class="category-overlay">
+                            <span class="category-badge">SHŌNEN</span>
+                            <p class="category-description">Aventure, action, combat et amitié pour tous les âges.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Catégorie 2 -->
+                <div class="category-card">
+                    <img src="/asset/image/catégorie_seinen.jpg" alt="Seinen">
+                    <div class="category-overlay">
+                        <span class="category-badge">SEINEN</span>
+                        <p class="category-description">Histoires matures, psychologiques et réalistes.</p>
+                    </div>
+                </div>
+
+                <!-- Catégorie 3 -->
+                <div class="category-card">
+                    <img src="/asset/image/catégorie_shojo.jpg" alt="Shōjo">
+                    <div class="category-overlay">
+                        <span class="category-badge">SHŌJO</span>
+                        <p class="category-description">Romance, émotions et tranches de vie touchantes.</p>
+                    </div>
+                </div>
+
+                <!-- Catégorie 4 -->
+                <div class="category-card">
+                    <img src="/asset/image/categorie_josei.jpg" alt="Fantasy">
+                    <div class="category-overlay">
+                        <span class="category-badge">JOSEI</span>
+                        <p class="category-description">Histoire mature, émotion, psychologique et tranches de vie touchantes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEILLEURES VENTES -->
+        <section class="section-meilleures-ventes">
+            <div class="section-header">
+                <h2 class="section-title">Meilleures Ventes</h2>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Produit 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge bestseller">#1</span>
+                        <img src="/asset/image/Berserk-Tome-41.jpg" alt="Berserk - Tome 41">
+                        <div class="product-synopsis">
+                            <p>Guts poursuit sa quête de vengeance dans ce tome sombre et captivant.</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Berserk - Tome 41</h3>
+                        <p class="product-author">Kentaro Miura</p>
+                        <div class="product-footer">
+                            <span class="product-price">9.15 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge bestseller">#2</span>
+                        <img src="/asset/image/Demon-Slayer-T23.jpg" alt="Demon Slayer - T.23">
+                        <div class="product-synopsis">
+                            <p>Le combat final contre Muzan arrive à son apogée !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Demon Slayer - T.23</h3>
+                        <p class="product-author">Koyoharu Gotouge</p>
+                        <div class="product-footer">
+                            <span class="product-price">7.29 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge bestseller">#3</span>
+                        <img src="/asset/image/Tokyo-Revengers-Tome-24.jpg" alt="Tokyo Revengers - T.24">
+                        <div class="product-synopsis">
+                            <p>Takemichi doit sauver ses amis dans ce tome bouleversant !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Tokyo Revengers - T.24</h3>
+                        <p class="product-author">Ken Wakui</p>
+                        <div class="product-footer">
+                            <span class="product-price">6.90 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge bestseller">#4</span>
+                        <img src="/asset/image/My-Hero-Academia-T24.jpg" alt="My Hero Academia - T.24">
+                        <div class="product-synopsis">
+                            <p>Les héros affrontent une menace sans précédent !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">My Hero Academia - T.24</h3>
+                        <p class="product-author">Kohei Horikoshi</p>
+                        <div class="product-footer">
+                            <span class="product-price">6.60 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produit 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="product-badge bestseller">#5</span>
+                        <img src="/asset/image/Kaiju-N-8-T07.jpg" alt="Kaiju No.8 - Tome 07">
+                        <div class="product-synopsis">
+                            <p>Kafka révèle ses pouvoirs pour protéger l'humanité !</p>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Kaiju No.8 - Tome 07</h3>
+                        <p class="product-author">Naoya Matsumoto</p>
+                        <div class="product-footer">
+                            <span class="product-price">7.29 €</span>
+                            <button class="add-to-cart">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="/page_accueil.html">Accueil</a></li>
+                    <li><a href="/page_catalogue.html">Catalogue</a></li>
+                    <li><a href="/page_promotion.html">Promotions</a></li>
+                    <li><a href="/page_coffret.html">Coffrets</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="/pageLogIn.html">Connexion</a></li>
+                    <li><a href="/pageSignUp.html">Inscription</a></li>
+                    <li><a href="#">Mon panier</a></li>
+                    <li><a href="#">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="/page_faq.html">FAQ</a></li>
+                    <li><a href="/page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="/page_cgv.html">CGV</a></li>
+                    <li><a href="/page_cgu.html">CGU</a></li>
+                    <li><a href="#">Politique de retour</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p class="contact-info">support@kinka.fr</p>
+                <div class="social-icons">
+                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt=""></a>
+                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt=""></a>
+                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>
