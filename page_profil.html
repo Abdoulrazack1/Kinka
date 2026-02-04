@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - KINKA.FR</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="/asset/css/page_profil.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur...">
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html">Promotions</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                </button>
+                <a href="/page_profil.html"><button class="icon-btn active">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                </a>
+                <a href="/pageLogIn.html"><button class="connect-btn">Se connecter</button></a>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="profile-layout">
+            <!-- SIDEBAR -->
+            <aside class="profile-sidebar">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h2 class="profile-name">Jean Dupont</h2>
+                    <p class="profile-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cda7a8aca3e3a9b8bda2a3b98da8b5aca0bda1a8e3aea2a0">[email&#160;protected]</a></p>
+                    <button class="btn-modifier-profil">Modifier Profil</button>
+                </div>
+
+                <nav class="profile-nav">
+                    <a href="#" class="profile-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z" fill="currentColor"/>
+                        </svg>
+                        Tableau de bord
+                    </a>
+                    <a href="#" class="profile-nav-item active">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+                        </svg>
+                        Informations personnelles
+                    </a>
+                    <a href="#" class="profile-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 6H16C16 3.79 14.21 2 12 2C9.79 2 8 3.79 8 6H6C4.9 6 4 6.9 4 8V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8C20 6.9 19.1 6 18 6ZM12 4C13.1 4 14 4.9 14 6H10C10 4.9 10.9 4 12 4ZM18 20H6V8H18V20Z" fill="currentColor"/>
+                        </svg>
+                        Mes commandes
+                    </a>
+                    <a href="#" class="profile-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="currentColor"/>
+                        </svg>
+                        Adresses de livraison
+                    </a>
+                    <a href="#" class="profile-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 4H4C2.89 4 2.01 4.89 2.01 6L2 18C2 19.11 2.89 20 4 20H20C21.11 20 22 19.11 22 18V6C22 4.89 21.11 4 20 4ZM20 18H4V12H20V18ZM20 8H4V6H20V8Z" fill="currentColor"/>
+                        </svg>
+                        Moyens de paiement
+                    </a>
+                    <a href="#" class="profile-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.14 12.94C19.18 12.64 19.2 12.33 19.2 12C19.2 11.68 19.18 11.36 19.13 11.06L21.16 9.48C21.34 9.34 21.39 9.07 21.28 8.87L19.36 5.55C19.24 5.33 18.99 5.26 18.77 5.33L16.38 6.29C15.88 5.91 15.35 5.59 14.76 5.35L14.4 2.81C14.36 2.57 14.16 2.4 13.92 2.4H10.08C9.84 2.4 9.65 2.57 9.61 2.81L9.25 5.35C8.66 5.59 8.12 5.92 7.63 6.29L5.24 5.33C5.02 5.25 4.77 5.33 4.65 5.55L2.74 8.87C2.62 9.08 2.66 9.34 2.86 9.48L4.89 11.06C4.84 11.36 4.8 11.69 4.8 12C4.8 12.31 4.82 12.64 4.87 12.94L2.84 14.52C2.66 14.66 2.61 14.93 2.72 15.13L4.64 18.45C4.76 18.67 5.01 18.74 5.23 18.67L7.62 17.71C8.12 18.09 8.65 18.41 9.24 18.65L9.6 21.19C9.65 21.43 9.84 21.6 10.08 21.6H13.92C14.16 21.6 14.36 21.43 14.39 21.19L14.75 18.65C15.34 18.41 15.88 18.09 16.37 17.71L18.76 18.67C18.98 18.75 19.23 18.67 19.35 18.45L21.27 15.13C21.39 14.91 21.34 14.66 21.15 14.52L19.14 12.94ZM12 15.6C10.02 15.6 8.4 13.98 8.4 12C8.4 10.02 10.02 8.4 12 8.4C13.98 8.4 15.6 10.02 15.6 12C15.6 13.98 13.98 15.6 12 15.6Z" fill="currentColor"/>
+                        </svg>
+                        Préférences
+                    </a>
+                    <a href="#" class="profile-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5C22 12.27 18.6 15.36 13.45 20.03L12 21.35Z" fill="currentColor"/>
+                        </svg>
+                        Wishlist
+                    </a>
+                    <a href="#" class="profile-nav-item disconnect">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 7L15.59 8.41L18.17 11H8V13H18.17L15.59 15.59L17 17L22 12L17 7ZM4 5H12V3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H12V19H4V5Z" fill="currentColor"/>
+                        </svg>
+                        Déconnexion
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- MAIN PROFILE CONTENT -->
+            <div class="profile-content">
+                <!-- Greeting -->
+                <div class="greeting-section">
+                    <h1>Bonjour, Jean !</h1>
+                    <p>Gérez votre profil, vos commandes, vos adresses et vos avantages Premium directement depuis cet espace.</p>
+                </div>
+
+                <!-- Account Overview -->
+                <section class="account-overview">
+                    <div class="section-header-inline">
+                        <h2>Résumé de votre compte</h2>
+                        <h3>Vue d'ensemble</h3>
+                    </div>
+                    <button class="btn-premium">Voir mes avantages Premium</button>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V4C20 2.9 19.1 2 18 2ZM6 4H11V12L8.5 10.5L6 12V4Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Commandes en cours</p>
+                                <p class="stat-value">2</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 8H17V4H3V20H20V8ZM15 8H5V6H15V8Z" fill="currentColor"/>
+                                    <path d="M20 8L17 4H20V8Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Commandes livrées</p>
+                                <p class="stat-value">14</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4C2.89 4 2.01 4.89 2.01 6L2 18C2 19.11 2.89 20 4 20H20C21.11 20 22 19.11 22 18V6C22 4.89 21.11 4 20 4ZM20 18H4V12H20V18ZM20 8H4V6H20V8Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Points cumulés</p>
+                                <p class="stat-value">2 450</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5C22 12.27 18.6 15.36 13.45 20.03L12 21.35Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Articles en wishlist</p>
+                                <p class="stat-value">18</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Personal Information -->
+                <section class="info-section">
+                    <div class="section-header-with-action">
+                        <div>
+                            <p class="section-subtitle">Profil</p>
+                            <h2>Informations personnelles</h2>
+                        </div>
+                        <button class="btn-modifier">Modifier</button>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Prénom</label>
+                            <p>Jean</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Nom</label>
+                            <p>Dupont</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Adresse e-mail</label>
+                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2a8a7a3aceca6b7b2adacb682a7baa3afb2aea7eca1adaf">[email&#160;protected]</a></p>
+                        </div>
+                        <div class="info-item">
+                            <label>Téléphone</label>
+                            <p>06 12 34 56 78</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Langue d'affichage</label>
+                            <p>Français</p>
+                        </div>
+                        <div class="info-item">
+                            <label>Fuseau horaire</label>
+                            <p>Europe/Paris</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Addresses -->
+                <section class="info-section">
+                    <div class="section-header-with-action">
+                        <div>
+                            <p class="section-subtitle">Livraison</p>
+                            <h2>Adresses enregistrées</h2>
+                        </div>
+                        <button class="btn-add">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
+                            </svg>
+                            Ajouter une adresse
+                        </button>
+                    </div>
+
+                    <div class="addresses-grid">
+                        <div class="address-card">
+                            <div class="address-header">
+                                <h3>Adresse principale</h3>
+                            </div>
+                            <div class="address-content">
+                                <p class="address-name">Jean Dupont</p>
+                                <p class="address-street">12 rue des Mangas</p>
+                                <p class="address-city">75011 Paris</p>
+                                <p class="address-country">France</p>
+                            </div>
+                        </div>
+
+                        <div class="address-card">
+                            <div class="address-header">
+                                <h3>Point relais favori</h3>
+                            </div>
+                            <div class="address-content">
+                                <p class="address-name">Relais Pickup - Librairie Sakura</p>
+                                <p class="address-street">5 avenue du Japon</p>
+                                <p class="address-city">93100 Montreuil</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Payment Methods -->
+                <section class="info-section">
+                    <div class="section-header-with-action">
+                        <div>
+                            <p class="section-subtitle">Paiement</p>
+                            <h2>Moyens de paiement</h2>
+                        </div>
+                        <button class="btn-add">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
+                            </svg>
+                            Ajouter une carte
+                        </button>
+                    </div>
+
+                    <div class="payment-grid">
+                        <div class="payment-card">
+                            <div class="payment-header">
+                                <p class="payment-label">Carte principale</p>
+                                <span class="payment-badge">Par défaut</span>
+                            </div>
+                            <div class="payment-content">
+                                <p class="payment-type">Visa •••• 8243</p>
+                                <p class="payment-expiry">08/27</p>
+                            </div>
+                        </div>
+
+                        <div class="payment-card">
+                            <div class="payment-header">
+                                <p class="payment-label">PayPal</p>
+                            </div>
+                            <div class="payment-content">
+                                <p class="payment-type">Compte connecté</p>
+                                <button class="btn-manage">Gérer</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Premium Subscription -->
+                <section class="info-section premium-section">
+                    <div class="section-header-with-action">
+                        <div>
+                            <p class="section-subtitle">Abonnement</p>
+                            <h2>KINKA! Premium</h2>
+                        </div>
+                        <span class="status-badge active">Actif - Mensuel</span>
+                    </div>
+
+                    <div class="premium-info">
+                        <p>Livraison offerte dès 2 tomes · 10% sur les nouveautés et accès anticipé aux coffrets</p>
+                        <p class="premium-date">Prochaine échéance : 12 février 2025</p>
+                    </div>
+                </section>
+
+                <!-- Preferences -->
+                <section class="info-section">
+                    <div class="section-header-with-action">
+                        <div>
+                            <p class="section-subtitle">Préférences</p>
+                            <h2>Centres d'intérêt & notifications</h2>
+                        </div>
+                        <button class="btn-modifier">Modifier les préférences</button>
+                    </div>
+
+                    <div class="preferences-grid">
+                        <div class="preference-item">
+                            <label>Genres favoris</label>
+                            <p>Shonen, Seinen, Isekai</p>
+                        </div>
+                        <div class="preference-item">
+                            <label>Auteurs suivis</label>
+                            <p>Eiichiro Oda, Naoki Urasawa, Akira Toriyama</p>
+                        </div>
+                        <div class="preference-item">
+                            <label>Notifications e-mail</label>
+                            <p>Nouveautés séries suivies, promotions ciblées</p>
+                        </div>
+                        <div class="preference-item">
+                            <label>Newsletter</label>
+                            <p>Hebdomadaire manga + Alertes coffrets</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Orders -->
+                <section class="info-section">
+                    <div class="section-header-with-action">
+                        <h2>Dernières commandes</h2>
+                        <a href="#" class="view-all-link">Voir toutes les commandes</a>
+                    </div>
+
+                    <div class="orders-list">
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div>
+                                    <p class="order-number">Commande #KIN-2025-031</p>
+                                    <p class="order-date">14 janvier 2025 • 3 articles</p>
+                                </div>
+                                <span class="order-status pending">28,70 €</span>
+                            </div>
+                        </div>
+
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div>
+                                    <p class="order-number">Commande #KIN-2024-988</p>
+                                    <p class="order-date">28 décembre 2024 • 1 article</p>
+                                </div>
+                                <span class="order-status delivered">7,20 €</span>
+                            </div>
+                        </div>
+
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div>
+                                    <p class="order-number">Commande #KIN-2024-955</p>
+                                    <p class="order-date">2 décembre 2024 • 5 articles</p>
+                                </div>
+                                <span class="order-status delivered">54,90 €</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Wishlist -->
+                <section class="info-section">
+                    <div class="section-header-with-action">
+                        <h2>Ma wishlist</h2>
+                        <a href="#" class="view-all-link">Afficher la wishlist complète</a>
+                    </div>
+
+                    <div class="wishlist-grid">
+                        <div class="wishlist-card">
+                            <div class="wishlist-info">
+                                <p class="wishlist-title">One Piece - Tome 104</p>
+                                <p class="wishlist-edition">Édition française • Shonen</p>
+                            </div>
+                            <p class="wishlist-price">6,90 €</p>
+                        </div>
+
+                        <div class="wishlist-card">
+                            <div class="wishlist-info">
+                                <p class="wishlist-title">Chainsaw Man - Tome 13</p>
+                                <p class="wishlist-edition">Édition standard • Seinen</p>
+                            </div>
+                            <p class="wishlist-price">7,20 €</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="/page_accueil.html">Accueil</a></li>
+                    <li><a href="/page_catalogue.html">Catalogue</a></li>
+                    <li><a href="/page_promotion.html">Promotions</a></li>
+                    <li><a href="/page_coffret.html">Coffrets</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="/pageLogIn.html">Connexion</a></li>
+                    <li><a href="/pageSignUp.html">Inscription</a></li>
+                    <li><a href="#">Mon panier</a></li>
+                    <li><a href="#">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="/page_faq.html">FAQ</a></li>
+                    <li><a href="/page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="/page_cgv.html">CGV</a></li>
+                    <li><a href="/page_cgu.html">CGU</a></li>
+                    <li><a href="#">Politique de retour</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p><a href="mailto:support@kinka.fr">support@kinka.fr</a></p>
+                <div class="social-icons">
+                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>
