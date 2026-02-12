@@ -1,138 +1,370 @@
-// ====================================================
-// Fichier : panier.js
-// Rôle    : Gestion complète du panier d'achat KINKA.FR
-//           (ajout, suppression, mise à jour, compteur)
-// ====================================================
+// ============================================
+// panier.js - Système de panier complet pour KINKA.FR
+// Gestion des produits, localStorage, et redirection
+// ============================================
 
-// ----- CONSTANTES -----
-const CART_STORAGE_KEY = 'kinkaPanier';
+// ============================================
+// 1. STRUCTURE DU PANIER
+// ============================================
 
-// ----- INITIALISATION -----
+// Le panier est un tableau d'objets
+// Chaque objet contient : id, titre, auteur, prix, quantité, image
+
+let panier = [];
+
+// ============================================
+// 2. CHARGER LE PANIER AU DÉMARRAGE
+// ============================================
+
 document.addEventListener('DOMContentLoaded', function() {
-    'use strict';
-
-    // Initialiser le panier s'il n'existe pas
-    if (!localStorage.getItem(CART_STORAGE_KEY)) {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([]));
-    }
-
-    // Mettre à jour le compteur du panier au chargement
-    updateCartCount();
-
-    // Exposer la fonction addToCart globalement
-    window.addToCart = addToCart;
+    
+    // Récupérer le panier depuis localStorage
+    chargerPanier();
+    
+    // Mettre à jour l'affichage du compteur
+    mettreAJourCompteur();
+    
+    // Gérer les boutons "Ajouter au panier"
+    gererBoutonsAjout();
+    
+    // Gérer le clic sur l'icône panier
+    gererClicPanier();
+    
+    console.log('Système de panier initialisé - ' + panier.length + ' produits');
 });
 
-// ----- LECTURE DU PANIER -----
-function getCart() {
-    try {
-        return JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
-    } catch (e) {
-        console.error('Erreur de lecture du panier', e);
-        return [];
+// ============================================
+// 3. CHARGER LE PANIER DEPUIS LOCALSTORAGE
+// ============================================
+
+function chargerPanier() {
+    const panierJSON = localStorage.getItem('kinka_panier');
+    
+    if (panierJSON) {
+        try {
+            panier = JSON.parse(panierJSON);
+        } catch (e) {
+            console.error('Erreur lors du chargement du panier', e);
+            panier = [];
+        }
     }
 }
 
-// ----- SAUVEGARDE DU PANIER -----
-function saveCart(cart) {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-    updateCartCount();
+// ============================================
+// 4. SAUVEGARDER LE PANIER DANS LOCALSTORAGE
+// ============================================
+
+function sauvegarderPanier() {
+    localStorage.setItem('kinka_panier', JSON.stringify(panier));
 }
 
-// ----- AJOUTER UN PRODUIT -----
-function addToCart(product) {
-    if (!product || !product.id) {
-        console.error('Produit invalide', product);
-        return;
-    }
+// ============================================
+// 5. AJOUTER UN PRODUIT AU PANIER
+// ============================================
 
-    const cart = getCart();
-    const existingItem = cart.find(item => item.id === product.id);
-
-    if (existingItem) {
-        existingItem.quantite = (existingItem.quantite || 1) + (product.quantite || 1);
+function ajouterAuPanier(produit) {
+    // Vérifier si le produit existe déjà dans le panier
+    const index = panier.findIndex(function(item) {
+        return item.id === produit.id;
+    });
+    
+    if (index !== -1) {
+        // Le produit existe déjà, on augmente la quantité
+        panier[index].quantite = panier[index].quantite + 1;
     } else {
-        cart.push({
-            id: product.id,
-            titre: product.titre || 'Sans titre',
-            prix: product.prix || 0,
-            editeur: product.editeur || '',
-            image: product.image || '/asset/image/placeholder.jpg',
-            quantite: product.quantite || 1
-        });
+        // Nouveau produit, on l'ajoute avec quantité = 1
+        produit.quantite = 1;
+        panier.push(produit);
     }
-
-    saveCart(cart);
-    console.log(`✅ "${product.titre}" ajouté au panier`);
+    
+    // Sauvegarder dans localStorage
+    sauvegarderPanier();
+    
+    // Mettre à jour l'affichage
+    mettreAJourCompteur();
+    
+    // Afficher une notification
+    afficherNotification('Produit ajouté au panier');
+    
+    console.log('Produit ajouté:', produit.titre);
 }
 
-// ----- SUPPRIMER UN PRODUIT -----
-function removeFromCart(productId) {
-    const cart = getCart();
-    const newCart = cart.filter(item => item.id !== productId);
-    saveCart(newCart);
+// ============================================
+// 6. RETIRER UN PRODUIT DU PANIER
+// ============================================
+
+function retirerDuPanier(produitId) {
+    panier = panier.filter(function(item) {
+        return item.id !== produitId;
+    });
+    
+    sauvegarderPanier();
+    mettreAJourCompteur();
 }
 
-// ----- MODIFIER LA QUANTITÉ -----
-function updateQuantity(productId, newQuantity) {
-    if (newQuantity <= 0) {
-        removeFromCart(productId);
-        return;
-    }
+// ============================================
+// 7. VIDER COMPLÈTEMENT LE PANIER
+// ============================================
 
-    const cart = getCart();
-    const item = cart.find(item => item.id === productId);
-    if (item) {
-        item.quantite = newQuantity;
-        saveCart(cart);
-    }
+function viderPanier() {
+    panier = [];
+    sauvegarderPanier();
+    mettreAJourCompteur();
 }
 
-// ----- VIDER LE PANIER -----
-function clearCart() {
-    saveCart([]);
+// ============================================
+// 8. CALCULER LE TOTAL DU PANIER
+// ============================================
+
+function calculerTotal() {
+    let total = 0;
+    
+    panier.forEach(function(item) {
+        // Convertir le prix en nombre (enlever le "€" et remplacer "," par ".")
+        const prixNumerique = parseFloat(item.prix.replace('€', '').replace(',', '.').trim());
+        total = total + (prixNumerique * item.quantite);
+    });
+    
+    return total.toFixed(2);
 }
 
-// ----- METTRE À JOUR LE COMPTEUR DU PANIER -----
-function updateCartCount() {
-    const cart = getCart();
-    const totalItems = cart.reduce((sum, item) => sum + (item.quantite || 1), 0);
+// ============================================
+// 9. COMPTER LE NOMBRE TOTAL D'ARTICLES
+// ============================================
 
-    // Sélecteurs multiples pour couvrir toutes les pages
-    const cartIcons = document.querySelectorAll(
-        '.nav-actions .icon-btn .material-symbols-outlined, ' +
-        '.nav-actions a .icon-btn .material-symbols-outlined, ' +
-        '#cart-button .material-symbols-outlined, ' +
-        '.cart-btn .material-symbols-outlined'
-    );
+function compterArticles() {
+    let total = 0;
+    
+    panier.forEach(function(item) {
+        total = total + item.quantite;
+    });
+    
+    return total;
+}
 
-    cartIcons.forEach(icon => {
-        if (icon.textContent.trim() === 'shopping_cart') {
-            // Créer ou mettre à jour le badge de compteur
-            let badge = icon.parentElement.querySelector('.cart-badge');
+// ============================================
+// 10. METTRE À JOUR LE COMPTEUR VISUEL
+// ============================================
+
+function mettreAJourCompteur() {
+    const nombreArticles = compterArticles();
+    
+    // Trouver l'icône du panier (le dernier icon-btn)
+    const boutonsIcones = document.querySelectorAll('.icon-btn');
+    const iconePanier = boutonsIcones[boutonsIcones.length - 1];
+    
+    if (iconePanier) {
+        // Chercher ou créer le badge
+        let badge = iconePanier.querySelector('.panier-count');
+        
+        if (nombreArticles > 0) {
             if (!badge) {
+                // Créer le badge
                 badge = document.createElement('span');
-                badge.className = 'cart-badge';
-                icon.parentElement.style.position = 'relative';
-                icon.parentElement.appendChild(badge);
+                badge.className = 'panier-count';
+                iconePanier.style.position = 'relative';
+                iconePanier.appendChild(badge);
             }
-
-            if (totalItems > 0) {
-                badge.textContent = totalItems;
-                badge.style.display = 'flex';
-            } else {
+            badge.textContent = nombreArticles;
+            badge.style.display = 'flex';
+        } else {
+            // Aucun article, masquer le badge
+            if (badge) {
                 badge.style.display = 'none';
             }
         }
-    });
-
-    // Alternative : si vous préférez ne pas créer de badge dynamique,
-    // vous pouvez simplement logger le nombre ou l'afficher ailleurs.
-    // console.log(`🛒 Panier : ${totalItems} article(s)`);
+    }
 }
 
-// ----- EXPOSITION PUBLIQUE (optionnel) -----
-window.getCart = getCart;
-window.removeFromCart = removeFromCart;
-window.updateQuantity = updateQuantity;
-window.clearCart = clearCart;
+// ============================================
+// 11. GÉRER LES BOUTONS "AJOUTER AU PANIER"
+// ============================================
+
+function gererBoutonsAjout() {
+    const boutonsAjout = document.querySelectorAll('.add-to-cart');
+    
+    boutonsAjout.forEach(function(bouton) {
+        bouton.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Trouver la carte produit parente
+            const productCard = bouton.closest('.product-card');
+            
+            if (productCard) {
+                // Extraire les informations du produit
+                const produit = extraireProduit(productCard);
+                
+                // Ajouter au panier
+                ajouterAuPanier(produit);
+                
+                // Animation du bouton
+                animerBoutonAjout(bouton);
+            }
+        });
+    });
+}
+
+// ============================================
+// 12. EXTRAIRE LES INFOS D'UN PRODUIT
+// ============================================
+
+function extraireProduit(productCard) {
+    // Générer un ID unique basé sur le titre
+    const titre = productCard.querySelector('.product-title').textContent.trim();
+    const id = titre.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    
+    // Extraire les autres informations
+    const auteur = productCard.querySelector('.product-author') 
+        ? productCard.querySelector('.product-author').textContent.trim() 
+        : '';
+    
+    const prix = productCard.querySelector('.product-price').textContent.trim();
+    
+    // Extraire l'image
+    const image = productCard.querySelector('.product-image img') 
+        ? productCard.querySelector('.product-image img').src 
+        : '';
+    
+    return {
+        id: id,
+        titre: titre,
+        auteur: auteur,
+        prix: prix,
+        image: image
+    };
+}
+
+// ============================================
+// 13. ANIMER LE BOUTON APRÈS AJOUT
+// ============================================
+
+function animerBoutonAjout(bouton) {
+    // Changer le texte et ajouter une classe
+    bouton.classList.add('clicked');
+    const texteOriginal = bouton.textContent;
+    bouton.textContent = '✓';
+    
+    // Revenir à l'état normal après 1 seconde
+    setTimeout(function() {
+        bouton.classList.remove('clicked');
+        bouton.textContent = texteOriginal;
+    }, 1000);
+}
+
+// ============================================
+// 14. AFFICHER UNE NOTIFICATION
+// ============================================
+
+function afficherNotification(message) {
+    // Créer l'élément notification
+    const notif = document.createElement('div');
+    notif.className = 'panier-notification';
+    notif.textContent = message;
+    
+    // Ajouter au body
+    document.body.appendChild(notif);
+    
+    // Animation d'entrée
+    setTimeout(function() {
+        notif.classList.add('show');
+    }, 10);
+    
+    // Retirer après 3 secondes
+    setTimeout(function() {
+        notif.classList.remove('show');
+        setTimeout(function() {
+            notif.remove();
+        }, 300);
+    }, 3000);
+}
+
+// ============================================
+// 15. GÉRER LE CLIC SUR L'ICÔNE PANIER
+// ============================================
+
+function gererClicPanier() {
+    // Trouver le dernier icon-btn (icône panier)
+    const boutonsIcones = document.querySelectorAll('.icon-btn');
+    const iconePanier = boutonsIcones[boutonsIcones.length - 1];
+    
+    if (iconePanier) {
+        iconePanier.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            const nombreArticles = compterArticles();
+            
+            if (nombreArticles > 0) {
+                // Rediriger vers la page panier
+                window.location.href = '/page_panier.html';
+            } else {
+                // Afficher un message si le panier est vide
+                afficherNotification('Votre panier est vide');
+            }
+        });
+    }
+}
+
+// ============================================
+// 16. FONCTION POUR OBTENIR LE PANIER (usage externe)
+// ============================================
+
+function obtenirPanier() {
+    return panier;
+}
+
+// ============================================
+// 17. FONCTION POUR MODIFIER LA QUANTITÉ
+// ============================================
+
+function modifierQuantite(produitId, nouvelleQuantite) {
+    const index = panier.findIndex(function(item) {
+        return item.id === produitId;
+    });
+    
+    if (index !== -1) {
+        if (nouvelleQuantite <= 0) {
+            // Retirer du panier
+            retirerDuPanier(produitId);
+        } else {
+            // Modifier la quantité
+            panier[index].quantite = nouvelleQuantite;
+            sauvegarderPanier();
+            mettreAJourCompteur();
+        }
+    }
+}
+
+// ============================================
+// NOTES D'UTILISATION
+// ============================================
+/*
+    Ce fichier gère TOUT le système de panier :
+    
+    1. Sauvegarde dans localStorage (persiste entre les sessions)
+    2. Ajoute/retire des produits
+    3. Gère les quantités
+    4. Calcule le total
+    5. Met à jour le badge du compteur
+    6. Redirige vers la page panier
+    
+    FONCTIONS DISPONIBLES :
+    
+    - ajouterAuPanier(produit)     : Ajoute un produit
+    - retirerDuPanier(id)          : Retire un produit
+    - viderPanier()                : Vide tout le panier
+    - calculerTotal()              : Retourne le total en €
+    - compterArticles()            : Retourne le nombre d'articles
+    - obtenirPanier()              : Retourne le tableau du panier
+    - modifierQuantite(id, qte)    : Change la quantité d'un produit
+    
+    STRUCTURE D'UN PRODUIT :
+    {
+        id: 'one-piece-tome-105',
+        titre: 'One Piece - Tome 105',
+        auteur: 'Eiichiro Oda',
+        prix: '6.90 €',
+        image: '/asset/image/...',
+        quantite: 1
+    }
+*/
