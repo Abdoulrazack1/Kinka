@@ -1,0 +1,515 @@
+/* ============================================
+   panier.css - Styles spécifiques à la page panier
+
+
+/* ===== CONTENEUR PRINCIPAL ===== */
+.panier-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
+}
+
+.panier-titre {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(135deg, #1a1a1a, #E03B8B, #1a1a1a);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 8s ease infinite;
+}
+
+.panier-titre::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #E03B8B;
+    transition: width 0.3s ease;
+}
+
+.panier-titre:hover::after {
+    width: 100%;
+}
+
+/* ===== LISTE DES ARTICLES ===== */
+.panier-liste {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* ===== CARD PRODUIT DANS LE PANIER ===== */
+.panier-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.panier-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    border-color: #E03B8B;
+}
+
+/* Effet de brillance (shimmer) */
+.panier-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(224, 59, 139, 0.05), transparent);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.panier-item:hover::before {
+    left: 100%;
+}
+
+/* Image du produit */
+.panier-item-image {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.panier-item:hover .panier-item-image {
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 0 8px 20px rgba(224, 59, 139, 0.3);
+}
+
+/* Informations produit */
+.panier-item-info {
+    flex: 1;
+    min-width: 0; /* Pour gérer le texte long */
+}
+
+.panier-item-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.panier-item:hover .panier-item-info h3 {
+    color: #E03B8B;
+}
+
+.panier-item-info p {
+    font-size: 0.9rem;
+    color: #6B7280;
+    margin-bottom: 0.5rem;
+}
+
+.panier-item-prix {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #E03B8B;
+    margin-top: 0.25rem;
+}
+
+/* Contrôles (quantité + suppression) */
+.panier-item-controles {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.quantite-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background: white;
+    overflow: hidden;
+}
+
+.quantite-controls button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: white;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantite-controls button:hover {
+    background: #f8f8f8;
+    color: #E03B8B;
+}
+
+.quantite-controls button:active {
+    background: #E03B8B;
+    color: white;
+    transform: scale(0.95);
+}
+
+.quantite-controls span {
+    width: 40px;
+    text-align: center;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* Bouton supprimer */
+.btn-supprimer {
+    background: none;
+    border: 1px solid #e8e8e8;
+    color: #EF4444;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-supprimer:hover {
+    background: #FEF2F2;
+    border-color: #EF4444;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-supprimer:active {
+    transform: translateY(0);
+}
+
+/* ===== RÉSUMÉ DE LA COMMANDE ===== */
+.panier-resume {
+    background: white;
+    border-radius: 16px;
+    padding: 1.8rem;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    max-width: 450px;
+    margin-left: auto;
+    transition: all 0.3s ease;
+}
+
+.panier-resume:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    border-color: #E03B8B;
+}
+
+.panier-resume h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+    position: relative;
+    display: inline-block;
+}
+
+.panier-resume h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: #E03B8B;
+    transition: width 0.3s ease;
+}
+
+.panier-resume:hover h3::after {
+    width: 100%;
+}
+
+.resume-ligne {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #4B5563;
+}
+
+.resume-ligne.total {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    border-top: 1px solid #e8e8e8;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.resume-ligne.total span:last-child {
+    color: #E03B8B;
+}
+
+/* Bouton commander (réutilisation du style .btn-primary) */
+.btn-commander {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.9rem 1.5rem;
+    background: #E03B8B;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-commander .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+.btn-commander:hover {
+    background: #c42e75;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(224, 59, 139, 0.4);
+}
+
+.btn-commander:active {
+    transform: translateY(-1px);
+}
+
+/* Effet de cercle au hover (comme dans page_accueil) */
+.btn-commander::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    pointer-events: none;
+}
+
+.btn-commander:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* ===== PANIER VIDE ===== */
+.panier-vide {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.panier-vide-icon {
+    color: #E03B8B;
+    margin-bottom: 1.5rem;
+    animation: pulse 3s ease infinite;
+}
+
+.panier-vide h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.8rem;
+}
+
+.panier-vide p {
+    color: #6B7280;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.panier-vide .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 2rem;
+    background: #E03B8B;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.panier-vide .btn-primary:hover {
+    background: #c42e75;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(224, 59, 139, 0.4);
+}
+
+/* ===== ANIMATIONS (copiées depuis page_accueil.css) ===== */
+@keyframes gradient {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* ===== NOTIFICATION PANIER (si utilisée) ===== */
+.panier-notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #E03B8B;
+    color: white;
+    padding: 1rem 1.8rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(224, 59, 139, 0.4);
+    font-weight: 500;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.panier-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ===== BADGE DU COMPTEUR (déjà stylé dans page_accueil, mais on renforce) ===== */
+.panier-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #E03B8B;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 2px solid white;
+    animation: pulse 2s ease infinite;
+}
+
+/* ===== MEDIA QUERIES (responsive) ===== */
+
+/* Tablette */
+@media (max-width: 1024px) {
+    .panier-page {
+        padding: 1.5rem;
+    }
+
+    .panier-item {
+        padding: 1.2rem;
+        gap: 1rem;
+    }
+
+    .panier-item-image {
+        width: 80px;
+        height: 112px;
+    }
+
+    .panier-resume {
+        max-width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .panier-page {
+        padding: 1rem;
+    }
+
+    .panier-titre {
+        font-size: 1.5rem;
+    }
+
+    .panier-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.2rem;
+    }
+
+    .panier-item-image {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        object-fit: contain;
+        background: #f5f5f5;
+    }
+
+    .panier-item-info {
+        width: 100%;
+    }
+
+    .panier-item-info h3 {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .panier-item-controles {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+    }
+
+    .quantite-controls {
+        flex: 1;
+        max-width: 140px;
+    }
+
+    .btn-supprimer {
+        flex: 1;
+        max-width: 120px;
+    }
+
+    .panier-resume {
+        padding: 1.5rem;
+    }
+
+    .panier-vide {
+        padding: 2rem 1rem;
+    }
+
+    .panier-vide h2 {
+        font-size: 1.3rem;
+    }
+}
