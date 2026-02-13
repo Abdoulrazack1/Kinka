@@ -1,0 +1,405 @@
+/* ============================================
+   dark-mode.css - Styles pour le mode sombre
+   Compatible avec toutes les pages KINKA.FR
+   ============================================ */
+
+/* ============================================
+   1. BOUTON DARK MODE
+   ============================================ */
+
+.dark-mode-toggle {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle .material-symbols-outlined {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    border-color: #E03B8B;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dark-mode-toggle:hover .material-symbols-outlined {
+    color: #E03B8B;
+}
+
+/* Animation de rotation au clic */
+.dark-mode-toggle:active .material-symbols-outlined {
+    transform: rotate(180deg);
+}
+
+/* ============================================
+   2. VARIABLES CSS POUR DARK MODE
+   ============================================ */
+
+:root {
+    /* Couleurs mode clair (par défaut) */
+    --bg-primary: #fafafa;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6B7280;
+    --text-muted: #9e9e9e;
+    --border-color: #e8e8e8;
+    --border-hover: #E03B8B;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow-hover: rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   3. DARK MODE - VARIABLES
+   ============================================ */
+
+body.dark-mode {
+    /* Couleurs mode sombre */
+    --bg-primary: #0f1419;
+    --bg-secondary: #1a1f2e;
+    --bg-card: #1e2433;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-hover: #E03B8B;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-hover: rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   4. DARK MODE - BACKGROUNDS
+   ============================================ */
+
+body.dark-mode {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+body.dark-mode header {
+    background: var(--bg-secondary);
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .hero-slide,
+body.dark-mode .product-card,
+body.dark-mode .maison-card,
+body.dark-mode .stat-card,
+body.dark-mode .pillier,
+body.dark-mode .arsenal-card,
+body.dark-mode .projet-card,
+body.dark-mode .photo-card,
+body.dark-mode .stats-panel,
+body.dark-mode .apprentissage-card,
+body.dark-mode footer {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+/* ============================================
+   5. DARK MODE - TEXTES
+   ============================================ */
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: var(--text-primary);
+}
+
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode a {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .product-title,
+body.dark-mode .section-title,
+body.dark-mode .maison-name {
+    color: var(--text-primary);
+}
+
+body.dark-mode .product-author,
+body.dark-mode .maison-series,
+body.dark-mode .product-synopsis p {
+    color: var(--text-muted);
+}
+
+/* ============================================
+   6. DARK MODE - INPUTS ET BOUTONS
+   ============================================ */
+
+body.dark-mode .search-bar input {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .search-bar input::placeholder {
+    color: var(--text-muted);
+}
+
+body.dark-mode .icon-btn,
+body.dark-mode .dark-mode-toggle {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .icon-btn .material-symbols-outlined,
+body.dark-mode .dark-mode-toggle .material-symbols-outlined {
+    color: var(--text-primary);
+}
+
+/* Le bouton "Se connecter" reste rose */
+body.dark-mode .connect-btn {
+    background: #E03B8B;
+    color: white;
+}
+
+/* ============================================
+   7. DARK MODE - CARTES PRODUITS
+   ============================================ */
+
+body.dark-mode .product-card {
+    background: var(--bg-card);
+}
+
+body.dark-mode .product-card:hover {
+    box-shadow: 0 15px 40px var(--shadow-hover);
+}
+
+body.dark-mode .product-image {
+    background: var(--bg-secondary);
+}
+
+/* Les badges restent colorés */
+body.dark-mode .product-badge {
+    background: #E03B8B;
+    color: white;
+}
+
+body.dark-mode .product-price {
+    color: #E03B8B;
+}
+
+body.dark-mode .add-to-cart {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .add-to-cart:hover {
+    background: #E03B8B;
+    color: white;
+}
+
+/* ============================================
+   8. DARK MODE - NAVIGATION
+   ============================================ */
+
+body.dark-mode .nav-menu a {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .nav-menu a:hover,
+body.dark-mode .nav-menu a.active {
+    color: #E03B8B;
+}
+
+body.dark-mode .logo-text {
+    color: var(--text-primary);
+}
+
+/* ============================================
+   9. DARK MODE - FOOTER
+   ============================================ */
+
+body.dark-mode footer {
+    background: var(--bg-secondary);
+    border-top-color: var(--border-color);
+}
+
+body.dark-mode .footer-description,
+body.dark-mode .footer-section ul li a,
+body.dark-mode .contact-info {
+    color: var(--text-muted);
+}
+
+body.dark-mode .footer-section h4 {
+    color: var(--text-primary);
+}
+
+body.dark-mode .social-icons a {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .social-icons a:hover {
+    background: #E03B8B;
+}
+
+/* ============================================
+   10. DARK MODE - SECTIONS SPÉCIFIQUES
+   ============================================ */
+
+/* Hero Banner */
+body.dark-mode .hero-overlay {
+    background: linear-gradient(to right, rgba(15, 20, 25, 0.9) 0%, rgba(15, 20, 25, 0.5) 100%);
+}
+
+/* Maisons d'édition */
+body.dark-mode .maison-card {
+    background: var(--bg-card);
+}
+
+body.dark-mode .maison-card:hover {
+    box-shadow: 0 10px 30px var(--shadow-hover);
+}
+
+/* Stat cards (Abdoulrazack page) */
+body.dark-mode .stat-card {
+    background: var(--bg-card);
+}
+
+/* Code window */
+body.dark-mode .code-window {
+    background: #0d1117;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .code-window-bar {
+    background: #161b22;
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Arsenal cards */
+body.dark-mode .arsenal-card {
+    background: var(--bg-card);
+}
+
+/* ============================================
+   11. TRANSITION FLUIDE ENTRE LES MODES
+   ============================================ */
+
+body,
+header,
+footer,
+.product-card,
+.maison-card,
+.icon-btn,
+.search-bar input,
+h1, h2, h3, h4, h5, h6,
+p, span, a {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease;
+}
+
+/* ============================================
+   12. IMAGES EN DARK MODE
+   ============================================ */
+
+/* Réduire légèrement la luminosité des images en dark mode */
+body.dark-mode img {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+body.dark-mode img:hover {
+    opacity: 1;
+}
+
+/* Garder les logos à 100% d'opacité */
+body.dark-mode .logo-image,
+body.dark-mode .maison-logo {
+    opacity: 1;
+}
+
+/* ============================================
+   13. SCROLLBAR EN DARK MODE
+   ============================================ */
+
+body.dark-mode::-webkit-scrollbar {
+    width: 12px;
+}
+
+body.dark-mode::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+body.dark-mode::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ============================================
+   14. RESPONSIVE - DARK MODE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .dark-mode-toggle {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .dark-mode-toggle .material-symbols-outlined {
+        font-size: 1.1rem;
+    }
+}
+
+/* ============================================
+   15. PRINT - FORCER LE MODE CLAIR
+   ============================================ */
+
+@media print {
+    body.dark-mode {
+        background: white !important;
+        color: black !important;
+    }
+    
+    body.dark-mode * {
+        background: white !important;
+        color: black !important;
+        border-color: #ccc !important;
+    }
+}
+
+/* ============================================
+   NOTES D'UTILISATION
+   ============================================ */
+
+/*
+    Ce fichier CSS doit être inclus dans TOUTES vos pages :
+    
+    <link rel="stylesheet" href="/asset/css/dark-mode.css">
+    
+    Il utilise des variables CSS pour faciliter la maintenance.
+    
+    Pour ajouter le dark mode à un nouvel élément :
+    
+    1. Définir la couleur en mode clair dans :root
+    2. Redéfinir la couleur en mode sombre dans body.dark-mode
+    3. Utiliser var(--nom-variable) dans vos styles
+    
+    Exemple :
+    .mon-element {
+        background: var(--bg-card);
+        color: var(--text-primary);
+    }
+*/

@@ -1,0 +1,324 @@
+/* ============================================
+   translate.css - Styles pour le bouton de traduction
+   Compatible avec toutes les pages KINKA.FR
+   ============================================ */
+
+/* ============================================
+   1. BOUTON DE TRADUCTION
+   ============================================ */
+
+.language-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.language-toggle:hover {
+    border-color: #E03B8B;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.language-toggle:active {
+    transform: translateY(-1px);
+}
+
+/* ============================================
+   2. DRAPEAU
+   ============================================ */
+
+.language-toggle .flag {
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+
+.language-toggle:hover .flag {
+    transform: scale(1.1);
+}
+
+/* Animation de rotation au clic */
+.language-toggle:active .flag {
+    transform: rotate(360deg);
+}
+
+/* ============================================
+   3. TEXTE DE LA LANGUE
+   ============================================ */
+
+.language-toggle .language-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #1a1a1a;
+    transition: all 0.3s ease;
+}
+
+.language-toggle:hover .language-text {
+    color: #E03B8B;
+}
+
+/* ============================================
+   4. DARK MODE SUPPORT
+   ============================================ */
+
+body.dark-mode .language-toggle {
+    background: var(--bg-card, #1e2433);
+    border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+body.dark-mode .language-toggle .language-text {
+    color: var(--text-primary, #e2e8f0);
+}
+
+body.dark-mode .language-toggle:hover {
+    border-color: #E03B8B;
+}
+
+body.dark-mode .language-toggle:hover .language-text {
+    color: #E03B8B;
+}
+
+/* ============================================
+   5. ANIMATION DE TRANSITION
+   ============================================ */
+
+/* Animation fluide quand la langue change */
+[data-translate],
+.translating {
+    transition: opacity 0.2s ease;
+}
+
+/* Effet de fade lors du changement */
+body.translating * {
+    animation: fadeTranslate 0.4s ease;
+}
+
+@keyframes fadeTranslate {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   6. INDICATEUR DE LANGUE ACTUELLE
+   ============================================ */
+
+/* Badge discret pour indiquer la langue */
+html[lang="en"]::before {
+    content: 'EN';
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: #E03B8B;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.7;
+    display: none;
+}
+
+/* Afficher uniquement en mode développement */
+body.dev-mode html[lang="en"]::before {
+    display: block;
+}
+
+/* ============================================
+   7. TOOLTIP AU HOVER
+   ============================================ */
+
+.language-toggle::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    background: #1a1a1a;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.language-toggle:hover::after {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+/* Flèche du tooltip */
+.language-toggle::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    border: 5px solid transparent;
+    border-bottom-color: #1a1a1a;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.language-toggle:hover::before {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+/* ============================================
+   8. RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .language-toggle {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.75rem;
+    }
+    
+    .language-toggle .flag {
+        font-size: 1rem;
+    }
+    
+    .language-toggle .language-text {
+        font-size: 0.7rem;
+    }
+    
+    /* Masquer le tooltip sur mobile */
+    .language-toggle::after,
+    .language-toggle::before {
+        display: none;
+    }
+}
+
+/* ============================================
+   9. ÉTATS DU BOUTON
+   ============================================ */
+
+/* Bouton désactivé pendant la traduction */
+.language-toggle.translating {
+    opacity: 0.6;
+    cursor: wait;
+    pointer-events: none;
+}
+
+.language-toggle.translating .flag {
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   10. VARIANTES DE STYLE (OPTIONNEL)
+   ============================================ */
+
+/* Style minimaliste : texte seulement */
+.language-toggle.minimal {
+    border: none;
+    background: transparent;
+    padding: 0.3rem 0.6rem;
+}
+
+.language-toggle.minimal:hover {
+    background: rgba(224, 59, 139, 0.1);
+}
+
+/* Style avec fond coloré */
+.language-toggle.colored {
+    background: #E03B8B;
+    border-color: #E03B8B;
+    color: white;
+}
+
+.language-toggle.colored .language-text {
+    color: white;
+}
+
+.language-toggle.colored:hover {
+    background: #c42e75;
+    border-color: #c42e75;
+}
+
+/* ============================================
+   11. ACCESSIBILITÉ
+   ============================================ */
+
+/* Focus visible pour navigation au clavier */
+.language-toggle:focus {
+    outline: 2px solid #E03B8B;
+    outline-offset: 2px;
+}
+
+.language-toggle:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Rendre le bouton plus visible pour les utilisateurs malvoyants */
+@media (prefers-contrast: high) {
+    .language-toggle {
+        border-width: 2px;
+        font-weight: 700;
+    }
+}
+
+/* ============================================
+   12. PRINT - MASQUER LE BOUTON
+   ============================================ */
+
+@media print {
+    .language-toggle {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   NOTES D'UTILISATION
+   ============================================ */
+
+/*
+    CLASSES UTILES :
+    
+    .language-toggle          - Style par défaut
+    .language-toggle.minimal  - Style minimaliste
+    .language-toggle.colored  - Style avec fond coloré
+    .language-toggle.translating - État pendant la traduction
+    
+    PERSONNALISATION :
+    
+    Pour changer la couleur du bouton :
+    .language-toggle {
+        border-color: votre-couleur;
+    }
+    
+    .language-toggle:hover .language-text {
+        color: votre-couleur;
+    }
+*/
