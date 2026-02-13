@@ -1,10 +1,10 @@
-// ====================================================
+
 // Fichier : mangasDB.js
 // Rôle : Base de données de tous les mangas disponibles sur KINKA.FR
 //        (neufs, occasions, coffrets, artbooks, etc.)
 // Source : Extraits de vos pages HTML (page_accueil, page_catalogue, etc.)
 // Auteur : KINKA.FR
-// ====================================================
+
 
 const mangasDB = [
     // === ONE PIECE ===
