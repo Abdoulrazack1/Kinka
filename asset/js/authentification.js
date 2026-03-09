@@ -408,7 +408,7 @@ window.auth = {
             const remember = document.querySelector('.form-checkbox')?.checked;
 
             if (!email || !password) {
-                alert('Veuillez remplir tous les champs.');
+                showToast('Veuillez remplir tous les champs.', 'error');
                 return;
             }
 
@@ -416,7 +416,7 @@ window.auth = {
             if (result.success) {
                 window.location.href = '/page_accueil.html';
             } else {
-                alert(result.message);
+                showToast(result.message, result.success ? 'success' : 'error');
             }
         });
     }
@@ -433,16 +433,16 @@ window.auth = {
             const confirm  = document.getElementById('confirm-password')?.value;
 
             if (password !== confirm) {
-                alert('Les mots de passe ne correspondent pas.');
+                showToast('Les mots de passe ne correspondent pas.', 'error');
                 return;
             }
 
             const result = window.auth.register({ prenom, nom, email, password });
             if (result.success) {
-                alert(result.message);
+                showToast(result.message);
                 window.location.href = '/pageLogIn.html';
             } else {
-                alert(result.message);
+                showToast(result.message, result.success ? 'success' : 'error');
             }
         });
     }
@@ -454,7 +454,7 @@ window.auth = {
             e.preventDefault();
             const email  = document.getElementById('email')?.value?.trim();
             const result = window.auth.requestPasswordReset(email);
-            alert(result.message);
+            showToast(result.message, result.success ? 'success' : 'error');
         });
     }
 
@@ -466,11 +466,11 @@ window.auth = {
             e.preventDefault();
             const newPass  = document.getElementById('new-password')?.value;
             const confirm  = document.getElementById('confirm-password')?.value;
-            if (newPass !== confirm) { alert('Les mots de passe ne correspondent pas.'); return; }
-            if (!token)              { alert('Token manquant.'); return; }
+            if (newPass !== confirm) { showToast('Les mots de passe ne correspondent pas.', 'error'); return; }
+            if (!token)              { showToast('Token manquant.', 'error'); return; }
             const result = window.auth.resetPassword(token, newPass);
-            if (result.success) { alert(result.message); window.location.href = '/pageLogIn.html'; }
-            else                 { alert(result.message); }
+            if (result.success) { showToast(result.message); window.location.href = '/pageLogIn.html'; }
+            else                 { showToast(result.message, result.success ? 'success' : 'error'); }
         });
     }
 

@@ -2,15 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Mes favoris - KINKA.FR">
+    <meta name="description" content="Mes favoris — KINKA.FR">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Favoris - KINKA.FR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
     <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_favoris.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
 </head>
@@ -31,7 +31,7 @@
                 <a href="/page_promotion.html">Promotions</a>
             </div>
             <div class="nav-actions">
-                <button class="icon-btn active-nav" onclick="window.location.href='/page_favoris.html'" title="Mes favoris" id="favoris-btn" style="border-color:var(--pink);color:var(--pink)">
+                <button class="icon-btn fav-nav-active" onclick="window.location.href='/page_favoris.html'" title="Mes favoris" id="favoris-btn">
                     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;color:var(--pink)">favorite</span>
                     <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
@@ -50,37 +50,88 @@
     <div class="breadcrumb-bar">
         <div class="breadcrumb">
             <a href="/page_accueil.html">Accueil</a>
-            <span class="separator">›</span>
-            <span class="current">Mes Favoris</span>
+            <span>›</span>
+            <span class="breadcrumb-current">Mes Favoris</span>
         </div>
     </div>
 
     <main class="container">
-        <div class="page-header">
-            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:space-between">
-                <div>
-                    <h1 class="page-title"><span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#E03B8B" stroke="#E03B8B" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span> Mes Favoris</h1>
-                    <p class="page-description" id="favoris-total">0 manga sauvegardé</p>
+
+        <!-- ── Bannière hero ── -->
+        <div class="fav-hero">
+            <div class="fav-hero-left">
+                <div class="fav-hero-icon">
+                    <span class="material-symbols-outlined">favorite</span>
                 </div>
-                <button onclick="clearAllFavs()" style="background:transparent;color:var(--text-muted);border:1.5px solid var(--border);padding:.5rem 1rem;border-radius:var(--radius-pill);font-size:.82rem;cursor:pointer;transition:var(--transition)" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">
+                <div class="fav-hero-text">
+                    <h1 class="fav-title">Mes Favoris</h1>
+                    <p class="fav-subtitle" id="favoris-total">0 manga sauvegardé</p>
+                </div>
+            </div>
+            <div class="fav-hero-right">
+                <button class="fav-sort-btn" id="fav-sort-alpha" title="Trier par titre">
+                    <span class="material-symbols-outlined">sort_by_alpha</span>
+                    A–Z
+                </button>
+                <button class="fav-clear-btn" id="fav-clear-all">
+                    <span class="material-symbols-outlined">delete_sweep</span>
                     Tout effacer
                 </button>
             </div>
         </div>
 
-        <!-- Liste vide -->
-        <div id="favoris-empty" style="display:none;text-align:center;padding:5rem 2rem;color:var(--text-muted)">
-            <span class="material-symbols-outlined" style="font-size:4rem;color:var(--border);display:block;margin-bottom:1rem">favorite</span>
-            <h2 style="font-size:1.3rem;color:var(--text);margin-bottom:.5rem">Aucun favori pour l'instant</h2>
-            <p style="margin-bottom:1.5rem;font-size:.9rem">Parcourez notre catalogue et ajoutez vos mangas préférés !</p>
-            <a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex">
-                <span class="material-symbols-outlined">menu_book</span>
-                Découvrir le catalogue
-            </a>
+        <!-- ── Barre de stats ── -->
+        <div class="fav-stats" id="fav-stats" style="display:none">
+            <div class="fav-stat-chip" id="fav-stat-count">
+                <span class="material-symbols-outlined">favorite</span>
+                <strong id="fav-chip-nb">0</strong> manga<span id="fav-chip-s"></span>
+            </div>
+            <div class="fav-stat-chip" id="fav-stat-value">
+                <span class="material-symbols-outlined">payments</span>
+                Valeur estimée : <strong id="fav-chip-val">0,00 €</strong>
+            </div>
+            <div class="fav-stat-chip" id="fav-stat-promo" style="display:none">
+                <span class="material-symbols-outlined">local_offer</span>
+                <strong id="fav-chip-promo">0</strong> en promotion
+            </div>
         </div>
 
-        <!-- Grille favoris -->
+        <!-- ── État vide ── -->
+        <div id="favoris-empty" class="fav-empty" style="display:none">
+            <div class="fav-empty-icon-wrap">
+                <div class="fav-empty-ring"></div>
+                <div class="fav-empty-icon">
+                    <span class="material-symbols-outlined">favorite</span>
+                </div>
+            </div>
+            <h2 class="fav-empty-title">Aucun favori pour l'instant</h2>
+            <p class="fav-empty-sub">Parcourez notre catalogue et cliquez sur ♡ pour sauvegarder vos mangas préférés ici.</p>
+            <div class="fav-empty-btns">
+                <a href="/page_catalogue.html" class="btn-primary">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    Découvrir le catalogue
+                </a>
+                <a href="/page_nouveaute.html" class="btn-outline">
+                    <span class="material-symbols-outlined">new_releases</span>
+                    Voir les nouveautés
+                </a>
+            </div>
+        </div>
+
+        <!-- ── Grille favoris ── -->
         <div class="products-grid" id="favoris-grid"></div>
+
+        <!-- ── Suggestions si vide ── -->
+        <div id="fav-suggestions" class="fav-suggestions" style="display:none">
+            <div class="section-header">
+                <h2 class="section-title">Vous pourriez aimer</h2>
+                <a href="/page_bestsellers.html" class="view-all">
+                    Voir tout <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
+            </div>
+            <div class="products-grid" id="fav-suggestions-grid"></div>
+        </div>
+
     </main>
 
     <footer>
@@ -121,7 +172,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
             <div class="footer-legal">
                 <a href="/page_cgu.html">CGU</a>
                 <a href="/page_cgv.html">CGV</a>
@@ -137,14 +188,128 @@
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    function clearAllFavs() {
-        if (confirm('Effacer tous vos favoris ?')) {
-            localStorage.removeItem('kinka_favoris');
-            updateFavsCount();
-            renderFavorisPage(document.getElementById('favoris-grid'));
+    /* ── Scroll header ── */
+    (function(){
+        var h = document.querySelector('header');
+        if (!h) return;
+        window.addEventListener('scroll', function(){ h.classList.toggle('scrolled', window.scrollY > 10); }, {passive:true});
+    })();
+
+    /* ── Auth label ── */
+    (function(){
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
+        var btn = document.querySelector('.connect-btn');
+        if (btn && user && user.prenom) {
+            btn.textContent = user.prenom;
+            btn.onclick = function(){ window.location.href = '/page_profil.html'; };
+        }
+    })();
+
+    /* ── Stats bar ── */
+    function updateFavStats() {
+        var favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+        var statsEl  = document.getElementById('fav-stats');
+        var countEl  = document.getElementById('favoris-total');
+        var chipNb   = document.getElementById('fav-chip-nb');
+        var chipS    = document.getElementById('fav-chip-s');
+        var chipVal  = document.getElementById('fav-chip-val');
+        var chipPromo= document.getElementById('fav-chip-promo');
+        var statPromo= document.getElementById('fav-stat-promo');
+
+        if (!statsEl) return;
+
+        if (favs.length === 0) {
+            statsEl.style.display = 'none';
+            return;
+        }
+
+        statsEl.style.display = 'flex';
+
+        var total = 0, promoCount = 0;
+        favs.forEach(function(id) {
+            var m = typeof getMangaById === 'function' ? getMangaById(id) : null;
+            if (!m) return;
+            var prix = (m.promo && m.prixPromo) ? m.prixPromo : m.prix;
+            total += prix;
+            if (m.promo) promoCount++;
+        });
+
+        if (chipNb) chipNb.textContent = favs.length;
+        if (chipS)  chipS.textContent  = favs.length > 1 ? 's' : '';
+        if (countEl) countEl.textContent = favs.length + ' manga' + (favs.length > 1 ? 's' : '') + ' sauvegardé' + (favs.length > 1 ? 's' : '');
+        if (chipVal) chipVal.textContent = total.toFixed(2).replace('.', ',') + ' €';
+        if (statPromo) statPromo.style.display = promoCount > 0 ? 'inline-flex' : 'none';
+        if (chipPromo) chipPromo.textContent = promoCount;
+    }
+
+    /* ── Sort A-Z ── */
+    (function(){
+        var sortBtn = document.getElementById('fav-sort-alpha');
+        var sortAsc = true;
+        if (!sortBtn) return;
+        sortBtn.addEventListener('click', function() {
+            var grid = document.getElementById('favoris-grid');
+            if (!grid) return;
+            var cards = Array.from(grid.querySelectorAll('.product-card'));
+            if (cards.length < 2) return;
+            cards.sort(function(a, b) {
+                var ta = (a.querySelector('.product-title') || {}).textContent || '';
+                var tb = (b.querySelector('.product-title') || {}).textContent || '';
+                return sortAsc ? ta.localeCompare(tb, 'fr') : tb.localeCompare(ta, 'fr');
+            });
+            sortAsc = !sortAsc;
+            var label = sortBtn.querySelector('span:last-of-type');
+            if (label && label.tagName !== 'SPAN') label = sortBtn.lastChild;
+            sortBtn.childNodes.forEach(function(n){ if (n.nodeType === 3) n.textContent = sortAsc ? ' A–Z' : ' Z–A'; });
+            cards.forEach(function(c) { grid.appendChild(c); });
+        });
+    })();
+
+    /* ── Clear all ── */
+    (function(){
+        var clearBtn = document.getElementById('fav-clear-all');
+        if (!clearBtn) return;
+        clearBtn.addEventListener('click', function() {
+            var favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+            if (favs.length === 0) return;
+            if (confirm('Effacer vos ' + favs.length + ' favori' + (favs.length > 1 ? 's' : '') + ' ?')) {
+                localStorage.removeItem('kinka_favoris');
+                if (typeof updateFavsCount === 'function') updateFavsCount();
+                var grid = document.getElementById('favoris-grid');
+                if (grid && typeof renderFavorisPage === 'function') renderFavorisPage(grid);
+                updateFavStats();
+            }
+        });
+    })();
+
+    /* ── Suggestions bestsellers si vide ── */
+    function checkSuggestions() {
+        var favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+        var sugSection = document.getElementById('fav-suggestions');
+        var sugGrid    = document.getElementById('fav-suggestions-grid');
+        if (!sugSection || !sugGrid) return;
+        if (favs.length === 0 && typeof mangaDB !== 'undefined') {
+            var suggestions = mangaDB.filter(function(m){ return m.bestseller; }).slice(0, 4);
+            if (suggestions.length > 0) {
+                sugGrid.innerHTML = suggestions.map(function(m){ return buildProductCard(m); }).join('');
+                sugSection.style.display = 'block';
+                if (typeof gererBoutonsAjout === 'function') gererBoutonsAjout();
+            }
+        } else {
+            sugSection.style.display = 'none';
         }
     }
-    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+
+    /* ── Observer la grille ── */
+    var grid = document.getElementById('favoris-grid');
+    if (grid) {
+        new MutationObserver(function(){
+            updateFavStats();
+            checkSuggestions();
+        }).observe(grid, { childList: true });
+    }
+    setTimeout(function(){ updateFavStats(); checkSuggestions(); }, 120);
     </script>
 </body>
 </html>

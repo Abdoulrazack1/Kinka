@@ -171,7 +171,7 @@
 .cdc-fav-btn {
     position: absolute; top: .75rem; right: .75rem;
     width: 36px; height: 36px; border-radius: 50%;
-    background: white; border: none; cursor: pointer;
+    background: var(--bg-card); border: none; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 2px 12px rgba(0,0,0,.15);
     transition: var(--transition); z-index: 2;

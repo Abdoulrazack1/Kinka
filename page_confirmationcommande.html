@@ -55,6 +55,13 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Confirmation commande</span>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="container">
@@ -66,7 +73,7 @@
             </div>
             <h1>Merci pour votre commande !</h1>
             <p class="confirmation-message">
-                Votre commande <strong>#KIN-82930</strong> a bien été confirmée. Un email récapitulatif a été envoyé à <strong><a href="/cdn-cgi/l/email-protection#a5c6cacbd1c4c6d1e5cecccbcec48bc3d7"><span class="__cf_email__" data-cfemail="f794989983969483b79c9e999c96d99185">[email&#160;protected]</span></a></strong>.
+                Votre commande <strong id="conf-order-id">#KIN-82930</strong> a bien été confirmée. Un email récapitulatif a été envoyé à <strong>contact@kinka.fr</strong>.
             </p>
             <div class="action-buttons">
                 <a href="/page_catalogue.html" class="btn-primary">Continuer mes achats</a>
@@ -81,14 +88,14 @@
             <div class="details-row">
                 <div class="detail-card">
                     <p class="detail-label">Adresse de livraison</p>
-                    <p class="detail-name">Jean Dupont</p>
-                    <p class="detail-text">123 Rue du Manga</p>
-                    <p class="detail-text">75000 Paris, France</p>
+                    <p class="detail-name" id="conf-user-name">Jean Dupont</p>
+                    <p class="detail-text" id="conf-user-address">123 Rue du Manga</p>
+                    <p class="detail-text" id="conf-user-city">75000 Paris, France</p>
                 </div>
 
                 <div class="detail-card">
                     <p class="detail-label">Date de livraison estimée</p>
-                    <p class="detail-date">
+                    <p class="detail-date" id="conf-delivery-date">
                         <span class="material-symbols-outlined">local_shipping</span>
                         Mardi 14 Octobre
                     </p>
@@ -98,8 +105,9 @@
 
             <!-- ARTICLES -->
             <div class="articles-container">
-                <h3>Articles (3)</h3>
+                <h3>Articles (<span id="conf-articles-count">3</span>)</h3>
 
+                <div id="conf-articles-list">
                 <div class="article-item">
                     <div class="article-info">
                         <p class="article-title">One Piece - Tome 104</p>
@@ -128,7 +136,7 @@
                 <div class="order-summary">
                     <div class="summary-row">
                         <span>Sous-total</span>
-                        <span>21.09€</span>
+                        <span id="conf-subtotal">21.09€</span>
                     </div>
                     <div class="summary-row">
                         <span>Livraison</span>
@@ -136,7 +144,7 @@
                     </div>
                     <div class="summary-row total">
                         <span>Total payé</span>
-                        <span>21.09€</span>
+                        <span id="conf-total">21.09€</span>
                     </div>
                 </div>
             </div>
@@ -172,7 +180,69 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/authentification.js"></script>
-    <script src="/asset/js/pani
+    // ── Remplir avec les données de la vraie commande ────────
+    (function(){
+        var order = null;
+        try { order = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e) {}
+        if (!order) return;
+
+        // Numéro commande
+        var idEl = document.getElementById('conf-order-id');
+        if (idEl) idEl.textContent = '#' + order.id;
+
+        // Articles
+        var listEl = document.getElementById('conf-articles-list');
+        var countEl = document.getElementById('conf-articles-count');
+        if (listEl && order.articles && order.articles.length) {
+            if (countEl) countEl.textContent = order.articles.length;
+            var total = 0;
+            listEl.innerHTML = order.articles.map(function(a) {
+                var lineTotal = (a.prix||0) * (a.quantite||1);
+                total += lineTotal;
+                return '<div class="article-item"><div class="article-info"><p class="article-title">' + a.titre + (a.quantite > 1 ? ' × ' + a.quantite : '') + '</p><p class="article-meta">' + lineTotal.toFixed(2) + '€</p></div><p class="article-publisher">' + (a.editeur||'') + '</p></div>';
+            }).join('');
+            var subEl = document.getElementById('conf-subtotal');
+            var totEl = document.getElementById('conf-total');
+            if (subEl) subEl.textContent = total.toFixed(2) + '€';
+            if (totEl) totEl.textContent = total.toFixed(2) + '€';
+        }
+
+        // Date de livraison estimée : +5 jours ouvrés
+        var ddEl = document.getElementById('conf-delivery-date');
+        if (ddEl) {
+            var d = new Date(); d.setDate(d.getDate() + 5);
+            var jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+            var mois  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+            ddEl.innerHTML = '<span class="material-symbols-outlined">local_shipping</span>' + jours[d.getDay()] + ' ' + d.getDate() + ' ' + mois[d.getMonth()];
+        }
+
+        // Infos user
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
+        if (user) {
+            var nameEl = document.getElementById('conf-user-name');
+            var addrEl = document.getElementById('conf-user-address');
+            var cityEl = document.getElementById('conf-user-city');
+            if (nameEl) nameEl.textContent = (user.prenom||'') + ' ' + (user.nom||'');
+            if (addrEl && user.adresse) addrEl.textContent = user.adresse;
+            if (cityEl && user.ville)   cityEl.textContent = (user.codePostal||'') + ' ' + user.ville + ', France';
+        }
+
+        // Lien "Suivre ma commande"
+        var suiviBtn = document.querySelector('.btn-secondary');
+        if (suiviBtn) suiviBtn.href = '/page_suivicommande.html';
+    })();
+    </script>
+</body>
+</html>

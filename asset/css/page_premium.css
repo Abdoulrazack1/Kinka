@@ -1,0 +1,408 @@
+/* ================================================================
+   page_premium.css — Kinka Premium v2
+   Design fidèle à la maquette : fond blanc, rose KINKA, épuré
+================================================================ */
+
+.premium-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem 5rem;
+}
+
+/* ── HERO ───────────────────────────────────────────────────── */
+.prem-hero {
+    text-align: center;
+    padding: 4rem 2rem 3rem;
+}
+
+.prem-hero-badge {
+    display: inline-block;
+    color: var(--pink);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 1.1rem;
+}
+
+.prem-hero-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.15;
+    letter-spacing: -.04em;
+    margin-bottom: 1rem;
+}
+
+.prem-hero-desc {
+    font-size: .93rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+}
+
+.prem-hero-btns {
+    display: flex;
+    gap: .75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: .9rem;
+}
+
+.prem-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .75rem 1.75rem;
+    background: var(--pink);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-size: .88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 16px var(--pink-glow);
+    text-decoration: none;
+}
+.prem-btn-primary:hover {
+    background: var(--pink-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--pink-glow);
+}
+
+.prem-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: .75rem 1.75rem;
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border-dk);
+    border-radius: var(--radius-pill);
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+}
+.prem-btn-secondary:hover {
+    border-color: var(--pink);
+    color: var(--pink);
+}
+
+.prem-hero-note {
+    font-size: .78rem;
+    color: var(--text-light);
+}
+
+/* ── AVANTAGES ──────────────────────────────────────────────── */
+.prem-avantages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 4rem;
+}
+
+@media (max-width: 680px) {
+    .prem-avantages { grid-template-columns: 1fr; }
+}
+
+.prem-avantage {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 1.4rem;
+    transition: var(--transition);
+}
+.prem-avantage:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,.08);
+    border-color: var(--pink-light);
+}
+
+.prem-avantage-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--pink-soft);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: var(--pink);
+}
+.prem-avantage-icon .material-symbols-outlined {
+    font-size: 1.3rem;
+}
+
+.prem-avantage-title {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: .45rem;
+}
+
+.prem-avantage-desc {
+    font-size: .82rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+/* ── SECTION FORMULES ───────────────────────────────────────── */
+.prem-section-title {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--text);
+    text-align: center;
+    letter-spacing: -.04em;
+    margin-bottom: .5rem;
+}
+
+.prem-section-sub {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: .86rem;
+    margin-bottom: 2.5rem;
+}
+
+.prem-formules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+}
+
+@media (max-width: 600px) {
+    .prem-formules { grid-template-columns: 1fr; }
+}
+
+.prem-card {
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+}
+.prem-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(0,0,0,.1);
+}
+
+/* Mensuelle — fond crème */
+.prem-card-mensuelle {
+    background: #fffdf0;
+    border: 1.5px solid #e6ddb8;
+}
+
+/* Annuelle — fond rose pâle */
+.prem-card-annuelle {
+    background: #fff0f6;
+    border: 1.5px solid #f4c2d9;
+}
+
+.prem-card-header {
+    padding: 1.75rem 1.75rem 1.25rem;
+}
+
+.prem-card-label {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: .8rem;
+}
+
+.prem-card-annuelle .prem-card-label {
+    display: inline-block;
+    background: var(--pink);
+    color: #fff;
+    padding: .25rem .75rem;
+    border-radius: var(--radius-pill);
+    font-size: .68rem;
+    margin-bottom: .8rem;
+}
+
+.prem-card-annuelle .prem-card-sublabel {
+    display: block;
+    font-size: .72rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: .4rem;
+}
+
+.prem-card-name {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -.03em;
+    margin-bottom: .6rem;
+}
+
+.prem-card-price {
+    display: flex;
+    align-items: baseline;
+    gap: .2rem;
+    margin-bottom: .75rem;
+}
+
+.prem-price-amount {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -.04em;
+}
+
+.prem-price-period {
+    font-size: .85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.prem-card-tagline {
+    font-size: .8rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.prem-card-features {
+    padding: 1.25rem 1.75rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+
+.prem-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: .55rem;
+    font-size: .83rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.prem-feature-check {
+    color: var(--pink);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: .88rem;
+    margin-top: .05rem;
+}
+
+.prem-feature strong {
+    color: var(--text);
+}
+
+.prem-feature-emoji {
+    flex-shrink: 0;
+}
+
+.prem-card-footer {
+    padding: 0 1.75rem 1.75rem;
+}
+
+.prem-btn-card {
+    display: block;
+    width: 100%;
+    padding: .85rem;
+    text-align: center;
+    border-radius: 10px;
+    font-size: .88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    text-decoration: none;
+    background: var(--pink);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--pink-glow);
+}
+.prem-btn-card:hover {
+    background: var(--pink-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px var(--pink-glow);
+    color: #fff;
+}
+
+/* ── FAQ ────────────────────────────────────────────────────── */
+.prem-faq {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.prem-faq-title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--text);
+    text-align: center;
+    letter-spacing: -.04em;
+    margin-bottom: 2rem;
+}
+
+.prem-faq-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.prem-faq-item {
+    border-bottom: 1px solid var(--border);
+}
+.prem-faq-list .prem-faq-item:first-child {
+    border-top: 1px solid var(--border);
+}
+
+.prem-faq-toggle { display: none; }
+
+.prem-faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 0;
+    cursor: pointer;
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--text);
+    gap: 1rem;
+    user-select: none;
+}
+
+.prem-faq-q::after {
+    content: '+';
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text-light);
+    transition: transform .2s;
+    line-height: 1;
+}
+
+.prem-faq-toggle:checked ~ .prem-faq-q::after {
+    transform: rotate(45deg);
+}
+
+.prem-faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+}
+.prem-faq-toggle:checked ~ .prem-faq-a {
+    max-height: 300px;
+}
+
+.prem-faq-a p {
+    font-size: .85rem;
+    color: var(--pink);
+    line-height: 1.7;
+    padding-bottom: 1.1rem;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .prem-hero { padding: 2.5rem 1rem 2rem; }
+    .prem-hero-title { font-size: 1.7rem; }
+    .prem-section-title { font-size: 1.4rem; }
+    .prem-faq-title { font-size: 1.3rem; }
+}

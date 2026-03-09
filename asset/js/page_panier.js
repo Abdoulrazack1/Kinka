@@ -6,7 +6,7 @@
 (function _init() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
     afficherPanier();
-});
+})();
 
 function afficherPanier() {
     const container = document.getElementById('panier-container');
@@ -34,10 +34,12 @@ function genererPanierVide() {
 }
 
 function genererPanierPlein(panierData) {
-    let html = '<div class="panier-liste">';
+    let html = '<div class="panier-layout">';
+    html += '<div class="panier-liste">';
     panierData.forEach(function(p) { html += genererItemPanier(p); });
     html += '</div>';
     html += genererResume(panierData);
+    html += '</div>';
     return html;
 }
 

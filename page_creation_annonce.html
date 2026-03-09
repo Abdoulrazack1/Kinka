@@ -55,6 +55,13 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Vendre un manga</span>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="main-container">
@@ -67,7 +74,7 @@
         <div class="sell-container">
             
             <!-- FORMULAIRE -->
-            <div class="sell-form">
+            <form class="sell-form" id="annonce-form">
                 
                 <!-- SECTION 1: Identification -->
                 <section class="form-section">
@@ -209,7 +216,7 @@
                     </button>
                 </div>
 
-            </div>
+            </form>
 
             <!-- SIDEBAR CONSEILS -->
             <aside class="sell-sidebar">
@@ -247,7 +254,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#1f7c70716b7e7c6b5f747671747e31796d"><span class="__cf_email__" data-cfemail="ee8d81809a8f8d9aae858780858fc0889c">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
             </div>
             <div class="footer-section"><h4>Navigation</h4><ul><li><a href="/page_accueil.html">Accueil</a></li><li><a href="/page_catalogue.html">Catalogue</a></li><li><a href="/page_promotion.html">Promotions</a></li></ul></div>
             <div class="footer-section"><h4>Compte</h4><ul><li><a href="/pageLogIn.html">Connexion</a></li><li><a href="/pageSignUp.html">Inscription</a></li><li><a href="/page_panier.html">Mon panier</a></li></ul></div>
@@ -256,16 +263,50 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
-
     <script>
-    // Header scroll effect
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+
+    /* ── Formulaire création d'annonce ── */
     (function(){
-        var h = document.que
+        var form = document.getElementById('annonce-form');
+        if (!form) return;
+
+        // Bouton "Sauvegarder le brouillon"
+        var draftBtn = form.querySelector('.btn-secondary-large');
+        if (draftBtn) {
+            draftBtn.addEventListener('click', function() {
+                if (typeof showToast === 'function') showToast('Brouillon sauvegardé !', 'success');
+            });
+        }
+
+        // Bouton "Publier l'annonce"
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var titre = form.querySelector('input[placeholder*="titre"], input[placeholder*="Titre"]');
+            var titreVal = titre ? titre.value.trim() : '';
+            // Vérifier champ titre (requis)
+            var titreInput = form.querySelector('.form-group input:not(.isbn-input)');
+            if (!titreVal) {
+                // Chercher le premier input requis non vide
+                var inputs = form.querySelectorAll('input[required], select[required]');
+                var firstEmpty = null;
+                inputs.forEach(function(inp){ if(!inp.value.trim() && !firstEmpty) firstEmpty = inp; });
+                if (firstEmpty) { firstEmpty.focus(); }
+                if (typeof showToast === 'function') showToast('Veuillez remplir les champs obligatoires.', 'error');
+                return;
+            }
+            if (typeof showToast === 'function') showToast('Annonce publiée avec succès !', 'success');
+            setTimeout(function(){ window.location.href = '/page_occasion.html'; }, 1500);
+        });
+    })();
+    </script>
+</body>
+</html>

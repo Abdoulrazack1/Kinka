@@ -61,9 +61,9 @@
         <div class="breadcrumb">
             <a href="/page_accueil.html">Accueil</a>
             <span class="breadcrumb-separator">›</span>
-            <a href="#">Catalogue</a>
+            <a href="/page_catalogue.html">Catalogue</a>
             <span class="breadcrumb-separator">›</span>
-            <a href="#">Shonen</a>
+            <a href="/page_shonen.html">Shōnen</a>
             <span class="breadcrumb-separator">›</span>
             <span class="breadcrumb-current">One Piece - Tome 105</span>
         </div>
@@ -89,7 +89,7 @@
                 <h1 class="product-name">One Piece - Tome 105</h1>
 
                 <div class="product-author">
-                    Par <a href="#" class="author-link">Eiichiro Oda</a>
+                    Par <a href="/page_auteur.html?auteur=Eiichiro%20Oda" class="author-link">Eiichiro Oda</a>
                 </div>
 
                 <div class="product-rating">
@@ -184,7 +184,7 @@
         <section class="section-related">
             <div class="section-header">
                 <h2 class="section-title">Vous aimerez aussi</h2>
-                <a href="#" class="view-all">Voir tout</a>
+                <a href="/page_catalogue.html" class="view-all">Voir tout</a>
             </div>
             
             <div class="products-grid">
@@ -320,38 +320,30 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#d5b6babba1b4b6a195bebcbbbeb4fbb3a7"><span class="__cf_email__" data-cfemail="85e6eaebf1e4e6f1c5eeecebeee4abe3f7">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
-                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
-                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
-                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                    <a href="https://twitter.com" target="_blank" rel="noopener"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
                 </div>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
-
     <script>
-    // Header scroll effect
-    (function(){
-        var h=document.querySelector('header'); if(h) window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true});
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
     </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var grid = document.querySelector('#products-grid, .products-grid');
-        if (grid && typeof filterProducts === 'function') {
-            var params = new URLSearchParams(window.location.search);
- 
+</body>
+</html>

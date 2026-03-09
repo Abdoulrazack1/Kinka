@@ -99,7 +99,7 @@ const mangasDB = [
 
 // ═══════════════════ SEINEN — SUITE ════════════════════════════════
 
-{id:'monster-1',titre:'Monster - Tome 1',serie:'Monster',tome:1,auteur:'Naoki Urasawa',editeur:'Viz',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:9.50,pages:208,format:'11.5 × 18 cm',dateParution:'2000',ean:'9781591167853',image:'/asset/image/catégorie_seinen.jpg',description:'Le Dr Tenma, chirurgien de renom, sauve la vie d\'un garçon plutôt que celle d\'un politicien. Neuf ans plus tard, cet enfant est devenu un tueur en série surnommé "Monster".',tags:['Thriller','Psychologique','Allemagne'],note:5.0,stock:5,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
+{id:'monster-1',titre:'Monster - Tome 1',serie:'Monster',tome:1,auteur:'Naoki Urasawa',editeur:'Kana',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:9.50,pages:208,format:'11.5 × 18 cm',dateParution:'2000',ean:'9781591167853',image:'/asset/image/catégorie_seinen.jpg',description:'Le Dr Tenma, chirurgien de renom, sauve la vie d\'un garçon plutôt que celle d\'un politicien. Neuf ans plus tard, cet enfant est devenu un tueur en série surnommé "Monster".',tags:['Thriller','Psychologique','Allemagne'],note:5.0,stock:5,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
 
 {id:'20th-century-boys-1',titre:'20th Century Boys - Tome 1',serie:'20th Century Boys',tome:1,auteur:'Naoki Urasawa',editeur:'Panini',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:9.50,pages:208,format:'11.5 × 18 cm',dateParution:'2003',ean:'9782845799684',image:'/asset/image/catégorie_seinen.jpg',description:'Kenji et ses amis d\'enfance ont inventé un symbole — l\'Ami — et imaginé une prophétie apocalyptique. Des années plus tard, quelqu\'un utilise leur symbole pour dominer le monde.',tags:['Thriller','SF','Nostalgie'],note:4.9,stock:4,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
 
@@ -185,78 +185,6 @@ const mangasDB = [
 
 {id:'made-in-abyss-10',titre:'Made in Abyss - Tome 10',serie:'Made in Abyss',tome:10,auteur:'Akihito Tsukushi',editeur:'Ototo',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:8.90,pages:192,format:'11.5 × 18 cm',dateParution:'8 nov. 2023',ean:'9782379501350',image:'/asset/image/Dandadan-T05.jpg',description:'Riko et Reg descendent toujours plus profondément dans l\'Abîsse. Ce tome révèle des secrets bouleversants sur la nature de l\'Abîsse et ses mystérieux artefacts reliques.',tags:['Aventure','Dark','Mystère'],note:4.8,stock:6,nouveaute:true,promo:false,coupDeCoeur:true,bestseller:false},
 
-// ═══════════════════ SHŌNEN — NOUVELLES SÉRIES 2024-2025 ═══════════════════
-
-{id:'kaiju-no-8-1',titre:'Kaiju No.8 - Tome 1',serie:'Kaiju No.8',tome:1,auteur:'Naoya Matsumoto',editeur:'Glénat',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:7.20,pages:192,format:'11.5 × 18 cm',dateParution:'20 avr. 2022',ean:'9782344050521',image:'/asset/image/catégorie_shonen.webp',description:'Kafka Hibino rêve d\'intégrer les Forces de Défense contre les kaijus. Après une morsure d\'un monstre, il acquiert le pouvoir de se transformer en kaiju lui-même. Phénomène mondial du shōnen !',tags:['Kaiju','Action','Transformation'],note:4.8,stock:14,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'kaiju-no-8-9',titre:'Kaiju No.8 - Tome 9',serie:'Kaiju No.8',tome:9,auteur:'Naoya Matsumoto',editeur:'Glénat',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:7.20,pages:192,format:'11.5 × 18 cm',dateParution:'17 jan. 2025',ean:'9782344078311',image:'/asset/image/catégorie_shonen.webp',description:'Kafka se retrouve face à un kaiju d\'un niveau inédit. Sa double nature humain-kaiju est poussée à l\'extrême dans des combats haletants qui révèlent de nouveaux secrets sur son origine.',tags:['Kaiju','Action','Révélations'],note:4.7,stock:9,nouveaute:true,promo:false,coupDeCoeur:false,bestseller:true},
-
-{id:'mashle-1',titre:'Mashle - Tome 1',serie:'Mashle',tome:1,auteur:'Hajime Komoto',editeur:'Glénat',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:6.99,pages:192,format:'11.5 × 18 cm',dateParution:'20 avr. 2022',ean:'9782344050507',image:'/asset/image/catégorie_shonen.webp',description:'Dans un monde où la magie est tout, Mash Burnedead n\'a aucun pouvoir magique. Pour survivre, il compense par une force physique surhumaine. Une comédie d\'action hilarante !',tags:['Magie','Humour','Action'],note:4.6,stock:11,nouveaute:false,promo:true,prixPromo:5.49,coupDeCoeur:false,bestseller:false},
-
-{id:'blue-box-1',titre:'Blue Box - Tome 1',serie:'Blue Box',tome:1,auteur:'Kouji Miura',editeur:'Glénat',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:7.20,pages:200,format:'11.5 × 18 cm',dateParution:'17 mai 2023',ean:'9782344058077',image:'/asset/image/catégorie_shonen.webp',description:'Taiki est passionné de badminton. Sa colocataire Chinatsu est une star du basket. Entre entraînements intenses et sentiments naissants, un manga sportif tendre et attachant.',tags:['Sport','Romance','Lycée'],note:4.7,stock:8,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-{id:'undead-unluck-1',titre:'Undead Unluck - Tome 1',serie:'Undead Unluck',tome:1,auteur:'Yoshifumi Tozuka',editeur:'Kazé Manga',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:7.20,pages:192,format:'11.5 × 18 cm',dateParution:'2 févr. 2022',ean:'9782820344311',image:'/asset/image/catégorie_shonen.webp',description:'Fuuko a la poisse la plus noire du monde — elle porte malheur à quiconque la touche. Andy, lui, est immortel mais souhaite mourir. Leur rencontre explosive donne naissance à une aventure unique.',tags:['Pouvoirs','Action','Romance'],note:4.7,stock:7,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-{id:'witch-watch-1',titre:'Witch Watch - Tome 1',serie:'Witch Watch',tome:1,auteur:'Kenta Shinohara',editeur:'Kazé Manga',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:6.99,pages:192,format:'11.5 × 18 cm',dateParution:'19 oct. 2022',ean:'9782820344656',image:'/asset/image/catégorie_shonen.webp',description:'Morihito est le gardien de la sorcière Nico — et son ami d\'enfance. Dans leur quotidien magique plein de malentendus et de situations cocasses, l\'amour et la magie s\'emmêlent.',tags:['Magie','Comédie','Romance'],note:4.5,stock:9,nouveaute:false,promo:true,prixPromo:5.49,coupDeCoeur:false,bestseller:false},
-
-{id:'jujutsu-kaisen-0',titre:'Jujutsu Kaisen 0',serie:'Jujutsu Kaisen',tome:0,auteur:'Gege Akutami',editeur:'Ki-oon',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:7.20,pages:192,format:'11.5 × 18 cm',dateParution:'6 janv. 2021',ean:'9791032716779',image:'/asset/image/jjk tome 20.jpg',description:'Le préquel de Jujutsu Kaisen ! Yuta Okkotsu est hanté par le fantôme de sa meilleure amie Rika. Gojo Satoru décide de le prendre sous son aile. Un one-shot devenu culte.',tags:['Préquel','Sorciers','Émotion'],note:4.9,stock:13,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'mha-vigilantes-1',titre:'My Hero Academia: Vigilantes - T.1',serie:'My Hero Academia: Vigilantes',tome:1,auteur:'Hideyuki Furuhashi / Betten Court',editeur:'Ki-oon',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:6.99,pages:192,format:'11.5 × 18 cm',dateParution:'5 juin 2019',ean:'9791032706190',image:'/asset/image/bannière_mha.jpg',description:'Le spin-off officiel de My Hero Academia ! Koichi, sans quota héroïque, devient vigilante aux côtés de Pop Step et Knuckleduster. Un regard différent sur le monde des héros.',tags:['Super-héros','Spin-off','Action'],note:4.6,stock:7,nouveaute:false,promo:false,coupDeCoeur:false,bestseller:false},
-
-// ═══════════════════ SEINEN — NOUVELLES ENTRÉES ═════════════════
-
-{id:'dungeon-meshi-1',titre:'Dungeon Meshi - Tome 1',serie:'Dungeon Meshi',tome:1,auteur:'Ryoko Kui',editeur:'Kurokawa',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:8.50,pages:192,format:'11.5 × 18 cm',dateParution:'13 juil. 2016',ean:'9782368521007',image:'/asset/image/Dandadan-T05.jpg',description:'Laios et son groupe d\'aventuriers se retrouvent sans vivres dans un donjon. Pour continuer, ils décident de cuisiner les monstres qu\'ils rencontrent. Un manga gastronomique révolutionnaire !',tags:['Fantasy','Cuisine','Humour'],note:4.9,stock:12,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'spy-family-0',titre:'Spy × Family - Tome 1',serie:'Spy x Family',tome:1,auteur:'Tatsuya Endo',editeur:'Kurokawa',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:7.20,pages:192,format:'11.5 × 18 cm',dateParution:'5 fév. 2020',ean:'9782368526071',image:'/asset/image/Spyxfamily_tome10.jpg',description:'Loid Forger, espion, doit se créer une famille fictive pour sa mission. Il adopte une petite fille télépathe et épouse une assassine. Ni l\'un ni l\'autre ne connaît le vrai rôle de l\'autre !',tags:['Espionnage','Famille','Comédie'],note:4.9,stock:17,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'frieren-1',titre:'Frieren - Tome 1',serie:'Frieren : Par-delà la fin du voyage',tome:1,auteur:'Kanehito Yamada / Tsukasa Abe',editeur:'Stalker',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:8.90,pages:192,format:'11.5 × 18 cm',dateParution:'21 sept. 2022',ean:'9782380714944',image:'/asset/image/catégorie_seinen.jpg',description:'Frieren, elfe mage de l\'équipe du héros, survit à ses compagnons. Elle se lance dans un dernier voyage pour comprendre ce qu\'était réellement l\'humanité. Un manga poétique sur le temps et la mémoire.',tags:['Fantasy','Temps','Poétique'],note:5.0,stock:10,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'frieren-8',titre:'Frieren - Tome 8',serie:'Frieren : Par-delà la fin du voyage',tome:8,auteur:'Kanehito Yamada / Tsukasa Abe',editeur:'Stalker',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:8.90,pages:192,format:'11.5 × 18 cm',dateParution:'19 juin 2024',ean:'9782380718331',image:'/asset/image/catégorie_seinen.jpg',description:'Frieren et ses compagnons approchent de leur destination finale. Les épreuves du Grand Examen de Magie révèlent de nouveaux défis et des vérités longtemps enfouies.',tags:['Fantasy','Magie','Nostalgie'],note:4.9,stock:8,nouveaute:true,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'chainsaw-man-1',titre:'Chainsaw Man - Tome 1',serie:'Chainsaw Man',tome:1,auteur:'Tatsuki Fujimoto',editeur:'Kazé Manga',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:7.20,pages:192,format:'11.5 × 18 cm',dateParution:'19 mai 2021',ean:'9782820341280',image:'/asset/image/chainsaw_man_bannière.jpg',description:'Denji, chasseur de démons endetté, fusionne avec son démon-chien Pochita après sa mort. Il est recruté par l\'agence gouvernementale de chasse aux démons. Brutal, créatif et inoubliable.',tags:['Démons','Action','Gore'],note:4.9,stock:18,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'look-back-1',titre:'Look Back',serie:'Look Back',tome:1,auteur:'Tatsuki Fujimoto',editeur:'Glénat',collection:'Shōnen Manga',categorie:'Shônen',etat:'neuf',langue:'Français',prix:9.99,pages:144,format:'14.8 × 21 cm',dateParution:'27 oct. 2021',ean:'9782344045022',image:'/asset/image/catégorie_shonen.webp',description:'One-shot poignant de Tatsuki Fujimoto (Chainsaw Man). L\'histoire de deux jeunes filles liées par leur passion pour le dessin de manga. Un récit sur la création, l\'amitié et les chemins non empruntés.',tags:['One-shot','Création','Amitié'],note:5.0,stock:6,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-{id:'goodnight-punpun-2',titre:'Bonne Nuit Punpun - Vol. 2',serie:'Bonne Nuit Punpun',tome:2,auteur:'Inio Asano',editeur:'Tonkam',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:13.50,pages:398,format:'18 × 25.5 cm',dateParution:'2012',ean:'9782756065786',image:'/asset/image/catégorie_seinen.jpg',description:'Punpun grandit, les rêves s\'effilochent et les désillusions s\'accumulent. Inio Asano continue d\'explorer avec génie les méandres d\'une psyché fragilisée.',tags:['Slice of Life','Dépression','Poétique'],note:4.9,stock:5,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-{id:'si-je-t-avais-pas-rencontre-1',titre:'Si je ne t\'avais pas rencontré - T.1',serie:'Si je ne t\'avais pas rencontré',tome:1,auteur:'Shuzo Oshimi',editeur:'Ki-oon',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:8.50,pages:208,format:'11.5 × 18 cm',dateParution:'14 sept. 2022',ean:'9791032717837',image:'/asset/image/catégorie_seinen.jpg',description:'Un professeur ordinaire se retrouve catapulté dans un univers parallèle où sa vie a pris un chemin différent. Un manga contemplatif et troublant sur les chemins de vie alternatifs.',tags:['Uchronie','Existentiel','Romance'],note:4.6,stock:5,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-{id:'vinland-saga-1',titre:'Vinland Saga - Tome 1',serie:'Vinland Saga',tome:1,auteur:'Makoto Yukimura',editeur:'Kurokawa',collection:'Seinen Manga',categorie:'Seinen',etat:'neuf',langue:'Français',prix:10.50,pages:240,format:'12.5 × 18.5 cm',dateParution:'1 juin 2011',ean:'9782368520048',image:'/asset/image/Berserk-Tome-41.jpg',description:'Thorfinn, fils d\'un guerrier légendaire, nourrit une soif de vengeance contre le chef mercenaire Askeladd. L\'épopée viking de Makoto Yukimura, magistrale et philosophique.',tags:['Vikings','Vengeance','Histoire'],note:4.9,stock:8,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:true},
-
-// ═══════════════════ SHŌJO — NOUVELLES ENTRÉES ══════════════════
-
-{id:'orange-1',titre:'Orange - Tome 1',serie:'Orange',tome:1,auteur:'Ichigo Takano',editeur:'Akata',collection:'Shōjo Manga',categorie:'Shôjo',etat:'neuf',langue:'Français',prix:8.90,pages:344,format:'13 × 18 cm',dateParution:'23 sept. 2015',ean:'9782369742814',image:'/asset/image/catégorie_shojo.jpg',description:'Naho reçoit des lettres de son futur moi, lui demandant de veiller sur Kakeru, un nouveau camarade. Ces lettres la guidèrent vers des choix qui changèrent tout. Bouleversant.',tags:['Romance','Voyage temporel','Amitié'],note:4.8,stock:9,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-{id:'kimi-ni-todoke-1',titre:'Kimi ni Todoke - Tome 1',serie:'Kimi ni Todoke',tome:1,auteur:'Karuho Shiina',editeur:'Glénat',collection:'Shōjo Manga',categorie:'Shôjo',etat:'neuf',langue:'Français',prix:7.90,pages:192,format:'11.5 × 18 cm',dateParution:'10 août 2009',ean:'9782723470292',image:'/asset/image/catégorie_shojo.jpg',description:'Sawako est surnommée Sadako à cause de sa ressemblance avec le personnage de Ring. Elle est timide et incomprise jusqu\'à ce que Kazehaya, le garçon le plus populaire, lui parle réellement.',tags:['Romance','Lycée','Transformation'],note:4.8,stock:7,nouveaute:false,promo:true,prixPromo:5.90,coupDeCoeur:true,bestseller:false},
-
-{id:'ouran-host-1',titre:'Ouran Host Club - Tome 1',serie:'Ouran Host Club',tome:1,auteur:'Bisco Hatori',editeur:'Panini',collection:'Shōjo Manga',categorie:'Shôjo',etat:'neuf',langue:'Français',prix:7.50,pages:192,format:'11.5 × 18 cm',dateParution:'2006',ean:'9782845995574',image:'/asset/image/catégorie_shojo.jpg',description:'Haruhi, étudiante boursière, brise un vase à 8 millions de yens appartenant au club des hôtes d\'Ouran. Elle doit maintenant travailler pour eux — en se faisant passer pour un garçon !',tags:['Comédie','Romance','Travestissement'],note:4.7,stock:8,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-{id:'watashi-ga-motenai-1',titre:'WataShoi - Tome 1',serie:'WataShoi : Je ne serai jamais populaire',tome:1,auteur:'Nico Tanigawa',editeur:'Soleil Manga',collection:'Shōjo Manga',categorie:'Shôjo',etat:'neuf',langue:'Français',prix:7.99,pages:192,format:'11.5 × 18 cm',dateParution:'19 nov. 2014',ean:'9782302033368',image:'/asset/image/catégorie_shojo.jpg',description:'Tomoko était persuadée qu\'au lycée elle serait populaire. Mais la réalité la dépasse. Un manga décalé et souvent bouleversant sur la timidité, l\'inadaptation sociale et l\'adolescence.',tags:['Tranche de vie','Humor noir','Adolescence'],note:4.5,stock:6,nouveaute:false,promo:false,coupDeCoeur:false,bestseller:false},
-
-{id:'josei-honey-and-clover-1',titre:'Honey & Clover - Tome 1',serie:'Honey & Clover',tome:1,auteur:'Chica Umino',editeur:'Tonkam',collection:'Josei Manga',categorie:'Josei',etat:'neuf',langue:'Français',prix:8.50,pages:192,format:'11.5 × 18 cm',dateParution:'2007',ean:'9782350786131',image:'/asset/image/categorie_josei.jpg',description:'Des étudiants en école d\'art partagent leurs rêves, leurs peines et leurs histoires d\'amour complexes. Un manga sur la jeunesse, le talent et les choix de vie.',tags:['Art','Tranche de vie','Amour'],note:4.7,stock:5,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
-// ═══════════════════ OCCASION — NOUVELLES ENTRÉES ═══════════════
-
-{id:'one-piece-coffret-occ',titre:'One Piece - Tome 30 à 40 (lot)',serie:'One Piece',tome:30,auteur:'Eiichiro Oda',editeur:'Glénat',collection:'Shōnen Manga',categorie:'Shônen',etat:'occasion',langue:'Français',prix:18.00,pages:null,format:'Lot de 11 tomes',dateParution:'2003-2006',ean:'9782723428262-L',image:'/asset/image/One-Piece-Edition-originale-Tome-105.jpg',description:'Lot de 11 tomes de One Piece (tomes 30 à 40) en très bon état d\'occasion. Arcs Water Seven et Ennies Lobby. Un lot parfait pour compléter sa collection à prix réduit.',tags:['Pirates','Lot','Occasion'],note:4.8,stock:1,nouveaute:false,promo:false,coupDeCoeur:false,bestseller:false},
-
-{id:'dbz-occ-2',titre:'Dragon Ball Z - Tomes 1 à 10 (lot)',serie:'Dragon Ball',tome:1,auteur:'Akira Toriyama',editeur:'Glénat',collection:'Shōnen Manga',categorie:'Shônen',etat:'occasion',langue:'Français',prix:22.00,pages:null,format:'Lot de 10 tomes',dateParution:'1993-1996',ean:'9782723421188-L',image:'/asset/image/catégorie_shonen.webp',description:'Les 10 premiers tomes de Dragon Ball Z en occasion. Des sagas Saiyan à Namek. Bonne condition, idéal pour redécouvrir les classiques.',tags:['Action','Classique','Lot'],note:4.9,stock:1,nouveaute:false,promo:false,coupDeCoeur:false,bestseller:false},
-
-{id:'naruto-occ-pack',titre:'Naruto - Tomes 1 à 27 (lot occasion)',serie:'Naruto',tome:1,auteur:'Masashi Kishimoto',editeur:'Kana',collection:'Shōnen Manga',categorie:'Shônen',etat:'occasion',langue:'Français',prix:55.00,pages:null,format:'Lot de 27 tomes',dateParution:'2002-2005',ean:'9782871295174-L',image:'/asset/image/naruto-coffret.jpg',description:'La première partie de Naruto en lot d\'occasion (Tomes 1 à 27). Bon état général, quelques légères usures de couverture. La saga originale complète avant Shippuden.',tags:['Ninja','Lot','Classique'],note:4.9,stock:2,nouveaute:false,promo:false,coupDeCoeur:false,bestseller:false},
-
-{id:'hxh-occ',titre:'Hunter x Hunter - Tome 1 à 15 (lot)',serie:'Hunter x Hunter',tome:1,auteur:'Yoshihiro Togashi',editeur:'Kazé Manga',collection:'Shōnen Manga',categorie:'Shônen',etat:'occasion',langue:'Français',prix:28.00,pages:null,format:'Lot de 15 tomes',dateParution:'2009-2012',ean:'9782820342898-L',image:'/asset/image/bannière_jjk.png',description:'Lot occasion HxH tomes 1 à 15 : des origines au tournoi du Ciel. Très bonne conservation. Idéal pour (re)découvrir le chef-d\'œuvre de Togashi.',tags:['Aventure','Lot','Occasion'],note:4.9,stock:1,nouveaute:false,promo:false,coupDeCoeur:false,bestseller:false},
-
-{id:'jjk-occ-pack',titre:'Jujutsu Kaisen - Tomes 1 à 10 (lot)',serie:'Jujutsu Kaisen',tome:1,auteur:'Gege Akutami',editeur:'Ki-oon',collection:'Shōnen Manga',categorie:'Shônen',etat:'occasion',langue:'Français',prix:42.00,pages:null,format:'Lot de 10 tomes',dateParution:'2019-2021',ean:'9791032703960-L',image:'/asset/image/jjk tome 20.jpg',description:'Les 10 premiers tomes de Jujutsu Kaisen en très bon état occasion. De l\'entrée de Yuji Itadori à l\'arc de l\'échange interscolaire. Parfait pour compléter sa bibliothèque.',tags:['Sorciers','Lot','Occasion'],note:4.8,stock:2,nouveaute:false,promo:false,coupDeCoeur:false,bestseller:false},
-
-// ═══════════════════ COFFRETS — NOUVELLES ENTRÉES ════════════════
-
-{id:'coffret-frieren',titre:'Frieren - Coffret Tomes 1 à 5',serie:'Frieren : Par-delà la fin du voyage',tome:null,auteur:'Kanehito Yamada / Tsukasa Abe',editeur:'Stalker',collection:'Coffrets & Intégrales',categorie:'Coffret',etat:'neuf',langue:'Français',prix:44.50,prixOriginal:55.00,pages:null,format:'Coffret 5 tomes',dateParution:'19 sept. 2024',ean:'9782380719031',image:'/asset/image/catégorie_seinen.jpg',description:'Coffret premium des 5 premiers tomes de Frieren. Le manga révélation de ces dernières années, lauréat du prix Manga Taishō, dans un beau coffret collector.',tags:['Fantasy','Coffret','Collector'],note:5.0,stock:4,nouveaute:true,promo:true,prixPromo:44.50,coupDeCoeur:true,bestseller:true},
-
-{id:'coffret-spy-family',titre:'Spy × Family - Coffret Vol. 1',serie:'Spy x Family',tome:null,auteur:'Tatsuya Endo',editeur:'Kurokawa',collection:'Coffrets & Intégrales',categorie:'Coffret',etat:'neuf',langue:'Français',prix:65.00,prixOriginal:79.00,pages:null,format:'Coffret 8 tomes',dateParution:'22 nov. 2023',ean:'9782368528618',image:'/asset/image/Spyxfamily_tome10.jpg',description:'Les 8 premiers tomes de Spy × Family réunis dans un beau coffret ! La naissance de la famille Forger et leurs premières aventures d\'espionnage familial.',tags:['Espionnage','Coffret','Famille'],note:4.9,stock:5,nouveaute:false,promo:true,prixPromo:65.00,coupDeCoeur:true,bestseller:false},
-
-{id:'coffret-chainsaw-man',titre:'Chainsaw Man - Partie I Intégrale',serie:'Chainsaw Man',tome:null,auteur:'Tatsuki Fujimoto',editeur:'Kazé Manga',collection:'Coffrets & Intégrales',categorie:'Coffret',etat:'neuf',langue:'Français',prix:110.00,prixOriginal:143.00,pages:null,format:'Coffret 11 tomes',dateParution:'2024',ean:'9782820344328-C1',image:'/asset/image/chainsaw_man_bannière.jpg',description:'L\'intégrale de la Partie I de Chainsaw Man en coffret collector. De la naissance de Denji à la conclusion explosive de la guerre publique. Incontournable.',tags:['Démons','Coffret','Intégrale'],note:4.9,stock:3,nouveaute:true,promo:false,coupDeCoeur:true,bestseller:true},
-
-{id:'coffret-hxh',titre:'Hunter x Hunter - Coffret Vol. 1',serie:'Hunter x Hunter',tome:null,auteur:'Yoshihiro Togashi',editeur:'Kazé Manga',collection:'Coffrets & Intégrales',categorie:'Coffret',etat:'neuf',langue:'Français',prix:99.00,prixOriginal:126.00,pages:null,format:'Coffret 14 tomes',dateParution:'2023',ean:'9782820342898-C1',image:'/asset/image/bannière_jjk.png',description:'Les 14 premiers tomes de Hunter x Hunter en coffret premium. Des origines de Gon et Killua au tournoi du Ciel des Arènes. Un trésor pour tout fan de manga.',tags:['Aventure','Coffret','Collector'],note:4.9,stock:2,nouveaute:false,promo:false,coupDeCoeur:true,bestseller:false},
-
 ];
 
 // ============================================================
@@ -310,6 +238,66 @@ const maisonsDB = [
         series:['Vagabond','Bonne Nuit Punpun','Blame!','I Am a Hero','Solanin'],
         couleur:'#0ea5e9',
         totalTitres: 310
+    },
+    {
+        id:'pika',
+        editeurs:['Pika'],
+        nom:'Pika Édition',
+        logo:'/asset/image/logo_kioon.jpg',
+        fondee:'1994',
+        description:'Pika Édition est l\'un des pionniers du manga en France, éditeur de L\'Attaque des Titans, Blue Lock et Sailor Moon. Pika est reconnu pour la qualité de ses traductions et la diversité de son catalogue.',
+        siteWeb:'https://www.pika.fr',
+        series:['L\'Attaque des Titans','Blue Lock','Sailor Moon','Haikyu!!','Fairy Tail'],
+        couleur:'#f97316',
+        totalTitres: 380
+    },
+    {
+        id:'kana',
+        editeurs:['Kana'],
+        nom:'Kana',
+        logo:'/asset/image/logo_kioon.jpg',
+        fondee:'1993',
+        description:'Kana, filiale de Dargaud-Lombard, est l\'un des plus anciens éditeurs manga de France. Éditeur historique de Naruto et de nombreux classiques, Kana a contribué à démocratiser le manga en France.',
+        siteWeb:'https://www.kana.fr',
+        series:['Naruto','Pluto','Dragon Ball Super','One-Punch Man'],
+        couleur:'#eab308',
+        totalTitres: 290
+    },
+    {
+        id:'panini',
+        editeurs:['Panini'],
+        nom:'Panini Manga',
+        logo:'/asset/image/logo_panini_manga.jpg',
+        fondee:'1996',
+        description:'Panini Manga publie des titres populaires comme Demon Slayer, 20th Century Boys et de nombreux shōnen. Filiale du groupe Panini, l\'éditeur est présent dans toute l\'Europe avec un catalogue varié.',
+        siteWeb:'https://www.panini.fr',
+        series:['Demon Slayer','20th Century Boys','Paradise Kiss','Toriko','Pokémon'],
+        couleur:'#dc2626',
+        totalTitres: 320
+    },
+    {
+        id:'kaze',
+        editeurs:['Kazé Manga'],
+        nom:'Kazé Manga',
+        logo:'/asset/image/logo_kioon.jpg',
+        fondee:'2007',
+        description:'Kazé Manga, filiale de Viz Media Europe, publie des titres comme Chainsaw Man, Black Clover et Hunter x Hunter. Kazé est reconnu pour sa rapidité de publication et la qualité de ses adaptations.',
+        siteWeb:'https://www.kaze-manga.fr',
+        series:['Chainsaw Man','Black Clover','Hunter x Hunter','Bleach','Naruto Shippuden'],
+        couleur:'#10b981',
+        totalTitres: 210
+    },
+    {
+        id:'ototo',
+        editeurs:['Ototo'],
+        nom:'Ototo',
+        logo:'/asset/image/logo_ototo.png',
+        fondee:'2011',
+        description:'Ototo est un éditeur français spécialisé dans les light novels et les mangas populaires comme Sword Art Online, That Time I Got Reincarnated as a Slime et Made in Abyss.',
+        siteWeb:'https://www.ototo.fr',
+        series:['Sword Art Online','That Time I Got Reincarnated as a Slime','Made in Abyss'],
+        couleur:'#7c3aed',
+        totalTitres: 130
     }
 ];
 
@@ -337,6 +325,7 @@ function filterProducts(opts = {}) {
     if (opts.coupDeCoeur)result = result.filter(m => m.coupDeCoeur);
     if (opts.bestseller) result = result.filter(m => m.bestseller);
     if (opts.coffret)    result = result.filter(m => m.categorie === 'Coffret');
+    if (opts.auteur)     result = result.filter(m => m.auteur === opts.auteur);
     if (opts.serie)      result = result.filter(m => m.serie === opts.serie);
     if (opts.query) {
         const q = opts.query.toLowerCase();
@@ -374,28 +363,43 @@ function buildProductCard(manga, opts = {}) {
     const badgeTxt = manga.nouveaute ? 'NOUVEAU' : manga.bestseller ? 'BEST-SELLER' : manga.etat === 'occasion' ? 'OCCASION' : '';
     const badgeClass = manga.etat === 'occasion' ? 'occasion' : manga.bestseller ? 'bestseller' : '';
 
-    return `<div class="product-card" data-id="${manga.id}" onclick="if(!event.target.closest('.add-to-cart,.add-to-fav'))window.location.href='/page_detail_produit.html?id=${manga.id}'">
+    const noteStars = manga.note ? (() => {
+        const n = Math.round(manga.note * 2) / 2;
+        const full = Math.floor(n);
+        const half = (n % 1) >= 0.5 ? 1 : 0;
+        let s = '';
+        for (let i = 0; i < full; i++) s += '<span class="star full">★</span>';
+        if (half) s += '<span class="star half">★</span>';
+        for (let i = full + half; i < 5; i++) s += '<span class="star empty">☆</span>';
+        return `<div class="card-note"><span class="stars">${s}</span><span class="note-val">${manga.note.toFixed(1)}</span></div>`;
+    })() : '';
+    const stockLabel = manga.stock <= 0 ? '<span class="stock-badge rupture">Rupture</span>'
+                     : manga.stock <= 3 ? `<span class="stock-badge last">Plus que ${manga.stock}</span>` : '';
+
+    return `<div class="product-card" data-id="${manga.id}" onclick="if(!event.target.closest('.add-to-cart,.card-fav-btn'))window.location.href='/page_detail_produit.html?id=${manga.id}'">
         <div class="product-image">
             ${badgeTxt ? `<span class="product-badge ${badgeClass}">${badgeTxt}</span>` : ''}
+            ${stockLabel}
             <img src="${manga.image}" alt="${manga.titre}" loading="lazy" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
             <div class="product-synopsis"><p>${manga.description || ''}</p></div>
+            <div class="card-actions">
+                <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="kinkaToggleFav('${manga.id}',event)" title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">
+                    <span class="material-symbols-outlined">favorite</span>
+                </button>
+            </div>
         </div>
         <div class="product-info">
             <h3 class="product-title">${manga.titre}</h3>
-            <p class="product-author">${manga.auteur}</p>
+            <p class="product-author"><a href="/page_auteur.html?auteur=${encodeURIComponent(manga.auteur)}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none" class="author-card-link">${manga.auteur}</a></p>
+            ${noteStars}
             <div class="product-footer">
                 <div>
                     <span class="product-price">${prix.toFixed(2)} €</span>
                     ${prixOriginal ? `<span class="product-price-old">${prixOriginal.toFixed(2)} €</span>` : ''}
                 </div>
-                <div class="card-footer-actions">
-                    <button class="add-to-fav ${isFav ? 'active' : ''}" onclick="kinkaToggleFav('${manga.id}',event)" title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">
-                        <span class="material-symbols-outlined">favorite</span>
-                    </button>
-                    <button class="add-to-cart" onclick="kinkaAddToCart('${manga.id}',event)" title="Ajouter au panier">
-                        <span class="material-symbols-outlined">add_shopping_cart</span>
-                    </button>
-                </div>
+                <button class="add-to-cart" onclick="kinkaAddToCart('${manga.id}',event)" title="Ajouter au panier">
+                    <span class="material-symbols-outlined">add_shopping_cart</span>
+                </button>
             </div>
         </div>
     </div>`;
@@ -431,7 +435,7 @@ function kinkaToggleFav(id, e) {
     } else {
         favs.push(id);
         if (btn) btn.classList.add('active');
-        showToast('Ajouté aux favoris');
+        showToast('Ajouté aux favoris ');
     }
     localStorage.setItem('kinka_favoris', JSON.stringify(favs));
     updateFavsCount();
@@ -454,16 +458,28 @@ function updateFavsCount() {
     });
 }
 
-function showToast(msg, type = '') {
-    const old = document.querySelector('.kinka-toast');
-    if (old) old.remove();
-    const t = document.createElement('div');
-    t.className = 'kinka-toast' + (type ? ' ' + type : '');
-    t.textContent = msg;
-    t.style.cssText = 'position:fixed;bottom:2rem;right:2rem;background:#1a1a1a;color:#fff;padding:.75rem 1.4rem;border-radius:10px;font-size:.86rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);z-index:9999;animation:fadeIn .25s ease';
+function showToast(msg, type) {
+    var old = document.querySelector('.kinka-toast');
+    if (old) { clearTimeout(old._timeout1); clearTimeout(old._timeout2); old.remove(); }
+    var t = document.createElement('div');
+    t.className = 'kinka-toast kinka-toast--' + (type || 'default');
+    var icons  = { error: 'error', success: 'check_circle', info: 'info', warning: 'warning', default: 'notifications' };
+    var iconName = icons[type] || icons.default;
+    t.innerHTML = '<span class="material-symbols-outlined" style="font-size:1rem;flex-shrink:0;font-variation-settings:\'FILL\' 1">' + iconName + '</span>' + msg;
+    t.style.cssText = [
+        'position:fixed;bottom:2rem;right:2rem',
+        'display:flex;align-items:center;gap:.55rem',
+        'padding:.75rem 1.2rem;border-radius:12px',
+        'font-size:.86rem;font-weight:500;letter-spacing:-.01em',
+        'box-shadow:0 8px 32px rgba(0,0,0,.3)',
+        'z-index:9999;max-width:340px',
+        'transform:translateY(8px);opacity:0',
+        'transition:opacity .2s ease,transform .2s ease'
+    ].join(';');
     document.body.appendChild(t);
-    setTimeout(() => t.style.opacity = '0', 2200);
-    setTimeout(() => t.remove(), 2500);
+    requestAnimationFrame(function(){ t.style.opacity='1'; t.style.transform='translateY(0)'; });
+    t._timeout1 = setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateY(8px)'; }, 2800);
+    t._timeout2 = setTimeout(function(){ t.remove(); }, 3050);
 }
 
 // Appel direct + fallback DOMContentLoaded (compatible tous cas de chargement)

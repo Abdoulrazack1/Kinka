@@ -57,6 +57,14 @@
     </header>
 
     <!-- MAIN CONTENT -->
+        <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span class="separator">&rsaquo;</span>
+            <span class="current" id="breadcrumb-serie">Série</span>
+        </div>
+    </div>
+
     <main>
         <!-- HERO BANNER -->
         <section class="hero-banner">
@@ -210,7 +218,7 @@
                     <div class="products-grid">
                         <!-- Tome 20 -->
                         <div class="product-card">
-                            <a href="/page_produit.html">
+                            <a href="/page_detail_produit.html?id=jujutsu-kaisen-20">
                                 <div class="product-image">
                                     <span class="product-badge">NOUVEAU</span>
                                     <img src="/asset/image/jjk tome 20.jpg" alt="Jujutsu Kaisen - Tome 20">
@@ -231,7 +239,7 @@
 
                         <!-- Tome 01 -->
                         <div class="product-card">
-                            <a href="/page_produit.html">
+                            <a href="/page_detail_produit.html?id=jujutsu-kaisen-20">
                                 <div class="product-image">
                                     <img src="/asset/image/jjk tome 20.jpg" alt="Jujutsu Kaisen - Tome 01">
                                     <div class="product-synopsis">
@@ -251,7 +259,7 @@
 
                         <!-- Tome 01 (duplicate) -->
                         <div class="product-card">
-                            <a href="/page_produit.html">
+                            <a href="/page_detail_produit.html?id=jujutsu-kaisen-20">
                                 <div class="product-image">
                                     <img src="/asset/image/jjk tome 20.jpg" alt="Jujutsu Kaisen - Tome 01">
                                     <div class="product-synopsis">
@@ -271,7 +279,7 @@
 
                         <!-- Tome 01 (duplicate) -->
                         <div class="product-card">
-                            <a href="/page_produit.html">
+                            <a href="/page_detail_produit.html?id=jujutsu-kaisen-20">
                                 <div class="product-image">
                                     <img src="/asset/image/jjk tome 20.jpg" alt="Jujutsu Kaisen - Tome 01">
                                     <div class="product-synopsis">
@@ -291,7 +299,7 @@
 
                         <!-- Dandadan Tome 05 -->
                         <div class="product-card">
-                            <a href="/page_produit.html">
+                            <a href="/page_detail_produit.html?id=jujutsu-kaisen-20">
                                 <div class="product-image">
                                     <img src="/asset/image/Dandadan1.jpg" alt="Dandadan - Tome 05">
                                     <div class="product-synopsis">
@@ -311,7 +319,7 @@
 
                         <!-- Jujutsu Kaisen Tome 01 -->
                         <div class="product-card">
-                            <a href="/page_produit.html">
+                            <a href="/page_detail_produit.html?id=jujutsu-kaisen-20">
                                 <div class="product-image">
                                     <img src="/asset/image/jjk tome 20.jpg" alt="Jujutsu Kaisen - Tome 01">
                                     <div class="product-synopsis">
@@ -529,7 +537,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#7615191802171502361d1f181d17581004"><span class="__cf_email__" data-cfemail="0764686973666473476c6e696c66296175">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -539,31 +547,43 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
 
 
     <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+        <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
-
     <script>
-    // Header scroll effect
-    (function(){
-        var h=document.querySelector('header'); if(h) window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true});
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    /* ── GRILLE SÉRIE (après mangadb.js chargé) ── */
+    (function _init(){
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
         var params = new URLSearchParams(window.location.search);
         var serie  = params.get('serie') || '';
         var grid   = document.querySelector('#series-grid, .products-grid');
-        
         var titleEl = document.querySelector('.serie-title, h1');
         if (titleEl && serie) titleEl.textContent = serie;
-    
+        // Breadcrumb
+        var bc = document.getElementById('breadcrumb-serie');
+        if (bc && serie) bc.textContent = serie;
+        // Page title
+        if (serie) document.title = serie + ' — KINKA.FR';
+        if (grid && typeof filterProducts === 'function' && serie) {
+            var items = filterProducts({ serie: serie });
+            grid.innerHTML = items.length
+                ? items.map(function(m){ return buildProductCard(m); }).join('')
+                : '<p style="padding:2rem;color:var(--text-muted)">Aucun titre pour cette série.</p>';
+        }
+    })();</script>
+</body>
+</html>

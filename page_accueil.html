@@ -203,20 +203,53 @@
 
         <!-- SECTIONS PROMO CARDS -->
         <section class="promo-sections">
-            <div class="promo-card promo-dark">
+
+            <!-- COFFRET -->
+            <a href="/page_coffret.html" class="promo-card promo-coffret">
+                <div class="promo-bg-pattern promo-pattern-coffret">
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pc" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse"><rect x="10" y="6" width="28" height="36" rx="3" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/><rect x="16" y="10" width="28" height="36" rx="3" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#pc)"/></svg>
+                </div>
+                <div class="promo-icon-bg">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                </div>
                 <div class="promo-content">
+                    <span class="promo-tag">Collection</span>
                     <h3>Coffrets Intégrale</h3>
                     <p>Offrez-vous l'intégrale de vos séries préférées à prix réduit.</p>
-                    <button class="btn-promo" onclick="window.location.href='/page_coffret.html'">Voir les coffrets</button>
+                    <div class="promo-chips">
+                        <span class="promo-chip">+30 coffrets</span>
+                        <span class="promo-chip">Jusqu'à&nbsp;<strong>-25%</strong></span>
+                    </div>
+                    <div class="promo-cta">
+                        Voir les coffrets
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
                 </div>
-            </div>
-            <div class="promo-card promo-purple">
+            </a>
+
+            <!-- OCCASION -->
+            <a href="/page_occasion.html" class="promo-card promo-occasion">
+                <div class="promo-bg-pattern promo-pattern-occasion">
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="po" x="0" y="0" width="56" height="56" patternUnits="userSpaceOnUse"><circle cx="28" cy="28" r="20" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/><circle cx="28" cy="28" r="10" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/><circle cx="0" cy="0" r="20" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#po)"/></svg>
+                </div>
+                <div class="promo-icon-bg">
+                    <span class="material-symbols-outlined">recycling</span>
+                </div>
                 <div class="promo-content">
+                    <span class="promo-tag">Bons plans</span>
                     <h3>Mangas d'Occasion</h3>
                     <p>Des titres en très bon état jusqu'à -40% du prix neuf.</p>
-                    <button class="btn-promo-alt" onclick="window.location.href='/page_occasion.html'">Voir les occasions</button>
+                    <div class="promo-chips">
+                        <span class="promo-chip">État vérifié</span>
+                        <span class="promo-chip">Jusqu'à&nbsp;<strong>-40%</strong></span>
+                    </div>
+                    <div class="promo-cta">
+                        Voir les occasions
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
                 </div>
-            </div>
+            </a>
+
         </section>
 
         <!-- CATÉGORIES -->
@@ -265,6 +298,54 @@
             </div>
             <div class="products-grid" id="grid-bestsellers">
                 <!-- Généré par JS -->
+            </div>
+        </section>
+
+        <!-- KINKA PREMIUM -->
+        <section class="section-premium-accueil">
+            <div class="premium-accueil-card">
+                <div class="premium-accueil-content">
+                    <span class="premium-accueil-badge">
+                        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">star</span>
+                        Kinka Premium
+                    </span>
+                    <h2>Votre passeport pour le meilleur du manga</h2>
+                    <p>Livraison offerte, remises exclusives et accès anticipé aux coffrets collectors.</p>
+                    <div class="premium-accueil-perks">
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">local_shipping</span>
+                            <span>Livraison offerte</span>
+                        </div>
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">sell</span>
+                            <span>-10% sur tout</span>
+                        </div>
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">alarm</span>
+                            <span>Accès anticipé</span>
+                        </div>
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">support_agent</span>
+                            <span>Support prioritaire</span>
+                        </div>
+                    </div>
+                    <div class="premium-accueil-cta">
+                        <a href="/page_premium.html" class="btn-premium-rose">
+                            Découvrir Premium
+                        </a>
+                        <span class="premium-price-hint">Dès 4,99&nbsp;€/mois · Résiliable à tout moment</span>
+                    </div>
+                </div>
+                <div class="premium-accueil-visual">
+                    <div class="premium-visual-inner">
+                        <div class="pv-ring pv-ring-1"></div>
+                        <div class="pv-ring pv-ring-2"></div>
+                        <div class="pv-ring pv-ring-3"></div>
+                        <div class="pv-center">
+                            <span class="material-symbols-outlined" style="font-size:2.5rem;font-variation-settings:'FILL' 1;color:#fff">auto_awesome</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

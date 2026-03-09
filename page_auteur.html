@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Page auteur — KINKA.FR">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Auteur - KINKA.FR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
+    <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_oda.css">
+    <link rel="stylesheet" href="/asset/css/translate.css">
+    <link rel="stylesheet" href="/asset/css/darkmode.css">
+    <style>
+        /* ── Styles spécifiques page auteur dynamique ── */
+        .author-not-found {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+        .author-not-found .material-symbols-outlined {
+            font-size: 4rem;
+            color: var(--pink, #E03B8B);
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .author-not-found h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: .5rem;
+        }
+        .author-not-found p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Nav auteurs */
+        .authors-nav-bar {
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            padding: .75rem 3rem;
+            display: flex;
+            gap: .5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .authors-nav-bar::-webkit-scrollbar { display: none; }
+        .author-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .45rem 1rem;
+            border-radius: 20px;
+            border: 1px solid #e8e8e8;
+            text-decoration: none;
+            color: #444;
+            font-size: .8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all .2s ease;
+            flex-shrink: 0;
+        }
+        .author-nav-link:hover {
+            border-color: #E03B8B;
+            color: #E03B8B;
+        }
+        .author-nav-link.active {
+            background: #E03B8B;
+            color: white;
+            border-color: #E03B8B;
+        }
+        .author-nav-link .nav-count {
+            background: rgba(0,0,0,.08);
+            border-radius: 10px;
+            padding: 0 6px;
+            font-size: .72rem;
+        }
+        .author-nav-link.active .nav-count {
+            background: rgba(255,255,255,.25);
+        }
+
+        /* Stats supplémentaires */
+        .series-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-top: 1rem;
+        }
+        .serie-tag {
+            background: rgba(224,59,139,.08);
+            color: #E03B8B;
+            border: 1px solid rgba(224,59,139,.2);
+            padding: .3rem .8rem;
+            border-radius: 12px;
+            font-size: .78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .serie-tag:hover, .serie-tag.active {
+            background: #E03B8B;
+            color: white;
+            border-color: #E03B8B;
+        }
+
+        /* Section grille produits auteur */
+        .section-catalogue-auteur {
+            margin-bottom: 4rem;
+        }
+        .catalogue-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .catalogue-count {
+            font-size: .85rem;
+            color: #666;
+            flex: 1;
+        }
+        .sort-select-auteur {
+            padding: .4rem .9rem;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: .82rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Banner auteur */
+        .author-banner {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-size: 200% 200%;
+            animation: gradient 12s ease infinite;
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+        .author-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 80% 50%, rgba(224,59,139,.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .author-banner-text {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+        .author-banner-text h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: .7rem;
+            line-height: 1.3;
+        }
+        .author-banner-text p {
+            font-size: .92rem;
+            opacity: .85;
+            line-height: 1.6;
+            max-width: 500px;
+            margin-bottom: 1.2rem;
+        }
+        .author-banner-stat {
+            display: flex;
+            gap: 2rem;
+        }
+        .author-banner-stat-item {
+            text-align: center;
+        }
+        .author-banner-stat-val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #E03B8B;
+            display: block;
+        }
+        .author-banner-stat-lbl {
+            font-size: .75rem;
+            opacity: .7;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .author-banner-quote {
+            position: relative;
+            z-index: 2;
+            color: rgba(255,255,255,.6);
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            text-align: right;
+            min-width: 120px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+        .empty-state .material-symbols-outlined {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: .8rem;
+        }
+
+        @media (max-width: 768px) {
+            .authors-nav-bar { padding: .6rem 1rem; }
+            .author-banner { flex-direction: column; padding: 1.8rem 1.5rem; }
+            .author-banner-stat { gap: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+            </div>
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html">Promotions</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" id="favoris-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>›</span>
+            <a href="/page_catalogue.html">Catalogue</a>
+            <span>›</span>
+            <span class="breadcrumb-current" id="breadcrumb-auteur">Auteur</span>
+        </div>
+    </div>
+
+    <!-- Navigation entre auteurs -->
+    <div class="authors-nav-bar" id="authors-nav-bar"></div>
+
+    <main class="container" id="main-content">
+
+        <!-- PROFIL AUTEUR -->
+        <section class="mangaka-profile" id="section-profil">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img id="auteur-photo" src="" alt="" class="profile-photo" onerror="this.style.display='none'">
+                    <div class="profile-info">
+                        <div class="profile-title-row">
+                            <h1 class="profile-name" id="auteur-nom">—</h1>
+                            <button class="btn-follow" id="btn-follow">
+                                <span class="material-symbols-outlined">notifications</span>
+                                Suivre l'auteur
+                            </button>
+                        </div>
+                        <div class="profile-meta">
+                            <span class="meta-item" id="meta-pays">
+                                <span class="material-symbols-outlined">flag</span>
+                                <span id="auteur-pays">—</span>
+                            </span>
+                            <span class="meta-item" id="meta-naissance">
+                                <span class="material-symbols-outlined">cake</span>
+                                <span id="auteur-naissance">—</span>
+                            </span>
+                            <span class="meta-item" id="meta-debut">
+                                <span class="material-symbols-outlined">edit</span>
+                                <span id="auteur-debut">—</span>
+                            </span>
+                        </div>
+                        <div class="series-list" id="auteur-series"></div>
+                    </div>
+                </div>
+                <div class="profile-bio" id="auteur-bio"></div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-titres">—</div>
+                        <div class="stat-label">Titres chez KINKA</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-series">—</div>
+                        <div class="stat-label">Séries</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-note">—</div>
+                        <div class="stat-label">Note moyenne</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BANNER AUTEUR -->
+        <div class="author-banner" id="author-banner">
+            <div class="author-banner-text">
+                <h2 id="banner-titre">—</h2>
+                <p id="banner-desc">—</p>
+                <div class="author-banner-stat">
+                    <div class="author-banner-stat-item">
+                        <span class="author-banner-stat-val" id="banner-stat-volumes">—</span>
+                        <span class="author-banner-stat-lbl">Volumes publiés</span>
+                    </div>
+                    <div class="author-banner-stat-item">
+                        <span class="author-banner-stat-val" id="banner-stat-annee">—</span>
+                        <span class="author-banner-stat-lbl">Début de carrière</span>
+                    </div>
+                    <div class="author-banner-stat-item">
+                        <span class="author-banner-stat-val" id="banner-stat-cat">—</span>
+                        <span class="author-banner-stat-lbl">Catégorie principale</span>
+                    </div>
+                </div>
+            </div>
+            <div class="author-banner-quote" id="banner-quote">✦</div>
+        </div>
+
+        <!-- CATALOGUE COMPLET -->
+        <section class="section-catalogue-auteur">
+            <div class="section-header">
+                <h2 class="section-title">Catalogue complet</h2>
+                <div class="catalogue-controls">
+                    <span class="catalogue-count" id="catalogue-count">— titre(s)</span>
+                    <select class="sort-select-auteur" id="sort-auteur">
+                        <option value="">Pertinence</option>
+                        <option value="prix_asc">Prix ↑</option>
+                        <option value="prix_desc">Prix ↓</option>
+                        <option value="note">Meilleures notes</option>
+                        <option value="nouveaute">Nouveautés</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filtres par série -->
+            <div class="series-list" id="serie-filters" style="margin-bottom:1.5rem"></div>
+
+            <div class="products-grid" id="auteur-grid"></div>
+            <div class="empty-state" id="auteur-empty" style="display:none">
+                <span class="material-symbols-outlined">search_off</span>
+                <p>Aucun titre disponible pour cette sélection.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+            <div class="footer-section"><h4>Navigation</h4><ul>
+                <li><a href="/page_accueil.html">Accueil</a></li>
+                <li><a href="/page_catalogue.html">Catalogue</a></li>
+                <li><a href="/page_promotion.html">Promotions</a></li>
+                <li><a href="/page_coffret.html">Coffrets</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Compte</h4><ul>
+                <li><a href="/pageLogIn.html">Connexion</a></li>
+                <li><a href="/pageSignUp.html">Inscription</a></li>
+                <li><a href="/page_panier.html">Mon panier</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Support</h4><ul>
+                <li><a href="/page_faq.html">FAQ</a></li>
+                <li><a href="/page_contact.html">Contact</a></li>
+                <li><a href="/page_cgv.html">CGV</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Nous contacter</h4>
+                <p class="contact-info">contact@kinka.fr</p>
+                <div class="social-icons">
+                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
+    </footer>
+
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+
+    /* ── DB enrichie des auteurs ───────────────────────────── */
+    var auteursDB = [
+        {
+            id: 'eiichiro-oda',
+            nom: 'Eiichiro Oda',
+            nomKanji: '尾田 栄一郎',
+            pays: 'Japon',
+            naissance: '1er janvier 1975',
+            debutCarriere: '1997',
+            photo: '/asset/image/eichiro_oda.jpg',
+            bio: 'Eiichirō Oda est un mangaka japonais connu pour être l\'auteur du manga <strong>One Piece</strong>. Avec plus de 500 millions d\'exemplaires en circulation dans le monde, il est l\'auteur de manga le plus vendu de tous les temps. Son style graphique unique et sa capacité à créer des mondes vastes et imaginatifs ont redéfini le genre Shōnen.',
+            volumesTotal: 100,
+            couleur: '#E03B8B',
+            bannerQuote: '⛵',
+            bannerDesc: 'Découvrez l\'intégralité de l\'œuvre d\'Eiichiro Oda disponible chez KINKA — de ses premières aventures pirates jusqu\'aux derniers arcs de la saga finale.',
+        },
+        {
+            id: 'gege-akutami',
+            nom: 'Gege Akutami',
+            nomKanji: '芥見 下々',
+            pays: 'Japon',
+            naissance: '26 février 1992',
+            debutCarriere: '2018',
+            photo: '',
+            bio: '<strong>Gege Akutami</strong> est l\'auteur de <strong>Jujutsu Kaisen</strong>, phénomène mondial du manga shōnen. Publié dans le Weekly Shōnen Jump depuis 2018, la série se distingue par son système de magie unique basé sur l\'énergie maudite, ses personnages profonds et son ambiance dark fantasy.',
+            volumesTotal: 26,
+            couleur: '#6366f1',
+            bannerQuote: '呪',
+            bannerDesc: 'Plongez dans l\'univers des sorciers et des esprits maudits avec tous les tomes de Jujutsu Kaisen disponibles chez KINKA.',
+        },
+        {
+            id: 'hajime-isayama',
+            nom: 'Hajime Isayama',
+            nomKanji: '諫山 創',
+            pays: 'Japon',
+            naissance: '29 août 1986',
+            debutCarriere: '2009',
+            photo: '',
+            bio: '<strong>Hajime Isayama</strong> est le créateur de <strong>L\'Attaque des Titans</strong>, l\'une des œuvres manga les plus vendues et les plus influentes de la décennie 2010. Reconnu pour sa narration complexe, ses twists narratifs, et la profondeur de ses thématiques (liberté, destin, guerre), Isayama a marqué une génération entière de lecteurs.',
+            volumesTotal: 34,
+            couleur: '#b45309',
+            bannerQuote: '⚔',
+            bannerDesc: 'Retrouvez tous les volumes de L\'Attaque des Titans, du premier tome à la conclusion épique de la saga, disponibles chez KINKA.',
+        },
+        {
+            id: 'kentaro-miura',
+            nom: 'Kentaro Miura',
+            nomKanji: '三浦 建太郎',
+            pays: 'Japon',
+            naissance: '11 juillet 1966',
+            debutCarriere: '1989',
+            photo: '',
+            bio: '<strong>Kentaro Miura</strong> est le légendaire auteur de <strong>Berserk</strong>, chef-d\'œuvre du dark fantasy manga. Reconnu pour la qualité inégalée de son dessin et la profondeur de son univers, son œuvre a influencé une génération entière de créateurs dans les jeux vidéo, l\'animation et la BD mondiale. Décédé en 2021, il laisse un héritage artistique immense.',
+            volumesTotal: 41,
+            couleur: '#1a1a1a',
+            bannerQuote: '⚡',
+            bannerDesc: 'Découvrez l\'œuvre magistrale de Kentaro Miura — Berserk, une saga dark fantasy unique dont chaque volume est un chef-d\'œuvre de dessin.',
+        },
+        {
+            id: 'kohei-horikoshi',
+            nom: 'Kōhei Horikoshi',
+            nomKanji: '堀越 耕平',
+            pays: 'Japon',
+            naissance: '20 novembre 1986',
+            debutCarriere: '2014',
+            photo: '',
+            bio: '<strong>Kōhei Horikoshi</strong> est l\'auteur de <strong>My Hero Academia</strong>, phénomène mondial qui réinvente le genre des super-héros à travers un prisme shōnen japonais. Son sens du design des personnages et sa maîtrise des combats spectaculaires lui ont valu une reconnaissance internationale.',
+            volumesTotal: 40,
+            couleur: '#16a34a',
+            bannerQuote: '⚡',
+            bannerDesc: 'Retrouvez tous les tomes de My Hero Academia et suivez le parcours de Midoriya Izuku vers son destin de héros.',
+        },
+        {
+            id: 'tatsuki-fujimoto',
+            nom: 'Tatsuki Fujimoto',
+            nomKanji: '藤本 タツキ',
+            pays: 'Japon',
+            naissance: '10 octobre 1992',
+            debutCarriere: '2017',
+            photo: '',
+            bio: '<strong>Tatsuki Fujimoto</strong> est l\'auteur de <strong>Chainsaw Man</strong> et <strong>Fire Punch</strong>, deux séries qui ont redéfini les standards du manga seinen par leur violence graphique, leur humour absurde et leur humanité touchante. Fujimoto est aujourd\'hui l\'un des auteurs les plus inventifs de sa génération.',
+            volumesTotal: 16,
+            couleur: '#dc2626',
+            bannerQuote: '🔪',
+            bannerDesc: 'L\'œuvre viscérale et unique de Tatsuki Fujimoto — Chainsaw Man et ses demons-tondeuses disponibles chez KINKA.',
+        },
+        {
+            id: 'naoki-urasawa',
+            nom: 'Naoki Urasawa',
+            nomKanji: '浦沢 直樹',
+            pays: 'Japon',
+            naissance: '2 janvier 1960',
+            debutCarriere: '1983',
+            photo: '',
+            bio: '<strong>Naoki Urasawa</strong> est l\'un des maîtres incontestés du manga thriller et psychologique. Auteur de <strong>Monster</strong>, <strong>20th Century Boys</strong>, <strong>Pluto</strong> et <strong>Billy Bat</strong>, il est réputé pour ses intrigues labyrinthiques, ses personnages à la psychologie profonde et sa maîtrise narrative hors pair. Multiple lauréat du Osamu Tezuka Cultural Prize.',
+            volumesTotal: 120,
+            couleur: '#0369a1',
+            bannerQuote: '🔍',
+            bannerDesc: 'Plongez dans les univers captivants de Naoki Urasawa — Monster, Pluto, 20th Century Boys — des thrillers psychologiques qui redéfinissent le manga adulte.',
+        },
+        {
+            id: 'masashi-kishimoto',
+            nom: 'Masashi Kishimoto',
+            nomKanji: '岸本 斉史',
+            pays: 'Japon',
+            naissance: '8 novembre 1974',
+            debutCarriere: '1999',
+            photo: '',
+            bio: '<strong>Masashi Kishimoto</strong> est l\'auteur de <strong>Naruto</strong>, l\'une des séries manga les plus vendues de l\'histoire avec plus de 250 millions de volumes écoulés. Naruto a accompagné toute une génération de lecteurs à travers le monde et demeure une référence absolue du shōnen.',
+            volumesTotal: 72,
+            couleur: '#ea580c',
+            bannerQuote: '🍥',
+            bannerDesc: 'Retrouvez l\'intégrale de Naruto et vivez l\'aventure du jeune ninja qui rêve de devenir Hokage — disponible chez KINKA.',
+        },
+        {
+            id: 'akira-toriyama',
+            nom: 'Akira Toriyama',
+            nomKanji: '鳥山 明',
+            pays: 'Japon',
+            naissance: '5 avril 1955',
+            debutCarriere: '1978',
+            photo: '',
+            bio: '<strong>Akira Toriyama</strong> était un mangaka et character designer japonais légendaire, créateur de <strong>Dragon Ball</strong>, l\'une des séries les plus influentes de l\'histoire du manga et de la culture pop mondiale. Décédé en mars 2024, son œuvre continue d\'influencer générations d\'auteurs et millions de fans à travers le monde.',
+            volumesTotal: 42,
+            couleur: '#f59e0b',
+            bannerQuote: '🐉',
+            bannerDesc: 'Honorez l\'héritage d\'Akira Toriyama avec tous les volumes de Dragon Ball disponibles chez KINKA.',
+        },
+        {
+            id: 'ryoko-kui',
+            nom: 'Ryoko Kui',
+            nomKanji: '九井 諒子',
+            pays: 'Japon',
+            naissance: '1980',
+            debutCarriere: '2014',
+            photo: '',
+            bio: '<strong>Ryoko Kui</strong> est l\'autrice de <strong>Dungeon Meshi (Delicious in Dungeon)</strong>, manga seinen unique qui mêle fantasy épique et gastronomie avec un humour raffiné. Saluée pour son univers rich, ses personnages attachants et son dessin expressif, Kui est devenue en quelques années l\'une des autrices les plus appréciées du seinen.',
+            volumesTotal: 14,
+            couleur: '#10b981',
+            bannerQuote: '🍲',
+            bannerDesc: 'L\'aventure culinaire et fantastique de Dungeon Meshi par Ryoko Kui — tous les tomes disponibles chez KINKA.',
+        },
+        {
+            id: 'tatsuya-endo',
+            nom: 'Tatsuya Endo',
+            nomKanji: '遠藤 達哉',
+            pays: 'Japon',
+            naissance: '27 juillet 1980',
+            debutCarriere: '2019',
+            photo: '',
+            bio: '<strong>Tatsuya Endo</strong> est l\'auteur de <strong>Spy × Family</strong>, phénomène éditorial mondial depuis 2019. Avec son mélange unique d\'espionnage, de comédie familiale et d\'action, la série est rapidement devenue l\'une des plus populaires au monde. Endo se distingue par son sens du timing comique et la profondeur émotionnelle de ses personnages.',
+            volumesTotal: 13,
+            couleur: '#7c3aed',
+            bannerQuote: '🕵',
+            bannerDesc: 'La famille Forger vous attend — tous les tomes de Spy × Family par Tatsuya Endo disponibles chez KINKA.',
+        },
+        {
+            id: 'yukinobu-tatsu',
+            nom: 'Yukinobu Tatsu',
+            nomKanji: '龍 幸伸',
+            pays: 'Japon',
+            naissance: '1990',
+            debutCarriere: '2021',
+            photo: '',
+            bio: '<strong>Yukinobu Tatsu</strong> est l\'auteur de <strong>Dandadan</strong>, l\'une des sensations manga les plus récentes publiée dans Shōnen Jump+. Mélangeant de façon inédite fantômes, aliens, action survolée et romance adolescente, Dandadan est rapidement devenu un phénomène mondial adapté en anime.',
+            volumesTotal: 14,
+            couleur: '#8b5cf6',
+            bannerQuote: '👽',
+            bannerDesc: 'Aliens, fantômes et aventures folles — tous les tomes de Dandadan par Yukinobu Tatsu disponibles chez KINKA.',
+        },
+        {
+            id: 'ai-yazawa',
+            nom: 'Ai Yazawa',
+            nomKanji: '矢沢 あい',
+            pays: 'Japon',
+            naissance: '7 mars 1967',
+            debutCarriere: '1985',
+            photo: '',
+            bio: '<strong>Ai Yazawa</strong> est une mangaka japonaise emblématique, autrice de <strong>Nana</strong> et <strong>Paradise Kiss</strong>. Ses œuvres se distinguent par leur sens de la mode, leurs personnages féminins complexes et leurs histoires d\'amour et d\'amitié profondes. L\'une des autrices les plus influentes du shōjo et du josei des années 2000.',
+            volumesTotal: 21,
+            couleur: '#ec4899',
+            bannerQuote: '♪',
+            bannerDesc: 'Mode, musique et émotions — découvrez l\'univers d\'Ai Yazawa avec Nana et Paradise Kiss disponibles chez KINKA.',
+        },
+    ];
+
+    /* ── Trouver auteur par nom ─────────────────────────────── */
+    function findAuteurByNom(nom) {
+        if (!nom) return null;
+        var nomLower = nom.toLowerCase().trim();
+        return auteursDB.find(function(a) {
+            return a.nom.toLowerCase() === nomLower;
+        }) || null;
+    }
+
+    /* ── Auteur "générique" pour les non listés ─────────────── */
+    function makeGenericAuteur(nom, mangas) {
+        var series = [];
+        mangas.forEach(function(m){ if(m.serie && !series.includes(m.serie)) series.push(m.serie); });
+        var cats = {};
+        mangas.forEach(function(m){ cats[m.categorie] = (cats[m.categorie]||0)+1; });
+        var mainCat = Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];})[0] || '';
+        var dateParsed = mangas.reduce(function(min, m){
+            if (!m.dateParution) return min;
+            var yr = parseInt(m.dateParution.match(/\d{4}/)?.[0]);
+            return (yr && (!min || yr < min)) ? yr : min;
+        }, null);
+        return {
+            id: nom.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            nom: nom,
+            nomKanji: '',
+            pays: 'Japon',
+            naissance: '—',
+            debutCarriere: dateParsed ? String(dateParsed) : '—',
+            photo: '',
+            bio: '<strong>' + nom + '</strong> est l\'auteur(e) de ' + series.map(function(s){ return '<strong>' + s + '</strong>'; }).join(', ') + ' — disponibles chez KINKA.',
+            volumesTotal: mangas.length,
+            couleur: '#E03B8B',
+            bannerQuote: '✦',
+            bannerDesc: 'Retrouvez l\'ensemble des œuvres de ' + nom + ' disponibles chez KINKA.',
+            mainCat: mainCat,
+        };
+    }
+
+    /* ── Récupérer tous les auteurs uniques de la DB ─────────── */
+    function getAllAuteurs() {
+        if (typeof mangasDB === 'undefined') return [];
+        var map = {};
+        mangasDB.forEach(function(m) {
+            if (!map[m.auteur]) map[m.auteur] = [];
+            map[m.auteur].push(m);
+        });
+        return Object.keys(map).sort().map(function(nom) {
+            return { nom: nom, count: map[nom].length };
+        });
+    }
+
+    /* ── Rendu de la grille ─────────────────────────────────── */
+    var _currentSerie = '';
+    var _currentSort  = '';
+    var _allMangas    = [];
+
+    function renderGrid() {
+        var grid  = document.getElementById('auteur-grid');
+        var empty = document.getElementById('auteur-empty');
+        var count = document.getElementById('catalogue-count');
+        if (!grid) return;
+
+        var items = _currentSerie
+            ? _allMangas.filter(function(m){ return m.serie === _currentSerie; })
+            : _allMangas.slice();
+
+        if (_currentSort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
+        if (_currentSort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
+        if (_currentSort === 'note')      items.sort(function(a,b){ return (b.note||0)-(a.note||0); });
+        if (_currentSort === 'nouveaute') items.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
+
+        if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
+
+        if (!items.length) {
+            grid.innerHTML = '';
+            if (empty) empty.style.display = 'flex';
+            return;
+        }
+        if (empty) empty.style.display = 'none';
+
+        if (typeof buildProductCard === 'function') {
+            grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
+        } else {
+            grid.innerHTML = '<p style="color:#999;text-align:center;padding:2rem">Chargement en cours…</p>';
+        }
+    }
+
+    /* ── Initialisation principale ──────────────────────────── */
+    (function _init(){
+        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
+
+        var params    = new URLSearchParams(window.location.search);
+        var nomAuteur = params.get('auteur') ? decodeURIComponent(params.get('auteur')) : null;
+
+        // ── Navigation entre auteurs ─────────────────────────
+        var navBar = document.getElementById('authors-nav-bar');
+        if (navBar && typeof mangasDB !== 'undefined') {
+            var allAuteurs = getAllAuteurs();
+            navBar.innerHTML = allAuteurs.map(function(a) {
+                var isActive = nomAuteur && a.nom.toLowerCase() === nomAuteur.toLowerCase();
+                return '<a href="/page_auteur.html?auteur=' + encodeURIComponent(a.nom) + '" class="author-nav-link' + (isActive ? ' active' : '') + '">' +
+                    a.nom +
+                    '<span class="nav-count">' + a.count + '</span>' +
+                '</a>';
+            }).join('');
+        }
+
+        // ── Si aucun auteur spécifié ─────────────────────────
+        if (!nomAuteur) {
+            document.getElementById('section-profil').innerHTML =
+                '<div class="author-not-found">' +
+                '<span class="material-symbols-outlined">person_search</span>' +
+                '<h2>Sélectionnez un auteur</h2>' +
+                '<p>Choisissez un auteur dans la barre de navigation ci-dessus.</p>' +
+                '</div>';
+            document.getElementById('author-banner').style.display = 'none';
+            document.querySelector('.section-catalogue-auteur').style.display = 'none';
+            return;
+        }
+
+        // ── Récupérer les mangas de cet auteur ───────────────
+        _allMangas = (typeof mangasDB !== 'undefined')
+            ? mangasDB.filter(function(m){ return m.auteur === nomAuteur; })
+            : [];
+
+        if (!_allMangas.length) {
+            document.getElementById('section-profil').innerHTML =
+                '<div class="author-not-found">' +
+                '<span class="material-symbols-outlined">person_off</span>' +
+                '<h2>Auteur introuvable</h2>' +
+                '<p>Aucun manga de "' + nomAuteur + '" n\'est disponible dans notre catalogue.</p>' +
+                '<a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex;margin-top:.5rem">' +
+                '<span class="material-symbols-outlined">arrow_back</span> Retour au catalogue</a>' +
+                '</div>';
+            document.getElementById('author-banner').style.display = 'none';
+            document.querySelector('.section-catalogue-auteur').style.display = 'none';
+            return;
+        }
+
+        // ── Trouver ou construire le profil ──────────────────
+        var auteur = findAuteurByNom(nomAuteur) || makeGenericAuteur(nomAuteur, _allMangas);
+
+        // Breadcrumb & titre
+        document.title = auteur.nom + ' — KINKA.FR';
+        document.getElementById('page-title').textContent = auteur.nom + ' — KINKA.FR';
+        document.getElementById('breadcrumb-auteur').textContent = auteur.nom;
+
+        // Photo
+        var photo = document.getElementById('auteur-photo');
+        if (auteur.photo) {
+            photo.src = auteur.photo;
+            photo.alt = auteur.nom;
+        } else {
+            photo.style.display = 'none';
+        }
+
+        // Infos profil
+        document.getElementById('auteur-nom').textContent = auteur.nom + (auteur.nomKanji ? ' ' + auteur.nomKanji : '');
+        document.getElementById('auteur-pays').textContent = auteur.pays || 'Japon';
+        document.getElementById('auteur-naissance').textContent = auteur.naissance !== '—' ? 'Né(e) le ' + auteur.naissance : '—';
+        document.getElementById('auteur-debut').textContent = auteur.debutCarriere !== '—' ? 'Actif depuis ' + auteur.debutCarriere : '';
+
+        // Bio
+        document.getElementById('auteur-bio').innerHTML = '<p>' + auteur.bio + '</p>';
+
+        // Stats
+        var series = [];
+        _allMangas.forEach(function(m){ if(m.serie && !series.includes(m.serie)) series.push(m.serie); });
+        var notes = _allMangas.filter(function(m){ return m.note; }).map(function(m){ return m.note; });
+        var avgNote = notes.length ? (notes.reduce(function(s,n){ return s+n; }, 0) / notes.length).toFixed(1) : '—';
+
+        document.getElementById('stat-titres').textContent = _allMangas.length;
+        document.getElementById('stat-series').textContent = series.length;
+        document.getElementById('stat-note').textContent = avgNote !== '—' ? avgNote + '/5' : '—';
+
+        // Tags séries dans profil
+        var seriesList = document.getElementById('auteur-series');
+        seriesList.innerHTML = series.map(function(s) {
+            return '<span class="serie-tag">' + s + '</span>';
+        }).join('');
+
+        // ── Banner ───────────────────────────────────────────
+        var cats = {};
+        _allMangas.forEach(function(m){ cats[m.categorie] = (cats[m.categorie]||0)+1; });
+        var mainCat = auteur.mainCat || Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];})[0] || '—';
+
+        document.getElementById('banner-titre').textContent = 'Toute l\'œuvre de ' + auteur.nom;
+        document.getElementById('banner-desc').textContent  = auteur.bannerDesc;
+        document.getElementById('banner-stat-volumes').textContent = auteur.volumesTotal || _allMangas.length;
+        document.getElementById('banner-stat-annee').textContent   = auteur.debutCarriere || '—';
+        document.getElementById('banner-stat-cat').textContent     = mainCat;
+        document.getElementById('banner-quote').textContent        = auteur.bannerQuote || '✦';
+
+        // Couleur ambiance banner
+        if (auteur.couleur) {
+            document.getElementById('author-banner').style.background =
+                'linear-gradient(135deg, #1a1a2e 0%, ' + auteur.couleur + '33 50%, #0f3460 100%)';
+        }
+
+        // ── Filtres par série ─────────────────────────────────
+        var serieFilters = document.getElementById('serie-filters');
+        if (series.length > 1) {
+            serieFilters.innerHTML =
+                '<span class="serie-tag active" data-serie="">Toutes les séries</span>' +
+                series.map(function(s) {
+                    return '<span class="serie-tag" data-serie="' + s + '">' + s + '</span>';
+                }).join('');
+
+            serieFilters.querySelectorAll('.serie-tag').forEach(function(tag) {
+                tag.addEventListener('click', function() {
+                    serieFilters.querySelectorAll('.serie-tag').forEach(function(t){ t.classList.remove('active'); });
+                    this.classList.add('active');
+                    _currentSerie = this.dataset.serie || '';
+                    renderGrid();
+                });
+            });
+        } else {
+            serieFilters.style.display = 'none';
+        }
+
+        // ── Tri ───────────────────────────────────────────────
+        var sortSel = document.getElementById('sort-auteur');
+        if (sortSel) {
+            sortSel.addEventListener('change', function() {
+                _currentSort = this.value;
+                renderGrid();
+            });
+        }
+
+        // Rendu initial
+        renderGrid();
+
+        // ── Scroll smooth vers l'auteur actif dans la nav ────
+        var activeLink = navBar ? navBar.querySelector('.author-nav-link.active') : null;
+        if (activeLink) {
+            setTimeout(function() {
+                activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }, 100);
+        }
+    })();
+    </script>
+</body>
+</html>

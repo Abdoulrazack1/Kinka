@@ -359,7 +359,7 @@ header:hover {
 }
 
 .filter-option input:checked ~ .checkbox-custom::after {
-    content: '✓';
+    content: '&#10003;';
     color: white;
     font-size: 0.75rem;
     font-weight: 700;

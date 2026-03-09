@@ -55,6 +55,13 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Paiement</span>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="container">
@@ -222,28 +229,32 @@
                     <div class="summary-totals">
                         <div class="total-row">
                             <span>Sous-total</span>
-                            <span>21.09€</span>
+                            <span id="subtotal-val">—</span>
                         </div>
                         <div class="total-row">
                             <span>Livraison</span>
-                            <span class="free">Gratuit</span>
+                            <span class="free" id="livraison-val">Gratuit</span>
                         </div>
                         <div class="total-row final">
                             <span class="total-label">Total</span>
-                            <span class="total-amount">21.09€</span>
+                            <span class="total-amount" id="total-val">—</span>
                         </div>
                     </div>
 
                     <!-- Pay Button -->
-                    <button class="btn-pay">
-                        <span class="material-symbols-outlined">lock</span>
-                        Payer 21.09€
-                    </button>
-
-                    <!-- CGV Notice -->
-                    <p class="cgv-notice">
-                        En validant votre commande, vous acceptez nos <a href="/page_cgv.html">CGV</a>.
-                    </p>
+                    <div class="btn-pay-wrap">
+                        <button class="btn-pay">
+                            <span class="material-symbols-outlined">lock</span>
+                            Payer —
+                        </button>
+                        <div class="pay-trust">
+                            <span class="material-symbols-outlined">verified_user</span>
+                            Paiement 100% sécurisé — SSL
+                        </div>
+                        <p class="cgv-notice">
+                            En validant votre commande, vous acceptez nos <a href="/page_cgv.html">CGV</a>.
+                        </p>
+                    </div>
 
                 </div>
             </aside>
@@ -296,7 +307,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#aecdc1c0dacfcddaeec5c7c0c5cf80c8dc"><span class="__cf_email__" data-cfemail="a0c3cfced4c1c3d4e0cbc9cecbc18ec6d2">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -306,13 +317,67 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/page_paieme
+    <script src="/asset/js/page_paiement.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+
+    // ── Bouton Payer ─────────────────────────────────────────
+    (function(){
+        var payBtn = document.querySelector('.btn-pay');
+        if (!payBtn) return;
+        payBtn.addEventListener('click', function() {
+            // Validation simple des champs carte
+            var num  = document.getElementById('card-number');
+            var name = document.getElementById('card-name');
+            var exp  = document.getElementById('expiration');
+            var cvv  = document.getElementById('cvc');
+            if (num && !num.value.replace(/\s/g,'').match(/^\d{16}$/))  { showToast('Numéro de carte invalide (16 chiffres).','error'); num.focus(); return; }
+            if (name && !name.value.trim())                              { showToast('Titulaire de la carte requis.','error'); name.focus(); return; }
+            if (exp && !exp.value.match(/^\d{2}\/\d{2}$/))             { showToast('Date d\'expiration invalide (MM/AA).','error'); exp.focus(); return; }
+            if (cvv && !cvv.value.match(/^\d{3,4}$/))                  { showToast('CVV invalide.','error'); cvv.focus(); return; }
+
+            // Sauvegarder la commande dans localStorage
+            var cart = (typeof window.getCart === 'function') ? window.getCart() : [];
+            var orderId = 'KIN-' + Math.floor(Math.random()*90000+10000);
+            var total = cart.reduce(function(s,i){ return s + (i.prix||0)*(i.quantite||1); }, 0);
+            var order = { id: orderId, date: new Date().toISOString(), articles: cart, total: total, statut: 'en_cours' };
+            try {
+                var orders = JSON.parse(localStorage.getItem('kinka_last_order') || 'null');
+                localStorage.setItem('kinka_last_order', JSON.stringify(order));
+                // Aussi l'ajouter dans le profil user si connecté
+                var currentUser = JSON.parse(localStorage.getItem('kinka_current_user') || 'null');
+                if (currentUser) {
+                    var users = JSON.parse(localStorage.getItem('kinka_users') || '[]');
+                    var idx = users.findIndex(function(u){ return u.id === currentUser.id; });
+                    if (idx >= 0) {
+                        users[idx].commandes = users[idx].commandes || [];
+                        users[idx].commandes.unshift(order);
+                        localStorage.setItem('kinka_users', JSON.stringify(users));
+                        currentUser.commandes = users[idx].commandes;
+                        localStorage.setItem('kinka_current_user', JSON.stringify(currentUser));
+                    }
+                }
+            } catch(e) {}
+
+            // Vider le panier
+            localStorage.removeItem('kinka_panier');
+
+            // Redirection
+            window.location.href = '/page_confirmationcommande.html';
+        });
+    })();
+    </script>
+</body>
+</html>

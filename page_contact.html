@@ -55,6 +55,13 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Contact</span>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="main-container">
@@ -111,7 +118,7 @@
                         <div class="info-icon">
                             <span class="material-symbols-outlined">mail</span>
                         </div>
-                        <p class="info-text"><a href="/cdn-cgi/l/email-protection#1b7874756f7a786f5b707275707a357d69"><span class="__cf_email__" data-cfemail="593a36372d383a2d193230373238773f2b">[email&#160;protected]</span></a></p>
+                        <p class="info-text">contact@kinka.fr</p>
                     </div>
                     <div class="info-card">
                         <div class="info-icon">
@@ -175,7 +182,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#3c5f5352485d5f487c575552575d125a4e"><span class="__cf_email__" data-cfemail="f89b97968c999b8cb89391969399d69e8a">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -186,3 +193,35 @@
 
         <div class="footer-bottom">
             <p>© 2025 Kinka
+    </footer>
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    (function(){
+        var form = document.querySelector('.contact-form');
+        if (!form) return;
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = form.querySelector('input[type="email"]');
+            var msg   = form.querySelector('textarea');
+            if (email && !email.value.trim()) { if(typeof showToast==='function') showToast('Veuillez renseigner votre email.','error'); email.focus(); return; }
+            if (msg && !msg.value.trim())     { if(typeof showToast==='function') showToast('Veuillez ecrire votre message.','error'); msg.focus(); return; }
+            var btn = form.querySelector('button[type="submit"], .btn-submit');
+            if (btn) { btn.disabled = true; btn.textContent = 'Envoi...'; }
+            setTimeout(function() {
+                if(typeof showToast==='function') showToast('Message envoye ! Nous vous repondrons sous 48h.','success');
+                form.reset();
+                if (btn) { btn.disabled = false; btn.textContent = 'Envoyer le message'; }
+            }, 900);
+        });
+    })();
+    </script>
+</body>
+</html>

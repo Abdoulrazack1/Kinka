@@ -56,374 +56,39 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Catégories</span>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="container">
-        
-        <!-- HERO BANNER CATEGORIE -->
-        <section class="hero-categorie">
-            <div class="hero-background">
-                <img src="/asset/image/catégorie_shonen.webp" alt="Manga Shonen">
+
+        <!-- TRI + RÉSULTATS -->
+        <div class="cat-results-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem">
+            <span class="cat-results-count" id="results-count" style="font-size:.85rem;font-weight:700;color:var(--text-muted)">0 titres</span>
+            <div class="cat-sort" style="display:flex;align-items:center;gap:.5rem">
+                <label style="font-size:.8rem;color:var(--text-muted)">Trier par</label>
+                <select id="sort-select" class="form-input" style="width:auto;padding:.4rem .75rem;font-size:.8rem">
+                    <option value="">Pertinence</option>
+                    <option value="prix_asc">Prix ↑</option>
+                    <option value="prix_desc">Prix ↓</option>
+                    <option value="note">Note</option>
+                    <option value="nouveaute">Nouveautés</option>
+                </select>
             </div>
-            <div class="hero-overlay">
-                <div class="hero-content-categorie">
-                    <span class="badge-categorie">CATÉGORIE PHARE</span>
-                    <h1>Manga Shonen</h1>
-                    <p>Plongez au cœur de l'action, de l'aventure et du dépassement de soi. Découvrez les plus grands héros, les combats épiques et les amitiés indéfectibles qui font la légende du manga Shonen.</p>
-                    <div class="hero-buttons-categorie">
-                        <button class="btn-primary">Voir les best-sellers</button>
-                        <button class="btn-secondary">Découvrez les nouveautés</button>
-                    </div>
-                    <div class="hero-stats">
-                        <div class="stat-box">
-                            <span class="stat-number">1240+</span>
-                            <span class="stat-label">Séries disponibles</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-number">85</span>
-                            <span class="stat-label">Éditeurs</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-number">4.8/5</span>
-                            <span class="stat-label">Note moyenne</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-offer">
-                    <h3>Résumé de l'offre</h3>
-                    <p>Accédez au moins à 1 shonen ancien, éligibles au panier, le moins cher passe automatiquement à -50%.</p>
-                    <ul>
-                        <li>Valable sur une large sélection de titres shonen populaires.</li>
-                        <li>Limité à 10 tomes remisés par commande.</li>
-                        <li>Non cumulable avec d'autres codes promotionnels.</li>
-                    </ul>
-                    <p class="offer-code"><strong>Code informant :</strong><br>SHONEN50</p>
-                    <a href="#" class="offer-link">Conditions</a>
-                </div>
-            </div>
-        </section>
+        </div>
 
-        <!-- FILTRES PAR TAGS -->
-        <section class="section-filtres">
-            <div class="filtres-container">
-                <button class="filtre-tag active">Tous (240)</button>
-                <button class="filtre-tag">Action & Aventure</button>
-                <button class="filtre-tag">Sport</button>
-                <button class="filtre-tag">Fantastique</button>
-                <button class="filtre-tag">Comédie</button>
-                <button class="filtre-tag">Arts Martiaux</button>
-                <button class="filtre-tag">Science-Fiction</button>
-                <button class="filtre-tag">Trier par : Popularité ▼</button>
-            </div>
-        </section>
-
-        <!-- LAYOUT SIDEBAR + CONTENU -->
-        <div class="content-layout">
-            
-            <!-- SIDEBAR FILTRES -->
-            <aside class="sidebar-filtres">
-                <div class="filtre-section">
-                    <h3>Affiner la recherche</h3>
-                    <p class="filtre-desc">Utilisez nos filtres ci-dessous pour trouver le tome parfait.</p>
-                </div>
-
-                <div class="filtre-section">
-                    <h4>État</h4>
-                    <div class="filtre-options">
-                        <label class="filtre-checkbox">
-                            <input type="checkbox" checked>
-                            <span>Neuf</span>
-                        </label>
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Très bon état</span>
-                        </label>
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Bon état</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="filtre-section">
-                    <h4>Disponibilité</h4>
-                    <div class="filtre-options">
-                        <label class="filtre-checkbox">
-                            <input type="checkbox" checked>
-                            <span>En stock</span>
-                        </label>
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Précommande</span>
-                        </label>
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Rééditions</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="filtre-section">
-                    <h4>Prix</h4>
-                    <div class="filtre-prix">
-                        <input type="range" min="0" max="20" value="15" class="price-slider">
-                        <div class="prix-labels">
-                            <span>3.50 €</span>
-                            <span>15.00 €</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="filtre-section">
-                    <h4>Éditeurs</h4>
-                    <div class="filtre-options">
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Glénat</span>
-                        </label>
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Kana</span>
-                        </label>
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Ki-oon</span>
-                        </label>
-                        <label class="filtre-checkbox">
-                            <input type="checkbox">
-                            <span>Pika</span>
-                        </label>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- CONTENU PRINCIPAL -->
-            <div class="main-content-categorie">
-                
-                <!-- EN-TÊTE SECTION -->
-                <div class="section-header-categorie">
-                    <div>
-                        <h2 class="section-title">Sélection Shonen</h2>
-                        <p class="section-subtitle">Affichage des tomes les plus recherchés par la communauté Manga Market.</p>
-                    </div>
-                    <div class="view-options">
-                        <button class="view-btn active">Grille</button>
-                        <button class="view-btn">Liste</button>
-                    </div>
-                </div>
-
-                <!-- GRILLE DE PRODUITS -->
-                <div class="products-grid-categorie">
-                    <!-- Produit 1 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 2 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 3 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 4 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 5 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 6 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 7 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 8 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 9 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produit 10 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">NOUVEAU</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda</p>
-                            <div class="product-footer">
-                                <span class="product-price">6.90 €</span>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="products-grid" id="cat-grid"></div>
+        <div id="cat-empty" class="cat-empty" style="display:none">
+            <span class="material-symbols-outlined">search_off</span>
+            <p>Aucun titre trouvé pour ce critère.</p>
+        </div>
     </main>
+
 
     <!-- FOOTER -->
     <footer>
@@ -469,7 +134,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#d4b7bbbaa0b5b7a094bfbdbabfb5fab2a6"><span class="__cf_email__" data-cfemail="4625292832272532062d2f282d27682034">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -479,13 +144,59 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/page_catalog
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+
+    /* ── CATÉGORIE DYNAMIQUE ── */
+    (function _init(){
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
+        // Lire le paramètre ?cat= depuis l'URL
+        var params = new URLSearchParams(window.location.search);
+        var catParam = params.get('cat') || params.get('categorie') || '';
+        // Mapping URL → valeur BDD
+        var catMap = {shonen:'Shônen',seinen:'Seinen',shojo:'Shôjo',josei:'Josei',coffret:'Coffret'};
+        var CAT = catMap[catParam.toLowerCase()] || catParam || '';
+
+        var currentSort = '';
+
+        function renderGrid() {
+            var grid  = document.getElementById('cat-grid');
+            var empty = document.getElementById('cat-empty');
+            var count = document.getElementById('results-count');
+            if (!grid || typeof filterProducts !== 'function') return;
+            var opts = CAT ? { categorie: CAT } : {};
+            if (currentSort) opts.sort = currentSort;
+            var items = filterProducts(opts);
+            if (!items.length) {
+                grid.innerHTML = '';
+                if (empty) empty.style.display = 'flex';
+                if (count) count.textContent = '0 titre';
+                return;
+            }
+            if (empty) empty.style.display = 'none';
+            if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
+            grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
+            if (typeof gererBoutonsAjout === 'function') gererBoutonsAjout();
+            if (typeof syncFavButtons === 'function') syncFavButtons();
+        }
+
+        renderGrid();
+
+        var sortSel = document.getElementById('sort-select');
+        if (sortSel) sortSel.addEventListener('change', function(){ currentSort = this.value; renderGrid(); });
+    })();
+    </script>
+</body>
+</html>

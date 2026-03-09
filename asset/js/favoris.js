@@ -11,7 +11,7 @@
 
     // Sync les boutons fav existants sur la page
     syncFavButtons();
-});
+})();
 
 function syncFavButtons() {
     const favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
@@ -42,4 +42,15 @@ function renderFavorisPage(container) {
     const items = favs.map(id => getMangaById(id)).filter(Boolean);
     container.innerHTML = items.map(m => buildProductCard(m)).join('');
     container.style.animation = 'fadeIn .3s ease';
+    // Re-sync fav buttons and panier buttons after dynamic render
+    syncFavButtons();
+    if (typeof gererBoutonsAjout === 'function') gererBoutonsAjout();
+}
+function clearAllFavs() {
+    if (confirm('Effacer tous vos favoris ?')) {
+        localStorage.removeItem('kinka_favoris');
+        updateFavsCount();
+        var grid = document.getElementById('favoris-grid');
+        if (grid) renderFavorisPage(grid);
+    }
 }

@@ -151,9 +151,7 @@
                     </div>
                 </form>
             </div>
-        </div>
-        </div>
-    </div>
+            </div>
     </div>
     </main>
 
@@ -200,7 +198,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#5e3d31302a3f3d2a1e353730353f70382c"><span class="__cf_email__" data-cfemail="bdded2d3c9dcdec9fdd6d4d3d6dc93dbcf">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -210,19 +208,22 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
     
 
     <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
 
     <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     // Password strength
     function checkPasswordStrength(val) {
         const bars = [document.getElementById('bar1'),document.getElementById('bar2'),document.getElementById('bar3'),document.getElementById('bar4')];
@@ -236,22 +237,12 @@
         const cls = ['s1','s2','s3','s4'];
         for (let i = 0; i < score; i++) { if(bars[i]) bars[i].classList.add(cls[score-1]); }
     }
-    // Form submit
-    (function _init() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-        const form = document.querySelector('.signup-form');
-        if (form) form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const pw = document.getElementById('password').value;
-            const cpw = document.getElementById('confirm-password').value;
-            if (pw !== cpw) { alert('Les mots de passe ne correspondent pas.'); return; }
-            const terms = document.getElementById('terms-accept');
-            if (terms && !terms.checked) { alert('Veuillez accepter les conditions générales.'); return; }
-            // Simuler création compte
-            const email = document.getElementById('email').value;
-            const prenom = document.getElementById('prenom').value;
-            localStorage.setItem('kinka_user', JSON.stringify({email, prenom, connected: true}));
+    // Redirection si déjà connecté
+    (function(){
+        if (typeof window.auth !== 'undefined' && window.auth.isAuthenticated()) {
             window.location.href = '/page_accueil.html';
-        });
-    });
-    (function()
+        }
+    })();
+    </script>
+</body>
+</html>

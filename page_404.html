@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page introuvable — KINKA.FR, votre boutique manga.">
     <title>Page introuvable - KINKA.FR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,7 +84,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#3d5e5253495c5e497d565453565c135b4f"><span class="__cf_email__" data-cfemail="5e3d31302a3f3d2a1e353730353f70382c">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
             </div>
             <div class="footer-section"><h4>Navigation</h4><ul><li><a href="/page_accueil.html">Accueil</a></li><li><a href="/page_catalogue.html">Catalogue</a></li><li><a href="/page_promotion.html">Promotions</a></li></ul></div>
             <div class="footer-section"><h4>Compte</h4><ul><li><a href="/pageLogIn.html">Connexion</a></li><li><a href="/pageSignUp.html">Inscription</a></li><li><a href="/page_panier.html">Mon panier</a></li></ul></div>
@@ -92,8 +93,16 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
-    <script src="/asset/js/translate.js
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    </script>
+</body>
+</html>

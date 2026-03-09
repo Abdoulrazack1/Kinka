@@ -10,6 +10,7 @@
         categorie: null,
         etat: null,
         editeur: null,
+        auteur: null,
         promo: false,
         sort: 'pertinence',
         prixMin: 0,
@@ -23,6 +24,7 @@
             currentFilters.categorie = map[p.get('categorie')] || null;
         }
         if (p.get('editeur')) currentFilters.editeur = decodeURIComponent(p.get('editeur'));
+        if (p.get('auteur'))  currentFilters.auteur  = decodeURIComponent(p.get('auteur'));
         if (p.get('q')) document.getElementById('search-input') && (document.getElementById('search-input').value = p.get('q'));
     }
 
@@ -106,7 +108,7 @@
     // Bouton reset sidebar
     const resetBtn = document.getElementById('reset-filters');
     if (resetBtn) resetBtn.addEventListener('click', function() {
-        currentFilters = {categorie:null,etat:null,editeur:null,promo:false,sort:'pertinence',prixMin:0,prixMax:200};
+        currentFilters = {categorie:null,etat:null,editeur:null,auteur:null,promo:false,sort:'pertinence',prixMin:0,prixMax:200};
         document.querySelectorAll('.sidebar-checkbox').forEach(cb => cb.checked = false);
         if (promoToggle) promoToggle.checked = false;
         if (sortSelect) sortSelect.value = 'pertinence';

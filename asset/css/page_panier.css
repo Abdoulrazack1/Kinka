@@ -49,8 +49,7 @@
 .panier-liste {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: .85rem;
 }
 
 /* ===== CARD PRODUIT DANS LE PANIER ===== */
@@ -216,15 +215,8 @@
 }
 
 /* ===== RÉSUMÉ DE LA COMMANDE ===== */
-.panier-resume {
-    background: white;
-    border-radius: 16px;
-    padding: 1.8rem;
-    border: 1px solid #f0f0f0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-    max-width: 450px;
-    margin-left: auto;
-    transition: all 0.3s ease;
+.panier-resume-legacy {
+    /* remplacé par .panier-resume dans le bloc v3 */
 }
 
 .panier-resume:hover {

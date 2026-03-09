@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Mangas d'occasion KINKA.FR — Économisez jusqu'à 40% sur nos mangas en très bon état.">
+    <meta name="description" content="KINKA.FR — Mangas d'occasion jusqu'à 40% de remise. Tomes vérifiés et garantis.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mangas d'Occasion - KINKA.FR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
     <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_occasion.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
 </head>
@@ -31,15 +32,15 @@
                 <a href="/page_promotion.html">Promotions</a>
             </div>
             <div class="nav-actions">
-                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" title="Mes favoris" id="favoris-btn">
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" id="favoris-btn">
                     <span class="material-symbols-outlined">favorite</span>
                     <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
-                <button class="icon-btn" onclick="window.location.href='/page_profil.html'" title="Mon profil">
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'">
                     <span class="material-symbols-outlined">person</span>
                 </button>
                 <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
-                <button class="icon-btn" onclick="window.location.href='/page_panier.html'" title="Mon panier">
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
@@ -50,73 +51,95 @@
     <div class="breadcrumb-bar">
         <div class="breadcrumb">
             <a href="/page_accueil.html">Accueil</a>
-            <span>›</span>
-            <span class="breadcrumb-current">Mangas d'Occasion</span>
+            <span class="separator">&rsaquo;</span>
+            <span class="current">Mangas d'Occasion</span>
         </div>
     </div>
 
     <main class="container">
 
-        <!-- HERO OCCASION -->
-        <div class="occasion-hero">
+        <!-- HERO -->
+        <section class="occasion-hero">
             <div class="occasion-hero-content">
                 <div class="occasion-badge-hero">
-                    <span class="material-symbols-outlined">recycling</span>
-                    Économique & Responsable
+                    <span class="material-symbols-outlined" style="font-size:1rem">recycling</span>
+                    Economique &amp; Responsable
                 </div>
-                <h1>Mangas d'Occasion</h1>
-                <p>Des mangas soigneusement vérifiés et classés par état. Économisez jusqu'à <strong>40%</strong> par rapport au prix neuf.</p>
+                <h1>Mangas d'Occasion<br><em>jusqu'a -40%</em></h1>
+                <p>Des tomes soigneusement verifies et classes par etat. Economisez sans compromis sur la qualite de lecture.</p>
                 <div class="occasion-hero-stats">
-                    <div class="occ-stat"><span id="count-occ">—</span><small>titres disponibles</small></div>
-                    <div class="occ-stat-sep"></div>
-                    <div class="occ-stat"><span>−40%</span><small>d'économies max</small></div>
-                    <div class="occ-stat-sep"></div>
-                    <div class="occ-stat"><span>3</span><small>niveaux d'état</small></div>
+                    <div class="occasion-hero-stat">
+                        <strong id="count-occ">--</strong>
+                        <small>titres disponibles</small>
+                    </div>
+                    <div class="occasion-stat-sep-v"></div>
+                    <div class="occasion-hero-stat">
+                        <strong>-40%</strong>
+                        <small>economies max</small>
+                    </div>
+                    <div class="occasion-stat-sep-v"></div>
+                    <div class="occasion-hero-stat">
+                        <strong>3</strong>
+                        <small>niveaux d'etat</small>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- LÉGENDE ÉTATS -->
-        <div class="etat-legende">
+        <!-- ETATS -->
+        <div class="occasion-etats">
             <div class="etat-item etat-tres-bon">
                 <span class="material-symbols-outlined">verified</span>
                 <div>
-                    <strong>Très bon état</strong>
+                    <strong>Tres bon etat</strong>
                     <p>Aucune marque visible. Comme neuf.</p>
                 </div>
             </div>
             <div class="etat-item etat-bon">
                 <span class="material-symbols-outlined">thumb_up</span>
                 <div>
-                    <strong>Bon état</strong>
-                    <p>Légères traces d'usure, contenu parfait.</p>
+                    <strong>Bon etat</strong>
+                    <p>Legeres traces d'usure, contenu parfait.</p>
                 </div>
             </div>
             <div class="etat-item etat-acceptable">
                 <span class="material-symbols-outlined">check_circle</span>
                 <div>
-                    <strong>État acceptable</strong>
+                    <strong>Etat acceptable</strong>
                     <p>Usure visible mais lisible sans souci.</p>
                 </div>
             </div>
         </div>
 
-        <!-- FILTRES PILLS -->
-        <div class="filter-pills-bar">
-            <button class="filter-pill active" data-etat="">Tous les états</button>
-            <button class="filter-pill" data-etat="occasion-tres-bon">Très bon état</button>
-            <button class="filter-pill" data-etat="occasion-bon">Bon état</button>
-            <button class="filter-pill" data-etat="occasion-acceptable">Acceptable</button>
+        <!-- TOOLBAR -->
+        <div class="occasion-toolbar">
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+                <div class="filter-pills-bar" style="margin-bottom:0">
+                    <button class="filter-pill active" data-etat="">Tous les etats</button>
+                    <button class="filter-pill" data-etat="tres-bon">Tres bon etat</button>
+                    <button class="filter-pill" data-etat="bon">Bon etat</button>
+                    <button class="filter-pill" data-etat="acceptable">Acceptable</button>
+                </div>
+                <span class="occasion-count-badge">
+                    <strong id="occasion-count">--</strong> titres
+                </span>
+            </div>
+            <div class="sort-select-wrap">
+                <label for="sort-occasion">Trier par</label>
+                <select id="sort-occasion" class="sort-select">
+                    <option value="">Pertinence</option>
+                    <option value="prix_asc">Prix croissant</option>
+                    <option value="prix_desc">Prix decroissant</option>
+                    <option value="note">Mieux notes</option>
+                </select>
+            </div>
         </div>
 
-        <!-- GRILLE PRODUITS -->
-        <div id="grid-occasion" class="products-grid">
-            <!-- Généré par JS -->
-        </div>
-
+        <!-- GRILLE -->
+        <div id="grid-occasion" class="products-grid"></div>
         <div id="occasion-empty" class="no-results" style="display:none">
             <span class="material-symbols-outlined" style="font-size:3.5rem;color:var(--pink);display:block;margin-bottom:1rem">search_off</span>
-            <p>Aucun manga disponible dans cette catégorie d'état pour le moment.</p>
+            <p>Aucun manga disponible dans cette categorie pour le moment.</p>
         </div>
 
     </main>
@@ -128,17 +151,30 @@
                     <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
-                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#adcec2c3d9ccced9edc6c4c3c6cc83cbdf"><span class="__cf_email__" data-cfemail="f5969a9b81949681b59e9c9b9e94db9387">[email&#160;protected]</span></a></p>
+                <p class="footer-description">Votre boutique manga de reference.</p>
             </div>
-            <div class="footer-section"><h4>Navigation</h4><ul><li><a href="/page_accueil.html">Accueil</a></li><li><a href="/page_catalogue.html">Catalogue</a></li><li><a href="/page_promotion.html">Promotions</a></li><li><a href="/page_coffret.html">Coffrets</a></li></ul></div>
-            <div class="footer-section"><h4>Compte</h4><ul><li><a href="/pageLogIn.html">Connexion</a></li><li><a href="/pageSignUp.html">Inscription</a></li><li><a href="/page_panier.html">Mon panier</a></li><li><a href="/page_favoris.html">Mes favoris</a></li></ul></div>
-            <div class="footer-section"><h4>Support</h4><ul><li><a href="/page_faq.html">FAQ</a></li><li><a href="/page_contact.html">Contact</a></li><li><a href="/page_cgv.html">CGV</a></li><li><a href="/page_polretour.html">Retours</a></li></ul></div>
+            <div class="footer-section"><h4>Navigation</h4><ul>
+                <li><a href="/page_accueil.html">Accueil</a></li>
+                <li><a href="/page_catalogue.html">Catalogue</a></li>
+                <li><a href="/page_promotion.html">Promotions</a></li>
+                <li><a href="/page_coffret.html">Coffrets</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Compte</h4><ul>
+                <li><a href="/pageLogIn.html">Connexion</a></li>
+                <li><a href="/pageSignUp.html">Inscription</a></li>
+                <li><a href="/page_panier.html">Mon panier</a></li>
+                <li><a href="/page_suivicommande.html">Suivi commande</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Support</h4><ul>
+                <li><a href="/page_faq.html">FAQ</a></li>
+                <li><a href="/page_contact.html">Contact</a></li>
+                <li><a href="/page_cgv.html">CGV</a></li>
+            </ul></div>
         </div>
-        <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
+        <div class="footer-bottom"><p>&copy; 2025 KINKA.FR &mdash; Tous droits reserves</p></div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
@@ -147,32 +183,67 @@
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    var currentEtat = '';
+    // ── Grille occasion ──────────────────────────────────────
+    (function(){
+        var currentEtat = '';
+        var currentSort = '';
 
-    function renderOccasion(etat) {
-        var grid  = document.getElementById('grid-occasion');
-        var empty = document.getElementById('occasion-empty');
-        var countEl = document.getElementById('count-occ');
-        if (!grid) return;
+        function renderOccasion() {
+            var grid    = document.getElementById('grid-occasion');
+            var empty   = document.getElementById('occasion-empty');
+            var countEl = document.getElementById('occasion-count');
+            var heroCount = document.getElementById('count-occ');
+            if (!grid || typeof filterProducts !== 'function') return;
 
-        var all = (typeof filterProducts === 'function') ? filterProducts({ etat: 'occasion' }) : [];
-        var items = etat ? all.filter(m => (m.etat || '').startsWith(etat)) : all;
+            var items = filterProducts({ etat: 'occasion' });
 
-        if (countEl) countEl.textContent = all.length;
+            // Sous-filtre état
+            if (currentEtat === 'tres-bon')   items = items.filter(function(m){ return m.etatDetail === 'tres-bon' || !m.etatDetail; });
+            if (currentEtat === 'bon')         items = items.filter(function(m){ return m.etatDetail === 'bon'; });
+            if (currentEtat === 'acceptable')  items = items.filter(function(m){ return m.etatDetail === 'acceptable'; });
 
-        if (!items.length) {
-            grid.innerHTML = '';
-            if (empty) empty.style.display = 'block';
-            return;
+            // Tri
+            if (currentSort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
+            if (currentSort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
+            if (currentSort === 'note')      items.sort(function(a,b){ return (b.note||0) - (a.note||0); });
+
+            var count = items.length;
+            if (countEl)   countEl.textContent = count;
+            if (heroCount) heroCount.textContent = count;
+
+            if (!count) {
+                grid.innerHTML = '';
+                if (empty) empty.style.display = 'flex';
+                return;
+            }
+            if (empty) empty.style.display = 'none';
+            grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
         }
-        if (empty) empty.style.display = 'none';
-        grid.innerHTML = items.map(m => (typeof buildProductCard === 'function') ? buildProductCard(m) : '').join('');
-    }
 
-    (function _init() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-        renderOccasion('');
+        var _t = 0;
+        function tryRender() {
+            if (typeof filterProducts !== 'function' || typeof buildProductCard !== 'function') {
+                if (++_t < 40) setTimeout(tryRender, 75);
+                return;
+            }
+            renderOccasion();
+        }
+        tryRender();
+
         document.querySelectorAll('.filter-pill').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                document.
+                document.querySelectorAll('.filter-pill').forEach(function(b){ b.classList.remove('active'); });
+                this.classList.add('active');
+                currentEtat = this.dataset.etat || '';
+                renderOccasion();
+            });
+        });
+
+        var sortSel = document.getElementById('sort-occasion');
+        if (sortSel) sortSel.addEventListener('change', function(){ currentSort = this.value; renderOccasion(); });
+    })();
+    </script>
+</body>
+</html>

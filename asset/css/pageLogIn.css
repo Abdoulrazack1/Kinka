@@ -32,7 +32,7 @@
     radial-gradient(ellipse at 80% 80%, rgba(224,59,139,0.08) 0%, transparent 50%);
 }
 .login-left::after {
-  content: '\2764';
+  content: '<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E03B8B" stroke-width="2" stroke-linecap="round"><path d="M12 7.5a4.5 4.5 0 1 1 4.5 7.793A4.5 4.5 0 1 1 12 19.207a4.5 4.5 0 1 1-4.5-3.914A4.5 4.5 0 1 1 12 7.5"/><circle cx="12" cy="12" r="3"/></svg></span>';
   position: absolute; bottom: -1rem; right: -1rem;
   font-size: 10rem; opacity: 0.04; pointer-events: none;
 }

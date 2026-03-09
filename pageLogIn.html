@@ -221,7 +221,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
     
@@ -231,86 +231,19 @@
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
 
     <script>
-    // ── Remplissage automatique des crédentials démo ─────────
-    function fillDemo() {
-        var emailField = document.getElementById('email');
-        var passField  = document.getElementById('password');
-        if (emailField) { emailField.value = 'demo@kinka.fr'; emailField.dispatchEvent(new Event('input')); }
-        if (passField)  { passField.value  = 'demo1234';      passField.dispatchEvent(new Event('input')); }
-        showToast && showToast('Crédentials démo renseignés !');
-    }
-
-    // ── Mise à jour header selon session ─────────────────────
-    (function() {
-        var user = null;
-        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
-        var connectBtn = document.querySelector('.connect-btn');
-        if (connectBtn) {
-            if (user && user.prenom) {
-                connectBtn.textContent = user.prenom;
-                connectBtn.onclick = function() { window.location.href = '/page_profil.html'; };
-            }
-        }
-    })();
-
-    // ── Header scroll ─────────────────────────────────────────
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-
-    // ── Rediriger si déjà connecté ────────────────────────────
-    (function() {
-        var user = null;
-        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
-        if (user && user.id) {
-            // Déjà connecté → profil
-            window.location.href = '/page_profil.html';
-        }
-    })();
-
-    // ── Soumission formulaire login avec feedback visuel ──────
-    (function() {
-        var form = document.querySelector('.login-form');
-        if (!form) return;
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var email    = (document.getElementById('email') || {}).value || '';
-            var password = (document.getElementById('password') || {}).value || '';
-            var btn      = form.querySelector('.submit-btn');
-
-            if (!email.trim() || !password) {
-                showFieldError('Veuillez remplir tous les champs.');
-                return;
-            }
-
-            // Feedback visuel
-            if (btn) { btn.disabled = true; btn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Connexion...'; }
-
-            setTimeout(function() {
-                var result = (window.auth && window.auth.login) ? window.auth.login(email.trim(), password) : { success: false, message: 'Erreur système.' };
-                if (result.success) {
-                    if (btn) btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Connecté !';
-                    setTimeout(function() { window.location.href = '/page_accueil.html'; }, 600);
-                } else {
-                    if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined btn-icon">arrow_forward</span> Se connecter'; }
-                    showFieldError(result.message);
-                }
-            }, 400);
-        });
-
-        function showFieldError(msg) {
-            var existing = form.querySelector('.form-error-msg');
-            if (existing) existing.remove();
-            var err = document.createElement('p');
-            err.className = 'form-error-msg';
-            err.style.cssText = 'color:#ef4444;font-size:.82rem;margin:.5rem 0 0;text-align:center;font-weight:600;';
-            err.textContent = '⚠ ' + msg;
-            form.insertBefore(err, form.querySelector('.submit-btn'));
-            setTimeout(function() { err && err.remove(); }, 4000);
-        }
-    })();
+    // Remplir avec les crédentials démo
+    function fillDemo() {
+        var emailField = documenvar emailField = document.getElementById('email');
+        var pwdField = document.getElementById('password');
+        if (emailField) { emailField.value = 'demo@kinka.fr'; emailField.dispatchEvent(new Event('input')); }
+        if (pwdField)   { pwdField.value   = 'demo1234';      pwdField.dispatchEvent(new Event('input')); }
+    }
     </script>
 </body>
 </html>

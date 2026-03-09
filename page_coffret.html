@@ -15,6 +15,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_liste.css">
     <link rel="stylesheet" href="/asset/css/page_coffret.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
@@ -55,6 +56,14 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Coffrets &amp; Intégrales</span>
+        </div>
+    </div>
+
 
     <!-- BREADCRUMB -->
     <div class="breadcrumb">
@@ -69,10 +78,14 @@
 
     <!-- MAIN CONTENT -->
     <main class="container">
-        <div style="padding:1.5rem 0 1rem">
-            <h1 style="font-size:1.8rem;font-weight:800;letter-spacing:-.02em;color:var(--text);margin-bottom:.3rem">Coffrets & Intégrales</h1>
-            <p style="color:var(--text-muted);font-size:.88rem">Retrouvez les intégrales de vos séries préférées dans des coffrets collectors</p>
-        </div>
+        <section class="liste-hero hero-dark">
+            <span class="liste-hero-label">
+                <span class="material-symbols-outlined" style="font-size:.9rem;vertical-align:middle">inventory_2</span>
+                KINKA.FR
+            </span>
+            <h1>Coffrets &amp; Integrales</h1>
+            <p>Retrouvez les integrales de vos series preferees dans des coffrets collectors. Idéal en cadeau ou pour compléter sa collection.</p>
+        </section>
 
         <!-- FILTRES PILLS -->
         <div class="filter-pills" id="coffret-filters">
@@ -138,7 +151,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#ff9c90918b9e9c8bbf949691949ed1998d"><span class="__cf_email__" data-cfemail="b8dbd7d6ccd9dbccf8d3d1d6d3d996deca">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -148,48 +161,57 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
-
     <script>
-    (function _init() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-        let currentCat = '';
-        let currentSort = 'pertinence';
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    (function(){
+        var _t=0;
+        var currentFilter='';
+        var currentSort='pertinence';
 
-        function renderCoffrets() {
-            const grid = document.getElementById('coffret-grid');
-            const countEl = document.getElementById('coffret-count');
-            let items = filterProducts({ coffret: true });
-            if (currentCat === 'promo') items = items.filter(m => m.promo);
-            else if (currentCat) items = items.filter(m => {
-                // cherche la série dans mangasDB pour la catégorie
-                const parent = mangasDB.find(x => x.serie === m.serie && x.categorie !== 'Coffret');
-                return parent && parent.categorie === currentCat;
-            });
-            if (currentSort === 'prix_asc') items.sort((a,b) => a.prix - b.prix);
-            if (currentSort === 'prix_desc') items.sort((a,b) => b.prix - a.prix);
-            if (countEl) countEl.textContent = items.length + ' coffret' + (items.length > 1 ? 's' : '');
-            if (!items.length) { grid.innerHTML = '<div class="no-results">Aucun coffret trouvé</div>'; return; }
-            grid.innerHTML = items.map(m => buildProductCard(m)).join('');
+        function renderCoffrets(){
+            var grid=document.getElementById('coffret-grid');
+            var countEl=document.getElementById('coffret-count');
+            if(!grid||typeof filterProducts!=='function') return;
+            var items=filterProducts({categorie:'Coffret'});
+            if(currentFilter==='promo') items=items.filter(function(m){return m.promo;});
+            else if(currentFilter) items=items.filter(function(m){return m.categorie===currentFilter;});
+            if(currentSort==='prix_asc')  items=items.slice().sort(function(a,b){return a.prix-b.prix;});
+            if(currentSort==='prix_desc') items=items.slice().sort(function(a,b){return b.prix-a.prix;});
+            if(countEl) countEl.textContent=items.length+' coffret'+(items.length>1?'s':'');
+            if(!items.length){grid.innerHTML='<p style="color:var(--text-muted);padding:1rem">Aucun coffret disponible.</p>';return;}
+            grid.innerHTML=items.map(function(m){return buildProductCard(m);}).join('');
+            if(typeof gererBoutonsAjout==='function') gererBoutonsAjout();
+            if(typeof syncFavButtons==='function') syncFavButtons();
         }
 
-        document.querySelectorAll('#coffret-filters .filter-pill').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('#coffret-filters .filter-pill').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentCat = this.dataset.filter;
-                renderCoffrets();
+        function tryRender(){
+            if(typeof filterProducts!=='function'||typeof buildProductCard!=='function'){if(++_t<40)setTimeout(tryRender,75);return;}
+            renderCoffrets();
+            document.querySelectorAll('#coffret-filters .filter-pill').forEach(function(btn){
+                btn.addEventListener('click',function(){
+                    document.querySelectorAll('#coffret-filters .filter-pill').forEach(function(b){b.classList.remove('active');});
+                    this.classList.add('active');
+                    currentFilter=this.dataset.filter||'';
+                    renderCoffrets();
+                });
             });
-        
+            var sortSel=document.getElementById('coffret-sort');
+            if(sortSel) sortSel.addEventListener('change',function(){currentSort=this.value;renderCoffrets();});
+        }
+        tryRender();
+    })();
+    </script>
+</body>
+</html>

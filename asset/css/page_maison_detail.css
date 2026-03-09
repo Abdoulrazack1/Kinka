@@ -30,7 +30,7 @@
 .md-logo-wrap {
     flex-shrink: 0;
     width: 120px; height: 120px;
-    background: white; border-radius: 20px;
+    background: var(--bg-card); border-radius: 20px;
     display: flex; align-items: center; justify-content: center;
     padding: 1rem;
     box-shadow: 0 20px 60px rgba(0,0,0,.5);

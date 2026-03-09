@@ -15,6 +15,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_liste.css">
     <link rel="stylesheet" href="/asset/css/page_promotion.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
@@ -55,6 +56,14 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Promotions</span>
+        </div>
+    </div>
+
 
     <!-- MAIN CONTENT -->
     <main class="container">
@@ -140,7 +149,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#b8dbd7d6ccd9dbccf8d3d1d6d3d996deca"><span class="__cf_email__" data-cfemail="0f6c60617b6e6c7b4f646661646e21697d">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -150,36 +159,50 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p>
         </div>
     </footer>
 
 
     <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+        <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
     <script src="/asset/js/translate.js"></script>
-
     <script>
-    (function _init() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-        let currentFilter = '';
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    </script>
+    <script>
+    /* ── GRILLE PROMOTIONS (après mangadb.js chargé) ── */
+    var currentFilter = '';
 
-        function renderPromos() {
-            const grid = document.getElementById('promo-grid');
-            const countEl = document.getElementById('promo-count');
-            let items = filterProducts({ promo: true });
-            if (currentFilter === 'occasion') items = items.filter(m => m.etat === 'occasion' && m.promo);
-            else if (currentFilter) items = items.filter(m => m.categorie === currentFilter);
-            if (countEl) countEl.textContent = items.length + ' offre' + (items.length > 1 ? 's' : '');
-            if (!items.length) { grid.innerHTML = '<div class="no-results">Aucune promo trouvée</div>'; return; }
-            grid.innerHTML = items.map(m => buildProductCard(m)).join('');
-        }
+    function renderPromos() {
+        var grid    = document.getElementById('promo-grid');
+        var countEl = document.getElementById('promo-count');
+        if (!grid) return;
+        var items = filterProducts({ promo: true });
+        if (currentFilter === 'occasion') items = items.filter(function(m){ return m.etat === 'occasion' && m.promo; });
+        else if (currentFilter) items = items.filter(function(m){ return m.categorie === currentFilter; });
+        if (countEl) countEl.textContent = items.length + ' offre' + (items.length > 1 ? 's' : '');
+        if (!items.length) { grid.innerHTML = '<div class="no-results">Aucune promo trouvée</div>'; return; }
+        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
+    }
 
-        document.querySelectorAll('#promo-filters .filter-pill').forEach(btn => {
+    (function _init(){
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
+        renderPromos();
+        document.querySelectorAll('#promo-filters .filter-pill').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('#promo-filters .filter-pill').forEach(b => b.classList.rem
+                document.querySelectorAll('#promo-filters .filter-pill').forEach(function(b){ b.classList.remove('active'); });
+                this.classList.add('active');
+                currentFilter = this.dataset.cat || '';
+                renderPromos();
+            });
+        });
+    })();</script>
+</body>
+</html>

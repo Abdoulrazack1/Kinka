@@ -144,10 +144,15 @@ function mettreAJourCompteur() {
 // ============================================
 function gererBoutonsAjout() {
     document.querySelectorAll('.add-to-cart').forEach(function(bouton) {
+        // Skip buttons on cards managed by kinkaAddToCart (data-id present) to avoid double-add
+        const card = bouton.closest('.product-card');
+        if (card && card.dataset.id) return;
+        // Skip buttons already initialized
+        if (bouton.dataset.panierInit) return;
+        bouton.dataset.panierInit = '1';
         bouton.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            const card = bouton.closest('.product-card');
             if (card) {
                 ajouterAuPanier(extraireProduit(card));
                 animerBoutonAjout(bouton);
