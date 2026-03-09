@@ -1,94 +1,102 @@
-// ============================================
-// dark-mode.js - Mode Sombre pour KINKA.FR
-// Compatible avec toutes les pages du projet
-// ============================================
+// ============================================================
+// darkmode.js — Mode Sombre KINKA.FR v2
+// - Respecte prefers-color-scheme si pas de préf stockée
+// - Transition douce au toggle
+// - Accessible (aria-label dynamique, aria-pressed)
+// ============================================================
 
 (function _initDark() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _initDark); return; }
-    
-    // Verifier si le toggle existe deja, sinon on le cree
-    let darkModeToggle = document.getElementById('dark-mode-toggle');
-    
-    // Si le bouton n'existe pas dans le HTML, on le cree automatiquement
-    if (!darkModeToggle) {
-        creerBoutonDarkMode();
-        darkModeToggle = document.getElementById('dark-mode-toggle');
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', _initDark);
+        return;
     }
-    
-    // Recuperer la preference depuis localStorage
-    const darkModeActif = localStorage.getItem('darkMode');
-    
-    // Si le mode sombre etait active, on l'active au chargement
-    if (darkModeActif === 'enabled') {
-        activerDarkMode();
-    }
-    
-    // Evenement clic sur le bouton
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', function() {
-            const estActif = document.body.classList.contains('dark-mode');
-            
-            if (estActif) {
-                desactiverDarkMode();
+
+    // ── 1. Créer le bouton si absent ──────────────────────────
+    var toggle = document.getElementById('dark-mode-toggle');
+    if (!toggle) {
+        toggle = document.createElement('button');
+        toggle.id = 'dark-mode-toggle';
+        toggle.className = 'icon-btn';
+        toggle.setAttribute('title', 'Mode sombre');
+        var icone = document.createElement('span');
+        icone.className = 'material-symbols-outlined';
+        icone.textContent = 'dark_mode';
+        toggle.appendChild(icone);
+
+        var navActions = document.querySelector('.nav-actions');
+        if (navActions) {
+            var connectBtn = navActions.querySelector('.connect-btn');
+            if (connectBtn) {
+                navActions.insertBefore(toggle, connectBtn);
             } else {
-                activerDarkMode();
+                navActions.appendChild(toggle);
+            }
+        }
+    }
+
+    // ── 2. Lire la préférence ─────────────────────────────────
+    // Migration ancienne clé
+    var _legacyKey = localStorage.getItem('darkMode');
+    if (_legacyKey !== null && localStorage.getItem('kinka_darkmode') === null) {
+        localStorage.setItem('kinka_darkmode', _legacyKey === 'enabled' ? '1' : '0');
+        localStorage.removeItem('darkMode');
+    }
+    var stored = localStorage.getItem('kinka_darkmode');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    var isDark = stored !== null ? stored === '1' : prefersDark;
+
+    // ── 3. Appliquer sans transition au chargement ────────────
+    if (isDark) _applyDark(false);
+    else _applyLight(false);
+
+    // ── 4. Écouter le clic ───────────────────────────────────
+    toggle.addEventListener('click', function () {
+        if (document.body.classList.contains('dark-mode')) {
+            _applyLight(true);
+        } else {
+            _applyDark(true);
+        }
+    });
+
+    // ── 5. Écouter changement système (si pas de préf stockée) ─
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+            if (localStorage.getItem('kinka_darkmode') === null) {
+                if (e.matches) _applyDark(true);
+                else _applyLight(true);
             }
         });
     }
-    
-    // FONCTION POUR ACTIVER LE DARK MODE
-    function activerDarkMode() {
+
+    // ── Fonctions ─────────────────────────────────────────────
+    function _applyDark(animate) {
+        if (animate) _addTransition();
         document.body.classList.add('dark-mode');
-        localStorage.setItem('darkMode', 'enabled');
-        
-        const icone = darkModeToggle.querySelector('.material-symbols-outlined');
-        if (icone) {
-            icone.textContent = 'light_mode';
-        }
-        
-        console.log('Dark mode active');
+        localStorage.setItem('kinka_darkmode', '1');
+        _updateBtn(true);
     }
-    
-    // FONCTION POUR DESACTIVER LE DARK MODE
-    function desactiverDarkMode() {
+
+    function _applyLight(animate) {
+        if (animate) _addTransition();
         document.body.classList.remove('dark-mode');
-        localStorage.setItem('darkMode', 'disabled');
-        
-        const icone = darkModeToggle.querySelector('.material-symbols-outlined');
-        if (icone) {
-            icone.textContent = 'dark_mode';
-        }
-        
-        console.log('Dark mode desactive');
+        localStorage.setItem('kinka_darkmode', '0');
+        _updateBtn(false);
     }
-    
-    // FONCTION POUR CREER LE BOUTON AUTOMATIQUEMENT
-    function creerBoutonDarkMode() {
-        const bouton = document.createElement('button');
-        bouton.id = 'dark-mode-toggle';
-        bouton.className = 'icon-btn';
-        bouton.setAttribute('aria-label', 'Activer le mode sombre');
-        
-        const icone = document.createElement('span');
-        icone.className = 'material-symbols-outlined';
-        icone.textContent = 'dark_mode';
-        
-        bouton.appendChild(icone);
-        
-        // Ajouter le bouton dans .nav-actions
-        const navActions = document.querySelector('.nav-actions');
-        if (navActions) {
-            const connectBtn = navActions.querySelector('.connect-btn');
-            if (connectBtn) {
-                // Inserer avant le bouton "Se connecter"
-                navActions.insertBefore(bouton, connectBtn);
-            } else {
-                navActions.appendChild(bouton);
-            }
-        }
-        
-        console.log('Bouton dark mode cree');
+
+    function _updateBtn(dark) {
+        var ic = toggle.querySelector('.material-symbols-outlined');
+        if (ic) ic.textContent = dark ? 'light_mode' : 'dark_mode';
+        toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
+        toggle.setAttribute('title', dark ? 'Mode clair' : 'Mode sombre');
+        toggle.setAttribute('aria-label', dark ? 'Passer en mode clair' : 'Passer en mode sombre');
     }
-    
-    console.log('Dark mode initialise');
+
+    function _addTransition() {
+        // Transition rapide une seule fois
+        var style = document.createElement('style');
+        style.textContent = '*, *::before, *::after { transition: background-color .2s ease, border-color .2s ease, color .15s ease, box-shadow .2s ease !important; }';
+        document.head.appendChild(style);
+        setTimeout(function () { style.remove(); }, 400);
+    }
 })();

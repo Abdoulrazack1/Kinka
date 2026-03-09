@@ -54,6 +54,14 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Politique de retour</span>
+        </div>
+    </div>
+
 
     <main class="container">
         <div class="breadcrumb">
@@ -235,7 +243,7 @@
                     </div>
                     <div class="contact-item">
                         <span class="material-symbols-outlined">mail</span>
-                        <a href="/cdn-cgi/l/email-protection#71121e1f05101205311a181f1a105f1703"><span class="__cf_email__" data-cfemail="88ebe7e6fce9ebfcc8e3e1e6e3e9a6eefa">[email&#160;protected]</span></a>
+                        contact@kinka.fr
                     </div>
                     
                     <a href="/page_contact.html" class="contact-btn">Formulaire de contact</a>
@@ -267,7 +275,16 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/authentification.js"></script>
-    <script src="/asset/js/pani
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    </script>
+</body>
+</html>

@@ -1,0 +1,1354 @@
+/* ================================================================
+   KINKA.FR — darkmode.css  v6.0  EXHAUSTIF
+   Couvre TOUS les sélecteurs avec couleurs hardcodées de chaque
+   page du projet. Activé via body.dark-mode (par darkmode.js).
+   Chargé EN DERNIER dans chaque page — cascade garantie.
+================================================================ */
+
+/* ══════════════════════════════════════════════════════════════
+   1. VARIABLES & BASE
+══════════════════════════════════════════════════════════════ */
+body.dark-mode {
+  --text:         #f0f0f0;
+  --text-muted:   #a0a8b4;
+  --text-light:   #6b7280;
+  --bg:           #0f1117;
+  --bg-card:      #1a1d27;
+  --bg-muted:     #151820;
+  --bg-subtle:    #1e2130;
+  --border:       #2a2f42;
+  --border-dk:    #353a52;
+  --shadow-xs:    0 1px 3px rgba(0,0,0,.4);
+  --shadow-sm:    0 2px 8px rgba(0,0,0,.5);
+  --shadow-md:    0 6px 24px rgba(0,0,0,.6);
+  --shadow-lg:    0 16px 48px rgba(0,0,0,.7);
+  --shadow-pink:  0 6px 24px rgba(224,59,139,.35);
+  --pink-soft:    rgba(224,59,139,0.14);
+  --pink-glow:    rgba(224,59,139,0.35);
+  color-scheme: dark;
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   2. HEADER & NAV — commun à TOUTES les pages
+   (surcharge les pages legacy qui ont .nav-menu a { color:#1a1a1a })
+══════════════════════════════════════════════════════════════ */
+body.dark-mode header {
+  background: rgba(15,17,23,0.96) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+body.dark-mode .search-bar input {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.dark-mode .search-bar input::placeholder { color: var(--text-light) !important; }
+body.dark-mode .search-bar input:hover { background: var(--bg-card) !important; border-color: var(--pink-light) !important; }
+body.dark-mode .search-bar input:focus { background: var(--bg-card) !important; border-color: var(--pink) !important; }
+
+body.dark-mode .search-dropdown { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .search-result-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .search-result-item:hover { background: var(--pink-soft) !important; }
+body.dark-mode .search-result-info .title { color: var(--text) !important; }
+
+body.dark-mode .nav-menu a { color: var(--text-muted) !important; }
+body.dark-mode .nav-menu a:hover { color: var(--text) !important; }
+body.dark-mode .nav-menu a.active { color: var(--pink) !important; }
+
+body.dark-mode .icon-btn {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .icon-btn .material-symbols-outlined { color: var(--text-muted) !important; }
+body.dark-mode .icon-btn:hover { background: var(--pink-soft) !important; border-color: var(--pink) !important; }
+body.dark-mode .icon-btn:hover .material-symbols-outlined { color: var(--pink) !important; }
+
+/* Dark mode toggle */
+body.dark-mode #dark-mode-toggle { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode #dark-mode-toggle .material-symbols-outlined { color: var(--pink-light) !important; }
+body.dark-mode #dark-mode-toggle:hover { background: var(--pink-soft) !important; border-color: var(--pink) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   3. BREADCRUMB — commun
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .breadcrumb-bar,
+body.dark-mode .breadcrumb-container {
+  background: var(--bg-subtle) !important;
+  border-bottom-color: var(--border) !important;
+}
+body.dark-mode .breadcrumb { background: transparent !important; color: var(--text-muted) !important; }
+body.dark-mode .breadcrumb a { color: var(--text-muted) !important; }
+body.dark-mode .breadcrumb a:hover { color: var(--pink) !important; }
+body.dark-mode .breadcrumb .current,
+body.dark-mode .breadcrumb .breadcrumb-current,
+body.dark-mode .breadcrumb span:last-child,
+body.dark-mode .breadcrumb-separator { color: var(--text-light) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   4. FOOTER — commun
+══════════════════════════════════════════════════════════════ */
+body.dark-mode footer { background: #0a0c12 !important; border-top-color: var(--border) !important; }
+body.dark-mode .footer-section h4 { color: var(--text) !important; }
+body.dark-mode .footer-description { color: var(--text-muted) !important; }
+body.dark-mode .footer-section ul li a { color: var(--text-muted) !important; }
+body.dark-mode .footer-section ul li a:hover { color: var(--pink) !important; }
+body.dark-mode .footer-bottom { border-top-color: var(--border) !important; }
+body.dark-mode .footer-bottom p { color: var(--text-light) !important; }
+body.dark-mode .footer-legal a { color: var(--text-light) !important; }
+body.dark-mode .contact-info { color: var(--text-muted) !important; }
+body.dark-mode .social-icons a img { opacity: .8; filter: brightness(.85); }
+
+/* ══════════════════════════════════════════════════════════════
+   5. FORMULAIRES GÉNÉRIQUES (hérité par toutes les pages legacy)
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .form-group label,
+body.dark-mode .form-label { color: var(--text) !important; }
+
+body.dark-mode .form-group input:not([type="radio"]):not([type="checkbox"]),
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea,
+body.dark-mode .form-input,
+body.dark-mode .form-select,
+body.dark-mode .form-textarea {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .form-group textarea::placeholder,
+body.dark-mode .form-input::placeholder,
+body.dark-mode .form-textarea::placeholder { color: var(--text-light) !important; }
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus,
+body.dark-mode .form-input:focus,
+body.dark-mode .form-textarea:focus {
+  border-color: var(--pink) !important;
+  background: var(--bg-card) !important;
+  box-shadow: 0 0 0 3px var(--pink-soft) !important;
+}
+body.dark-mode select option { background: var(--bg-card); color: var(--text); }
+
+/* ══════════════════════════════════════════════════════════════
+   6. BOUTONS GLOBAUX
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .btn-outline {
+  color: var(--pink) !important;
+  border-color: var(--pink) !important;
+  background: transparent !important;
+}
+body.dark-mode .btn-outline:hover { background: var(--pink) !important; color: #fff !important; }
+
+body.dark-mode .btn-secondary {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .btn-secondary:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   7. PRODUCT CARDS (kinka-shared + pages legacy)
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .product-card {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .product-card:hover { border-color: var(--pink-light) !important; box-shadow: var(--shadow-lg) !important; }
+body.dark-mode .product-image { background: var(--bg-subtle) !important; }
+body.dark-mode .product-title { color: var(--text) !important; }
+body.dark-mode .product-card:hover .product-title { color: var(--pink) !important; }
+body.dark-mode .product-author { color: var(--text-muted) !important; }
+body.dark-mode .product-price { color: var(--pink) !important; }
+body.dark-mode .product-price-old { color: var(--text-light) !important; }
+body.dark-mode .card-fav-btn { background: rgba(26,29,39,.95) !important; border-color: var(--border) !important; }
+body.dark-mode .card-fav-btn .material-symbols-outlined { color: var(--text-muted) !important; }
+
+/* Page produit (ancienne version) */
+body.dark-mode .product-main-image { background: var(--bg-subtle) !important; }
+body.dark-mode .product-name { color: var(--text) !important; }
+body.dark-mode .product-ref { color: var(--text-light) !important; }
+body.dark-mode .rating-count { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   8. FILTERS, PILLS, PAGINATION
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .filter-pill,
+body.dark-mode .serie-pill,
+body.dark-mode .filter-tag,
+body.dark-mode .tag {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .filter-pill:hover,
+body.dark-mode .serie-pill:hover,
+body.dark-mode .filter-tag:hover,
+body.dark-mode .tag:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+body.dark-mode .filter-pill.active,
+body.dark-mode .serie-pill.active { background: var(--pink) !important; color: #fff !important; border-color: var(--pink) !important; }
+
+body.dark-mode .page-btn {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .page-btn:hover { border-color: var(--pink) !important; color: var(--pink) !important; background: var(--pink-soft) !important; }
+body.dark-mode .page-btn.active { background: var(--pink) !important; color: #fff !important; border-color: var(--pink) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   9. TOASTS, SKELETON, SCROLLBAR
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .kinka-toast {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+body.dark-mode .skeleton {
+  background: linear-gradient(90deg, var(--bg-subtle) 25%, var(--border) 50%, var(--bg-subtle) 75%) !important;
+  background-size: 200% 100% !important;
+}
+body.dark-mode ::-webkit-scrollbar-track { background: var(--bg-subtle); }
+body.dark-mode ::-webkit-scrollbar-thumb { background: var(--border-dk); }
+body.dark-mode ::-webkit-scrollbar-thumb:hover { background: var(--pink-light); }
+
+/* ══════════════════════════════════════════════════════════════
+   10. SECTION HEADERS & PAGE HEADERS
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .section-title,
+body.dark-mode .section-title-main { color: var(--text) !important; }
+body.dark-mode .view-all { color: var(--pink) !important; }
+body.dark-mode .page-title { color: var(--text) !important; }
+body.dark-mode .page-description,
+body.dark-mode .page-subtitle { color: var(--text-muted) !important; }
+body.dark-mode .page-header,
+body.dark-mode .page-hero-header { border-bottom-color: var(--border) !important; }
+body.dark-mode .last-update { color: var(--text-light) !important; }
+body.dark-mode .results-label,
+body.dark-mode .results-count,
+body.dark-mode .sort-by label { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   11. PAGE ACCUEIL
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .newsletter-section { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .newsletter-input {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.dark-mode .newsletter-input:focus { background: var(--bg-card) !important; }
+body.dark-mode .newsletter-input::placeholder { color: var(--text-light) !important; }
+body.dark-mode .trust-bar { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .trust-item { color: var(--text-muted) !important; }
+body.dark-mode .trust-item .material-symbols-outlined { color: var(--pink) !important; }
+
+body.dark-mode .maison-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .maison-card:hover { border-color: var(--pink-light) !important; }
+body.dark-mode .maison-name { color: var(--text) !important; }
+body.dark-mode .maison-count { color: var(--text-muted) !important; }
+
+body.dark-mode .cat-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .cat-card:hover { border-color: var(--pink-light) !important; }
+body.dark-mode .cat-card-name { color: var(--text) !important; }
+
+body.dark-mode .occasion-banner-card {
+  background: linear-gradient(135deg, #0f0302 0%, #2a0d05 50%, #0f0302 100%) !important;
+  border-color: rgba(239,68,68,.2) !important;
+}
+body.dark-mode .occasion-banner-left h2 .accent { color: #f87171 !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   12. PAGE CATALOGUE / LISTES (bestsellers, nouveautés, etc.)
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .cat-nav-bar,
+body.dark-mode .md-nav-bar {
+  background: var(--bg-card) !important;
+  border-bottom-color: var(--border) !important;
+}
+body.dark-mode .cat-nav-link,
+body.dark-mode .md-nav-link { color: var(--text-muted) !important; }
+body.dark-mode .cat-nav-link:hover,
+body.dark-mode .md-nav-link:hover { color: var(--text) !important; }
+body.dark-mode .cat-nav-link.active,
+body.dark-mode .md-nav-link.md-nav-active { color: var(--pink) !important; border-bottom-color: var(--pink) !important; }
+
+body.dark-mode .liste-hero.hero-pink { background: linear-gradient(135deg,#12030d 0%,#28081c 100%) !important; }
+body.dark-mode .liste-hero.hero-gold { background: linear-gradient(135deg,#100d02 0%,#291e02 100%) !important; }
+body.dark-mode .liste-hero.hero-dark { background: linear-gradient(135deg,#060608 0%,#101018 100%) !important; }
+
+body.dark-mode .rank-badge { color: #1a1a1a; } /* reste lisible sur fond or */
+
+/* ══════════════════════════════════════════════════════════════
+   13. PAGE DÉTAIL PRODUIT
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .product-tabs { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .tab-header { background: var(--bg-subtle) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .tab-btn { color: var(--text-muted) !important; }
+body.dark-mode .tab-btn:hover { color: var(--text) !important; }
+body.dark-mode .tab-btn.active { color: var(--pink) !important; background: var(--bg-card) !important; }
+body.dark-mode .tab-panel { color: var(--text) !important; }
+
+body.dark-mode .carac-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .carac-label { color: var(--text-muted) !important; }
+body.dark-mode .carac-value { color: var(--text) !important; }
+body.dark-mode .stock-badge.rupture { background: rgba(239,68,68,.8) !important; }
+body.dark-mode .stock-badge.last    { background: rgba(245,158,11,.8) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   14. PAGE MAISON ÉDITION
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .md-sidebar-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .md-sidebar-title { color: var(--text-muted) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .md-serie-link { color: var(--text-muted) !important; }
+body.dark-mode .md-serie-link:hover { background: var(--bg-subtle) !important; color: var(--text) !important; }
+body.dark-mode .md-serie-link.active { background: var(--pink-soft) !important; color: var(--pink) !important; }
+body.dark-mode .md-serie-link span { background: var(--bg-subtle) !important; color: var(--text-muted) !important; }
+
+body.dark-mode .me-other-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .me-other-card:hover { border-color: var(--pink-light) !important; }
+body.dark-mode .me-other-logo { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .me-other-info h4 { color: var(--text) !important; }
+body.dark-mode .me-other-info p { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   15. PAGE COUP DE CŒUR
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .cdc-article { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .cdc-article-title { color: var(--text) !important; }
+body.dark-mode .cdc-article-desc { color: var(--text-muted) !important; }
+body.dark-mode .cdc-article-num { color: var(--border-dk) !important; }
+body.dark-mode .cdc-article-reasons { background: var(--bg-subtle) !important; }
+body.dark-mode .cdc-article-reasons h4 { color: var(--text-muted) !important; }
+body.dark-mode .cdc-article-reasons li { color: var(--text) !important; }
+body.dark-mode .cdc-librarian { border-top-color: var(--border) !important; }
+body.dark-mode .cdc-librarian-name { color: var(--text) !important; }
+body.dark-mode .cdc-librarian-role { color: var(--text-muted) !important; }
+body.dark-mode .cdc-tag { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .cdc-tag:hover { background: var(--pink-soft) !important; color: var(--pink) !important; border-color: var(--pink) !important; }
+body.dark-mode .cdc-separator { background: var(--border) !important; }
+body.dark-mode .cdc-product-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .cdc-product-info h3 { color: var(--text) !important; }
+body.dark-mode .cdc-product-info p { color: var(--text-muted) !important; }
+body.dark-mode .cdc-price { color: var(--pink) !important; }
+body.dark-mode .cdc-reasons-box { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .cdc-reasons-box h4 { color: var(--text-muted) !important; }
+body.dark-mode .cdc-meta-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .cdc-meta-item strong { color: var(--text) !important; }
+body.dark-mode .cdc-meta-item span:last-child { color: var(--text-muted) !important; }
+body.dark-mode .cdc-fav-btn { background: var(--bg-subtle) !important; }
+body.dark-mode .cdc-fav-btn .material-symbols-outlined { color: var(--text-muted) !important; }
+body.dark-mode .cdc-stock-badge.ok  { background: rgba(34,197,94,.15) !important; }
+body.dark-mode .cdc-stock-badge.low { background: rgba(239,68,68,.15) !important; }
+body.dark-mode .tag-seinen { background: rgba(30,64,175,.15) !important; border-color: rgba(30,64,175,.3) !important; }
+body.dark-mode .tag-shojo  { background: rgba(236,72,153,.15) !important; border-color: rgba(236,72,153,.3) !important; }
+body.dark-mode .tag-josei  { background: rgba(139,92,246,.15) !important; border-color: rgba(139,92,246,.3) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   16. PAGE OCCASION
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .occasion-hero {
+  background: linear-gradient(135deg, #100303 0%, #280808 50%, #100303 100%) !important;
+  border-color: rgba(239,68,68,.18) !important;
+}
+body.dark-mode .etat-item { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .etat-item strong { color: var(--text) !important; }
+body.dark-mode .etat-item p { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   17. PAGE PANIER
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .panier-titre {
+  background: linear-gradient(135deg, var(--text), var(--pink), var(--text)) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+body.dark-mode .panier-item {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .panier-item:hover { border-color: var(--pink-light) !important; }
+body.dark-mode .panier-item-info h3 { color: var(--text) !important; }
+body.dark-mode .panier-item-info p,
+body.dark-mode .panier-item-meta { color: var(--text-muted) !important; }
+body.dark-mode .panier-item-prix { color: var(--text-muted) !important; }
+body.dark-mode .panier-item-prix strong { color: var(--pink) !important; }
+
+body.dark-mode .quantite-controls {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .quantite-controls button {
+  background: var(--bg-subtle) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .quantite-controls button:hover {
+  background: var(--pink-soft) !important;
+  color: var(--pink) !important;
+}
+body.dark-mode .quantite-controls button:active {
+  background: var(--pink) !important;
+  color: #fff !important;
+}
+body.dark-mode .quantite-controls span,
+body.dark-mode .quantite-affichage { color: var(--text) !important; }
+
+body.dark-mode .btn-supprimer { border-color: var(--border) !important; }
+
+body.dark-mode .panier-resume {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .panier-resume h3 { color: var(--text) !important; }
+body.dark-mode .resume-ligne { color: var(--text-muted) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .resume-ligne.total { border-top-color: var(--border-dk) !important; color: var(--text) !important; }
+body.dark-mode .resume-ligne.total span:last-child { color: var(--pink) !important; }
+body.dark-mode .livraison-info { color: var(--text-muted) !important; }
+body.dark-mode .continuer-achats { color: var(--text-muted) !important; }
+body.dark-mode .continuer-achats:hover { color: var(--pink) !important; }
+body.dark-mode .panier-vide { color: var(--text-muted) !important; }
+body.dark-mode .panier-vide h2 { color: var(--text) !important; }
+body.dark-mode .panier-notification { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   18. PAGE PAIEMENT
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .checkout-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .section-header { border-bottom-color: var(--border) !important; }
+body.dark-mode .section-header h2 { color: var(--text) !important; }
+
+body.dark-mode .payment-option { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .payment-option:hover { background: var(--pink-soft) !important; border-color: var(--pink-light) !important; }
+body.dark-mode .payment-option.selected { background: var(--pink-soft) !important; border-color: var(--pink) !important; }
+body.dark-mode .payment-icon { background: var(--bg-subtle) !important; }
+body.dark-mode .payment-name { color: var(--text) !important; }
+body.dark-mode .payment-types { color: var(--text-muted) !important; }
+body.dark-mode .card-details { border-top-color: var(--border) !important; }
+body.dark-mode .input-icon,
+body.dark-mode .input-icon-right { color: var(--text-light) !important; }
+
+body.dark-mode .summary-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .summary-card > h2 { color: var(--text) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .summary-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .summary-item:hover { background: var(--bg-subtle) !important; }
+body.dark-mode .item-title { color: var(--text) !important; }
+body.dark-mode .item-publisher { color: var(--text-muted) !important; }
+body.dark-mode .item-qty { color: var(--text-light) !important; }
+body.dark-mode .item-price { color: var(--text) !important; }
+
+body.dark-mode .promo-section { border-bottom-color: var(--border) !important; }
+body.dark-mode .promo-input { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text) !important; }
+body.dark-mode .promo-input::placeholder { color: var(--text-light) !important; }
+
+body.dark-mode .summary-totals { border-bottom-color: var(--border) !important; }
+body.dark-mode .total-row { color: var(--text-muted) !important; }
+body.dark-mode .total-row.final { border-top-color: var(--border-dk) !important; }
+body.dark-mode .total-label { color: var(--text) !important; }
+body.dark-mode .cgv-notice { color: var(--text-light) !important; }
+body.dark-mode .pay-trust { color: var(--text-light) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   19. PAGE FAVORIS
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .fav-hero {
+  background: linear-gradient(135deg, #6a0f36 0%, #4a0a25 60%, #2d0616 100%) !important;
+}
+body.dark-mode .fav-hero-icon { background: rgba(255,255,255,.12) !important; border-color: rgba(255,255,255,.15) !important; }
+body.dark-mode .fav-stat-chip { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .fav-stat-chip strong { color: var(--text) !important; }
+body.dark-mode .fav-empty-icon { background: var(--bg-subtle) !important; }
+body.dark-mode .fav-empty-icon .material-symbols-outlined { color: var(--border-dk) !important; }
+body.dark-mode .fav-empty-ring { border-color: var(--border-dk) !important; }
+body.dark-mode .fav-empty-title { color: var(--text) !important; }
+body.dark-mode .fav-empty-sub { color: var(--text-muted) !important; }
+body.dark-mode .fav-suggestions { border-top-color: var(--border) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   20. PAGE PROFIL
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .profil-hero { background: linear-gradient(155deg, #0a0a10 0%, #1a0810 40%, #0a0a10 100%) !important; }
+
+body.dark-mode .profil-sidebar-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .profil-sidebar-header { background: linear-gradient(160deg, #1a1020 0%, #2a0f1a 100%) !important; }
+body.dark-mode .profil-sidebar-name { color: var(--text) !important; }
+body.dark-mode .profil-sidebar-email { color: var(--text-muted) !important; }
+
+body.dark-mode .profil-nav-item { color: var(--text-muted) !important; }
+body.dark-mode .profil-nav-item:hover { background: var(--bg-subtle) !important; color: var(--text) !important; }
+body.dark-mode .profil-nav-item.active { background: var(--pink-soft) !important; color: var(--pink) !important; }
+body.dark-mode .profil-nav-danger { color: #f87171 !important; }
+body.dark-mode .profil-nav-danger:hover { background: rgba(239,68,68,.1) !important; }
+body.dark-mode .profil-sidebar-footer { border-top-color: var(--border) !important; }
+
+body.dark-mode .profil-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .profil-section-title { color: var(--text) !important; border-bottom-color: var(--border) !important; }
+
+body.dark-mode .profil-stat-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .profil-stat-val { color: var(--text) !important; }
+body.dark-mode .profil-stat-label { color: var(--text-muted) !important; }
+
+body.dark-mode .order-row { border-bottom-color: var(--border) !important; }
+body.dark-mode .order-row:hover { background: var(--bg-subtle) !important; }
+
+body.dark-mode .statut-livree   { background: rgba(34,197,94,.15) !important; color: #4ade80 !important; }
+body.dark-mode .statut-encours  { background: rgba(59,130,246,.15) !important; color: #60a5fa !important; }
+body.dark-mode .statut-expediee { background: rgba(139,92,246,.15) !important; color: #a78bfa !important; }
+body.dark-mode .statut-annulee  { background: rgba(239,68,68,.15) !important; color: #f87171 !important; }
+
+body.dark-mode .securite-danger-zone { border-top-color: rgba(239,68,68,.25) !important; }
+body.dark-mode .btn-danger { background: rgba(239,68,68,.12) !important; color: #f87171 !important; border-color: rgba(239,68,68,.3) !important; }
+body.dark-mode .btn-danger:hover { background: rgba(239,68,68,.2) !important; border-color: rgba(239,68,68,.5) !important; }
+
+body.dark-mode .abo-plan { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .abo-plan:hover { border-color: var(--pink-light) !important; }
+body.dark-mode .abo-plan-icon-free { background: var(--bg-subtle) !important; }
+
+/* Gate (panneau login du profil) */
+body.dark-mode .gate-right { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .gate-right-title { color: var(--text) !important; }
+body.dark-mode .gate-right-sub { color: var(--text-muted) !important; }
+body.dark-mode .gate-btn-secondary { background: transparent !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .gate-btn-secondary:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+body.dark-mode .gate-demo { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .gate-demo-title { color: var(--text-muted) !important; }
+body.dark-mode .gate-cred { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .gate-cred-value { color: var(--pink) !important; }
+body.dark-mode .gate-cred-label { color: var(--text-light) !important; }
+body.dark-mode .demo-cred-label { color: var(--text-light) !important; }
+body.dark-mode .demo-cred-val { color: var(--text) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   21. PAGE FAQ
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .faq-header { background: var(--bg) !important; }
+body.dark-mode .faq-header h1 { color: var(--text) !important; }
+body.dark-mode .faq-subtitle { color: var(--text-muted) !important; }
+body.dark-mode .faq-sidebar,
+body.dark-mode .faq-nav { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .faq-nav-link { color: var(--text-muted) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .faq-nav-link:hover,
+body.dark-mode .faq-nav-link.active { background: var(--pink-soft) !important; color: var(--pink) !important; }
+body.dark-mode .faq-content { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .faq-section h2 { color: var(--text) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .faq-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .faq-item:hover { background: var(--bg-subtle) !important; }
+body.dark-mode .faq-question { color: var(--text) !important; }
+body.dark-mode .faq-answer { color: var(--text-muted) !important; }
+body.dark-mode .faq-answer > div { border-top-color: var(--border) !important; background: var(--bg-subtle) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   22. PAGES LÉGALES (CGU, CGV, POL RETOUR)
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .content-card,
+body.dark-mode .cgu-section,
+body.dark-mode .cgv-container,
+body.dark-mode .cgv-content,
+body.dark-mode .cgv-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .section-text { color: var(--text-muted) !important; }
+body.dark-mode .cgv-section h2 { color: var(--text) !important; }
+body.dark-mode .contact-box p { color: var(--text-muted) !important; }
+
+body.dark-mode .page-hero { background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg) 100%) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .page-hero h1 { color: var(--text) !important; }
+body.dark-mode .hero-description { color: var(--text-muted) !important; }
+body.dark-mode .policy-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .policy-section h2 { color: var(--text) !important; }
+body.dark-mode .step-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .step-card:hover { border-color: var(--pink-light) !important; }
+body.dark-mode .step-card h3 { color: var(--text) !important; }
+body.dark-mode .step-card p { color: var(--text-muted) !important; }
+body.dark-mode .condition-item { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .condition-item p { color: var(--text-muted) !important; }
+body.dark-mode .refund-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .refund-header h3 { color: var(--text) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   23. PAGE CONTACT
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .contact-section { background: var(--bg) !important; }
+body.dark-mode .contact-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .contact-card h1 { color: var(--text) !important; }
+body.dark-mode .contact-subtitle { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   24. PAGE CONFIRMATION COMMANDE
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .success-section,
+body.dark-mode .order-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .success-section h1 { color: var(--text) !important; }
+body.dark-mode .confirmation-message { color: var(--text-muted) !important; }
+body.dark-mode .confirmation-message strong { color: var(--text) !important; }
+body.dark-mode .order-section h2 { color: var(--text) !important; }
+body.dark-mode .detail-card { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .detail-label { color: var(--text-light) !important; }
+body.dark-mode .detail-name { color: var(--text) !important; }
+body.dark-mode .detail-text,
+body.dark-mode .detail-date { color: var(--text-muted) !important; }
+body.dark-mode .articles-container { background: var(--bg-subtle) !important; }
+body.dark-mode .articles-container h3 { color: var(--text-muted) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .article-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .article-title { color: var(--text) !important; }
+body.dark-mode .article-meta { color: var(--text-muted) !important; }
+body.dark-mode .article-publisher { color: var(--text-light) !important; }
+body.dark-mode .summary-row { color: var(--text-muted) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .summary-row.total { border-top-color: var(--border-dk) !important; color: var(--text) !important; }
+body.dark-mode .loyalty-banner { background: linear-gradient(135deg, #0f0a20 0%, #1a1035 100%) !important; border-color: rgba(139,92,246,.3) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   25. PAGE CONFIRMATION MDP
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .success-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .success-card h1 { color: var(--text) !important; }
+body.dark-mode .success-message { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   26. PAGE SUIVI COMMANDE
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .info-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .info-card h4 { color: var(--text) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .tracking-code { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .tracking-number { color: var(--text) !important; }
+body.dark-mode .tracking-label { color: var(--text-muted) !important; }
+body.dark-mode .step-circle { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .progress-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .step-line { background: var(--border) !important; }
+body.dark-mode .estimated-delivery { background: rgba(34,197,94,.08) !important; border-color: rgba(34,197,94,.2) !important; }
+body.dark-mode .summary-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .summary-card h4 { color: var(--text) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .address-line { color: var(--text-muted) !important; }
+body.dark-mode .recipient-name { color: var(--text) !important; }
+body.dark-mode .articles-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .articles-section h4 { color: var(--text-muted) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .status-badge { border-color: var(--border) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   27. PAGE PREMIUM
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .prem-avantage-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .prem-avantage-card:hover { border-color: var(--pink-light) !important; }
+body.dark-mode .prem-avantage-title { color: var(--text) !important; }
+body.dark-mode .prem-avantage-desc { color: var(--text-muted) !important; }
+body.dark-mode .prem-card-mensuelle { background: #1a1608 !important; border-color: var(--border) !important; }
+body.dark-mode .prem-card-annuelle  { background: #1a0812 !important; border-color: var(--pink-light) !important; }
+body.dark-mode .prem-plan-name { color: var(--text) !important; }
+body.dark-mode .prem-plan-price { color: var(--text) !important; }
+body.dark-mode .prem-plan-period { color: var(--text-muted) !important; }
+body.dark-mode .prem-plan-list li { color: var(--text-muted) !important; }
+body.dark-mode .prem-faq-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .prem-faq-question { color: var(--text) !important; }
+body.dark-mode .prem-faq-answer { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   28. PAGE RECHERCHE
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .filters-sidebar { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .filters-header { border-bottom-color: var(--border) !important; }
+body.dark-mode .filters-header h2 { color: var(--text) !important; }
+body.dark-mode .filter-group { border-bottom-color: var(--border) !important; }
+body.dark-mode .filter-title { color: var(--text) !important; }
+body.dark-mode .filter-option { color: var(--text-muted) !important; }
+body.dark-mode .filter-option.pill { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .filter-option.pill:hover,
+body.dark-mode .filter-option.pill.active { background: var(--pink-soft) !important; color: var(--pink) !important; border-color: var(--pink) !important; }
+body.dark-mode .checkbox-custom { border-color: var(--border-dk) !important; background: var(--bg-subtle) !important; }
+body.dark-mode .price-input { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text) !important; }
+body.dark-mode .sort-select { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text) !important; }
+body.dark-mode .btn-load-more { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .btn-load-more:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+body.dark-mode .filter-btn { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   29. PAGE COFFRET
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .section-title-main { color: var(--text) !important; }
+body.dark-mode .results-count { color: var(--text-muted) !important; }
+body.dark-mode .sort-by label { color: var(--text-muted) !important; }
+body.dark-mode .sort-select { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text) !important; }
+body.dark-mode .product-card-coffret { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .product-title-coffret { color: var(--text) !important; }
+body.dark-mode .product-price-coffret { color: var(--pink) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   30. PAGE ODA (profil vendeur)
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .profile-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .btn-follow { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .btn-follow:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+body.dark-mode .meta-item { color: var(--text-muted) !important; }
+body.dark-mode .profile-stats { border-top-color: var(--border) !important; }
+body.dark-mode .stat-label { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   31. PAGE MOT DE PASSE (réinit + nouveau)
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .reset-info h1,
+body.dark-mode .info-card h1 { color: var(--text) !important; }
+body.dark-mode .contact-item { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .contact-label { color: var(--text) !important; }
+body.dark-mode .support-text,
+body.dark-mode .info-description { color: var(--text-muted) !important; }
+body.dark-mode .reset-form-container,
+body.dark-mode .form-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .reset-form-container h2,
+body.dark-mode .form-header { color: var(--text) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .stat-box { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .stat-box h3 { color: var(--text-muted) !important; }
+body.dark-mode .security-tip { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
+body.dark-mode .tip-content h4 { color: var(--text) !important; }
+body.dark-mode .tip-content p { color: var(--text-muted) !important; }
+body.dark-mode .timer-info { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   32. PAGE CRÉATION ANNONCE
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .form-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .section-header h2 { color: var(--text) !important; }
+body.dark-mode .page-header h1 { color: var(--text) !important; }
+body.dark-mode .search-btn { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .currency { color: var(--text-muted) !important; }
+body.dark-mode .etat-btn { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .etat-btn:hover,
+body.dark-mode .etat-btn.active { border-color: var(--pink) !important; color: var(--pink) !important; background: var(--pink-soft) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   33. PAGES AUTH (LOGIN / SIGNUP)
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .signup-right { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .social-btn { background: var(--bg-subtle) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+body.dark-mode .social-btn:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+body.dark-mode .auth-divider { color: var(--text-light) !important; }
+body.dark-mode .auth-divider::before,
+body.dark-mode .auth-divider::after { background: var(--border) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   34. PAGE SÉRIE DÉTAIL
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .serie-hero { background: linear-gradient(135deg, #0a0a14 0%, #1a1028 100%) !important; }
+body.dark-mode .serie-desc { color: var(--text-muted) !important; }
+body.dark-mode .serie-volumes { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .serie-volume-item { border-bottom-color: var(--border) !important; }
+body.dark-mode .serie-volume-item:hover { background: var(--bg-subtle) !important; }
+body.dark-mode .serie-vol-title { color: var(--text) !important; }
+body.dark-mode .serie-vol-meta { color: var(--text-muted) !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   35. PAGE 404
+══════════════════════════════════════════════════════════════ */
+body.dark-mode .error-code { color: var(--border-dk) !important; }
+body.dark-mode .error-title { color: var(--text) !important; }
+body.dark-mode .error-message { color: var(--text-muted) !important; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   36. CORRECTIFS EXHAUSTIFS — SESSION 4
+   Couvre tous les sélecteurs avec couleurs hardcodées non encore
+   ciblés dans les blocs précédents.
+══════════════════════════════════════════════════════════════ */
+
+/* ── TRANSLATE.CSS — bouton langue ── */
+body.dark-mode .language-toggle {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.dark-mode .language-toggle .language-text { color: var(--text-muted) !important; }
+body.dark-mode .language-toggle:hover .language-text { color: var(--pink) !important; }
+body.dark-mode .language-toggle::after {
+  background: var(--bg-subtle) !important;
+  color: var(--text) !important;
+}
+body.dark-mode .language-toggle::before { border-bottom-color: var(--bg-subtle) !important; }
+body.dark-mode .language-toggle.colored {
+  background: var(--pink) !important;
+  border-color: var(--pink) !important;
+  color: #fff !important;
+}
+
+/* ── PAGE PANIER — éléments non couverts ── */
+body.dark-mode .panier-item-image { background: var(--bg-subtle) !important; }
+body.dark-mode .quantite-controls {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .quantite-controls button {
+  background: var(--bg-subtle) !important;
+  color: var(--text-muted) !important;
+  border-color: transparent !important;
+}
+body.dark-mode .quantite-controls button:hover {
+  background: var(--pink-soft) !important;
+  color: var(--pink) !important;
+}
+body.dark-mode .quantite-controls span { color: var(--text) !important; }
+body.dark-mode .btn-supprimer {
+  color: #f87171 !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .btn-supprimer:hover {
+  background: rgba(239,68,68,.12) !important;
+  border-color: #f87171 !important;
+}
+body.dark-mode .panier-item-info h3 { color: var(--text) !important; }
+body.dark-mode .panier-item-info p { color: var(--text-muted) !important; }
+body.dark-mode .resume-ligne { color: var(--text-muted) !important; border-color: var(--border) !important; }
+body.dark-mode .resume-ligne.total { color: var(--text) !important; border-top-color: var(--border-dk) !important; }
+body.dark-mode .panier-vide h2 { color: var(--text) !important; }
+body.dark-mode .panier-vide p { color: var(--text-muted) !important; }
+
+/* ── PAGE PROFIL — badges statuts et abonnement ── */
+body.dark-mode .profil-nav-danger:hover { background: rgba(239,68,68,.12) !important; }
+body.dark-mode .abo-plan-active {
+  border-color: #22c55e !important;
+  background: rgba(34,197,94,.08) !important;
+}
+body.dark-mode .abo-tag-premium {
+  background: linear-gradient(135deg, rgba(234,179,8,.15), rgba(202,138,4,.15)) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(234,179,8,.3) !important;
+}
+body.dark-mode .abo-tag-collector {
+  background: linear-gradient(135deg, rgba(124,58,237,.15), rgba(139,92,246,.15)) !important;
+  color: #a78bfa !important;
+  border-color: rgba(139,92,246,.3) !important;
+}
+body.dark-mode .securite-danger-zone h5 { color: #f87171 !important; }
+body.dark-mode .btn-danger:hover { background: rgba(239,68,68,.2) !important; border-color: rgba(239,68,68,.5) !important; }
+body.dark-mode .profil-section-title,
+body.dark-mode .profil-section-title small { color: var(--text-muted) !important; }
+
+/* ── PAGE ACCUEIL — promo cards, premium, newsletter ── */
+body.dark-mode .promo-card {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .promo-coffret .promo-cta { color: #f5d399 !important; }
+body.dark-mode .newsletter-btn:hover { background: var(--pink-dark) !important; }
+body.dark-mode .premium-accueil-card {
+  background: linear-gradient(135deg, #4a0a25 0%, #2d0616 100%) !important;
+}
+body.dark-mode .btn-premium-rose { color: var(--pink) !important; }
+body.dark-mode .btn-premium-rose:hover { color: var(--pink-dark) !important; }
+
+/* ── PAGE FAQ — fond hover ── */
+body.dark-mode .faq-nav-link.active,
+body.dark-mode .faq-nav-link:hover { background: var(--pink-soft) !important; color: var(--pink) !important; }
+body.dark-mode .faq-answer > div { background: var(--bg-subtle) !important; }
+body.dark-mode .faq-question:hover { color: var(--text) !important; }
+body.dark-mode .faq-toggle:checked + .faq-question { color: var(--pink) !important; }
+
+/* ── PAGE CGU / CGV — contenu texte ── */
+body.dark-mode .section-text,
+body.dark-mode .cgv-section p,
+body.dark-mode .content-card p { color: var(--text-muted) !important; }
+body.dark-mode .contact-box {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .contact-box:hover { border-color: var(--pink) !important; }
+body.dark-mode .contact-box p { color: var(--text-muted) !important; }
+
+/* ── PAGE CONTACT — champs et info text ── */
+body.dark-mode .info-text { color: var(--text-muted) !important; }
+
+/* ── PAGE COFFRET — produits ── */
+body.dark-mode .product-description { color: var(--text-muted) !important; }
+
+/* ── PAGE CONFIRMATION COMMANDE ── */
+body.dark-mode .btn-secondary {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .btn-secondary:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+body.dark-mode .btn-loyalty { background: var(--bg-card) !important; border-color: var(--border) !important; }
+
+/* ── PAGE PRODUIT (detail) ── */
+body.dark-mode .qty-btn:hover {
+  background: var(--pink-soft) !important;
+  color: var(--pink) !important;
+}
+body.dark-mode .product-price-section { border-color: var(--border) !important; }
+body.dark-mode .stock-indicator-ok { color: #4ade80 !important; }
+body.dark-mode .stock-indicator-low { color: #fb923c !important; }
+
+/* ── PAGE CRÉATION ANNONCE ── */
+body.dark-mode .upload-area {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .upload-area:hover { border-color: var(--pink) !important; }
+body.dark-mode .add-more:hover { background: var(--pink-soft) !important; color: var(--pink) !important; }
+body.dark-mode .state-card input:checked ~ .state-content {
+  background: var(--pink-soft) !important;
+  border-color: var(--pink) !important;
+  color: var(--pink) !important;
+}
+body.dark-mode .tips-list li {
+  background: var(--bg-subtle) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .tips-list li:hover { background: var(--bg-card) !important; }
+
+/* ── PAGE RÉINITIALISATION MDP ── */
+body.dark-mode .info-badge {
+  background: var(--pink-soft) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+
+/* ── PAGE NOUVEAU MDP ── */
+body.dark-mode .strength-label { color: var(--text-muted) !important; }
+body.dark-mode .password-requirements { color: var(--text-light) !important; }
+body.dark-mode .requirement-item { color: var(--text-light) !important; }
+body.dark-mode .form-info { color: var(--text-muted) !important; }
+body.dark-mode .form-subtitle { color: var(--text-muted) !important; }
+
+/* ── PAGE ODA ── */
+body.dark-mode .filter-tag {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .filter-tag:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+body.dark-mode .profile-tabs { border-color: var(--border) !important; }
+body.dark-mode .tab-link { color: var(--text-muted) !important; }
+body.dark-mode .tab-link.active { color: var(--pink) !important; border-bottom-color: var(--pink) !important; }
+
+/* ── PAGE POLITIQUE RETOUR ── */
+body.dark-mode .section-intro { color: var(--text-muted) !important; }
+body.dark-mode .subsection p { color: var(--text-muted) !important; }
+body.dark-mode .refund-card p { color: var(--text-muted) !important; }
+body.dark-mode .breadcrumb span:last-child { color: var(--text-light) !important; }
+
+/* ── PAGE RECHERCHE — champs supplémentaires ── */
+body.dark-mode .results-summary { color: var(--text-muted) !important; }
+body.dark-mode .sort-label { color: var(--text-muted) !important; }
+
+/* ── KINKA-SHARED — étoiles et badges couleurs fixes ── */
+body.dark-mode .star.full,
+body.dark-mode .star.half { color: #f59e0b !important; }
+body.dark-mode .etat-bon .material-symbols-outlined { color: #60a5fa !important; }
+body.dark-mode .etat-acceptable .material-symbols-outlined { color: #c084fc !important; }
+body.dark-mode .card-fav-btn:hover .material-symbols-outlined { color: #f87171 !important; }
+body.dark-mode .card-fav-btn.active .material-symbols-outlined {
+  color: #f87171 !important;
+  font-variation-settings: 'FILL' 1 !important;
+}
+body.dark-mode .product-badge.occasion { background: #6366f1 !important; }
+body.dark-mode .product-badge.bestseller { background: var(--pink) !important; }
+body.dark-mode .product-badge.nouveau { background: #22c55e !important; }
+
+/* ── PAGE PANIER — résumé commander (layout) ── */
+body.dark-mode .panier-layout { background: transparent !important; }
+body.dark-mode .panier-section-header { color: var(--text) !important; border-bottom-color: var(--border) !important; }
+body.dark-mode .livraison-info { color: var(--text-muted) !important; }
+body.dark-mode .panier-notification {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* ── PAGE LOGIN / SIGNUP — champs et labels ── */
+body.dark-mode .signup-left { background: linear-gradient(160deg, #1a0810 0%, #0a0a10 100%) !important; }
+body.dark-mode .toggle-password { color: var(--text-muted) !important; }
+body.dark-mode .toggle-password:hover { color: var(--pink) !important; }
+body.dark-mode .form-hint { color: var(--text-light) !important; }
+body.dark-mode .strength-bars .strength-bar.active-s1 { background: #f87171 !important; }
+body.dark-mode .strength-bars .strength-bar.active-s2 { background: #fb923c !important; }
+body.dark-mode .strength-bars .strength-bar.active-s3 { background: #4ade80 !important; }
+body.dark-mode .strength-bars .strength-bar {
+  background: var(--border) !important;
+}
+body.dark-mode .demo-copy-btn { color: var(--text-muted) !important; }
+body.dark-mode .demo-copy-btn:hover { color: var(--pink) !important; }
+body.dark-mode .pageLogIn-form-card,
+body.dark-mode .login-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .social-login-btn {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .social-login-btn:hover { border-color: var(--pink) !important; color: var(--pink) !important; }
+
+/* ── PAGE ACCUEIL — hero slides (arrière-plan déjà sombre, texte ok) ── */
+body.dark-mode .hero-slide-content h2 { text-shadow: 0 2px 12px rgba(0,0,0,.7); }
+body.dark-mode .slide-nav-btn {
+  background: rgba(0,0,0,.5) !important;
+  border-color: rgba(255,255,255,.2) !important;
+}
+
+/* ── PAGE MAISON ÉDITION — éléments supplémentaires ── */
+body.dark-mode .md-hero { background: linear-gradient(135deg, #0a0410 0%, #1a0a1a 100%) !important; }
+body.dark-mode .md-hero-title { color: var(--text) !important; }
+body.dark-mode .md-hero-sub { color: var(--text-muted) !important; }
+body.dark-mode .md-stat-val { color: var(--text) !important; }
+body.dark-mode .md-stat-label { color: var(--text-muted) !important; }
+
+/* ── PAGE SÉRIE DÉTAIL — éléments ── */
+body.dark-mode .serie-status { color: var(--text-muted) !important; }
+body.dark-mode .serie-vol-price { color: var(--pink) !important; }
+
+/* ── PAGE OCCASION — éléments ── */
+body.dark-mode .etat-tres-bon .material-symbols-outlined { color: #4ade80 !important; }
+body.dark-mode .etat-bon .material-symbols-outlined { color: #fb923c !important; }
+body.dark-mode .etat-acceptable .material-symbols-outlined { color: #a78bfa !important; }
+
+/* ── SCROLL ANCRES EN MODE SOMBRE ── */
+body.dark-mode { scroll-behavior: smooth; }
+
+/* ── OVERLAYS MODAUX ── */
+body.dark-mode .modal-overlay { background: rgba(0,0,0,.75) !important; }
+body.dark-mode .modal-card,
+body.dark-mode .modal-content {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .modal-title { color: var(--text) !important; }
+body.dark-mode .modal-body { color: var(--text-muted) !important; }
+
+/* ── SELECTEURS input[type="checkbox"] et radio ── */
+body.dark-mode input[type="checkbox"],
+body.dark-mode input[type="radio"] {
+  accent-color: var(--pink);
+}
+
+/* ── SELECTION TEXTE ── */
+body.dark-mode ::selection {
+  background: rgba(224,59,139,.3);
+  color: #fff;
+}
+
+/* ── SIGNUP — password strength bars (classes .s1/.s2/.s3/.s4) ── */
+body.dark-mode .strength-bar { background: var(--border) !important; }
+body.dark-mode .strength-bar.s1 { background: #f87171 !important; }
+body.dark-mode .strength-bar.s2 { background: #fb923c !important; }
+body.dark-mode .strength-bar.s3 { background: #4ade80 !important; }
+body.dark-mode .strength-bar.s4 { background: #22c55e !important; }
+
+/* ── CORRECTIONS FINALES — backgrounds white hardcodés ── */
+body.dark-mode .panier-vide { background: var(--bg) !important; }
+
+/* Confirmation commande */
+body.dark-mode .success-section,
+body.dark-mode .order-section { background: var(--bg-card) !important; border-color: var(--border) !important; }
+body.dark-mode .btn-loyalty { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+
+/* Confirmationmdp */
+body.dark-mode .success-card,
+body.dark-mode .success-message { background: var(--bg-card) !important; }
+
+/* Tous les containers qui auraient pu hériter de white */
+body.dark-mode main,
+body.dark-mode .container { background: transparent !important; }
+
+/* ══════════════════════════════════════════════════════════════
+   37. CORRECTIFS SESSION 4 — AUDIT EXHAUSTIF
+   Couvre tous les sélecteurs manquants identifiés par audit.
+══════════════════════════════════════════════════════════════ */
+
+/* ── BODY LEGACY — neutraliser background:#fafafa et pseudo-éléments ── */
+body.dark-mode { background: var(--bg) !important; color: var(--text) !important; }
+body.dark-mode::before,
+body.dark-mode::after {
+  background-image: none !important;
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+/* ── PAGE CATALOGUE — sidebar-filters ── */
+body.dark-mode .sidebar-filters {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .sidebar-filter-title { color: var(--text) !important; }
+body.dark-mode .sidebar-filter-label { color: var(--text-muted) !important; }
+body.dark-mode .sidebar-price-input {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* ── PAGE CRÉATION ANNONCE — preview-box, btn-secondary-large, tips-card ── */
+body.dark-mode .preview-box {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .preview-box .material-symbols-outlined { color: var(--text-light) !important; }
+body.dark-mode .preview-box:hover { border-color: var(--pink) !important; }
+body.dark-mode .preview-box:hover .material-symbols-outlined { color: var(--pink) !important; }
+body.dark-mode .btn-secondary-large {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode .btn-secondary-large:hover {
+  border-color: var(--pink) !important;
+  color: var(--pink) !important;
+}
+body.dark-mode .tips-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-subtle) 100%) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .tips-card-title { color: var(--text) !important; }
+body.dark-mode .tips-card li { color: var(--text-muted) !important; }
+
+/* ── PAGE DÉTAIL PRODUIT — price-badge-promo, qty-input ── */
+body.dark-mode .price-badge-promo { background: #dc2626 !important; color: #fff !important; }
+body.dark-mode #qty-input {
+  background: var(--bg-subtle) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .caracteristique-value { color: var(--text) !important; }
+
+/* ── PAGE FAQ — icône toggle ── */
+body.dark-mode .faq-icon::after {
+  color: var(--text-muted) !important;
+}
+body.dark-mode .faq-toggle:checked + .faq-label .faq-icon::after { color: var(--pink) !important; }
+
+/* ── PAGE FAVORIS — textes sur fond hero rose ── */
+/* Les éléments sur fond rose: texte #fff est intentionnel, pas besoin de changer */
+/* Mais les boutons hero ont rgba(255,255,255) — OK en dark mode aussi */
+body.dark-mode .fav-sort-btn:hover,
+body.dark-mode .fav-clear-btn:hover { opacity: .9; }
+
+/* ── PAGE NOUVEAUMDP — requirements-title ── */
+body.dark-mode .requirements-title { color: var(--text) !important; }
+
+/* ── PAGE ODA — profile-name, tome-title ── */
+body.dark-mode .profile-name {
+  background: linear-gradient(135deg, var(--text), var(--pink), var(--text)) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+body.dark-mode .tome-title { color: var(--text) !important; }
+body.dark-mode .tome-meta { color: var(--text-muted) !important; }
+body.dark-mode .tome-price { color: var(--pink) !important; }
+
+/* ── PAGE PAIEMENT — section-number (rose sur fond sombre ok), pay-icon fixes ── */
+/* .section-number background:var(--pink) + color:#fff — correct en dark mode */
+/* .payment-icon.paypal — fond #0070BA + svg blanc — correct */
+/* .promo-btn:hover et .btn-pay — couleurs sur rose — correct */
+
+/* ── PAGE PREMIUM — boutons ── */
+body.dark-mode .prem-btn-primary {
+  background: var(--pink) !important;
+  color: #fff !important;
+}
+body.dark-mode .prem-btn-primary:hover {
+  background: var(--pink-dark) !important;
+}
+body.dark-mode .prem-btn-card {
+  background: var(--pink) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+body.dark-mode .prem-btn-card:hover {
+  background: var(--pink-dark) !important;
+}
+body.dark-mode .prem-hero-section {
+  background: linear-gradient(135deg, #2d0618 0%, #1a0410 60%, #0f0208 100%) !important;
+}
+body.dark-mode .prem-hero-title { color: #fff !important; }
+body.dark-mode .prem-hero-sub { color: rgba(255,255,255,.7) !important; }
+body.dark-mode .prem-hero-badge {
+  background: rgba(255,255,255,.12) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.9) !important;
+}
+body.dark-mode .prem-avantages { background: var(--bg-subtle) !important; }
+body.dark-mode .prem-faq-answer { background: var(--bg-subtle) !important; }
+
+/* ── PAGE PROFIL — gate & hero (texte blanc sur fond rose/sombre — correct) ── */
+/* .gate-headline color:#fff — correct sur fond sombre de la gate-left */
+/* .profil-hero-name color:#fff — correct sur fond hero */
+/* .profil-hero-stat-val color:#fff — correct */
+/* .gate-btn-primary background:var(--pink) — correct */
+/* .gate-demo-btn background:var(--pink) — correct */
+/* .abo-plan-badge background:var(--pink) — correct */
+/* .abo-current-icon gradient rose — correct */
+body.dark-mode .gate-left {
+  background: linear-gradient(160deg, #2a0a1a 0%, #1a0812 50%, #0a0410 100%) !important;
+}
+body.dark-mode .gate-feature { color: rgba(255,255,255,.75) !important; }
+body.dark-mode .profil-hero { background: linear-gradient(155deg, #1a0410 0%, #2a0812 40%, #0a0a14 100%) !important; }
+body.dark-mode .profil-hero-stat-label { color: rgba(255,255,255,.6) !important; }
+body.dark-mode .profil-hero-stat-sep { background: rgba(255,255,255,.15) !important; }
+
+/* ── PAGE PROMOTION — hero section ── */
+/* .promo-hero-section background:#1a1a1a — déjà sombre, rendre cohérent */
+body.dark-mode .promo-hero-section {
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%) !important;
+  border: 1px solid var(--border) !important;
+}
+/* .promo-hero-title color:#fff — correct */
+body.dark-mode .promo-hero-badge {
+  background: var(--pink-soft) !important;
+  border-color: rgba(224,59,139,.3) !important;
+}
+body.dark-mode .promo-hero-desc { color: rgba(255,255,255,.65) !important; }
+body.dark-mode .promo-hero-stats { border-top-color: rgba(255,255,255,.1) !important; }
+body.dark-mode .promo-hero-stat-val { color: #fff !important; }
+body.dark-mode .promo-hero-stat-label { color: rgba(255,255,255,.5) !important; }
+
+/* ── PAGE ACCUEIL — premium badge ── */
+/* .premium-accueil-badge background:rgba(255,255,255,.18) — correct sur fond rose */
+/* Pas besoin de dark mode override car c'est sur fond gradient rose */
+
+/* ── PAGE RECHERCHE — search-query gradient text ── */
+body.dark-mode .search-query {
+  background: linear-gradient(135deg, var(--text), var(--pink), var(--text)) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* ── PAGES CATÉGORIES (josei, seinen, shojo) — cat-hero ── */
+/* cat-hero utilise --cat-color1/2 en custom props inline — correct */
+/* Le texte sur l'overlay sombre est blanc — correct */
+body.dark-mode .cat-hero-content .breadcrumb a { color: rgba(255,255,255,.7) !important; }
+body.dark-mode .cat-stat-label { color: rgba(255,255,255,.6) !important; }
+
+/* ── PAGE POLRETOUR — gradient background ── */
+body.dark-mode.page-polretour body,
+body.dark-mode .polretour-bg { background: var(--bg) !important; }
+
+/* ── INPUTS GÉNÉRIQUES sur pages legacy — focus visible ── */
+body.dark-mode input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="range"]),
+body.dark-mode textarea,
+body.dark-mode select {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder { color: var(--text-light) !important; }
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+  border-color: var(--pink) !important;
+  box-shadow: 0 0 0 3px var(--pink-soft) !important;
+  outline: none !important;
+}
+/* Exceptions — ne pas écraser les inputs déjà bien stylés */
+body.dark-mode .newsletter-input {
+  background: rgba(255,255,255,.12) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: #fff !important;
+}
+body.dark-mode .newsletter-input::placeholder { color: rgba(255,255,255,.5) !important; }
+body.dark-mode .promo-input {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+/* Search input dans le header */
+body.dark-mode .search-bar input {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* ── TABLES dans pages légales ── */
+body.dark-mode table { border-color: var(--border) !important; }
+body.dark-mode th {
+  background: var(--bg-subtle) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode td {
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+body.dark-mode tr:nth-child(even) { background: var(--bg-muted) !important; }
+
+/* ── LISTES ORDONNÉES dans pages légales ── */
+body.dark-mode .content-card li,
+body.dark-mode .policy-section li,
+body.dark-mode .cgv-section li,
+body.dark-mode .cgu-section li { color: var(--text-muted) !important; }
+
+/* ── HR / SÉPARATEURS ── */
+body.dark-mode hr { border-color: var(--border) !important; }
+body.dark-mode .divider { background: var(--border) !important; }
+
+/* ── BADGES ET PILLS COMMUNS ── */
+body.dark-mode .badge { background: var(--bg-subtle) !important; color: var(--text-muted) !important; }
+body.dark-mode .badge-pink { background: var(--pink-soft) !important; color: var(--pink) !important; }
+body.dark-mode .badge-green { background: rgba(34,197,94,.15) !important; color: #4ade80 !important; }
+body.dark-mode .badge-red { background: rgba(239,68,68,.15) !important; color: #f87171 !important; }
+body.dark-mode .badge-blue { background: rgba(59,130,246,.15) !important; color: #60a5fa !important; }
+
+/* ── PAGE CONFIRMATION MDP — éléments supplémentaires ── */
+body.dark-mode .confirm-card {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+body.dark-mode .confirm-title { color: var(--text) !important; }
+body.dark-mode .confirm-sub { color: var(--text-muted) !important; }
+
+/* ── PAGE SUIVI COMMANDE — step.active ── */
+body.dark-mode .step-circle.active {
+  background: var(--pink) !important;
+  border-color: var(--pink) !important;
+  color: #fff !important;
+}
+body.dark-mode .step-circle.done {
+  background: rgba(34,197,94,.2) !important;
+  border-color: #4ade80 !important;
+  color: #4ade80 !important;
+}
+body.dark-mode .step-label { color: var(--text-muted) !important; }
+body.dark-mode .step-line.done { background: var(--pink) !important; }
+body.dark-mode .tracking-status { color: var(--text) !important; }
+
+/* ── PAGE 404 — fond ── */
+body.dark-mode .error-section { background: var(--bg) !important; }
+body.dark-mode .error-code {
+  background: linear-gradient(135deg, var(--border-dk), var(--border)) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* ── KINKA-SHARED — card-add-to-cart, panier-badge ── */
+body.dark-mode .nav-badge,
+body.dark-mode .panier-count { background: var(--pink) !important; color: #fff !important; }
+body.dark-mode .connect-btn {
+  background: var(--pink) !important;
+  color: #fff !important;
+  border-color: var(--pink) !important;
+}
+body.dark-mode .connect-btn:hover { background: var(--pink-dark) !important; }
+
+/* ── INPUT type range (filtre prix) ── */
+body.dark-mode input[type="range"] {
+  accent-color: var(--pink) !important;
+  background: var(--border) !important;
+}
+
+/* ── FOCUS-VISIBLE global pour accessibilité dark ── */
+body.dark-mode *:focus-visible {
+  outline: 2px solid var(--pink) !important;
+  outline-offset: 2px !important;
+}
+
+/* ── TOASTS dark mode (variantes gardent leurs couleurs saturées) ── */
+body.dark-mode .kinka-toast {
+  background: var(--bg-card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.6) !important;
+}
+body.dark-mode .kinka-toast--error   { background:#b91c1c !important; color:#fff !important; border-color:#b91c1c !important; }
+body.dark-mode .kinka-toast--success { background:#15803d !important; color:#fff !important; border-color:#15803d !important; }
+body.dark-mode .kinka-toast--info    { background:#1d4ed8 !important; color:#fff !important; border-color:#1d4ed8 !important; }
+body.dark-mode .kinka-toast--warning { background:#b45309 !important; color:#fff !important; border-color:#b45309 !important; }
+body.dark-mode .kinka-toast--default { background:var(--bg-subtle) !important; color:var(--text) !important; border-color:var(--border) !important; }

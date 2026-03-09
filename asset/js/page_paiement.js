@@ -1,83 +1,116 @@
 // ====================================================
-// Fichier : page_paiement.js
-// Rôle : Affiche les articles du panier dans la page paiement,
-//        calcule les totaux et met à jour le résumé.
+// page_paiement.js — Récapitulatif panier & totaux
 // ====================================================
 
 (function _init() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-    'use strict';
-
-    function formatPrice(price) {
-        return price.toFixed(2).replace('.', ',') + '€';
-    }
-
-    const cart = window.getCart();
-    const summaryContainer = document.querySelector('.summary-items');
-    const subtotalEl = document.querySelector('.total-row:first-child span:last-child');
-    const totalEl = document.querySelector('.total-amount');
-    const payButton = document.querySelector('.btn-pay');
-
-    if (!summaryContainer) return;
-
-    // Vider et reconstruire
-    summaryContainer.innerHTML = '';
-
-    if (cart.length === 0) {
-        summaryContainer.innerHTML = '<p class="empty-cart-message">Votre panier est vide.</p>';
-        if (subtotalEl) subtotalEl.textContent = '0,00€';
-        if (totalEl) totalEl.textContent = '0,00€';
-        if (payButton) payButton.disabled = true;
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', _init);
         return;
     }
 
-    let sousTotal = 0;
+    function fmt(price) {
+        return price.toFixed(2).replace('.', ',') + '\u202f€';
+    }
 
-    cart.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'summary-item';
+    var cart = typeof window.getCart === 'function' ? window.getCart() : [];
+    var summaryContainer = document.querySelector('.summary-items');
+    var subtotalEl = document.getElementById('subtotal-val');
+    var totalEl    = document.getElementById('total-val');
+    var payButton  = document.querySelector('.btn-pay');
 
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'item-info';
+    if (!summaryContainer) return;
 
-        const title = document.createElement('h3');
-        title.className = 'item-title';
-        title.textContent = item.titre;
+    // ── Vider les items placeholder du HTML ──
+    summaryContainer.innerHTML = '';
 
-        const publisher = document.createElement('p');
-        publisher.className = 'item-publisher';
-        publisher.textContent = item.editeur || 'Éditeur inconnu';
+    // ── Panier vide ──
+    if (cart.length === 0) {
+        summaryContainer.innerHTML =
+            '<p style="padding:1.5rem;text-align:center;color:var(--text-muted);font-size:.86rem">Votre panier est vide.</p>';
+        if (subtotalEl) subtotalEl.textContent = '0,00\u202f€';
+        if (totalEl)    totalEl.textContent    = '0,00\u202f€';
+        if (payButton)  payButton.disabled = true;
+        return;
+    }
 
-        const qty = document.createElement('p');
+    // ── Construire les lignes ──
+    var sousTotal = 0;
+
+    cart.forEach(function(item) {
+        var ligne = document.createElement('div');
+        ligne.className = 'summary-item';
+
+        var info = document.createElement('div');
+        info.className = 'item-info';
+
+        var titre = document.createElement('h3');
+        titre.className = 'item-title';
+        titre.textContent = item.titre || 'Manga';
+
+        var editeur = document.createElement('p');
+        editeur.className = 'item-publisher';
+        editeur.textContent = item.editeur || item.maison || 'Éditeur inconnu';
+
+        var qty = document.createElement('p');
         qty.className = 'item-qty';
-        qty.textContent = `Qté: ${item.quantite}`;
+        qty.textContent = 'Qté\u00a0: ' + (item.quantite || 1);
 
-        infoDiv.appendChild(title);
-        infoDiv.appendChild(publisher);
-        infoDiv.appendChild(qty);
+        info.appendChild(titre);
+        info.appendChild(editeur);
+        info.appendChild(qty);
 
-        const price = document.createElement('div');
-        price.className = 'item-price';
-        price.textContent = formatPrice(item.prix * item.quantite);
+        var prixLigne = (item.prix || 0) * (item.quantite || 1);
+        var prix = document.createElement('div');
+        prix.className = 'item-price';
+        prix.textContent = fmt(prixLigne);
 
-        itemDiv.appendChild(infoDiv);
-        itemDiv.appendChild(price);
+        ligne.appendChild(info);
+        ligne.appendChild(prix);
+        summaryContainer.appendChild(ligne);
 
-        summaryContainer.appendChild(itemDiv);
-        sousTotal += item.prix * item.quantite;
+        sousTotal += prixLigne;
     });
 
-    if (subtotalEl) subtotalEl.textContent = formatPrice(sousTotal);
-    if (totalEl) totalEl.textContent = formatPrice(sousTotal); // livraison gratuite
-    if (payButton) {
-        payButton.innerHTML = `<span class="material-symbols-outlined">lock</span> Payer ${formatPrice(sousTotal)}`;
+    // ── Totaux ──
+    var fraisLivraison = sousTotal >= 50 ? 0 : 3.99;
+    var total = sousTotal + fraisLivraison;
+
+    if (subtotalEl) subtotalEl.textContent = fmt(sousTotal);
+
+    var livraisonEl = document.getElementById('livraison-val');
+    if (livraisonEl) {
+        if (fraisLivraison === 0) {
+            livraisonEl.textContent = 'Gratuit';
+            livraisonEl.className = 'free';
+        } else {
+            livraisonEl.textContent = fmt(fraisLivraison);
+            livraisonEl.className = '';
+        }
     }
 
-    // Code promo (optionnel)
-    const promoBtn = document.querySelector('.promo-btn');
+    if (totalEl) totalEl.textContent = fmt(total);
+
+    if (payButton) {
+        payButton.innerHTML =
+            '<span class="material-symbols-outlined">lock</span> Payer ' + fmt(total);
+    }
+
+    // ── Code promo ──
+    var promoBtn = document.querySelector('.promo-btn');
     if (promoBtn) {
         promoBtn.addEventListener('click', function() {
-            alert('Fonctionnalité de code promo à implémenter.');
+            if (typeof showToast === 'function') showToast('Code promo non disponible pour le moment.', 'info');
         });
     }
+
+    // ── Interactivité paiement (radio) ──
+    document.querySelectorAll('.payment-option').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+            document.querySelectorAll('.payment-option').forEach(function(o){ o.classList.remove('selected'); });
+            opt.classList.add('selected');
+            var radio = opt.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        });
+    });
+
 })();

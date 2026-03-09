@@ -106,7 +106,7 @@
 .me-partner-logo {
     position: absolute; top: 1.25rem; left: 1.25rem; z-index: 2;
     width: 56px; height: 56px;
-    background: white; border-radius: 12px;
+    background: var(--bg-card); border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
     padding: .5rem;
     box-shadow: 0 4px 16px rgba(0,0,0,.4);
@@ -193,7 +193,7 @@
     line-height: 1.65; margin-bottom: 1.75rem;
 }
 .me-cta-content .btn-primary {
-    background: white; color: var(--pink);
+    background: var(--bg-card); color: var(--pink);
     width: fit-content;
     display: inline-flex; align-items: center; gap: .5rem;
     border: none;

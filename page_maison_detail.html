@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="md-hero-actions">
-                    <a id="md-site" href="#" target="_blank" class="btn-secondary">
+                    <a id="md-site" href="#" target="_blank" rel="noopener" class="btn-secondary">
                         <span class="material-symbols-outlined">open_in_new</span>
                         Site officiel
                     </a>
@@ -100,38 +100,34 @@
         <div class="md-layout">
             <!-- SIDEBAR -->
             <aside class="md-sidebar">
-                <!-- Filtrer par série -->
                 <div class="md-sidebar-card">
                     <h3 class="md-sidebar-title">Séries phares</h3>
                     <nav class="md-series-nav" id="md-series-nav"></nav>
                 </div>
-                <!-- Newsletter -->
                 <div class="md-sidebar-card md-newsletter">
                     <h3 class="md-sidebar-title">Alertes sorties</h3>
                     <p>Recevez les nouvelles parutions de cette maison en avant-première.</p>
                     <input type="email" class="form-input" placeholder="votre@email.fr" style="font-size:.8rem;margin-bottom:.6rem">
-                    <button class="btn-primary" style="width:100%;font-size:.8rem" onclick="showToast('Inscription confirmée <span class="kinka-icon text-green" aria-label="ok">&#10003;</span>')">S\'abonner</button>
+                    <button class="btn-primary" style="width:100%;font-size:.8rem" onclick="if(typeof showToast==='function')showToast('Inscription confirmée !')">S'abonner</button>
                 </div>
             </aside>
 
             <!-- CONTENU -->
             <div class="md-content">
-                <!-- Tri + compteur -->
                 <div class="md-content-header">
                     <span class="md-count" id="md-count">— titres</span>
                     <div class="md-sort">
                         <label style="font-size:.78rem;color:var(--text-muted)">Trier</label>
                         <select id="md-sort" class="form-input" style="width:auto;padding:.4rem .75rem;font-size:.8rem">
                             <option value="">Pertinence</option>
-                            <option value="prix_asc">Prix ↑</option>
-                            <option value="prix_desc">Prix ↓</option>
+                            <option value="prix_asc">Prix croissant</option>
+                            <option value="prix_desc">Prix décroissant</option>
                             <option value="note">Meilleures notes</option>
                             <option value="nouveaute">Nouveautés</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Grille produits -->
                 <div class="products-grid" id="md-grid"></div>
                 <div class="cat-empty" id="md-empty" style="display:none">
                     <span class="material-symbols-outlined">search_off</span>
@@ -149,7 +145,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#1e7d71706a7f7d6a5e757770757f30786c"><span class="__cf_email__" data-cfemail="02616d6c7663617642696b6c69632c6470">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
             </div>
             <div class="footer-section"><h4>Maisons</h4><ul>
                 <li><a href="/page_maison_detail.html?id=glenat">Glénat</a></li>
@@ -166,7 +162,7 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
@@ -175,90 +171,147 @@
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    var currentSerie = '';
-    var currentSort  = '';
-    var maison = null;
+    /* ── MAISON DÉTAIL — chargement dynamique ── */
+    (function _init(){
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
+        var params  = new URLSearchParams(window.location.search);
+        var maisonId = params.get('id') || 'glenat';
 
-    function getParam(key) {
-        return new URLSearchParams(window.location.search).get(key) || '';
-    }
+        // Attendre que mangadb.js soit chargé (retry jusqu'à 3s)
+        var _t = 0;
+        function tryLoad() {
+            if (typeof getMaisonById !== 'function' || typeof maisonsDB === 'undefined') {
+                if (++_t < 40) { setTimeout(tryLoad, 75); return; }
+                document.getElementById('md-nom').textContent = 'Erreur de chargement';
+                return;
+            }
+            loadMaison();
+        }
 
-    function renderGrid() {
+        function loadMaison() {
+        // Récupérer la maison depuis maisonsDB
+        var maison = getMaisonById(maisonId);
+        if (!maison) {
+            maison = maisonsDB[0]; // fallback première maison
+        }
+        if (!maison) {
+            document.getElementById('md-nom').textContent = 'Maison introuvable';
+            return;
+        }
+
+        // ── Peupler le hero ──────────────────────────────
+        document.title = maison.nom + ' — KINKA.FR';
+        document.getElementById('page-title').textContent = maison.nom + ' — KINKA.FR';
+        document.getElementById('breadcrumb-nom').textContent = maison.nom;
+        document.getElementById('md-nom').textContent = maison.nom;
+        document.getElementById('md-desc').textContent = maison.description || '';
+        document.getElementById('md-since').textContent = 'Fondée en ' + (maison.fondee || '—');
+
+        var logoEl = document.getElementById('md-logo');
+        logoEl.src = maison.logo || '/asset/image/LogoProjetFilRouge.png';
+        logoEl.alt = maison.nom;
+        logoEl.onerror = function(){ this.src = '/asset/image/LogoProjetFilRouge.png'; };
+
+        var siteEl = document.getElementById('md-site');
+        if (siteEl && maison.siteWeb) { siteEl.href = maison.siteWeb; }
+
+        // Couleur d'ambiance dans le hero gradient
+        var grad = document.getElementById('md-hero-gradient');
+        if (grad && maison.couleur) {
+            grad.style.background = 'radial-gradient(ellipse at 70% 50%, ' + maison.couleur + '22 0%, transparent 65%)';
+        }
+
+        // Récupérer les mangas de cette maison
+        var allItems = (typeof filterByMaison === 'function') ? filterByMaison(maison) : [];
+        if (!allItems.length && typeof mangasDB !== 'undefined') {
+            // Fallback : filtre par editeur manuellement
+            allItems = mangasDB.filter(function(m){
+                return maison.editeurs && maison.editeurs.includes(m.editeur);
+            });
+        }
+
+        // Statistiques hero
+        document.getElementById('md-stat-titres').textContent = maison.totalTitres || allItems.length;
+        document.getElementById('md-stat-kinka').textContent  = allItems.length;
+
+        // Séries uniques
+        var series = [];
+        allItems.forEach(function(m){ if(m.serie && !series.includes(m.serie)) series.push(m.serie); });
+        document.getElementById('md-stat-series').textContent = series.length;
+
+        // ── Navigation entre maisons ─────────────────────
+        var navBar = document.getElementById('md-nav-bar');
+        if (navBar && typeof maisonsDB !== 'undefined') {
+            navBar.innerHTML = maisonsDB.map(function(m) {
+                var isActive = m.id === maisonId ? ' md-nav-active' : '';
+                return '<a href="/page_maison_detail.html?id=' + m.id + '" class="md-nav-link' + isActive + '">' +
+                    '<img src="' + (m.logo || '/asset/image/LogoProjetFilRouge.png') + '" alt="' + m.nom + '" onerror="this.src=\'/asset/image/LogoProjetFilRouge.png\'">' +
+                    m.nom +
+                '</a>';
+            }).join('');
+        }
+
+        // ── Sidebar séries ───────────────────────────────
+        var seriesNav = document.getElementById('md-series-nav');
+        if (seriesNav) {
+            var seriesCount = {};
+            allItems.forEach(function(m){ if(m.serie){ seriesCount[m.serie] = (seriesCount[m.serie]||0)+1; } });
+            var sortedSeries = Object.keys(seriesCount).sort(function(a,b){ return seriesCount[b]-seriesCount[a]; });
+            seriesNav.innerHTML = '<a class="md-serie-link active" data-serie="" href="#">Toutes les séries<span>' + allItems.length + '</span></a>' +
+                sortedSeries.map(function(s){
+                    return '<a class="md-serie-link" data-serie="' + s + '" href="#">' + s + '<span>' + seriesCount[s] + '</span></a>';
+                }).join('');
+
+            seriesNav.querySelectorAll('.md-serie-link').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    seriesNav.querySelectorAll('.md-serie-link').forEach(function(l){ l.classList.remove('active'); });
+                    this.classList.add('active');
+                    renderGrid(allItems, this.dataset.serie, document.getElementById('md-sort').value);
+                });
+            });
+        }
+
+        // ── Tri ──────────────────────────────────────────
+        var sortSel = document.getElementById('md-sort');
+        if (sortSel) {
+            sortSel.addEventListener('change', function() {
+                var activeSerie = (seriesNav && seriesNav.querySelector('.md-serie-link.active')) ? seriesNav.querySelector('.md-serie-link.active').dataset.serie : '';
+                renderGrid(allItems, activeSerie, this.value);
+            });
+        }
+
+        // Rendu initial
+        renderGrid(allItems, '', '');
+        } // fin loadMaison()
+
+        tryLoad();
+    })();
+
+    function renderGrid(allItems, serie, sort) {
         var grid  = document.getElementById('md-grid');
         var empty = document.getElementById('md-empty');
         var count = document.getElementById('md-count');
-        if (!grid || !maison) return;
-        var items = filterByMaison(maison);
-        if (currentSerie) items = items.filter(function(m){ return m.serie === currentSerie; });
-        if (currentSort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
-        if (currentSort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
-        if (currentSort === 'note')      items.sort(function(a,b){ return (b.note||0)-(a.note||0); });
-        if (currentSort === 'nouveaute') items.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
-        if (!items.length) { grid.innerHTML=''; empty.style.display='flex'; count.textContent='0 titre'; return; }
-        empty.style.display = 'none';
-        count.textContent = items.length + ' titre' + (items.length>1?'s':'');
+        if (!grid) return;
+
+        var items = serie ? allItems.filter(function(m){ return m.serie === serie; }) : allItems.slice();
+
+        if (sort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
+        if (sort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
+        if (sort === 'note')      items.sort(function(a,b){ return (b.note||0) - (a.note||0); });
+        if (sort === 'nouveaute') items.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
+
+        if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
+
+        if (!items.length) {
+            grid.innerHTML = '';
+            if (empty) empty.style.display = 'flex';
+            return;
+        }
+        if (empty) empty.style.display = 'none';
         grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
-    }
-
-    function buildMaisonNav() {
-        var nav = document.getElementById('md-nav-bar');
-        if (!nav) return;
-        nav.innerHTML = maisonsDB.map(function(m) {
-            var active = m.id === maison.id ? ' md-nav-active' : '';
-            return '<a href="/page_maison_detail.html?id=' + m.id + '" class="md-nav-link' + active + '">'
-                 + '<img src="' + m.logo + '" alt="' + m.nom + '">' + m.nom + '</a>';
-        }).join('');
-    }
-
-    function buildSeriesNav() {
-        var nav = document.getElementById('md-series-nav');
-        if (!nav || !maison) return;
-        var items   = filterByMaison(maison);
-        var seriesMap = {};
-        items.forEach(function(m){ seriesMap[m.serie] = (seriesMap[m.serie]||0)+1; });
-        var seriesList = Object.keys(seriesMap).sort();
-        nav.innerHTML = '<a class="md-serie-link active" onclick="filterSerie(this,\'\')">Tout le catalogue<span>' + items.length + '</span></a>'
-            + seriesList.map(function(s){
-                return '<a class="md-serie-link" onclick="filterSerie(this,\'' + s.replace(/'/g,"\\'") + '\')">' + s + '<span>' + seriesMap[s] + '</span></a>';
-            }).join('');
-    }
-
-    function filterSerie(el, serie) {
-        document.querySelectorAll('.md-serie-link').forEach(function(a){ a.classList.remove('active'); });
-        el.classList.add('active');
-        currentSerie = serie;
-        renderGrid();
-    }
-
-    // Scripts en bas de body: appel direct
-    (function() {
-        var id = getParam('id') || 'glenat';
-        maison = getMaisonById(id);
-        if (!maison) { document.getElementById('md-nom').textContent = 'Maison introuvable'; return; }
-
-        // Breadcrumb + title
-        document.getElementById('breadcrumb-nom').textContent = maison.nom;
-        document.getElementById('page-title').textContent = maison.nom + ' - KINKA.FR';
-
-        // Hero
-        document.getElementById('md-logo').src = maison.logo;
-        document.getElementById('md-logo').alt = maison.nom;
-        document.getElementById('md-nom').textContent = maison.nom;
-        document.getElementById('md-desc').textContent = maison.description;
-        document.getElementById('md-since').textContent = 'Fondée en ' + (maison.fondee || '—');
-        if (maison.siteWeb) document.getElementById('md-site').href = maison.siteWeb;
-
-        // Gradient couleur maison
-        var c = maison.couleur || '#E03B8B';
-        document.getElementById('md-hero-gradient').style.background =
-            'linear-gradient(135deg, rgba(0,0,0,.82) 0%, ' + c + '22 100%)';
-
-        // Stats
-        var kinkaTitres = filterByMaison(maison).length;
-        var seriesUniq  = [...new Set(filterByMaison(maison).map(function(m){ return m.serie; }))].length;
-        document.getElementById('md-stat-titres').textContent = maison.totalTitres || '—';
-        document.getElementById('md-stat-kinka').textContent  = kinkaTitres;
-        document.getElementById('md-stat-series').textContent = seriesUniq;
-
-  
+    }</script>
+</body>
+</html>

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
     <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_liste.css">
     <link rel="stylesheet" href="/asset/css/page_coupdecoeur.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
@@ -69,9 +70,21 @@
                 <p>Chaque semaine, l'équipe KINKA sélectionne pour vous les pépites absolues — ces titres qui nous ont touchés, bouleversés ou époustouflés. Des mangas que l'on ne peut pas s'empêcher de recommander.</p>
             </div>
             <div class="cdc-hero-stats">
-                <div class="cdc-stat"><span class="cdc-stat-num" id="stat-total">—</span><span>titres sélectionnés</span></div>
-                <div class="cdc-stat"><span class="cdc-stat-num"><span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#E03B8B" stroke="#E03B8B" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> 4.8</span><span>note moyenne</span></div>
-                <div class="cdc-stat"><span class="cdc-stat-num">12</span><span>libraires experts</span></div>
+                <div class="cdc-stat">
+                    <span class="cdc-stat-num" id="stat-total">—</span>
+                    <span>titres sélectionnés</span>
+                </div>
+                <div class="cdc-stat">
+                    <span class="cdc-stat-num">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#E03B8B" stroke="#E03B8B" stroke-width="1.5" style="vertical-align:middle"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        4.8
+                    </span>
+                    <span>note moyenne</span>
+                </div>
+                <div class="cdc-stat">
+                    <span class="cdc-stat-num">12</span>
+                    <span>libraires experts</span>
+                </div>
             </div>
         </div>
 
@@ -98,7 +111,10 @@
         <div class="cdc-container" style="margin-top:3rem">
             <div class="section-header" style="margin-bottom:1.5rem">
                 <h2 class="section-title">Autres pépites à ne pas manquer</h2>
-                <a href="/page_bestsellers.html" class="view-all">Bestsellers <span class="material-symbols-outlined">arrow_forward</span></a>
+                <a href="/page_bestsellers.html" class="view-all">
+                    Bestsellers
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
             </div>
             <div class="products-grid" id="grid-autres"></div>
         </div>
@@ -109,7 +125,7 @@
             <div class="footer-section">
                 <div class="footer-logo"><img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image"><span class="logo-text">KINKA<span class="fr">.FR</span></span></div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#85e6eaebf1e4e6f1c5eeecebeee4abe3f7"><span class="__cf_email__" data-cfemail="9af9f5f4eefbf9eedaf1f3f4f1fbb4fce8">[email&#160;protected]</span></a></p>
+                <p class="contact-info">contact@kinka.fr</p>
             </div>
             <div class="footer-section"><h4>Catalogue</h4><ul><li><a href="/page_nouveaute.html">Nouveautés</a></li><li><a href="/page_bestsellers.html">Bestsellers</a></li><li><a href="/page_promotion.html">Promotions</a></li><li><a href="/page_coffret.html">Coffrets</a></li></ul></div>
             <div class="footer-section"><h4>Support</h4><ul><li><a href="/page_faq.html">FAQ</a></li><li><a href="/page_contact.html">Contact</a></li><li><a href="/page_cgv.html">CGV</a></li></ul></div>
@@ -117,7 +133,7 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
@@ -126,133 +142,150 @@
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    // Config narrative par série
-    var CDC_DESCRIPTIONS = {
-        'Berserk':          { tagline:'Le summum du dark fantasy', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg></span>', raisons:['Artwork d\'une précision absolue','Narration épique sur 40 ans','Philosophie profonde sur le destin et la liberté','Un monument de la culture manga'] },
-        'One Piece':        { tagline:'L\'aventure qui ne finit jamais', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>‍<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M16 20a2 2 0 0 0 1.956-2.4l-1.7-7.4A6 6 0 1 0 7.744 10.2L6.044 17.6A2 2 0 0 0 8 20z"/></svg></span>', raisons:['Worldbuilding incomparable','500+ personnages mémorables','Humour et émotion en équilibre parfait','Le manga le plus vendu de l\'histoire'] },
-        'Jujutsu Kaisen':   { tagline:'Sorciers, malédictions et combats épiques', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>', raisons:['Animation des combats époustouflante','Personnages profonds et attachants','Twists narratifs constants','Le renouveau du shōnen moderne'] },
-        'Chainsaw Man':     { tagline:'Gore, humour noir et originalité totale', motif:'', raisons:['Narratif totalement imprévisible','Personnages déjantés et humains','Style graphique unique','Fujimoto est un génie du medium'] },
-        'Vagabond':         { tagline:'Un chef-d\'œuvre visuel et philosophique', motif:'', raisons:['Illustrations parmi les plus belles du manga','Portrait de Miyamoto Musashi fascinant','Réflexion profonde sur la violence et la vie','Standard absolu du manga historique'] },
-        'Spy x Family':     { tagline:'Espionnage, famille et fous rires', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E03B8B" stroke-width="2" stroke-linecap="round"><path d="M12 7.5a4.5 4.5 0 1 1 4.5 7.793A4.5 4.5 0 1 1 12 19.207a4.5 4.5 0 1 1-4.5-3.914A4.5 4.5 0 1 1 12 7.5"/><circle cx="12" cy="12" r="3"/></svg></span>', raisons:['Personnages immédiatement attachants','Mélange parfait d\'action et de comédie','Anya est la mascotte de sa génération','Chaque chapitre est un plaisir pur'] },
-        'Nana':             { tagline:'Le manga qui vous brisera le cœur', motif:'', raisons:['Portrait d\'une amitié extraordinaire','La musique au cœur de l\'histoire','Émotions réelles et complexes','Ai Yazawa à son apogée créatif'] },
-        'Fruits Basket':    { tagline:'Romance, magie et guérison', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E03B8B" stroke-width="2" stroke-linecap="round"><path d="M12 7.5a4.5 4.5 0 1 1 4.5 7.793A4.5 4.5 0 1 1 12 19.207a4.5 4.5 0 1 1-4.5-3.914A4.5 4.5 0 1 1 12 7.5"/><circle cx="12" cy="12" r="3"/></svg></span>', raisons:['Histoire d\'amour émouvante et originale','Zodiaque chinois revisité avec brio','Développement des personnages exceptionnel','Un shōjo culte intemporel'] },
-        'Dungeon Meshi':    { tagline:'Fantasy culinaire et délicieusement drôle', motif:'', raisons:['Concept totalement original','Worldbuilding d\'une richesse folle','Personnages attachants et uniques','La meilleure surprise du manga récent'] },
-        'Dandadan':         { tagline:'Aliens, fantômes et romance explosive', motif:'', raisons:['Énergie et créativité à chaque page','Mélange de genres éblouissant','Dessin dynamique et inventif','La pépite de sa génération'] },
-        'Dragon Ball':      { tagline:'La légende qui a tout fondé', motif:'⭐', raisons:['Père fondateur du shōnen moderne','Arts martiaux et humour parfaitement dosés','Son Goku — héros iconique mondial','Intemporel après 40 ans'] },
-        'Sailor Moon':      { tagline:'La magical girl qui a changé le monde', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>', raisons:['Icône culturelle mondiale','Romance et action en équilibre','Féminisme avant l\'heure','Dessin élégant de Naoko Takeuchi'] },
-        'L\'Attaque des Titans': { tagline:'Le thriller politique ultime', motif:'️', raisons:['Construction narrative magistrale','Retournements de situation inouïs','Questionnement politique et moral profond','La conclusion la plus débattue du manga'] },
-        'Paradise Kiss':    { tagline:'Mode, passion et coming-of-age', motif:'', raisons:['Atmosphère unique et recherchée','Personnages adultes et nuancés','Industrie de la mode vue de l\'intérieur','Ai Yazawa au sommet de son art'] },
-        'Oyasumi Punpun':   { tagline:'Un manga qui vous changera', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>', raisons:['Narration la plus originale du medium','Honnêteté brutale sur la dépression','Style visuel expérimental génial','Un livre qui restera avec vous à jamais'] },
+    /* ── COUPS DE CŒUR — rendu des articles éditoriaux ── */
+    var currentCat = '';
+
+    var LIBRARIANS = [
+        { name: 'Yuki M.', role: 'Responsable manga shōnen' },
+        { name: 'Léa T.', role: 'Experte seinen & josei' },
+        { name: 'Ryo B.', role: 'Spécialiste shōjo & josei' },
+        { name: 'Kaito D.', role: 'Libraire manga depuis 8 ans' },
+        { name: 'Nora S.', role: 'Critique manga certifiée' },
+    ];
+
+    var REASONS = [
+        ['Un univers visuellement saisissant', 'Une narration sans temps mort', 'Des personnages attachants'],
+        ['Un scénario complexe et mature', 'Un dessin d\'une précision rare', 'Une atmosphère unique'],
+        ['Des émotions brutes et authentiques', 'Une écriture profonde et poétique', 'Un incontournable absolu'],
+        ['Un équilibre parfait action / humour', 'Une galerie de personnages mémorables', 'Un rythme haletant'],
+    ];
+
+    var TAG_CLASSES = {
+        'Shônen': 'tag-shonen', 'Seinen': 'tag-seinen',
+        'Shôjo': 'tag-shojo', 'Josei': 'tag-josei'
     };
 
-    var DEFAULT_DESC = { tagline:'Un manga exceptionnel', motif:'<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>', raisons:['Histoire captivante','Personnages mémorables','Art remarquable','Recommandé par toute l\'équipe KINKA'] };
+    function buildArticleCard(manga, index) {
+        var isReverse = (index % 2 === 1) ? 'reverse' : '';
+        var tagClass = TAG_CLASSES[manga.categorie] || 'tag-shonen';
+        var prix = (manga.promo && manga.prixPromo) ? manga.prixPromo : manga.prix;
+        var lib = LIBRARIANS[index % LIBRARIANS.length];
+        var reasons = REASONS[index % REASONS.length];
+        var tags = (manga.tags || []).slice(0, 4);
+        var stockOk = manga.stock > 0;
 
-    function renderArticles(cat) {
-        var container = document.getElementById('cdc-articles');
-        var empty     = document.getElementById('cdc-empty');
+        return '<div class="cdc-article ' + isReverse + '">' +
+            '<div class="cdc-article-left">' +
+                '<div class="cdc-article-header">' +
+                    '<span class="cdc-article-badge ' + tagClass + '">' + (manga.categorie || 'Manga') + '</span>' +
+                    '<span class="cdc-article-num">' + String(index + 1).padStart(2, '0') + '</span>' +
+                '</div>' +
+                '<h2 class="cdc-article-title">' + manga.titre + '</h2>' +
+                '<p class="cdc-article-tagline">' + (manga.serie ? 'Série : ' + manga.serie : manga.auteur) + '</p>' +
+                '<p class="cdc-article-desc">' + (manga.description || '').slice(0, 220) + (manga.description && manga.description.length > 220 ? '…' : '') + '</p>' +
+                '<div class="cdc-article-tags">' +
+                    tags.map(function(t){ return '<span class="cdc-tag">' + t + '</span>'; }).join('') +
+                '</div>' +
+                '<div class="cdc-article-reasons">' +
+                    '<h4>Pourquoi on l\'adore</h4>' +
+                    '<ul>' + reasons.map(function(r){ return '<li><span class="material-symbols-outlined">favorite</span>' + r + '</li>'; }).join('') + '</ul>' +
+                '</div>' +
+                '<div class="cdc-librarian">' +
+                    '<div class="cdc-librarian-avatar">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+                    '</div>' +
+                    '<div>' +
+                        '<p class="cdc-librarian-name">' + lib.name + '</p>' +
+                        '<p class="cdc-librarian-role">' + lib.role + '</p>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+
+            '<div class="cdc-article-middle">' +
+                '<div class="cdc-product-card" onclick="window.location.href=\'/page_detail_produit.html?id=' + manga.id + '\'">' +
+                    '<div class="cdc-product-img">' +
+                        '<img src="' + manga.image + '" alt="' + manga.titre + '" loading="lazy" onerror="this.src=\'/asset/image/One-Piece-Edition-originale-Tome-105.jpg\'">' +
+                        '<button class="cdc-fav-btn" onclick="kinkaToggleFav(\'' + manga.id + '\',event)" title="Ajouter aux favoris">' +
+                            '<span class="material-symbols-outlined">favorite</span>' +
+                        '</button>' +
+                    '</div>' +
+                    '<div class="cdc-product-info">' +
+                        '<h3>' + manga.titre + '</h3>' +
+                        '<p>' + manga.auteur + ' · ' + (manga.editeur || '') + '</p>' +
+                        '<div class="cdc-product-footer">' +
+                            '<span class="cdc-price">' + prix.toFixed(2).replace('.', ',') + ' €</span>' +
+                            '<button class="add-to-cart" onclick="kinkaAddToCart(\'' + manga.id + '\',event)" title="Ajouter au panier">' +
+                                '<span class="material-symbols-outlined">add_shopping_cart</span>' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+
+            '<div class="cdc-article-right">' +
+                '<div class="cdc-reasons-box">' +
+                    '<h4>Fiche produit</h4>' +
+                    '<div class="cdc-meta-item"><span class="material-symbols-outlined">person</span><div><strong>' + manga.auteur + '</strong><span>Auteur</span></div></div>' +
+                    '<div class="cdc-meta-item"><span class="material-symbols-outlined">business</span><div><strong>' + (manga.editeur || '—') + '</strong><span>Éditeur</span></div></div>' +
+                    (manga.tome ? '<div class="cdc-meta-item"><span class="material-symbols-outlined">menu_book</span><div><strong>Tome ' + manga.tome + '</strong><span>Volume</span></div></div>' : '') +
+                    (manga.pages ? '<div class="cdc-meta-item"><span class="material-symbols-outlined">article</span><div><strong>' + manga.pages + ' pages</strong><span>Format</span></div></div>' : '') +
+                    '<div class="cdc-meta-item"><span class="material-symbols-outlined">payments</span><div><strong>' + prix.toFixed(2).replace('.', ',') + ' €</strong><span>Prix</span></div></div>' +
+                    '<span class="cdc-stock-badge ' + (stockOk ? 'ok' : 'low') + '">' +
+                        '<span class="material-symbols-outlined">' + (stockOk ? 'inventory_2' : 'remove_shopping_cart') + '</span>' +
+                        (stockOk ? (manga.stock <= 3 ? 'Plus que ' + manga.stock + ' ex.' : 'En stock — ' + manga.stock + ' ex.') : 'Rupture de stock') +
+                    '</span>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+    }
+
+    function renderCDC() {
+        var articles = document.getElementById('cdc-articles');
+        var empty    = document.getElementById('cdc-empty');
+        var statEl   = document.getElementById('stat-total');
+        var autresGrid = document.getElementById('grid-autres');
+        if (!articles || typeof filterProducts !== 'function') return;
+
         var opts = { coupDeCoeur: true };
-        if (cat) opts.categorie = cat;
+        if (currentCat) opts.categorie = currentCat;
         var items = filterProducts(opts);
 
-        if (!items.length) { container.innerHTML = ''; empty.style.display='flex'; return; }
-        empty.style.display = 'none';
-        document.getElementById('stat-total').textContent = filterProducts({coupDeCoeur:true}).length;
+        if (statEl) statEl.textContent = filterProducts({ coupDeCoeur: true }).length;
 
-        // Dédupliquer par série pour l'affichage éditorial
-        var seen = {};
-        var featured = items.filter(function(m){
-            if (seen[m.serie]) return false;
-            seen[m.serie] = true;
-            return true;
+        if (!items.length) {
+            articles.innerHTML = '';
+            if (empty) empty.style.display = 'flex';
+        } else {
+            if (empty) empty.style.display = 'none';
+            articles.innerHTML = items.map(function(m, i) {
+                return buildArticleCard(m, i) + (i < items.length - 1 ? '<div class="cdc-separator"></div>' : '');
+            }).join('');
+        }
+
+        // Autres pépites : bestsellers non déjà affichés
+        if (autresGrid && typeof filterProducts === 'function') {
+            var shownIds = items.map(function(m){ return m.id; });
+            var autres = filterProducts({ bestseller: true })
+                .filter(function(m){ return !shownIds.includes(m.id); })
+                .slice(0, 5);
+            autresGrid.innerHTML = autres.map(function(m){ return buildProductCard(m); }).join('');
+        }
+    }
+
+    (function _init(){
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
+        renderCDC();
+
+        document.querySelectorAll('.filter-pill').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-pill').forEach(function(b){ b.classList.remove('active'); });
+                this.classList.add('active');
+                currentCat = this.dataset.cat || '';
+                renderCDC();
+            });
         });
-
-        container.innerHTML = featured.map(function(manga, idx) {
-            var desc = CDC_DESCRIPTIONS[manga.serie] || DEFAULT_DESC;
-            var prix = manga.promo && manga.prixPromo ? manga.prixPromo : manga.prix;
-            var stars = '<span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#E03B8B" stroke="#E03B8B" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>'.repeat(Math.floor(manga.note||4)) + (manga.note%1>=0.5?'½':'');
-            var tagCls = {Shônen:'tag-shonen',Seinen:'tag-seinen',Shôjo:'tag-shojo',Josei:'tag-josei'}[manga.categorie]||'';
-            return `
-            <article class="cdc-article ${idx%2===1?'reverse':''}">
-                <div class="cdc-article-left">
-                    <div class="cdc-article-header">
-                        <span class="cdc-article-badge ${tagCls}">${manga.categorie}</span>
-                        <span class="cdc-article-num">#${idx+1}</span>
-                    </div>
-                    <h2 class="cdc-article-title">${manga.serie}</h2>
-                    <p class="cdc-article-tagline">${desc.tagline}</p>
-                    <p class="cdc-article-desc">${manga.description}</p>
-                    <div class="cdc-article-tags">
-                        ${(manga.tags||[]).map(t=>`<span class="cdc-tag">${t}</span>`).join('')}
-                    </div>
-                    <div class="cdc-article-reasons">
-                        <h4>Pourquoi on adore :</h4>
-                        <ul>${desc.raisons.map(r=>`<li><span class="material-symbols-outlined">favorite</span>${r}</li>`).join('')}</ul>
-                    </div>
-                    <div class="cdc-librarian">
-                        <div class="cdc-librarian-avatar">${desc.motif}</div>
-                        <div>
-                            <p class="cdc-librarian-name">L'équipe KINKA</p>
-                            <p class="cdc-librarian-role">Libraires passionnés · ${stars}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="cdc-article-middle">
-                    <div class="cdc-product-card" onclick="window.location.href='/page_detail_produit.html?id=${manga.id}'">
-                        <div class="cdc-product-img">
-                            <img src="${manga.image}" alt="${manga.titre}" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
-                            <button class="cdc-fav-btn add-to-fav" onclick="kinkaToggleFav('${manga.id}',event)" title="Ajouter aux favoris">
-                                <span class="material-symbols-outlined">favorite</span>
-                            </button>
-                        </div>
-                        <div class="cdc-product-info">
-                            <h3>${manga.titre}</h3>
-                            <p>${manga.auteur}</p>
-                            <div class="cdc-product-footer">
-                                <span class="cdc-price">${prix.toFixed(2)} €</span>
-                                <button class="btn-primary" style="padding:.5rem 1rem;font-size:.78rem" onclick="kinkaAddToCart('${manga.id}',event)">
-                                    <span class="material-symbols-outlined">add_shopping_cart</span>Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="cdc-article-right">
-                    <div class="cdc-reasons-box">
-                        <h4>En bref</h4>
-                        <div class="cdc-meta-item">
-                            <span class="material-symbols-outlined">person</span>
-                            <span><strong>Auteur</strong><br>${manga.auteur}</span>
-                        </div>
-                        <div class="cdc-meta-item">
-                            <span class="material-symbols-outlined">auto_stories</span>
-                            <span><strong>Genre</strong><br>${manga.categorie}</span>
-                        </div>
-                        <div class="cdc-meta-item">
-                            <span class="material-symbols-outlined">star</span>
-                            <span><strong>Note</strong><br>${manga.note||'N/A'} / 5</span>
-                        </div>
-                        <div class="cdc-meta-item">
-                            <span class="material-symbols-outlined">business</span>
-                            <span><strong>Éditeur</strong><br>${manga.editeur}</span>
-                        </div>
-                        ${manga.stock ? `<div class="cdc-stock-badge ${manga.stock<=3?'low':'ok'}">
-                            <span class="material-symbols-outlined">inventory_2</span>
-                            ${manga.stock<=3?'Plus que '+manga.stock+' en stock':'En stock'}
-                        </div>`:''}
-                    </div>
-                </div>
-            </article>`;
-        }).join('<div class="cdc-separator"></div>');
-    }
-
-    // Scripts en bas de body: appel direct
-    renderArticles('');
-    var ga = document.getElementById('grid-autres');
-    if (ga) {
-        var others = filterProducts({ bestseller:true, coupDeCoeur:false }).slice(0,5);
-        ga.innerHTML = others.map(function(m){ return buildProductCard(m); }).join('');
-    }
-    document.querySelectorAll('.filter-pill').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          
+    })();</script>
+</body>
+</html>

@@ -55,6 +55,13 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">CGV</span>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="main-container">
@@ -126,7 +133,7 @@
                     <p>Pour toute information ou question, notre service client est à votre disposition :</p>
                     <div class="contact-box">
                         <p>Via notre <a href="/page_contact.html">formulaire de contact</a> sur le site</p>
-                        <p>Par e-mail : <a href="/cdn-cgi/l/email-protection#89eae6e7fde8eafdc9e2e0e7e2e8a7effb"><span class="__cf_email__" data-cfemail="89eae6e7fde8eafdc9e2e0e7e2e8a7effb">[email&#160;protected]</span></a></p>
+                        <p>Par e-mail : contact@kinka.fr</p>
                     </div>
                 </section>
                 
@@ -151,7 +158,16 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/authentification.js"></script>
-    <script src="/asset/js/pani
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    </script>
+</body>
+</html>

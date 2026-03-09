@@ -38,7 +38,7 @@
     initBoutonPanier(produit);
     initBoutonFavoris(produit);
     chargerSimilaires(produit);
-});
+})();
 
 // ── IMAGE ────────────────────────────────────────────────────
 function remplirImage(p) {
@@ -72,7 +72,7 @@ function remplirTitre(p) {
 // ── AUTEUR + NOTE ────────────────────────────────────────────
 function remplirAuteurNote(p) {
     const auteurEl = document.getElementById('produit-auteur');
-    if (auteurEl) auteurEl.innerHTML = `Par <a href="/page_catalogue.html?auteur=${encodeURIComponent(p.auteur)}" class="author-link">${p.auteur}</a> · ${p.editeur || ''}`;
+    if (auteurEl) auteurEl.innerHTML = `Par <a href="/page_auteur.html?auteur=${encodeURIComponent(p.auteur)}" class="author-link">${p.auteur}</a> · ${p.editeur || ''}`;
 
     const noteEl = document.getElementById('produit-note');
     if (noteEl && p.note) noteEl.innerHTML = buildStars(p.note);
@@ -99,10 +99,14 @@ function remplirDisponibilite(p) {
     if (!el) return;
     if (p.stock > 0) {
         el.innerHTML = p.stock <= 3
-            ? `[!] <strong>Plus que ${p.stock} exemplaire${p.stock > 1 ? 's' : ''}</strong> disponible${p.stock > 1 ? 's' : ''} — commandez vite !`
-            : `[ok] <strong>${p.stock} exemplaires</strong> disponibles — expédition sous 48h`;
+            ? `<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Plus que ${p.stock} exemplaire${p.stock > 1 ? 's' : ''}</strong> — commandez vite !`
+            : `<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>${p.stock} exemplaires</strong> disponibles — expédition sous 48h`;
+        el.style.borderColor = p.stock <= 3 ? 'rgba(245,158,11,.3)' : 'rgba(34,197,94,.3)';
+        el.style.background  = p.stock <= 3 ? 'rgba(245,158,11,.05)' : 'rgba(34,197,94,.05)';
     } else {
-        el.innerHTML = `[x] <strong>Rupture de stock</strong> — revenez bientôt !`;
+        el.innerHTML = `<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle">cancel</span> <strong>Rupture de stock</strong> — revenez bientôt !`;
+        el.style.borderColor = 'rgba(239,68,68,.3)';
+        el.style.background  = 'rgba(239,68,68,.05)';
     }
 }
 
@@ -214,7 +218,7 @@ function initBoutonPanier(p) {
         localStorage.setItem('kinka_panier', JSON.stringify(panier));
 
         if (typeof updatePanierCount === 'function') updatePanierCount();
-        if (typeof showToast === 'function') showToast('Ajouté au panier !');
+        if (typeof showToast === 'function') showToast(' Ajouté au panier !');
 
         // Feedback visuel
         const orig = btn.innerHTML;
@@ -257,7 +261,7 @@ function initBoutonFavoris(p) {
             btn.classList.add('favoris-actif');
             if (icon2) icon2.style.cssText = 'font-size:1.1rem;color:#ef4444;transition:all .2s ease;font-variation-settings:"FILL" 1';
             btn.title = 'Retirer des favoris';
-            if (typeof showToast === 'function') showToast('Ajouté aux favoris !');
+            if (typeof showToast === 'function') showToast(' Ajouté aux favoris !');
         }
         localStorage.setItem('kinka_favoris', JSON.stringify(favs2));
         if (typeof updateFavsCount === 'function') updateFavsCount();
@@ -274,29 +278,28 @@ function chargerSimilaires(produit) {
         .slice(0, 4);
 
     if (!similaires.length) {
-        container.innerHTML = '<p style="color:var(--text-muted);font-size:.88rem">Aucun produit similaire trouvé.</p>';
+        container.innerHTML = '<p style="color:var(--text-muted);font-size:.88rem">Aucun produit similaire trouvé pour ce manga.</p>';
         return;
     }
 
-    container.innerHTML = similaires.map(m => {
-        const prix = (m.promo && m.prixPromo) ? m.prixPromo : m.prix;
-        return `<div class="product-card" onclick="if(!event.target.closest('.add-to-cart-small'))window.location.href='/page_detail_produit.html?id=${m.id}'" style="cursor:pointer">
-            <div class="product-image">
-                <img src="${m.image}" alt="${m.titre}" loading="lazy" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
-                <div class="product-synopsis"><p>${m.description || ''}</p></div>
-            </div>
-            <div class="product-info">
-                <h3 class="product-title">${m.titre}</h3>
-                <p class="product-author">${m.auteur}</p>
-                <div class="product-footer">
-                    <span class="product-price">${prix.toFixed(2)} €</span>
-                    <button class="add-to-cart add-to-cart-small" onclick="kinkaAddToCart('${m.id}',event)" title="Ajouter au panier">
-                        <span class="material-symbols-outlined">add_shopping_cart</span>
-                    </button>
+    // Use buildProductCard from mangadb.js if available for full functionality
+    if (typeof buildProductCard === 'function') {
+        container.innerHTML = '<div class="products-grid">' + similaires.map(m => buildProductCard(m)).join('') + '</div>';
+    } else {
+        container.innerHTML = similaires.map(m => {
+            const prix = (m.promo && m.prixPromo) ? m.prixPromo : m.prix;
+            return `<div class="product-card" onclick="window.location.href='/page_detail_produit.html?id=${m.id}'" style="cursor:pointer">
+                <div class="product-image"><img src="${m.image}" alt="${m.titre}" loading="lazy"></div>
+                <div class="product-info">
+                    <h3 class="product-title">${m.titre}</h3>
+                    <p class="product-author">${m.auteur}</p>
+                    <div class="product-footer">
+                        <span class="product-price">${prix.toFixed(2)} €</span>
+                    </div>
                 </div>
-            </div>
-        </div>`;
-    }).join('');
+            </div>`;
+        }).join('');
+    }
 }
 
 // ── ÉTOILES ───────────────────────────────────────────────────

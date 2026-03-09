@@ -108,14 +108,14 @@
 
     <footer>
         <div class="footer-content">
-            <div class="footer-section"><div class="footer-logo"><img src="/asset/image/LogoProjetFilRouge.png" class="logo-image" alt="Logo"><span class="logo-text">KINKA<span class="fr">.FR</span></span></div><p class="footer-description">Votre boutique manga de référence.</p><p class="contact-info"><a href="/cdn-cgi/l/email-protection#7714181903161403371c1e191c16591105"><span class="__cf_email__" data-cfemail="a1c2cecfd5c0c2d5e1cac8cfcac08fc7d3">[email&#160;protected]</span></a></p></div>
+            <div class="footer-section"><div class="footer-logo"><img src="/asset/image/LogoProjetFilRouge.png" class="logo-image" alt="Logo"><span class="logo-text">KINKA<span class="fr">.FR</span></span></div><p class="footer-description">Votre boutique manga de référence.</p><p class="contact-info">contact@kinka.fr</p></div>
             <div class="footer-section"><h4>Catégories</h4><ul><li><a href="/page_shonen.html">Shōnen</a></li><li><a href="/page_seinen.html">Seinen</a></li><li><a href="/page_shojo.html">Shōjo</a></li><li><a href="/page_josei.html">Josei</a></li></ul></div>
             <div class="footer-section"><h4>Support</h4><ul><li><a href="/page_faq.html">FAQ</a></li><li><a href="/page_contact.html">Contact</a></li><li><a href="/page_cgv.html">CGV</a></li></ul></div>
         </div>
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/mangadb.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
@@ -124,7 +124,9 @@
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
+    /* ── GRILLE PRODUITS JOSEI ── */
     var CAT = 'Josei';
     var currentSerie = '';
     var currentSort  = '';
@@ -137,18 +139,27 @@
         var opts = { categorie: CAT };
         if (currentSerie) opts.serie = currentSerie;
         if (currentSort)  opts.sort  = currentSort;
-        var items = filterProducts(opts);
-        if (!items.length) { grid.innerHTML=''; empty.style.display='flex'; count.textContent='0 titre'; return; }
-        empty.style.display = 'none';
-        count.textContent = items.length + ' titre' + (items.length>1?'s':'');
-        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
+        var items = (typeof filterProducts === 'function') ? filterProducts(opts) : [];
+        if (!items.length) { grid.innerHTML=''; if(empty) empty.style.display='flex'; if(count) count.textContent='0 titre'; return; }
+        if(empty) empty.style.display = 'none';
+        if(count) count.textContent = items.length + ' titre' + (items.length>1?'s':'');
+        grid.innerHTML = items.map(function(m){ return (typeof buildProductCard==='function') ? buildProductCard(m) : ''; }).join('');
     }
 
-    function filterBySerie(btn, serie) {
-        document.querySelectorAll('.serie-pill').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        currentSerie = serie;
+    (function _init(){
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
         renderGrid();
-    }
-
-    // Scripts en 
+        var sortSel = document.getElementById('sort-select');
+        if(sortSel) sortSel.addEventListener('change', function() { currentSort = this.value; renderGrid(); });
+        document.querySelectorAll('.serie-pill').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                document.querySelectorAll('.serie-pill').forEach(function(b){b.classList.remove('active');});
+                this.classList.add('active');
+                currentSerie = this.dataset.serie || '';
+                renderGrid();
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

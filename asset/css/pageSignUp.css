@@ -34,7 +34,7 @@
   pointer-events: none;
 }
 .signup-left::after {
-  content: '\2605';
+  content: '✦';
   position: absolute; bottom: -3rem; right: -1.5rem;
   font-size: 16rem; opacity: 0.05; color: white;
   line-height: 1; pointer-events: none;

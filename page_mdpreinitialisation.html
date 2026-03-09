@@ -55,6 +55,13 @@
             </div>
         </nav>
     </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Mot de passe oublié</span>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="main-container">
@@ -116,7 +123,7 @@
                         Envoyer le lien de réinitialisation
                     </button>
                     
-                    <p class="no-reply"><a href="/cdn-cgi/l/email-protection#25464a4b51444651654e4c4b4e440b4357"><span class="__cf_email__" data-cfemail="dab9b5b4aebbb9ae9ab1b3b4b1bbf4bca8">[email&#160;protected]</span></a></p>
+                    <p class="no-reply">contact@kinka.fr</p>
                 </form>
             </div>
             
@@ -140,6 +147,16 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-
-    <!-- Scripts -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/authentific
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    </script>
+</body>
+</html>

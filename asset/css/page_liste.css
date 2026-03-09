@@ -1,0 +1,72 @@
+/* ================================================================
+   KINKA.FR — page_liste.css  v1.0
+   CSS partagé pour les pages liste (nouveautés, bestsellers, etc.)
+================================================================ */
+
+/* ── HERO LISTE ────────────────────────────────────────────────── */
+.liste-hero {
+    border-radius: var(--radius-lg);
+    padding: 3rem 3.5rem;
+    margin-bottom: 2.5rem;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+}
+.liste-hero::after {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 80% 50%, rgba(224,59,139,.12) 0%, transparent 60%);
+    pointer-events:none; z-index:0;
+}
+.liste-hero > * { position: relative; z-index: 1; }
+.liste-hero-label {
+    display: inline-block; font-size:.62rem; font-weight:800;
+    letter-spacing:.15em; text-transform:uppercase;
+    margin-bottom:.75rem; opacity:.7;
+}
+.liste-hero h1 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900; letter-spacing: -.04em;
+    line-height: 1.05; margin-bottom: .75rem;
+}
+.liste-hero p {
+    font-size:.9rem; line-height:1.7; opacity:.75; max-width:500px;
+}
+
+/* Variantes hero couleurs */
+.liste-hero.hero-pink   { background:linear-gradient(135deg,#1a0510 0%,#3d0f28 100%); color:white; }
+.liste-hero.hero-gold   { background:linear-gradient(135deg,#1a1205 0%,#3d2d05 100%); color:white; }
+.liste-hero.hero-dark   { background:linear-gradient(135deg,#0a0a12 0%,#1a1a2e 100%); color:white; }
+.liste-hero.hero-indigo { background:linear-gradient(135deg,#0a0518 0%,#1a0f3d 100%); color:white; }
+.liste-hero.hero-green  { background:linear-gradient(135deg,#051a08 0%,#0f3d12 100%); color:white; }
+
+/* ── TOOLBAR ───────────────────────────────────────────────────── */
+.liste-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; margin-bottom: 1.75rem; flex-wrap: wrap;
+}
+.liste-count {
+    font-size:.82rem; color:var(--text-muted);
+}
+.liste-count strong { color:var(--text); font-weight:700; }
+
+/* ── BADGE RANG ────────────────────────────────────────────────── */
+.rank-badge {
+    position: absolute; top:.75rem; left:.75rem; z-index:3;
+    background: linear-gradient(135deg,#f59e0b,#d97706);
+    color:#1a1a1a; font-size:.62rem; font-weight:800;
+    padding:.22rem .6rem; border-radius:999px;
+    letter-spacing:.04em;
+}
+
+/* ── NO RESULTS ────────────────────────────────────────────────── */
+.no-results {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 4rem 2rem; gap: .75rem;
+    text-align: center;
+}
+.no-results p { color: var(--text-muted); font-size:.9rem; }
+
+/* ── RESPONSIVE ────────────────────────────────────────────────── */
+@media(max-width:768px){
+    .liste-hero { padding:2rem 1.5rem; }
+    .liste-hero h1 { font-size: 1.8rem; }
+}

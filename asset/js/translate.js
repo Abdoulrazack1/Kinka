@@ -231,9 +231,101 @@ const translations = {
     'Prix original': 'Original price',
 
     // ── FAVORIS ──────────────────────────────────────────────
+    'Mes Favoris': 'My Favorites',
     'Mes favoris': 'My favorites',
+    'manga sauvegardé': 'saved manga',
+    'mangas sauvegardés': 'saved mangas',
+    'manga sauvegardée': 'saved manga',
+    'mangas sauvegardées': 'saved mangas',
+    'Aucun favori pour l\'instant': 'No favorites yet',
     'Aucun favori pour le moment': 'No favorites yet',
+    'Parcourez notre catalogue et cliquez sur ♡ pour sauvegarder vos mangas préférés ici.': 'Browse our catalog and click ♡ to save your favorite manga here.',
+    'Parcourez notre catalogue et ajoutez vos mangas préférés en cliquant sur ♡': 'Browse our catalog and add your favorite manga by clicking ♡',
     'Découvrir le catalogue': 'Explore the catalog',
+    'Voir les nouveautés': 'See new releases',
+    'Tout effacer': 'Clear all',
+    'Effacer vos': 'Clear your',
+    'Vous pourriez aimer': 'You might like',
+    'Valeur estimée': 'Estimated value',
+    'en promotion': 'on sale',
+    'Trier par titre': 'Sort by title',
+    'A–Z': 'A–Z',
+    'Z–A': 'Z–A',
+
+    // ── PAGE PAIEMENT ─────────────────────────────────────────
+    'Paiement': 'Checkout',
+    'Récapitulatif': 'Order summary',
+    'Adresse de livraison': 'Delivery address',
+    'Moyen de paiement': 'Payment method',
+    'Livraison': 'Shipping',
+    'Gratuit': 'Free',
+    'Sous-total': 'Subtotal',
+    'Total': 'Total',
+    'Code promo': 'Promo code',
+    'Appliquer': 'Apply',
+    'Titulaire de la carte': 'Cardholder name',
+    'Carte Bancaire': 'Credit Card',
+    'Numéro de carte': 'Card number',
+    'Date d\'expiration': 'Expiry date',
+    'Expiration': 'Expiry',
+    'Informations de livraison': 'Delivery information',
+    'Méthode de paiement': 'Payment method',
+    'En validant votre commande, vous acceptez nos': 'By placing your order, you agree to our',
+    'Paiement 100% sécurisé — SSL': '100% Secure payment — SSL',
+    'Votre panier est vide.': 'Your cart is empty.',
+    'Prénom': 'First name',
+    'Nom': 'Last name',
+    'Adresse': 'Address',
+    'Code Postal': 'Zip code',
+    'Code postal': 'Zip code',
+    'Ville': 'City',
+    'Téléphone (pour la livraison)': 'Phone (for delivery)',
+    'Téléphone': 'Phone',
+    'Visa, Mastercard, CB': 'Visa, Mastercard',
+    'Payer': 'Pay',
+
+    // ── PAGE PROFIL ──────────────────────────────────────────
+    'Mon profil': 'My profile',
+    'Mes informations': 'My information',
+    'Mes commandes': 'My orders',
+    'Mon abonnement': 'My subscription',
+    'Sécurité': 'Security',
+    'Se déconnecter': 'Sign out',
+    'Membre': 'Member',
+    'Commandes': 'Orders',
+    'Favoris': 'Favorites',
+    'Dépensé': 'Spent',
+    'Membre depuis': 'Member since',
+
+    // ── PAGE PANIER ──────────────────────────────────────────
+    'Mon Panier': 'My Cart',
+    'Votre panier est vide': 'Your cart is empty',
+    'Continuer mes achats': 'Continue shopping',
+    'Commander': 'Place order',
+    'Récapitulatif de commande': 'Order summary',
+    'Qté': 'Qty',
+    'Qté\u00a0:': 'Qty:',
+
+    // ── PAGE CONTACT ─────────────────────────────────────────
+    'Votre nom': 'Your name',
+    'Votre email': 'Your email',
+    'Votre message': 'Your message',
+    'Envoyer le message': 'Send message',
+    'Nous contacter': 'Contact us',
+    'Formulaire de contact': 'Contact form',
+
+    // ── PAGE SUIVI COMMANDE ───────────────────────────────────
+    'Suivi de commande': 'Order tracking',
+    'Commande en cours': 'Order in progress',
+    'Expédiée': 'Shipped',
+    'Livrée': 'Delivered',
+    'En préparation': 'Processing',
+    'Numéro de commande': 'Order number',
+
+    // ── PAGE CONFIRMATION ─────────────────────────────────────
+    'Commande confirmée': 'Order confirmed',
+    'Merci pour votre commande': 'Thank you for your order',
+    'Retour à l\'accueil': 'Back to home',
 
     // ── FAQ / CGV / CGU ───────────────────────────────────────
     'Questions fréquentes': 'Frequently asked questions',
@@ -245,7 +337,7 @@ const translations = {
 
     // ── TOASTS ───────────────────────────────────────────────
     'Ajouté au panier !': 'Added to cart!',
-    'Ajouté aux favoris': 'Added to favorites ',
+    'Ajouté aux favoris ': 'Added to favorites ',
     'Retiré des favoris': 'Removed from favorites',
     'Crédentials démo remplis [ok]': 'Demo credentials filled [ok]',
     'Inscription confirmée [ok]': 'Subscription confirmed [ok]',
@@ -350,6 +442,30 @@ function injectTranslateBtn() {
 }
 
 // ============================================================
+// EXPOSITION GLOBALE
+// ============================================================
+// Permet aux renderGrid() d'appeler window.kinka_translate() après injection
+window.kinka_translate = function() {
+    if (currentLang === 'en') applyTranslations('en');
+};
+
+// ============================================================
+// MUTATION OBSERVER — re-traduit les noeuds injectés dynamiquement
+// ============================================================
+function startMutationObserver() {
+    if (currentLang !== 'en') return;
+    if (!window.MutationObserver) return;
+    var debounce = null;
+    var observer = new MutationObserver(function(mutations) {
+        var hasNew = mutations.some(function(m) { return m.addedNodes.length > 0; });
+        if (!hasNew) return;
+        clearTimeout(debounce);
+        debounce = setTimeout(function() { applyTranslations('en'); }, 80);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// ============================================================
 // INIT
 // ============================================================
 (function() {
@@ -357,6 +473,7 @@ function injectTranslateBtn() {
         injectTranslateBtn();
         if (currentLang === 'en') {
             applyTranslations('en');
+            startMutationObserver();
         }
     }
 

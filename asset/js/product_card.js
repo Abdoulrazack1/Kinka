@@ -83,8 +83,8 @@
                 const originalHTML = this.innerHTML;   // sauvegarde le contenu original (icône + texte éventuel)
                 this.innerHTML = '';                  // coche de validation
                 this.style.transition = 'background 0.2s';
-                this.style.backgroundColor = '#4CAF50';
-                this.style.color = 'white';
+                this.style.backgroundColor = 'var(--pink, #22c55e)';
+                this.style.color = '#fff';
 
                 // Restauration après 1 seconde
                 setTimeout(() => {
