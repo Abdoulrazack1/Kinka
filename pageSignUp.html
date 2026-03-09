@@ -2,14 +2,19 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="KINKA.FR — Boutique manga en ligne : neufs, occasions, coffrets.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte - KINKA.FR</title>
-    <!-- Google Fonts -->
+        <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/asset/css/kinka-shared.css">
     <link rel="stylesheet" href="/asset/css/pageSignUp.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
@@ -25,78 +30,108 @@
             
             <div class="search-bar">
                 <span class="material-symbols-outlined search-icon">search</span>
-                <input type="text" placeholder="Rechercher un manga, un auteur...">
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
             </div>
             
-            <div class="nav-menu">
+                        <div class="nav-menu">
                 <a href="/page_accueil.html">Accueil</a>
                 <a href="/page_catalogue.html">Catalogue</a>
                 <a href="/page_promotion.html">Promotions</a>
             </div>
             
-            <div class="nav-actions">
-                <button class="icon-btn">
+                                    <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" title="Mes favoris" id="favoris-btn">
                     <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
-                <button class="icon-btn">
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'" title="Mon profil">
                     <span class="material-symbols-outlined">person</span>
                 </button>
-                <button class="connect-btn">Se connecter</button>
-                <button class="icon-btn">
+                <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'" title="Mon panier">
                     <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
             </div>
         </nav>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="container">
+    <main>
+    <div class="page-signup-wrap">
         <div class="signup-container">
-            <div class="signup-card">
-                <h1 class="form-title">Créer un compte</h1>
-                <p class="form-description">Rejoignez la communauté Kinkai et profitez d'offres exclusives.</p>
+            <!-- CÔTÉ GAUCHE -->
+            <div class="signup-left">
+                <div class="signup-badge">Nouveau sur Kinka</div>
+                <h1 class="signup-title">Rejoins la communauté manga</h1>
+                <p class="signup-text">Crée ton compte et accède à des milliers de mangas neufs et d'occasion, des exclusivités et des offres personnalisées.</p>
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><span class="material-symbols-outlined">local_shipping</span></div>
+                        <span class="benefit-text">Livraison gratuite dès 50€ d'achat</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><span class="material-symbols-outlined">favorite</span></div>
+                        <span class="benefit-text">Wishlist et historique de commandes</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><span class="material-symbols-outlined">notifications</span></div>
+                        <span class="benefit-text">Alertes sur tes séries préférées</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><span class="material-symbols-outlined">percent</span></div>
+                        <span class="benefit-text">Offres exclusives membres</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULAIRE -->
+            <div class="signup-right">
+                <div class="signup-header">
+                    <p>Déjà membre ?</p>
+                    <button class="login-link-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                </div>
+                <h2 class="signup-form-title">Créer un compte</h2>
+                <p class="signup-form-desc">Quelques secondes suffisent pour rejoindre KINKA.FR</p>
 
                 <form class="signup-form">
-                    <div class="form-row">
+                    <div class="name-row">
                         <div class="form-group">
                             <label for="prenom" class="form-label">Prénom</label>
                             <input type="text" id="prenom" class="form-input" placeholder="Luffy" required>
                         </div>
-
                         <div class="form-group">
                             <label for="nom" class="form-label">Nom</label>
                             <input type="text" id="nom" class="form-input" placeholder="Monkey D." required>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="email" class="form-label">Email</label>
+                        <label for="email" class="form-label">Adresse e-mail</label>
                         <input type="email" id="email" class="form-input" placeholder="example@email.com" required>
                     </div>
-
                     <div class="form-group">
                         <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                        <input type="password" id="password" class="form-input" placeholder="••••••••" required oninput="checkPasswordStrength(this.value)">
+                        <div class="password-strength" id="strength-bars">
+                            <div class="strength-bar" id="bar1"></div>
+                            <div class="strength-bar" id="bar2"></div>
+                            <div class="strength-bar" id="bar3"></div>
+                            <div class="strength-bar" id="bar4"></div>
+                        </div>
                     </div>
-
                     <div class="form-group">
                         <label for="confirm-password" class="form-label">Confirmer le mot de passe</label>
                         <input type="password" id="confirm-password" class="form-input" placeholder="••••••••" required>
                     </div>
-
-                    <div class="form-options">
-                        <label class="checkbox-label">
-                            <input type="checkbox" class="form-checkbox">
-                            <span class="checkbox-text">Je souhaite recevoir les actualités et les promotions exclusives de Kinkai.</span>
-                        </label>
+                    <div class="signup-terms">
+                        <input type="checkbox" id="terms-accept" required>
+                        <label for="terms-accept">J'accepte les <a href="/page_cgu.html">conditions générales</a> et la <a href="/page_cgu.html">politique de confidentialité</a> de KINKA.FR</label>
                     </div>
-
-                    <button type="submit" class="submit-btn">S'inscrire</button>
-
-                    <div class="separator">
-                        <span class="separator-text">OU S'INSCRIRE AVEC</span>
-                    </div>
-
+                    <button type="submit" class="signup-submit">
+                        <span class="material-symbols-outlined">person_add</span>
+                        Créer mon compte
+                    </button>
+                    <div class="separator"><span class="separator-text">ou continuer avec</span></div>
                     <div class="social-login">
                         <button type="button" class="social-btn google-btn">
                             <svg class="social-icon" viewBox="0 0 24 24" width="20" height="20">
@@ -105,20 +140,24 @@
                                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                             </svg>
-                            Continuer avec Google
+                            Google
+                        </button>
+                        <button type="button" class="social-btn apple-btn">
+                            <svg class="social-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                            </svg>
+                            Apple
                         </button>
                     </div>
-
-                    <p class="login-link">
-                        Déjà membre ? <a href="/pageLogIn.html">Se connecter</a>
-                    </p>
                 </form>
             </div>
         </div>
+        </div>
+    </div>
+    </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer>
+        <footer>
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
@@ -143,8 +182,8 @@
                 <ul>
                     <li><a href="/pageLogIn.html">Connexion</a></li>
                     <li><a href="/pageSignUp.html">Inscription</a></li>
-                    <li><a href="#">Mon panier</a></li>
-                    <li><a href="#">Suivi de commande</a></li>
+                    <li><a href="/page_panier.html">Mon panier</a></li>
+                    <li><a href="/page_suivicommande.html">Suivi de commande</a></li>
                 </ul>
             </div>
 
@@ -155,13 +194,13 @@
                     <li><a href="/page_contact.html">Formulaire de contact</a></li>
                     <li><a href="/page_cgv.html">CGV</a></li>
                     <li><a href="/page_cgu.html">CGU</a></li>
-                    <li><a href="/page_politique_retour.html">Politique de retour</a></li>
+                    <li><a href="/page_polretour.html">Politique de retour</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">support@kinkai.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#5e3d31302a3f3d2a1e353730353f70382c"><span class="__cf_email__" data-cfemail="bdded2d3c9dcdec9fdd6d4d3d6dc93dbcf">[email&#160;protected]</span></a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -174,9 +213,45 @@
             <p>© 2025 Kinka.fr. Tous droits réservés.</p>
         </div>
     </footer>
-<script src="/asset/js/panier.js"></script>
-<script src="/asset/js/recherche.js"></script>
-<script src="/asset/js/translate.js"></script>
-<script src="/asset/js/darkmode.js"></script>
-</body>
-</html>
+    
+
+    <!-- Scripts -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+
+    <script>
+    // Password strength
+    function checkPasswordStrength(val) {
+        const bars = [document.getElementById('bar1'),document.getElementById('bar2'),document.getElementById('bar3'),document.getElementById('bar4')];
+        bars.forEach(b => { if(b) { b.className = 'strength-bar'; } });
+        if (!val) return;
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+        const cls = ['s1','s2','s3','s4'];
+        for (let i = 0; i < score; i++) { if(bars[i]) bars[i].classList.add(cls[score-1]); }
+    }
+    // Form submit
+    (function _init() {
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
+        const form = document.querySelector('.signup-form');
+        if (form) form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pw = document.getElementById('password').value;
+            const cpw = document.getElementById('confirm-password').value;
+            if (pw !== cpw) { alert('Les mots de passe ne correspondent pas.'); return; }
+            const terms = document.getElementById('terms-accept');
+            if (terms && !terms.checked) { alert('Veuillez accepter les conditions générales.'); return; }
+            // Simuler création compte
+            const email = document.getElementById('email').value;
+            const prenom = document.getElementById('prenom').value;
+            localStorage.setItem('kinka_user', JSON.stringify({email, prenom, connected: true}));
+            window.location.href = '/page_accueil.html';
+        });
+    });
+    (function()

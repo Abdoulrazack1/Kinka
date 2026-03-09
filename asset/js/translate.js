@@ -1,645 +1,368 @@
-// ============================================
-// translate.js - Systeme de traduction FR/EN COMPLET
-// Tous les termes de toutes les pages KINKA.FR
-// ============================================
+// ============================================================
+// translate.js — Système de traduction FR/EN KINKA.FR v5.0
+// Couverture complète de toutes les pages du site
+// ============================================================
 
 const translations = {
-    
-    // ============================================
-    // NAVIGATION & HEADER
-    // ============================================
+
+    // ── NAVIGATION & HEADER ─────────────────────────────────
     'Accueil': 'Home',
     'Catalogue': 'Catalog',
     'Promotions': 'Deals',
     'Coffrets': 'Box Sets',
-    'Nouveautes': 'New Releases',
-    'Meilleures ventes': 'Best Sellers',
-    'Coup de coeur': 'Staff Picks',
-    'Rechercher un manga, un auteur...': 'Search for a manga, an author...',
-    'Rechercher': 'Search',
-    
-    // ============================================
-    // BOUTONS & ACTIONS
-    // ============================================
     'Se connecter': 'Sign in',
-    'Se deconnecter': 'Sign out',
+    'Rechercher un manga, un auteur...': 'Search for a manga, an author...',
+    'Mes favoris': 'My favorites',
+    'Mon profil': 'My profile',
+    'Mon panier': 'My cart',
+
+    // ── FOOTER ──────────────────────────────────────────────
+    'Votre boutique manga de référence.': 'Your ultimate manga store.',
+    'Votre boutique de référence pour l\'achat de mangas neufs et d\'occasion en France.': 'Your go-to store for new and used manga in France.',
+    'Navigation': 'Navigation',
+    'Compte': 'Account',
+    'Support': 'Support',
+    'Nous contacter': 'Contact us',
     'Connexion': 'Login',
     'Inscription': 'Sign up',
-    'S\'inscrire': 'Sign up',
-    'Creer un compte': 'Create account',
-    'Mot de passe oublie': 'Forgot password',
-    'Reinitialiser': 'Reset',
-    'Envoyer': 'Send',
-    'Valider': 'Submit',
-    'Confirmer': 'Confirm',
+    'Suivi de commande': 'Track order',
+    'Formulaire de contact': 'Contact form',
+    'Politique de retour': 'Return policy',
+    'Tous droits réservés': 'All rights reserved',
+    'Meilleures Ventes': 'Best Sellers',
+    'Maisons': 'Publishers',
+    'Catégories': 'Categories',
+
+    // ── BOUTONS & ACTIONS ────────────────────────────────────
+    'Ajouter au panier': 'Add to cart',
+    'Ajouter aux favoris': 'Add to favorites',
+    'Retirer des favoris': 'Remove from favorites',
+    'Voir le produit': 'View product',
+    'Voir tout': 'See all',
+    'Voir la collection': 'Browse collection',
+    'Acheter': 'Buy',
+    'Valider': 'Confirm',
     'Annuler': 'Cancel',
     'Retour': 'Back',
-    'Suivant': 'Next',
-    'Precedent': 'Previous',
     'Fermer': 'Close',
     'Modifier': 'Edit',
     'Supprimer': 'Delete',
     'Enregistrer': 'Save',
-    'Telecharger': 'Download',
-    'Imprimer': 'Print',
-    'Partager': 'Share',
-    
-    // ============================================
-    // COMPTE UTILISATEUR
-    // ============================================
+    'S\'abonner': 'Subscribe',
+    'S\'inscrire': 'Sign up',
+    'Créer un compte': 'Create account',
+    'Mot de passe oublié ?': 'Forgot password?',
+    'Se souvenir de moi': 'Remember me',
+    'Filtrer': 'Filter',
+    'Réinitialiser': 'Reset',
+    'Trier par': 'Sort by',
+    'Trier': 'Sort',
+    'Pertinence': 'Relevance',
+    'Prix croissant': 'Price: low to high',
+    'Prix décroissant': 'Price: high to low',
+    'Meilleures notes': 'Best rated',
+    'Nouveautés': 'New releases',
+    'Utiliser': 'Use',
+
+    // ── PAGE ACCUEIL ─────────────────────────────────────────
+    'Maisons d\'édition': 'Publishers',
+    'Dernières Nouveautés': 'Latest Releases',
+    'Meilleures Ventes': 'Best Sellers',
+    'Coups de Cœur': 'Staff Picks',
+    'Coffrets Intégrale': 'Complete Box Sets',
+    'Mangas d\'Occasion': 'Used Manga',
+    'Catégories de mangas': 'Manga categories',
+    'Explorez les univers qui te correspondent': 'Explore the worlds that suit you',
+    'Restez informé des nouvelles sorties': 'Stay updated on new releases',
+    'Votre adresse e-mail': 'Your email address',
+    'Livraison gratuite dès 50€': 'Free delivery from €50',
+    'Retours sous 30 jours': 'Returns within 30 days',
+    'Paiement sécurisé': 'Secure payment',
+    '+3 000 titres en stock': '+3,000 titles in stock',
+    'Voir les coffrets': 'Browse box sets',
+    'Voir les occasions': 'Browse used manga',
+
+    // ── HERO SLIDES ──────────────────────────────────────────
+    'NOUVEAU TOME': 'NEW VOLUME',
+    'PHÉNOMÈNE MONDIAL': 'WORLDWIDE PHENOMENON',
+    'SÉRIE CULTE': 'CULT SERIES',
+    'CHEF-D\'ŒUVRE': 'MASTERPIECE',
+    'COUP DE CŒUR': 'STAFF PICK',
+    'Voir la collection': 'Browse collection',
+    'Coups de cœur': 'Staff picks',
+    'Découvrir le Seinen': 'Explore Seinen',
+
+    // ── CATÉGORIES ───────────────────────────────────────────
+    'CATÉGORIE': 'CATEGORY',
+    'Filtrer par série :': 'Filter by series:',
+    'Toutes': 'All',
+    'Tout le catalogue': 'Full catalog',
+    '0 titre': '0 title',
+    'Aucun titre trouvé pour cette série.': 'No titles found for this series.',
+
+    // ── SHŌNEN ──────────────────────────────────────────────
+    'Shōnen': 'Shōnen',
+    'Action, amitié, dépassement de soi': 'Action, friendship, surpassing limits',
+    'Le shōnen, c\'est l\'énergie pure du manga.': 'Shōnen is the pure energy of manga.',
+
+    // ── SEINEN ──────────────────────────────────────────────
+    'Seinen': 'Seinen',
+    'Mature, psychologique, sans compromis': 'Mature, psychological, uncompromising',
+
+    // ── SHŌJO ───────────────────────────────────────────────
+    'Shōjo': 'Shōjo',
+    'Romance, émotions, tranches de vie': 'Romance, emotions, slice of life',
+
+    // ── JOSEI ───────────────────────────────────────────────
+    'Josei': 'Josei',
+    'Réaliste, nuancé, pour femmes adultes': 'Realistic, nuanced, for adult women',
+
+    // ── CATALOGUE ────────────────────────────────────────────
+    'Catalogue Manga': 'Manga Catalog',
+    'Découvrez notre sélection de mangas neufs et d\'occasion': 'Discover our selection of new and used manga',
+    'Tout': 'All',
+    'Occasion': 'Used',
+    'Neuf': 'New',
+    'Coffret': 'Box Set',
+    'Filtres': 'Filters',
+    'Catégorie': 'Category',
+    'État': 'Condition',
+    'Éditeur': 'Publisher',
+    'Offres spéciales': 'Special offers',
+    'En promotion uniquement': 'On sale only',
+    'Prix': 'Price',
+    'résultats': 'results',
+
+    // ── MAISONS D'ÉDITION ────────────────────────────────────
+    'Fondée en': 'Founded in',
+    'titres au catalogue': 'titles in catalog',
+    'titres chez KINKA': 'titles at KINKA',
+    'séries disponibles': 'available series',
+    'Site officiel': 'Official website',
+    'Séries phares': 'Key series',
+    'Alertes sorties': 'Release alerts',
+    'Recevez les nouvelles parutions de cette maison en avant-première.': 'Get new releases from this publisher first.',
+    'votre@email.fr': 'your@email.com',
+    'Aucun titre disponible pour cette sélection.': 'No titles available for this selection.',
+    'Maisons d\'édition': 'Publishers',
+
+    // ── COUPS DE CŒUR ────────────────────────────────────────
+    'SÉLECTION ÉDITORIALE': 'EDITORIAL SELECTION',
+    'Nos Coups de Cœur': 'Our Staff Picks',
+    'titres sélectionnés': 'titles selected',
+    'note moyenne': 'average rating',
+    'libraires experts': 'expert booksellers',
+    'Tous les genres': 'All genres',
+    'Pourquoi on adore :': 'Why we love it:',
+    'L\'équipe KINKA': 'The KINKA team',
+    'Libraires passionnés': 'Passionate booksellers',
+    'En bref': 'In brief',
+    'Auteur': 'Author',
+    'Genre': 'Genre',
+    'Note': 'Rating',
+    'Éditeur': 'Publisher',
+    'En stock': 'In stock',
+    'Plus que': 'Only',
+    'en stock': 'left in stock',
+    'Autres pépites à ne pas manquer': 'Other must-reads',
+
+    // ── PRODUIT DETAIL ────────────────────────────────────────
+    'Ajouter au panier': 'Add to cart',
+    'Disponible immédiatement': 'Available now',
+    'Livraison estimée': 'Estimated delivery',
+    'En stock': 'In stock',
+    'Rupture de stock': 'Out of stock',
+    'Description': 'Description',
+    'Informations': 'Information',
+    'Tome': 'Volume',
+    'Série': 'Series',
+    'Pages': 'Pages',
+    'Format': 'Format',
+    'Date de parution': 'Publication date',
+    'Langue': 'Language',
+    'Français': 'French',
+    'Produits similaires': 'Similar products',
+
+    // ── PANIER ───────────────────────────────────────────────
+    'Votre panier': 'Your cart',
+    'Sous-total': 'Subtotal',
+    'Livraison': 'Shipping',
+    'Total': 'Total',
+    'Passer la commande': 'Place order',
+    'Continuer les achats': 'Continue shopping',
+    'Votre panier est vide': 'Your cart is empty',
+    'Commencer à magasiner': 'Start shopping',
+    'Quantité': 'Quantity',
+    'Supprimer': 'Remove',
+
+    // ── CONNEXION & INSCRIPTION ───────────────────────────────
+    'Heureux de te revoir sur KINKA.FR': 'Welcome back to KINKA.FR',
+    'Connecte-toi pour retrouver ton panier': 'Sign in to access your cart',
+    'Séries suivies': 'Series followed',
+    'Commandes livrées': 'Orders delivered',
+    'Communauté KINKA': 'KINKA Community',
+    'Se connecter': 'Sign in',
+    'Accède à ton espace lecteur en quelques secondes.': 'Access your reader space in seconds.',
+    'Adresse e-mail': 'Email address',
+    'Mot de passe': 'Password',
+    'Nouveau sur KINKA.FR ?': 'New to KINKA.FR?',
+    'ou continuer avec': 'or continue with',
+    'En te connectant, tu acceptes nos': 'By signing in, you agree to our',
+    'conditions générales': 'terms of service',
+    'politique de confidentialité': 'privacy policy',
+    'Compte de démonstration': 'Demo account',
+
+    // ── PROFIL ───────────────────────────────────────────────
     'Mon compte': 'My account',
-    'Mon profil': 'My profile',
     'Mes commandes': 'My orders',
-    'Mes favoris': 'My favorites',
-    'Ma wishlist': 'My wishlist',
-    'Mes adresses': 'My addresses',
-    'Parametres': 'Settings',
-    'Deconnexion': 'Logout',
+    'Abonnement': 'Subscription',
+    'Sécurité': 'Security',
     'Informations personnelles': 'Personal information',
     'Changer mon mot de passe': 'Change my password',
     'Historique des commandes': 'Order history',
-    
-    // ============================================
-    // HERO BANNER & BADGES
-    // ============================================
-    'TENDANCE ACTUELLE': 'TRENDING NOW',
-    'PHENOMENE MONDIAL': 'WORLDWIDE PHENOMENON',
-    'SERIE CULTE': 'CULT SERIES',
+    'Se déconnecter': 'Sign out',
+    'Déconnexion': 'Logout',
+
+    // ── PROMOTIONS ────────────────────────────────────────────
+    'Promotions en cours': 'Current deals',
+    'En promotion': 'On sale',
+    'Réduction': 'Discount',
+    'Prix réduit': 'Sale price',
+    'Prix original': 'Original price',
+
+    // ── FAVORIS ──────────────────────────────────────────────
+    'Mes favoris': 'My favorites',
+    'Aucun favori pour le moment': 'No favorites yet',
+    'Découvrir le catalogue': 'Explore the catalog',
+
+    // ── FAQ / CGV / CGU ───────────────────────────────────────
+    'Questions fréquentes': 'Frequently asked questions',
+    'Conditions générales de vente': 'Terms of sale',
+    'Conditions générales d\'utilisation': 'Terms of use',
+
+    // ── BREADCRUMB ───────────────────────────────────────────
+    'Coups de Cœur': 'Staff Picks',
+
+    // ── TOASTS ───────────────────────────────────────────────
+    'Ajouté au panier !': 'Added to cart!',
+    'Ajouté aux favoris': 'Added to favorites ',
+    'Retiré des favoris': 'Removed from favorites',
+    'Crédentials démo remplis [ok]': 'Demo credentials filled [ok]',
+    'Inscription confirmée [ok]': 'Subscription confirmed [ok]',
+
+    // ── NEWSLETTER ───────────────────────────────────────────
+    'Restez informé des nouveautés': 'Stay updated on new releases',
+    'Recevez nos alertes sorties, promotions et exclusivités directement dans votre boîte mail.': 'Receive our release alerts, promotions and exclusives directly in your inbox.',
+
+    // ── BADGES PRODUIT ───────────────────────────────────────
     'NOUVEAU': 'NEW',
+    'BEST-SELLER': 'BEST-SELLER',
+    'OCCASION': 'USED',
     'PROMO': 'SALE',
-    'EXCLUSIVITE': 'EXCLUSIVE',
-    'EDITION LIMITEE': 'LIMITED EDITION',
-    'BEST SELLER': 'BEST SELLER',
-    'Decouvrez les derniers tomes': 'Discover the latest volumes',
-    'Disponible des maintenant': 'Available now',
-    'En precommande': 'Pre-order',
-    'Bientot disponible': 'Coming soon',
-    'Acheter le Tome': 'Buy Volume',
-    'Acheter': 'Buy',
-    'Voir la collection': 'View collection',
-    'Voir le catalogue': 'View catalog',
-    'En savoir plus': 'Learn more',
-    
-    // ============================================
-    // SECTIONS DE LA PAGE
-    // ============================================
-    'Maisons d\'edition': 'Publishers',
-    'Maisons d\'Edition': 'Publishers',
-    'Les Maisons d\'Edition': 'Publishers',
-    'Dernieres Nouveautes': 'Latest Releases',
-    'Derniers Tomes': 'Latest Volumes',
-    'Coups de coeur': 'Staff Picks',
-    'Top ventes': 'Top Sales',
-    'Recommandations': 'Recommendations',
-    'Vous aimerez aussi': 'You might also like',
-    'Articles similaires': 'Similar items',
-    'Voir tout': 'View all',
-    'Voir plus': 'View more',
-    'Afficher plus': 'Show more',
-    
-    // ============================================
-    // PRODUITS & CATALOGUE
-    // ============================================
-    'Ajouter au panier': 'Add to cart',
-    'Ajouter': 'Add',
-    'Retirer': 'Remove',
-    'En stock': 'In stock',
-    'Rupture de stock': 'Out of stock',
-    'Stock limite': 'Limited stock',
-    'Derniers exemplaires': 'Last copies',
-    'Precommande': 'Pre-order',
-    'Indisponible': 'Unavailable',
-    'Epuise': 'Sold out',
-    'Prix': 'Price',
-    'Quantite': 'Quantity',
-    'Description': 'Description',
-    'Resume': 'Summary',
-    'Synopsis': 'Synopsis',
-    'Caracteristiques': 'Features',
-    'Details': 'Details',
-    'Informations': 'Information',
-    'Specifications': 'Specifications',
-    'Auteur': 'Author',
-    'Auteurs': 'Authors',
-    'Editeur': 'Publisher',
-    'Collection': 'Collection',
-    'Serie': 'Series',
-    'Tome': 'Volume',
-    'Genre': 'Genre',
-    'Date de sortie': 'Release date',
-    'Date de parution': 'Publication date',
-    'Nombre de pages': 'Number of pages',
-    'Format': 'Format',
-    'Langue': 'Language',
-    'ISBN': 'ISBN',
-    'Etat': 'Condition',
-    'Etat du livre': 'Book condition',
-    'Neuf': 'New',
-    'Occasion': 'Used',
-    'Comme neuf': 'Like new',
-    'Tres bon etat': 'Very good',
-    'Bon etat': 'Good',
-    
-    // ============================================
-    // FILTRES & TRI
-    // ============================================
-    'Filtrer': 'Filter',
-    'Filtrer par': 'Filter by',
-    'Filtres': 'Filters',
-    'Trier': 'Sort',
-    'Trier par': 'Sort by',
-    'Categories': 'Categories',
-    'Categorie': 'Category',
-    'Prix croissant': 'Price: Low to High',
-    'Prix decroissant': 'Price: High to Low',
-    'Popularite': 'Popularity',
-    'Nouveaute': 'New arrivals',
-    'Meilleures notes': 'Top rated',
-    'Nom A-Z': 'Name A-Z',
-    'Nom Z-A': 'Name Z-A',
-    'Disponibilite': 'Availability',
-    'Tout effacer': 'Clear all',
-    'Reinitialiser les filtres': 'Reset filters',
-    'Appliquer': 'Apply',
-    'Appliquer les filtres': 'Apply filters',
-    
-    // ============================================
-    // RESULTATS & RECHERCHE
-    // ============================================
-    'resultats': 'results',
-    'resultat': 'result',
-    'produits': 'products',
-    'produit': 'product',
-    'articles': 'items',
-    'article': 'item',
-    'Aucun resultat': 'No results',
-    'Aucun produit trouve': 'No products found',
-    'produits trouves': 'products found',
-    'Recherche en cours': 'Searching',
-    'Votre recherche': 'Your search',
-    'Suggestions': 'Suggestions',
-    'Recherches populaires': 'Popular searches',
-    'Resultats de recherche pour': 'Search results for',
-    
-    // ============================================
-    // PANIER
-    // ============================================
-    'Mon panier': 'My cart',
-    'Panier': 'Cart',
-    'Votre panier': 'Your cart',
-    'Votre panier est vide': 'Your cart is empty',
-    'Articles dans le panier': 'Items in cart',
-    'Sous-total': 'Subtotal',
-    'Total': 'Total',
-    'Frais de port': 'Shipping',
-    'Livraison': 'Delivery',
-    'Livraison gratuite': 'Free shipping',
-    'Livraison offerte': 'Free delivery',
-    'Offerte des': 'Free from',
-    'Continuer mes achats': 'Continue shopping',
-    'Passer la commande': 'Checkout',
-    'Proceder au paiement': 'Proceed to payment',
-    'Vider le panier': 'Empty cart',
-    'Mettre a jour': 'Update',
-    'Code promo': 'Promo code',
-    'Coupon': 'Coupon',
-    'Appliquer le code': 'Apply code',
-    'Reduction': 'Discount',
-    'TVA': 'VAT',
-    
-    // ============================================
-    // COMMANDE & PAIEMENT
-    // ============================================
-    'Ma commande': 'My order',
-    'Recapitulatif': 'Summary',
-    'Adresse de livraison': 'Shipping address',
-    'Adresse de facturation': 'Billing address',
-    'Mode de livraison': 'Delivery method',
-    'Livraison standard': 'Standard delivery',
-    'Livraison express': 'Express delivery',
-    'Point relais': 'Pickup point',
-    'Mode de paiement': 'Payment method',
-    'Carte bancaire': 'Credit card',
-    'PayPal': 'PayPal',
-    'Virement': 'Bank transfer',
-    'Numero de commande': 'Order number',
-    'Reference': 'Reference',
-    'Statut': 'Status',
-    'En preparation': 'Processing',
-    'Expedie': 'Shipped',
-    'Livre': 'Delivered',
-    'Annule': 'Cancelled',
-    'Suivi de commande': 'Order tracking',
-    'Numero de suivi': 'Tracking number',
-    'Telecharger la facture': 'Download invoice',
-    'Facture': 'Invoice',
-    
-    // ============================================
-    // FORMULAIRES
-    // ============================================
-    'Nom': 'Name',
-    'Prenom': 'First name',
-    'Nom de famille': 'Last name',
-    'Email': 'Email',
-    'Adresse email': 'Email address',
-    'Mot de passe': 'Password',
-    'Nouveau mot de passe': 'New password',
-    'Ancien mot de passe': 'Old password',
-    'Confirmer le mot de passe': 'Confirm password',
-    'Adresse': 'Address',
-    'Adresse ligne 1': 'Address line 1',
-    'Adresse ligne 2': 'Address line 2',
-    'Complement d\'adresse': 'Additional address',
-    'Code postal': 'Postal code',
-    'Ville': 'City',
-    'Pays': 'Country',
-    'Region': 'Region',
-    'Telephone': 'Phone',
-    'Numero de telephone': 'Phone number',
-    'Portable': 'Mobile',
-    'Message': 'Message',
-    'Votre message': 'Your message',
-    'Objet': 'Subject',
-    'Commentaire': 'Comment',
-    'Avis': 'Review',
-    'Note': 'Rating',
-    'Titre': 'Title',
-    
-    // ============================================
-    // VALIDATION & ERREURS
-    // ============================================
-    'Champ obligatoire': 'Required field',
-    'Veuillez remplir tous les champs': 'Please fill all fields',
-    'Email invalide': 'Invalid email',
-    'Mot de passe trop court': 'Password too short',
-    'Les mots de passe ne correspondent pas': 'Passwords do not match',
-    'Erreur': 'Error',
-    'Succes': 'Success',
-    'Confirmation': 'Confirmation',
-    'Attention': 'Warning',
-    'Information': 'Information',
-    'Produit ajoute au panier': 'Product added to cart',
-    'Ajoute aux favoris': 'Added to favorites',
-    'Commande validee': 'Order confirmed',
-    'Email envoye': 'Email sent',
-    'Modifications enregistrees': 'Changes saved',
-    
-    // ============================================
-    // FOOTER
-    // ============================================
-    'Navigation': 'Navigation',
-    'Compte': 'Account',
-    'Support': 'Support',
-    'Service client': 'Customer service',
-    'Aide': 'Help',
-    'Nous contacter': 'Contact us',
-    'Contactez-nous': 'Contact us',
-    'Contact': 'Contact',
-    'A propos': 'About',
-    'A propos de nous': 'About us',
-    'Qui sommes-nous': 'Who we are',
-    'Notre histoire': 'Our story',
-    'Mentions legales': 'Legal notice',
-    'Politique de confidentialite': 'Privacy policy',
-    'Conditions generales de vente': 'Terms of sale',
-    'Conditions generales d\'utilisation': 'Terms of use',
-    'CGV': 'Terms of sale',
-    'CGU': 'Terms of use',
-    'Politique de retour': 'Return policy',
-    'Retours': 'Returns',
-    'Formulaire de contact': 'Contact form',
-    'FAQ': 'FAQ',
-    'Questions frequentes': 'Frequently Asked Questions',
-    'Newsletter': 'Newsletter',
-    'Abonnez-vous': 'Subscribe',
-    'S\'abonner': 'Subscribe',
-    'Suivez-nous': 'Follow us',
-    'Reseaux sociaux': 'Social networks',
-    'Tous droits reserves': 'All rights reserved',
-    'Votre boutique de reference': 'Your reference shop',
-    'pour l\'achat de mangas': 'for buying manga',
-    'neufs et d\'occasion': 'new and used',
-    
-    // ============================================
-    // CATEGORIES DE MANGAS
-    // ============================================
-    'Shonen': 'Shonen',
-    'Shojo': 'Shojo',
-    'Seinen': 'Seinen',
-    'Josei': 'Josei',
-    'Kodomo': 'Kodomo',
-    'Action': 'Action',
-    'Aventure': 'Adventure',
-    'Combat': 'Fight',
-    'Comedie': 'Comedy',
-    'Drame': 'Drama',
-    'Fantastique': 'Fantasy',
-    'Horreur': 'Horror',
-    'Romance': 'Romance',
-    'Science-fiction': 'Science Fiction',
-    'Thriller': 'Thriller',
-    'Mystere': 'Mystery',
-    'Surnaturel': 'Supernatural',
-    'Ecole': 'School',
-    'Sport': 'Sports',
-    'Tranche de vie': 'Slice of life',
-    
-    // ============================================
-    // PAGES SPECIFIQUES
-    // ============================================
-    
-    // Page CGU/CGV
-    'Derniere mise a jour': 'Last updated',
-    'Article': 'Article',
-    'Accepter': 'Accept',
-    'Refuser': 'Decline',
-    'J\'ai lu et j\'accepte': 'I have read and accept',
-    
-    // Page Contact
-    'Formulaire': 'Form',
-    'Coordonnees': 'Contact details',
-    'Horaires': 'Opening hours',
-    'Lundi': 'Monday',
-    'Mardi': 'Tuesday',
-    'Mercredi': 'Wednesday',
-    'Jeudi': 'Thursday',
-    'Vendredi': 'Friday',
-    'Samedi': 'Saturday',
-    'Dimanche': 'Sunday',
-    'Ferme': 'Closed',
-    
-    // Page FAQ
-    'Question': 'Question',
-    'Reponse': 'Answer',
-    'Categorie': 'Category',
-    'Toutes les categories': 'All categories',
-    'Cette reponse vous a-t-elle aide': 'Was this answer helpful',
-    'Oui': 'Yes',
-    'Non': 'No',
-    
-    // Page Profil
-    'Photo de profil': 'Profile picture',
-    'Changer la photo': 'Change picture',
-    'Membre depuis': 'Member since',
-    'Derniere connexion': 'Last login',
-    'Preferences': 'Preferences',
-    'Langue preferee': 'Preferred language',
-    'Notifications': 'Notifications',
-    'Recevoir les offres': 'Receive offers',
-    'Newsletter': 'Newsletter',
-    
-    // ============================================
-    // TEMPS & DATES
-    // ============================================
-    'aujourd\'hui': 'today',
-    'hier': 'yesterday',
-    'demain': 'tomorrow',
-    'jours': 'days',
-    'heures': 'hours',
-    'minutes': 'minutes',
-    'secondes': 'seconds',
-    'jour': 'day',
-    'heure': 'hour',
-    'minute': 'minute',
-    'seconde': 'second',
-    'semaine': 'week',
-    'mois': 'month',
-    'annee': 'year',
-    'il y a': 'ago',
-    'dans': 'in',
-    
-    // ============================================
-    // DIVERS
-    // ============================================
-    'Chargement': 'Loading',
-    'Chargement...': 'Loading...',
-    'Veuillez patienter': 'Please wait',
-    'Plus d\'informations': 'More information',
-    'Lire la suite': 'Read more',
-    'Voir moins': 'See less',
-    'Afficher tout': 'Show all',
-    'Masquer': 'Hide',
-    'Ouvrir': 'Open',
-    'Telecharger': 'Download',
-    'Partager sur': 'Share on',
-    'Copier le lien': 'Copy link',
-    'Page': 'Page',
-    'sur': 'of',
-    'de': 'of',
-    'a': 'to',
-    'et': 'and',
-    'ou': 'or',
-    'Gratuit': 'Free',
-    'Offert': 'Free',
-    'Nouveau': 'New',
-    'Recommande': 'Recommended',
-    'Populaire': 'Popular',
-    'Tendance': 'Trending',
-    
-    // ============================================
-    // NOMBRES & QUANTITES
-    // ============================================
-    'Aucun': 'None',
-    'Aucune': 'None',
-    'Tous': 'All',
-    'Toutes': 'All',
-    'Plusieurs': 'Several',
-    'Quelques': 'Some',
-    
-    // ============================================
-    // MESSAGES COURANTS
-    // ============================================
-    'Bienvenue': 'Welcome',
-    'Merci': 'Thank you',
-    'Felicitations': 'Congratulations',
-    'Desolé': 'Sorry',
-    'Attention': 'Warning',
-    'Important': 'Important',
-    'Nouvelle': 'News',
-    'Actualites': 'News',
-    'Blog': 'Blog',
-    'Evenements': 'Events',
-    
-    // ============================================
-    // HERO BANNER TEXTES SPECIFIQUES
-    // ============================================
-    'Plongez dans l\'univers': 'Dive into the world',
-    'Rejoignez les eleves': 'Join the students',
-    'Une aventure epique': 'An epic adventure',
-    'L\'histoire commence': 'The story begins',
-    'Ne manquez pas': 'Don\'t miss',
-    
-    // ============================================
-    // SERIES POPULAIRES (optionnel)
-    // ============================================
-    'One Piece': 'One Piece',
-    'Naruto': 'Naruto',
-    'Dragon Ball': 'Dragon Ball',
-    'My Hero Academia': 'My Hero Academia',
-    'Demon Slayer': 'Demon Slayer',
-    'Attack on Titan': 'Attack on Titan',
-    'Jujutsu Kaisen': 'Jujutsu Kaisen',
-    'Chainsaw Man': 'Chainsaw Man',
-    'Spy x Family': 'Spy x Family',
-    
-    // ============================================
-    // EDITEURS
-    // ============================================
-    'Glenat': 'Glenat',
-    'Kana': 'Kana',
-    'Pika': 'Pika',
-    'Ki-oon': 'Ki-oon',
-    'Kurokawa': 'Kurokawa',
-    'Delcourt': 'Delcourt',
-    'Tonkam': 'Tonkam',
-    'Panini': 'Panini',
-    'Akata': 'Akata'
+
+    // ── TRUST BAR ────────────────────────────────────────────
+    'Livraison gratuite dès 50€': 'Free delivery from €50',
+    'Retours sous 30 jours': '30-day returns',
+    'Paiement sécurisé': 'Secure payment',
 };
 
-// ============================================
-// INITIALISATION
-// ============================================
+// ============================================================
+// ÉTAT
+// ============================================================
+let currentLang = localStorage.getItem('kinka_lang') || 'fr';
 
-document.addEventListener('DOMContentLoaded', function() {
-    
-    let languageToggle = document.getElementById('language-toggle');
-    
-    if (!languageToggle) {
-        creerBoutonLangue();
-        languageToggle = document.getElementById('language-toggle');
-    }
-    
-    const langueActuelle = localStorage.getItem('language') || 'fr';
-    
-    if (langueActuelle === 'en') {
-        traduirePage('en');
-        mettreAJourBouton('en');
-    }
-    
-    if (languageToggle) {
-        languageToggle.addEventListener('click', function() {
-            const langueActuelle = document.documentElement.lang || 'fr';
-            const nouvelleLangue = langueActuelle === 'fr' ? 'en' : 'fr';
-            
-            traduirePage(nouvelleLangue);
-            mettreAJourBouton(nouvelleLangue);
-            localStorage.setItem('language', nouvelleLangue);
-            
-            console.log('Langue changee : ' + nouvelleLangue.toUpperCase());
-        });
-    }
-    
-    console.log('Systeme de traduction initialise avec ' + Object.keys(translations).length + ' traductions');
-});
-
-function traduirePage(langue) {
-    document.documentElement.lang = langue;
-    
-    if (langue === 'fr') {
+// ============================================================
+// MOTEUR DE TRADUCTION
+// ============================================================
+function applyTranslations(lang) {
+    if (lang === 'fr') {
+        // Recharger la page pour restaurer le FR natif
         location.reload();
         return;
     }
-    
-    // Traduire les textes
-    traduireTextes(document.body);
-    
-    // Traduire les placeholders
-    const inputs = document.querySelectorAll('input[placeholder], textarea[placeholder]');
-    inputs.forEach(function(input) {
-        const placeholder = input.getAttribute('placeholder');
-        if (translations[placeholder]) {
-            input.setAttribute('placeholder', translations[placeholder]);
-        }
-    });
-    
-    // Traduire les attributs title
-    const elementsAvecTitle = document.querySelectorAll('[title]');
-    elementsAvecTitle.forEach(function(element) {
-        const title = element.getAttribute('title');
-        if (translations[title]) {
-            element.setAttribute('title', translations[title]);
-        }
-    });
-    
-    // Traduire les attributs alt
-    const images = document.querySelectorAll('img[alt]');
-    images.forEach(function(img) {
-        const alt = img.getAttribute('alt');
-        if (translations[alt]) {
-            img.setAttribute('alt', translations[alt]);
-        }
-    });
-}
 
-function traduireTextes(element) {
-    const noeuds = element.childNodes;
-    
-    noeuds.forEach(function(noeud) {
-        if (noeud.nodeType === Node.TEXT_NODE) {
-            const texte = noeud.textContent.trim();
-            
-            if (texte && translations[texte]) {
-                noeud.textContent = noeud.textContent.replace(texte, translations[texte]);
+    // Walker récursif sur tous les nœuds texte
+    function walkNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            let txt = node.textContent;
+            let changed = false;
+            for (const [fr, en] of Object.entries(translations)) {
+                if (txt.includes(fr)) {
+                    txt = txt.split(fr).join(en);
+                    changed = true;
+                }
             }
-        }
-        else if (noeud.nodeType === Node.ELEMENT_NODE) {
-            if (noeud.tagName !== 'SCRIPT' && noeud.tagName !== 'STYLE') {
-                traduireTextes(noeud);
-            }
-        }
-    });
-}
+            if (changed) node.textContent = txt;
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            // Ignorer scripts, styles, notre bouton
+            const tag = node.tagName;
+            if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE') return;
+            if (node.id === 'translate-toggle') return;
 
-function mettreAJourBouton(langue) {
-    const bouton = document.getElementById('language-toggle');
-    if (!bouton) return;
-    
-    const texteLangue = bouton.querySelector('.language-text');
-    
-    if (langue === 'fr') {
-        if (texteLangue) texteLangue.textContent = 'EN';
-        bouton.setAttribute('title', 'Switch to English');
-    } else {
-        if (texteLangue) texteLangue.textContent = 'FR';
-        bouton.setAttribute('title', 'Passer en francais');
+            // Traduire les attributs
+            ['placeholder', 'title', 'alt', 'aria-label'].forEach(function(attr) {
+                if (node.hasAttribute(attr)) {
+                    const val = node.getAttribute(attr);
+                    const tr = translations[val];
+                    if (tr) node.setAttribute(attr, tr);
+                }
+            });
+
+            node.childNodes.forEach(walkNode);
+        }
     }
+
+    // Traduire le titre de la page
+    const titleMatch = translations[document.title.split(' - ')[0]];
+    if (titleMatch) document.title = titleMatch + ' - KINKA.FR';
+
+    document.body.childNodes.forEach(walkNode);
 }
 
-function creerBoutonLangue() {
-    const bouton = document.createElement('button');
-    bouton.id = 'language-toggle';
-    bouton.className = 'icon-btn';
-    bouton.setAttribute('aria-label', 'Changer de langue');
-    bouton.setAttribute('title', 'Switch to English');
-    bouton.style.fontSize = '0.75rem';
-    bouton.style.fontWeight = '600';
-    
-    const texte = document.createElement('span');
-    texte.className = 'language-text';
-    texte.textContent = 'EN';
-    
-    bouton.appendChild(texte);
-    
-    const navActions = document.querySelector('.nav-actions');
-    if (navActions) {
-        const connectBtn = navActions.querySelector('.connect-btn');
-        if (connectBtn) {
-            navActions.insertBefore(bouton, connectBtn.parentElement);
+// ============================================================
+// BOUTON TRANSLATE (injecté dans le header)
+// ============================================================
+function injectTranslateBtn() {
+    const connectBtn = document.querySelector('.connect-btn');
+    if (!connectBtn || document.getElementById('translate-toggle')) return;
+
+    const btn = document.createElement('button');
+    btn.id        = 'translate-toggle';
+    btn.className = 'icon-btn';
+    btn.title     = currentLang === 'fr' ? 'Switch to English' : 'Passer en français';
+    btn.innerHTML = `<span style="font-size:.75rem;font-weight:700;letter-spacing:.04em">${currentLang === 'fr' ? 'EN' : 'FR'}</span>`;
+
+    btn.addEventListener('click', function() {
+        if (currentLang === 'fr') {
+            currentLang = 'en';
+            localStorage.setItem('kinka_lang', 'en');
+            btn.innerHTML = '<span style="font-size:.75rem;font-weight:700;letter-spacing:.04em">FR</span>';
+            btn.title = 'Passer en français';
+            applyTranslations('en');
         } else {
-            navActions.appendChild(bouton);
+            currentLang = 'fr';
+            localStorage.setItem('kinka_lang', 'fr');
+            applyTranslations('fr'); // reload
+        }
+    });
+
+    connectBtn.parentNode.insertBefore(btn, connectBtn);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(function() {
+    function init() {
+        injectTranslateBtn();
+        if (currentLang === 'en') {
+            applyTranslations('en');
         }
     }
-    
-    console.log('Bouton de langue cree');
-}
 
-// Fonction utilitaire pour traduire une chaine depuis JavaScript
-function t(texte) {
-    const langue = document.documentElement.lang || 'fr';
-    if (langue === 'en' && translations[texte]) {
-        return translations[texte];
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
     }
-    return texte;
-}
-
-console.log('Traduction FR/EN prete - ' + Object.keys(translations).length + ' termes disponibles');
+})();

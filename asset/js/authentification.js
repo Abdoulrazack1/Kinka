@@ -23,16 +23,87 @@ function initAuth() {
     if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
         const defaultUsers = [
             {
-                id: 'user_' + Date.now() + '_1',
+                id: 'user_admin_kinka',
                 email: 'admin@kinka.fr',
-                // Mot de passe "admin123" hashé en base64 (simulation)
                 password: btoa('admin123'),
                 prenom: 'Admin',
                 nom: 'Kinka',
-                dateInscription: new Date().toISOString()
+                dateInscription: new Date('2023-01-15').toISOString(),
+                abonnement: 'premium'
+            },
+            {
+                // ── COMPTE DÉMO ──────────────────────────────────
+                id: 'user_demo_kinka',
+                email: 'demo@kinka.fr',
+                password: btoa('demo1234'),
+                prenom: 'Sakura',
+                nom: 'Tanaka',
+                dateInscription: new Date('2024-03-20').toISOString(),
+                adresse: '42 Rue du Manga',
+                ville: 'Lyon',
+                codePostal: '69001',
+                telephone: '06 12 34 56 78',
+                abonnement: 'premium',
+                avatar: '',
+                commandes: [
+                    {
+                        id: 'CMD-2024-0891',
+                        date: '2025-02-14',
+                        statut: 'livree',
+                        total: 38.90,
+                        articles: [
+                            { titre: 'Jujutsu Kaisen — Tome 20', prix: 7.20, qte: 1, image: '/asset/image/Jujutsu Kaisen Tome 20.jpg' },
+                            { titre: 'Chainsaw Man — Tome 12', prix: 7.70, qte: 2, image: '/asset/image/Chainsaw Man Tome 12.jpg' },
+                            { titre: 'My Hero Academia — Tome 37', prix: 7.35, qte: 2, image: '/asset/image/My Hero Academia Tome 37.jpg' }
+                        ]
+                    },
+                    {
+                        id: 'CMD-2025-0124',
+                        date: '2025-03-01',
+                        statut: 'en_cours',
+                        total: 24.55,
+                        articles: [
+                            { titre: 'One Piece — Tome 105', prix: 7.20, qte: 1, image: '/asset/image/One-Piece-Edition-originale-Tome-105.jpg' },
+                            { titre: 'Vinland Saga — Tome 27', prix: 8.95, qte: 1, image: '/asset/image/Vinland Saga Tome 27.jpg' },
+                            { titre: 'Spy x Family — Tome 12', prix: 8.40, qte: 1, image: '/asset/image/Spy x Family Tome 12.jpg' }
+                        ]
+                    }
+                ]
             }
         ];
         localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(defaultUsers));
+    } else {
+        // Vérifier que le compte démo existe toujours (migration)
+        const users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS));
+        const hasDemo = users.some(u => u.email === 'demo@kinka.fr');
+        if (!hasDemo) {
+            users.push({
+                id: 'user_demo_kinka',
+                email: 'demo@kinka.fr',
+                password: btoa('demo1234'),
+                prenom: 'Sakura',
+                nom: 'Tanaka',
+                dateInscription: new Date('2024-03-20').toISOString(),
+                adresse: '42 Rue du Manga',
+                ville: 'Lyon',
+                codePostal: '69001',
+                abonnement: 'premium',
+                avatar: '',
+                commandes: [
+                    {
+                        id: 'CMD-2024-0891',
+                        date: '2025-02-14',
+                        statut: 'livree',
+                        total: 38.90,
+                        articles: [
+                            { titre: 'Jujutsu Kaisen — Tome 20', prix: 7.20, qte: 1 },
+                            { titre: 'Chainsaw Man — Tome 12', prix: 7.70, qte: 2 }
+                        ]
+                    }
+                ]
+            });
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+        }
     }
 
     // Initialiser les tokens de reset
@@ -323,22 +394,26 @@ window.auth = {
 };
 
 // ============================================
-// 11. INTÉGRATION AUX FORMULAIRES (si on veut auto-attacher)
+// 11. INTÉGRATION AUX FORMULAIRES
+// Scripts chargés en bas de body → DOM déjà prêt → appel direct
 // ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Formulaire de connexion
+(function initForms() {
+    // ── Formulaire de connexion ───────────────────────────────
     const loginForm = document.querySelector('.login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email')?.value;
+            const email    = document.getElementById('email')?.value?.trim();
             const password = document.getElementById('password')?.value;
             const remember = document.querySelector('.form-checkbox')?.checked;
 
+            if (!email || !password) {
+                alert('Veuillez remplir tous les champs.');
+                return;
+            }
+
             const result = window.auth.login(email, password);
             if (result.success) {
-                // Rediriger vers la page d'accueil ou la page précédente
                 window.location.href = '/page_accueil.html';
             } else {
                 alert(result.message);
@@ -346,16 +421,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Formulaire d'inscription
+    // ── Formulaire d'inscription ──────────────────────────────
     const signupForm = document.querySelector('.signup-form');
     if (signupForm) {
         signupForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const prenom = document.getElementById('prenom')?.value;
-            const nom = document.getElementById('nom')?.value;
-            const email = document.getElementById('email')?.value;
+            const prenom   = document.getElementById('prenom')?.value?.trim();
+            const nom      = document.getElementById('nom')?.value?.trim();
+            const email    = document.getElementById('email')?.value?.trim();
             const password = document.getElementById('password')?.value;
-            const confirm = document.getElementById('confirm-password')?.value;
+            const confirm  = document.getElementById('confirm-password')?.value;
 
             if (password !== confirm) {
                 alert('Les mots de passe ne correspondent pas.');
@@ -372,50 +447,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Formulaire de demande de réinitialisation (page_mdpreinitialisation.html)
-    const resetRequestForm = document.querySelector('.reset-form');
-    if (resetRequestForm) {
-        resetRequestForm.addEventListener('submit', function(e) {
+    // ── Formulaire réinitialisation mot de passe ──────────────
+    const resetForm = document.querySelector('.reset-form');
+    if (resetForm) {
+        resetForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email')?.value;
+            const email  = document.getElementById('email')?.value?.trim();
             const result = window.auth.requestPasswordReset(email);
-            alert(result.message); // Dans un vrai système, on ne dirait pas "succès" mais ici on simule
+            alert(result.message);
         });
     }
 
-    // Formulaire de nouveau mot de passe (page_nouveaumdp.html)
-    const newPasswordForm = document.querySelector('.password-form');
-    if (newPasswordForm) {
-        // Récupérer le token depuis l'URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-
-        newPasswordForm.addEventListener('submit', function(e) {
+    // ── Formulaire nouveau mot de passe ───────────────────────
+    const newPwdForm = document.querySelector('.password-form');
+    if (newPwdForm) {
+        const token = new URLSearchParams(window.location.search).get('token');
+        newPwdForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const newPass = document.getElementById('new-password')?.value;
-            const confirmPass = document.getElementById('confirm-password')?.value;
-
-            if (newPass !== confirmPass) {
-                alert('Les mots de passe ne correspondent pas.');
-                return;
-            }
-
-            if (!token) {
-                alert('Token manquant.');
-                return;
-            }
-
+            const newPass  = document.getElementById('new-password')?.value;
+            const confirm  = document.getElementById('confirm-password')?.value;
+            if (newPass !== confirm) { alert('Les mots de passe ne correspondent pas.'); return; }
+            if (!token)              { alert('Token manquant.'); return; }
             const result = window.auth.resetPassword(token, newPass);
-            if (result.success) {
-                alert(result.message);
-                window.location.href = '/pageLogIn.html';
-            } else {
-                alert(result.message);
-            }
+            if (result.success) { alert(result.message); window.location.href = '/pageLogIn.html'; }
+            else                 { alert(result.message); }
         });
     }
 
-    // Bouton de déconnexion (à placer sur les pages protégées)
+    // ── Bouton déconnexion ────────────────────────────────────
     const logoutBtn = document.querySelector('.btn-logout');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
@@ -425,16 +484,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Protéger les pages qui nécessitent une connexion
+    // ── Protection des pages ──────────────────────────────────
+    const currentPath  = window.location.pathname;
     const protectedPages = ['/page_profil.html', '/page_panier.html', '/page_suivicommande.html', '/page_confirmationcommande.html'];
-    const currentPath = window.location.pathname;
-    if (protectedPages.includes(currentPath)) {
-        window.auth.requireAuth();
-    }
+    const guestPages     = ['/pageLogIn.html', '/pageSignUp.html', '/page_mdpreinitialisation.html', '/page_nouveaumdp.html'];
 
-    // Rediriger les pages de login/register si déjà connecté
-    const guestPages = ['/pageLogIn.html', '/pageSignUp.html', '/page_mdpreinitialisation.html', '/page_nouveaumdp.html'];
-    if (guestPages.includes(currentPath)) {
-        window.auth.requireGuest();
-    }
-});
+    if (protectedPages.includes(currentPath)) window.auth.requireAuth();
+    if (guestPages.includes(currentPath))     window.auth.requireGuest();
+})();

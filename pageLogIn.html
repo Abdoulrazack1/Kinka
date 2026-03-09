@@ -2,14 +2,19 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="KINKA.FR — Boutique manga en ligne : neufs, occasions, coffrets.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Se connecter - KINKA.FR</title>
-    <!-- Google Fonts -->
+        <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/asset/css/kinka-shared.css">
     <link rel="stylesheet" href="/asset/css/pageLogIn.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
@@ -25,25 +30,27 @@
             
             <div class="search-bar">
                 <span class="material-symbols-outlined search-icon">search</span>
-                <input type="text" placeholder="Rechercher un manga, un auteur...">
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
             </div>
             
-            <div class="nav-menu">
+                        <div class="nav-menu">
                 <a href="/page_accueil.html">Accueil</a>
                 <a href="/page_catalogue.html">Catalogue</a>
                 <a href="/page_promotion.html">Promotions</a>
             </div>
             
-            <div class="nav-actions">
-                <button class="icon-btn">
+                                    <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" title="Mes favoris" id="favoris-btn">
                     <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
-                <button class="icon-btn">
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'" title="Mon profil">
                     <span class="material-symbols-outlined">person</span>
                 </button>
-                <button class="connect-btn">Se connecter</button>
-                <button class="icon-btn">
+                <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'" title="Mon panier">
                     <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
             </div>
         </nav>
@@ -55,7 +62,7 @@
             <!-- SECTION GAUCHE - BIENVENUE -->
             <div class="login-left">
                 <div class="welcome-badge">CONNEXION</div>
-                <h1 class="welcome-title">Heureux de te revoir sur KINKAI.FR</h1>
+                <h1 class="welcome-title">Heureux de te revoir sur KINKA.FR</h1>
                 <p class="welcome-text">Connecte-toi pour retrouver ton panier, suivre tes commandes et gérer ta wishlist de mangas.</p>
                 
                 <div class="stats-container">
@@ -70,7 +77,7 @@
                 </div>
 
                 <div class="community-info">
-                    <h3 class="community-title">Communauté KINKAI</h3>
+                    <h3 class="community-title">Communauté KINKA</h3>
                     <p class="community-text">+50 000 lecteurs partagent leurs découvertes tous les mois</p>
                 </div>
             </div>
@@ -78,8 +85,25 @@
             <!-- SECTION DROITE - FORMULAIRE -->
             <div class="login-right">
                 <div class="form-header">
-                    <p class="form-subtitle">Nouveau sur KINKAI.FR ?</p>
-                    <button class="create-account-btn">Créer un compte</button>
+                    <p class="form-subtitle">Nouveau sur KINKA.FR ?</p>
+                    <button class="create-account-btn" onclick="window.location.href='/pageSignUp.html'">Créer un compte</button>
+                </div>
+
+                <!-- DEMO CREDENTIALS -->
+                <div class="demo-credentials-card">
+                    <div class="demo-cred-header">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        <strong>Compte de démonstration</strong>
+                    </div>
+                    <div class="demo-cred-row">
+                        <span class="demo-cred-label">Email</span>
+                        <code class="demo-cred-val" id="demo-email">demo@kinka.fr</code>
+                        <button class="demo-copy-btn" onclick="fillDemo()">Utiliser</button>
+                    </div>
+                    <div class="demo-cred-row">
+                        <span class="demo-cred-label">Mot de passe</span>
+                        <code class="demo-cred-val">demo1234</code>
+                    </div>
                 </div>
 
                 <h2 class="form-title">Se connecter</h2>
@@ -136,7 +160,7 @@
                     <p class="terms-text">
                         En te connectant, tu acceptes nos 
                         <a href="/page_cgu.html" class="terms-link">conditions générales</a> et notre 
-                        <a href="/page_confidentialite.html" class="terms-link">politique de confidentialité</a>.
+                        <a href="/page_cgu.html" class="terms-link">politique de confidentialité</a>.
                     </p>
                 </form>
             </div>
@@ -160,17 +184,17 @@
                     <li><a href="/page_accueil.html">Accueil</a></li>
                     <li><a href="/page_catalogue.html">Catalogue</a></li>
                     <li><a href="/page_promotion.html">Promotions</a></li>
-                    <li><a href="/page_coffrets.html">Coffrets</a></li>
+                    <li><a href="/page_coffret.html">Coffrets</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
                 <h4>Compte</h4>
                 <ul>
-                    <li><a href="/page_connexion.html">Connexion</a></li>
-                    <li><a href="/page_inscription.html">Inscription</a></li>
-                    <li><a href="#">Mon panier</a></li>
-                    <li><a href="#">Suivi de commande</a></li>
+                    <li><a href="/pageLogIn.html">Connexion</a></li>
+                    <li><a href="/pageSignUp.html">Inscription</a></li>
+                    <li><a href="/page_panier.html">Mon panier</a></li>
+                    <li><a href="/page_suivicommande.html">Suivi de commande</a></li>
                 </ul>
             </div>
 
@@ -181,13 +205,13 @@
                     <li><a href="/page_contact.html">Formulaire de contact</a></li>
                     <li><a href="/page_cgv.html">CGV</a></li>
                     <li><a href="/page_cgu.html">CGU</a></li>
-                    <li><a href="/page_retour.html">Politique de retour</a></li>
+                    <li><a href="/page_polretour.html">Politique de retour</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">support@kinkai.fr</p>
+                <p class="contact-info">contact@kinka.fr</p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -200,9 +224,93 @@
             <p>© 2025 Kinka.fr. Tous droits réservés.</p>
         </div>
     </footer>
-<script src="/asset/js/panier.js"></script>
-<script src="/asset/js/recherche.js"></script>
-<script src="/asset/js/darkmode.js"></script>
-<script src="/asset/js/translate.js"></script>
+    
+
+    <!-- Scripts -->
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+
+    <script>
+    // ── Remplissage automatique des crédentials démo ─────────
+    function fillDemo() {
+        var emailField = document.getElementById('email');
+        var passField  = document.getElementById('password');
+        if (emailField) { emailField.value = 'demo@kinka.fr'; emailField.dispatchEvent(new Event('input')); }
+        if (passField)  { passField.value  = 'demo1234';      passField.dispatchEvent(new Event('input')); }
+        showToast && showToast('Crédentials démo renseignés !');
+    }
+
+    // ── Mise à jour header selon session ─────────────────────
+    (function() {
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
+        var connectBtn = document.querySelector('.connect-btn');
+        if (connectBtn) {
+            if (user && user.prenom) {
+                connectBtn.textContent = user.prenom;
+                connectBtn.onclick = function() { window.location.href = '/page_profil.html'; };
+            }
+        }
+    })();
+
+    // ── Header scroll ─────────────────────────────────────────
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+
+    // ── Rediriger si déjà connecté ────────────────────────────
+    (function() {
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
+        if (user && user.id) {
+            // Déjà connecté → profil
+            window.location.href = '/page_profil.html';
+        }
+    })();
+
+    // ── Soumission formulaire login avec feedback visuel ──────
+    (function() {
+        var form = document.querySelector('.login-form');
+        if (!form) return;
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email    = (document.getElementById('email') || {}).value || '';
+            var password = (document.getElementById('password') || {}).value || '';
+            var btn      = form.querySelector('.submit-btn');
+
+            if (!email.trim() || !password) {
+                showFieldError('Veuillez remplir tous les champs.');
+                return;
+            }
+
+            // Feedback visuel
+            if (btn) { btn.disabled = true; btn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Connexion...'; }
+
+            setTimeout(function() {
+                var result = (window.auth && window.auth.login) ? window.auth.login(email.trim(), password) : { success: false, message: 'Erreur système.' };
+                if (result.success) {
+                    if (btn) btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Connecté !';
+                    setTimeout(function() { window.location.href = '/page_accueil.html'; }, 600);
+                } else {
+                    if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined btn-icon">arrow_forward</span> Se connecter'; }
+                    showFieldError(result.message);
+                }
+            }, 400);
+        });
+
+        function showFieldError(msg) {
+            var existing = form.querySelector('.form-error-msg');
+            if (existing) existing.remove();
+            var err = document.createElement('p');
+            err.className = 'form-error-msg';
+            err.style.cssText = 'color:#ef4444;font-size:.82rem;margin:.5rem 0 0;text-align:center;font-weight:600;';
+            err.textContent = '⚠ ' + msg;
+            form.insertBefore(err, form.querySelector('.submit-btn'));
+            setTimeout(function() { err && err.remove(); }, 4000);
+        }
+    })();
+    </script>
 </body>
 </html>

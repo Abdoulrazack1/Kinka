@@ -4,7 +4,8 @@
 //        (produit principal + produits recommandés)
 // ====================================================
 
-document.addEventListener('DOMContentLoaded', function() {
+(function _init() {
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
     'use strict';
 
     // --- Génération d'ID à partir du titre ---
@@ -86,4 +87,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
+})();

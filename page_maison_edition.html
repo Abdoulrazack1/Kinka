@@ -2,323 +2,251 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="KINKA.FR — Maisons d'édition manga en France">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Les Maisons d'Édition - KINKA.FR</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
+    <link rel="stylesheet" href="/asset/css/kinka-shared.css">
     <link rel="stylesheet" href="/asset/css/page_maison_edition.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
 </head>
 <body>
-    <!-- HEADER -->
     <header>
         <nav>
             <a href="/page_accueil.html" class="logo">
                 <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
                 <span class="logo-text">KINKA<span class="fr">.FR</span></span>
             </a>
-            
             <div class="search-bar">
                 <span class="material-symbols-outlined search-icon">search</span>
-                <input type="text" placeholder="Rechercher un manga, un auteur...">
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
             </div>
-            
             <div class="nav-menu">
                 <a href="/page_accueil.html">Accueil</a>
                 <a href="/page_catalogue.html">Catalogue</a>
                 <a href="/page_promotion.html">Promotions</a>
             </div>
-            
             <div class="nav-actions">
-                <button class="icon-btn"><span class="material-symbols-outlined">favorite</span></button>
-                <button class="icon-btn"><span class="material-symbols-outlined">person</span></button>
-                <button class="connect-btn">Se connecter</button>
-                <button class="icon-btn"><span class="material-symbols-outlined">shopping_cart</span></button>
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" id="favoris-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
+                </button>
             </div>
         </nav>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main>
-        
-        <!-- HERO SECTION -->
-        <section class="hero-editeurs">
-            <div class="hero-overlay"></div>
-            <img src="/asset/image/bannière_maison_édition.jpg" alt="Bibliothèque de mangas" class="hero-bg">
-            <div class="hero-content-editeurs">
-                <h1>Les Maisons d'Édition</h1>
-                <p>Explorez les catalogues de vos éditeurs préférés. Retrouvez les<br>dernières sorties, les coffrets exclusifs et les classiques du manga.</p>
+    <!-- HERO -->
+    <section class="me-hero">
+        <div class="me-hero-overlay"></div>
+        <img src="/asset/image/bannière_maison_édition.jpg" alt="Maisons d'édition manga" class="me-hero-bg">
+        <div class="me-hero-content">
+            <span class="me-hero-label">KINKA.FR</span>
+            <h1>Les Maisons d'Édition</h1>
+            <p>Explorez les catalogues de vos éditeurs préférés — dernières sorties, coffrets exclusifs et classiques du manga.</p>
+            <div class="me-hero-stats">
+                <div class="me-hero-stat"><strong>4</strong><span>éditeurs partenaires</span></div>
+                <div class="me-hero-stat-sep"></div>
+                <div class="me-hero-stat"><strong>80+</strong><span>titres en stock</span></div>
+                <div class="me-hero-stat-sep"></div>
+                <div class="me-hero-stat"><strong>30+</strong><span>séries disponibles</span></div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+
+        <!-- ÉDITEURS PARTENAIRES KINKA -->
+        <section class="me-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Nos éditeurs partenaires</h2>
+                    <p class="section-subtitle">Catalogues complets disponibles sur KINKA.FR</p>
+                </div>
+            </div>
+
+            <div class="me-partners-grid">
+
+                <a href="/page_maison_detail.html?id=glenat" class="me-partner-card me-glenat">
+                    <div class="me-partner-overlay"></div>
+                    <div class="me-partner-logo">
+                        <img src="/asset/image/logo-glenat.png" alt="Glénat">
+                    </div>
+                    <div class="me-partner-body">
+                        <span class="me-partner-badge">Fondée en 1969</span>
+                        <h3>Glénat</h3>
+                        <p>Le pionnier du manga en France. One Piece, Dragon Ball, Berserk — les plus grandes séries du monde.</p>
+                        <div class="me-partner-tags">
+                            <span>Shônen</span><span>Seinen</span><span>Shôjo</span>
+                        </div>
+                        <div class="me-partner-cta">
+                            Voir le catalogue
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/page_maison_detail.html?id=kioon" class="me-partner-card me-kioon">
+                    <div class="me-partner-overlay"></div>
+                    <div class="me-partner-logo">
+                        <img src="/asset/image/logo_kioon.jpg" alt="Ki-oon">
+                    </div>
+                    <div class="me-partner-body">
+                        <span class="me-partner-badge">Fondée en 2007</span>
+                        <h3>Ki-oon</h3>
+                        <p>Jujutsu Kaisen, My Hero Academia, Golden Kamuy — l'éditeur des phénomènes manga actuels.</p>
+                        <div class="me-partner-tags">
+                            <span>Shônen</span><span>Seinen</span>
+                        </div>
+                        <div class="me-partner-cta">
+                            Voir le catalogue
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/page_maison_detail.html?id=kurokawa" class="me-partner-card me-kurokawa">
+                    <div class="me-partner-overlay"></div>
+                    <div class="me-partner-logo">
+                        <img src="/asset/image/logo_kurokawa.jpg" alt="Kurokawa">
+                    </div>
+                    <div class="me-partner-body">
+                        <span class="me-partner-badge">Fondée en 2006</span>
+                        <h3>Kurokawa</h3>
+                        <p>Spy × Family, Dungeon Meshi, Chihayafuru — qualité de traduction reconnue, diversité éditoriale.</p>
+                        <div class="me-partner-tags">
+                            <span>Shônen</span><span>Seinen</span><span>Josei</span>
+                        </div>
+                        <div class="me-partner-cta">
+                            Voir le catalogue
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/page_maison_detail.html?id=delcourt-tonkam" class="me-partner-card me-delcourt">
+                    <div class="me-partner-overlay"></div>
+                    <div class="me-partner-logo">
+                        <img src="/asset/image/logo-delcourt-tonkam.jpg" alt="Delcourt-Tonkam">
+                    </div>
+                    <div class="me-partner-body">
+                        <span class="me-partner-badge">Fondée en 1994</span>
+                        <h3>Delcourt-Tonkam</h3>
+                        <p>Vagabond, Oyasumi Punpun, Blame! — les œuvres d'auteurs qui ont marqué l'histoire du manga.</p>
+                        <div class="me-partner-tags">
+                            <span>Seinen</span><span>Shôjo</span>
+                        </div>
+                        <div class="me-partner-cta">
+                            Voir le catalogue
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </div>
+                    </div>
+                </a>
+
             </div>
         </section>
 
-        <div class="container">
-            
-            <!-- ÉDITEURS À LA UNE -->
-            <section class="section-editeurs-une">
-                <div class="section-header">
-                    <h2 class="section-title">Éditeurs à la une</h2>
-                    <a href="#" class="view-all">Voir tout</a>
+        <!-- BANNIÈRE CTA -->
+        <section class="me-cta-banner">
+            <div class="me-cta-content">
+                <span class="me-cta-badge">NOUVEAUTÉS</span>
+                <h2>Dernières sorties des éditeurs</h2>
+                <p>Restez à jour avec les nouvelles parutions de tous nos éditeurs partenaires.</p>
+                <a href="/page_nouveaute.html" class="btn-primary">
+                    <span class="material-symbols-outlined">new_releases</span>
+                    Voir toutes les nouveautés
+                </a>
+            </div>
+            <div class="me-cta-image">
+                <img src="/asset/image/bannière_maison_édition.jpg" alt="Nouveautés">
+            </div>
+        </section>
+
+        <!-- AUTRES ÉDITEURS DU MARCHÉ -->
+        <section class="me-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Autres éditeurs du marché</h2>
+                    <p class="section-subtitle">Le paysage éditorial manga en France</p>
                 </div>
-                <p class="section-subtitle">Les piliers du manga en France</p>
-                
-                <div class="editeurs-une-grid">
-                    
-                    <!-- Éditeur 1 - Glénat -->
-                    <div class="editeur-card-large">
-                        <img src="/asset/image/bannière_glenat.webp" alt="Glénat">
-                        <div class="editeur-overlay">
-                            <span class="editeur-badge">Glénat</span>
-                            <p class="editeur-description">L'éditeur historique de Dragon Ball, One Piece et Bleach. Le leader du marché francophone.</p>
-                            <div class="editeur-tags">
-                                <span class="tag">SHÔNEN</span>
-                                <span class="tag">SEINEN</span>
-                            </div>
-                            <button class="btn-catalogue">Voir le catalogue</button>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur 2 - Kana -->
-                    <div class="editeur-card-large">
-                        <img src="/asset/image/bannière_kana.jpg" alt="Kana">
-                        <div class="editeur-overlay">
-                            <span class="editeur-badge">Kana</span>
-                            <p class="editeur-description">Naruto, Death Note, Boruto... Une référence incontournable pour tous les fans.</p>
-                            <div class="editeur-tags">
-                                <span class="tag">DARK KANA</span>
-                                <span class="tag">SHÔNEN</span>
-                            </div>
-                            <button class="btn-catalogue">Voir le catalogue</button>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur 3 - Pika Édition -->
-                    <div class="editeur-card-large">
-                        <img src="/asset/image/bannière_pika.jpg" alt="Pika Édition">
-                        <div class="editeur-overlay">
-                            <span class="editeur-badge">Pika Édition</span>
-                            <p class="editeur-description">L'Attaque des Titans, Fairy Tail, Seven Deadly Sins. Des hits mondiaux.</p>
-                            <div class="editeur-tags">
-                                <span class="tag">FANTASY</span>
-                                <span class="tag">ACTION</span>
-                            </div>
-                            <button class="btn-catalogue">Voir le catalogue</button>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur 4 - Ki-oon -->
-                    <div class="editeur-card-large">
-                        <a href="/page_maison_détail.html">
-                        <img src="/asset/image/bannière_kioon.png" alt="Ki-oon">
-                        <div class="editeur-overlay">
-                            <span class="editeur-badge">Ki-oon</span>
-                            <p class="editeur-description">My Hero Academia, Jujutsu Kaisen. L'éditeur qui monte avec des titres explosifs.</p>
-                            <div class="editeur-tags">
-                                <span class="tag">SEINEN</span>
-                                <span class="tag">SHÔNEN</span>
-                            </div>
-                            <button class="btn-catalogue">Voir le catalogue</button>
-                        </div>
-                        </a>
-                    </div>
-
+            </div>
+            <div class="me-others-grid">
+                <div class="me-other-card">
+                    <div class="me-other-logo"><img src="/asset/image/logo_akata.png" alt="Akata"></div>
+                    <div class="me-other-info"><h4>Akata</h4><p>Shōjo, Josei</p></div>
                 </div>
-            </section>
-
-            <!-- SECTION DÉCOUVERTE -->
-            <section class="section-decouverte">
-                <div class="decouverte-card">
-                    <div class="decouverte-content">
-                        <span class="badge-decouverte">DÉCOUVERTE</span>
-                        <h2>Explorez les nouvelles sorties</h2>
-                        <p>Des pépites méconnues aux œuvres d'auteurs underground,<br>découvrez ce que l'univers du manga a à vous offrir.</p>
-                        <a href="/page_nouveaute.html"><button class="btn-indie">Voir la sélection Nouveautés</button></a>
-                    </div>
-                    <div class="decouverte-image">
-                        <img src="/asset/image/bannière_maison_édition.jpg" alt="Éditeurs indépendants">
-                    </div>
+                <div class="me-other-card">
+                    <div class="me-other-logo"><img src="/asset/image/logo_panini_manga.jpg" alt="Panini"></div>
+                    <div class="me-other-info"><h4>Panini Manga</h4><p>Action, Shônen</p></div>
                 </div>
-            </section>
-
-            <!-- TOUS NOS ÉDITEURS -->
-            <section class="section-tous-editeurs">
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">Tous nos éditeurs</h2>
-                        <p class="section-subtitle">Classés par ordre alphabétique</p>
-                    </div>
-                    <div class="sort-editeurs">
-                        <label>Trier par :</label>
-                        <select class="sort-select">
-                            <option>Populaire</option>
-                            <option>Alphabétique</option>
-                            <option>Nombre de séries</option>
-                        </select>
-                    </div>
+                <div class="me-other-card">
+                    <div class="me-other-logo"><img src="/asset/image/logo_soleil.jpg" alt="Soleil"></div>
+                    <div class="me-other-info"><h4>Soleil Manga</h4><p>Fantasy, Action</p></div>
                 </div>
-
-                <div class="editeurs-grid">
-                    
-                    <!-- Éditeur mini 1 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo_kurokawa.jpg" alt="Kurokawa">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Kurokawa</h4>
-                            <p>142 séries</p>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur mini 2 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo_akata.png" alt="Akata">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Akata</h4>
-                            <p>89 séries</p>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur mini 3 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo-delcourt-tonkam.jpg" alt="Delcourt/Tonkam">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Delcourt/Tonkam</h4>
-                            <p>570 séries</p>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur mini 4 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo_panini_manga.jpg" alt="Panini Manga">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Panini Manga</h4>
-                            <p>156 séries</p>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur mini 5 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo_soleil.jpg" alt="Soleil Manga">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Soleil Manga</h4>
-                            <p>93 séries</p>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur mini 6 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo_ototo.png" alt="Ototo">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Ototo</h4>
-                            <p>67 séries</p>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur mini 7 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo_komikku.png" alt="Komikku">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Komikku</h4>
-                            <p>45 séries</p>
-                        </div>
-                    </div>
-
-                    <!-- Éditeur mini 8 -->
-                    <div class="editeur-mini-card">
-                        <div class="editeur-mini-logo">
-                            <img src="/asset/image/logo_noeve.png" alt="Noeve Grafx">
-                        </div>
-                        <div class="editeur-mini-info">
-                            <h4>Noeve Grafx</h4>
-                            <p>32 séries</p>
-                        </div>
-                    </div>
-
+                <div class="me-other-card">
+                    <div class="me-other-logo"><img src="/asset/image/logo_ototo.png" alt="Ototo"></div>
+                    <div class="me-other-info"><h4>Ototo</h4><p>Shônen, Isekai</p></div>
                 </div>
-            </section>
-
-        </div>
+                <div class="me-other-card">
+                    <div class="me-other-logo"><img src="/asset/image/logo_komikku.png" alt="Komikku"></div>
+                    <div class="me-other-info"><h4>Komikku</h4><p>Seinen, Shôjo</p></div>
+                </div>
+                <div class="me-other-card">
+                    <div class="me-other-logo"><img src="/asset/image/logo_noeve.png" alt="Noeve"></div>
+                    <div class="me-other-info"><h4>Noeve Grafx</h4><p>Indépendant</p></div>
+                </div>
+            </div>
+        </section>
 
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo" class="logo-image">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
-                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+                <p class="footer-description">Votre boutique manga de référence.</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#e685898892878592a68d8f888d87c88094"><span class="__cf_email__" data-cfemail="74171b1a00151700341f1d1a1f155a1206">[email&#160;protected]</span></a></p>
             </div>
-
-            <div class="footer-section">
-                <h4>Navigation</h4>
-                <ul>
-                    <li><a href="page_accueil.html">Accueil</a></li>
-                    <li><a href="page_catalogue.html">Catalogue</a></li>
-                    <li><a href="page_promotion.html">Promotions</a></li>
-                    <li><a href="page_coffret.html">Coffrets</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Compte</h4>
-                <ul>
-                    <li><a href="pageLogIn.html">Connexion</a></li>
-                    <li><a href="pageSignUp.html">Inscription</a></li>
-                    <li><a href="#">Mon panier</a></li>
-                    <li><a href="#">Suivi de commande</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="page_faq.html">FAQ</a></li>
-                    <li><a href="page_contact.html">Formulaire de contact</a></li>
-                    <li><a href="page_cgv.html">CGV</a></li>
-                    <li><a href="page_cgu.html">CGU</a></li>
-                    <li><a href="page_retour.html">Politique de retour</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Nous contacter</h4>
-                <p class="contact-info">support@kinka.fr</p>
-                <div class="social-icons">
-                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
-                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
-                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
-                </div>
-            </div>
+            <div class="footer-section"><h4>Navigation</h4><ul>
+                <li><a href="/page_accueil.html">Accueil</a></li>
+                <li><a href="/page_catalogue.html">Catalogue</a></li>
+                <li><a href="/page_promotion.html">Promotions</a></li>
+                <li><a href="/page_coffret.html">Coffrets</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Compte</h4><ul>
+                <li><a href="/pageLogIn.html">Connexion</a></li>
+                <li><a href="/pageSignUp.html">Inscription</a></li>
+                <li><a href="/page_panier.html">Mon panier</a></li>
+                <li><a href="/page_suivicommande.html">Suivi de commande</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Support</h4><ul>
+                <li><a href="/page_faq.html">FAQ</a></li>
+                <li><a href="/page_contact.html">Contact</a></li>
+                <li><a href="/page_cgv.html">CGV</a></li>
+            </ul></div>
         </div>
-
-        <div class="footer-bottom">
-            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
-        </div>
+        <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
-<script src="/asset/js/panier.js"></script>
-<script src="/asset/js/product_card.js"></script>
-<script src="/asset/js/recherche.js"></script>
-<script src="/asset/js/darkmode.js"></script>
-<script src="/asset/js/translate.js"></script>
-</body>
-</html>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script

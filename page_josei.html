@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="KINKA.FR — Mangas Josei : Réaliste, nuancé, pour femmes adultes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Josei - KINKA.FR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
+    <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_categorie.css">
+    <link rel="stylesheet" href="/asset/css/translate.css">
+    <link rel="stylesheet" href="/asset/css/darkmode.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo"><img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image"><span class="logo-text">KINKA<span class="fr">.FR</span></span></a>
+            <div class="search-bar"><span class="material-symbols-outlined search-icon">search</span><input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off"></div>
+            <div class="nav-menu"><a href="/page_accueil.html">Accueil</a><a href="/page_catalogue.html">Catalogue</a><a href="/page_promotion.html">Promotions</a></div>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" id="favoris-btn"><span class="material-symbols-outlined">favorite</span><span class="nav-badge" id="favoris-count" style="display:none">0</span></button>
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'"><span class="material-symbols-outlined">person</span></button>
+                <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'"><span class="material-symbols-outlined">shopping_cart</span><span class="panier-count" id="panier-count" style="display:none">0</span></button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>›</span>
+            <a href="/page_catalogue.html">Catalogue</a>
+            <span>›</span>
+            <span class="breadcrumb-current">Josei</span>
+        </div>
+    </div>
+
+    <!-- HERO CATÉGORIE -->
+    <div class="cat-hero" style="--cat-color1:#7c3aed;--cat-color2:#6d28d9">
+        <div class="cat-hero-bg"><img src="/asset/image/categorie_josei.jpg" alt="Josei"></div>
+        <div class="cat-hero-overlay"></div>
+        <div class="cat-hero-content">
+            <div class="cat-hero-left">
+                <div class="cat-hero-icon">
+                    <span class="material-symbols-outlined">spa</span>
+                </div>
+                <div class="cat-hero-text">
+                    <span class="cat-hero-label">CATÉGORIE</span>
+                    <h1>Josei</h1>
+                    <p class="cat-hero-sub">Réaliste, nuancé, pour femmes adultes</p>
+                    <p class="cat-hero-desc">Le josei traite des relations, de la vie professionnelle et sentimentale des femmes adultes avec une profondeur et une honnêteté que peu d'autres genres atteignent.</p>
+                </div>
+            </div>
+            <div class="cat-hero-facts">
+                <div class="cat-fact"><span class="material-symbols-outlined">check_circle</span><span>Destiné aux femmes adultes</span></div><div class="cat-fact"><span class="material-symbols-outlined">check_circle</span><span>Thèmes : carrière, romance mature, vie quotidienne</span></div><div class="cat-fact"><span class="material-symbols-outlined">check_circle</span><span>Personnages complexes et nuancés</span></div><div class="cat-fact"><span class="material-symbols-outlined">check_circle</span><span>Un regard authentique sur la vie</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION CATÉGORIES -->
+    <div class="cat-nav-bar">
+        <div class="cat-nav-inner">
+            <div class="cat-nav-links">
+                <a href="/page_shonen.html" class="cat-nav-link "><span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E03B8B" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span> Shōnen</a>
+                <a href="/page_seinen.html" class="cat-nav-link "><span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg></span> Seinen</a>
+                <a href="/page_shojo.html"  class="cat-nav-link "><span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E03B8B" stroke-width="2" stroke-linecap="round"><path d="M12 7.5a4.5 4.5 0 1 1 4.5 7.793A4.5 4.5 0 1 1 12 19.207a4.5 4.5 0 1 1-4.5-3.914A4.5 4.5 0 1 1 12 7.5"/><circle cx="12" cy="12" r="3"/></svg></span> Shōjo</a>
+                <a href="/page_josei.html"  class="cat-nav-link active"><span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> Josei</a>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- FILTRES SÉRIES -->
+        <div class="cat-series-bar">
+            <span class="cat-series-label">Filtrer par série :</span>
+            <div class="cat-series-pills">
+                <button class="serie-pill active" onclick="filterBySerie(this, '')">Toutes</button>
+                <button class="serie-pill" onclick="filterBySerie(this, 'Paradise Kiss')">Paradise Kiss</button><button class="serie-pill" onclick="filterBySerie(this, 'Chihayafuru')">Chihayafuru</button>
+            </div>
+        </div>
+
+        <!-- TRI + RÉSULTATS -->
+        <div class="cat-results-header">
+            <span class="cat-results-count" id="results-count">0 titres</span>
+            <div class="cat-sort">
+                <label>Trier par</label>
+                <select id="sort-select" class="form-input" style="width:auto;padding:.4rem .75rem;font-size:.8rem">
+                    <option value="">Pertinence</option>
+                    <option value="prix_asc">Prix ↑</option>
+                    <option value="prix_desc">Prix ↓</option>
+                    <option value="note">Note</option>
+                    <option value="nouveaute">Nouveautés</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="products-grid" id="cat-grid"></div>
+        <div id="cat-empty" class="cat-empty" style="display:none">
+            <span class="material-symbols-outlined">search_off</span>
+            <p>Aucun titre trouvé pour cette série.</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section"><div class="footer-logo"><img src="/asset/image/LogoProjetFilRouge.png" class="logo-image" alt="Logo"><span class="logo-text">KINKA<span class="fr">.FR</span></span></div><p class="footer-description">Votre boutique manga de référence.</p><p class="contact-info"><a href="/cdn-cgi/l/email-protection#7714181903161403371c1e191c16591105"><span class="__cf_email__" data-cfemail="a1c2cecfd5c0c2d5e1cac8cfcac08fc7d3">[email&#160;protected]</span></a></p></div>
+            <div class="footer-section"><h4>Catégories</h4><ul><li><a href="/page_shonen.html">Shōnen</a></li><li><a href="/page_seinen.html">Seinen</a></li><li><a href="/page_shojo.html">Shōjo</a></li><li><a href="/page_josei.html">Josei</a></li></ul></div>
+            <div class="footer-section"><h4>Support</h4><ul><li><a href="/page_faq.html">FAQ</a></li><li><a href="/page_contact.html">Contact</a></li><li><a href="/page_cgv.html">CGV</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+
+    var CAT = 'Josei';
+    var currentSerie = '';
+    var currentSort  = '';
+
+    function renderGrid() {
+        var grid  = document.getElementById('cat-grid');
+        var empty = document.getElementById('cat-empty');
+        var count = document.getElementById('results-count');
+        if (!grid) return;
+        var opts = { categorie: CAT };
+        if (currentSerie) opts.serie = currentSerie;
+        if (currentSort)  opts.sort  = currentSort;
+        var items = filterProducts(opts);
+        if (!items.length) { grid.innerHTML=''; empty.style.display='flex'; count.textContent='0 titre'; return; }
+        empty.style.display = 'none';
+        count.textContent = items.length + ' titre' + (items.length>1?'s':'');
+        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
+    }
+
+    function filterBySerie(btn, serie) {
+        document.querySelectorAll('.serie-pill').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentSerie = serie;
+        renderGrid();
+    }
+
+    // Scripts en 

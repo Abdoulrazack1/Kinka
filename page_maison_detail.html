@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Maison d'édition — KINKA.FR">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Maison d'édition - KINKA.FR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
+    <link rel="stylesheet" href="/asset/css/kinka-shared.css">
+    <link rel="stylesheet" href="/asset/css/page_maison_detail.css">
+    <link rel="stylesheet" href="/asset/css/translate.css">
+    <link rel="stylesheet" href="/asset/css/darkmode.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/page_accueil.html" class="logo">
+                <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+            </div>
+            <div class="nav-menu">
+                <a href="/page_accueil.html">Accueil</a>
+                <a href="/page_catalogue.html">Catalogue</a>
+                <a href="/page_promotion.html">Promotions</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" id="favoris-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="/page_accueil.html">Accueil</a>
+            <span>›</span>
+            <a href="/page_maison_edition.html">Maisons d'édition</a>
+            <span>›</span>
+            <span class="breadcrumb-current" id="breadcrumb-nom">…</span>
+        </div>
+    </div>
+
+    <!-- HERO DYNAMIQUE -->
+    <div class="md-hero" id="md-hero">
+        <div class="md-hero-gradient" id="md-hero-gradient"></div>
+        <div class="md-hero-content">
+            <div class="md-logo-wrap">
+                <img id="md-logo" src="" alt="">
+            </div>
+            <div class="md-hero-text">
+                <span class="md-hero-since" id="md-since">Fondée en —</span>
+                <h1 id="md-nom">—</h1>
+                <p id="md-desc">—</p>
+                <div class="md-hero-stats">
+                    <div class="md-stat">
+                        <span class="md-stat-val" id="md-stat-titres">—</span>
+                        <span class="md-stat-lbl">titres au catalogue</span>
+                    </div>
+                    <div class="md-stat">
+                        <span class="md-stat-val" id="md-stat-kinka">—</span>
+                        <span class="md-stat-lbl">titres chez KINKA</span>
+                    </div>
+                    <div class="md-stat">
+                        <span class="md-stat-val" id="md-stat-series">—</span>
+                        <span class="md-stat-lbl">séries disponibles</span>
+                    </div>
+                </div>
+                <div class="md-hero-actions">
+                    <a id="md-site" href="#" target="_blank" class="btn-secondary">
+                        <span class="material-symbols-outlined">open_in_new</span>
+                        Site officiel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION MAISONS -->
+    <div class="md-nav-bar" id="md-nav-bar"></div>
+
+    <main class="container">
+        <div class="md-layout">
+            <!-- SIDEBAR -->
+            <aside class="md-sidebar">
+                <!-- Filtrer par série -->
+                <div class="md-sidebar-card">
+                    <h3 class="md-sidebar-title">Séries phares</h3>
+                    <nav class="md-series-nav" id="md-series-nav"></nav>
+                </div>
+                <!-- Newsletter -->
+                <div class="md-sidebar-card md-newsletter">
+                    <h3 class="md-sidebar-title">Alertes sorties</h3>
+                    <p>Recevez les nouvelles parutions de cette maison en avant-première.</p>
+                    <input type="email" class="form-input" placeholder="votre@email.fr" style="font-size:.8rem;margin-bottom:.6rem">
+                    <button class="btn-primary" style="width:100%;font-size:.8rem" onclick="showToast('Inscription confirmée <span class="kinka-icon text-green" aria-label="ok">&#10003;</span>')">S\'abonner</button>
+                </div>
+            </aside>
+
+            <!-- CONTENU -->
+            <div class="md-content">
+                <!-- Tri + compteur -->
+                <div class="md-content-header">
+                    <span class="md-count" id="md-count">— titres</span>
+                    <div class="md-sort">
+                        <label style="font-size:.78rem;color:var(--text-muted)">Trier</label>
+                        <select id="md-sort" class="form-input" style="width:auto;padding:.4rem .75rem;font-size:.8rem">
+                            <option value="">Pertinence</option>
+                            <option value="prix_asc">Prix ↑</option>
+                            <option value="prix_desc">Prix ↓</option>
+                            <option value="note">Meilleures notes</option>
+                            <option value="nouveaute">Nouveautés</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grille produits -->
+                <div class="products-grid" id="md-grid"></div>
+                <div class="cat-empty" id="md-empty" style="display:none">
+                    <span class="material-symbols-outlined">search_off</span>
+                    <p>Aucun titre disponible pour cette sélection.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique manga de référence.</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection#1e7d71706a7f7d6a5e757770757f30786c"><span class="__cf_email__" data-cfemail="02616d6c7663617642696b6c69632c6470">[email&#160;protected]</span></a></p>
+            </div>
+            <div class="footer-section"><h4>Maisons</h4><ul>
+                <li><a href="/page_maison_detail.html?id=glenat">Glénat</a></li>
+                <li><a href="/page_maison_detail.html?id=kioon">Ki-oon</a></li>
+                <li><a href="/page_maison_detail.html?id=kurokawa">Kurokawa</a></li>
+                <li><a href="/page_maison_detail.html?id=delcourt-tonkam">Delcourt-Tonkam</a></li>
+            </ul></div>
+            <div class="footer-section"><h4>Support</h4><ul>
+                <li><a href="/page_faq.html">FAQ</a></li>
+                <li><a href="/page_contact.html">Contact</a></li>
+                <li><a href="/page_cgv.html">CGV</a></li>
+            </ul></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+
+    var currentSerie = '';
+    var currentSort  = '';
+    var maison = null;
+
+    function getParam(key) {
+        return new URLSearchParams(window.location.search).get(key) || '';
+    }
+
+    function renderGrid() {
+        var grid  = document.getElementById('md-grid');
+        var empty = document.getElementById('md-empty');
+        var count = document.getElementById('md-count');
+        if (!grid || !maison) return;
+        var items = filterByMaison(maison);
+        if (currentSerie) items = items.filter(function(m){ return m.serie === currentSerie; });
+        if (currentSort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
+        if (currentSort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
+        if (currentSort === 'note')      items.sort(function(a,b){ return (b.note||0)-(a.note||0); });
+        if (currentSort === 'nouveaute') items.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
+        if (!items.length) { grid.innerHTML=''; empty.style.display='flex'; count.textContent='0 titre'; return; }
+        empty.style.display = 'none';
+        count.textContent = items.length + ' titre' + (items.length>1?'s':'');
+        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
+    }
+
+    function buildMaisonNav() {
+        var nav = document.getElementById('md-nav-bar');
+        if (!nav) return;
+        nav.innerHTML = maisonsDB.map(function(m) {
+            var active = m.id === maison.id ? ' md-nav-active' : '';
+            return '<a href="/page_maison_detail.html?id=' + m.id + '" class="md-nav-link' + active + '">'
+                 + '<img src="' + m.logo + '" alt="' + m.nom + '">' + m.nom + '</a>';
+        }).join('');
+    }
+
+    function buildSeriesNav() {
+        var nav = document.getElementById('md-series-nav');
+        if (!nav || !maison) return;
+        var items   = filterByMaison(maison);
+        var seriesMap = {};
+        items.forEach(function(m){ seriesMap[m.serie] = (seriesMap[m.serie]||0)+1; });
+        var seriesList = Object.keys(seriesMap).sort();
+        nav.innerHTML = '<a class="md-serie-link active" onclick="filterSerie(this,\'\')">Tout le catalogue<span>' + items.length + '</span></a>'
+            + seriesList.map(function(s){
+                return '<a class="md-serie-link" onclick="filterSerie(this,\'' + s.replace(/'/g,"\\'") + '\')">' + s + '<span>' + seriesMap[s] + '</span></a>';
+            }).join('');
+    }
+
+    function filterSerie(el, serie) {
+        document.querySelectorAll('.md-serie-link').forEach(function(a){ a.classList.remove('active'); });
+        el.classList.add('active');
+        currentSerie = serie;
+        renderGrid();
+    }
+
+    // Scripts en bas de body: appel direct
+    (function() {
+        var id = getParam('id') || 'glenat';
+        maison = getMaisonById(id);
+        if (!maison) { document.getElementById('md-nom').textContent = 'Maison introuvable'; return; }
+
+        // Breadcrumb + title
+        document.getElementById('breadcrumb-nom').textContent = maison.nom;
+        document.getElementById('page-title').textContent = maison.nom + ' - KINKA.FR';
+
+        // Hero
+        document.getElementById('md-logo').src = maison.logo;
+        document.getElementById('md-logo').alt = maison.nom;
+        document.getElementById('md-nom').textContent = maison.nom;
+        document.getElementById('md-desc').textContent = maison.description;
+        document.getElementById('md-since').textContent = 'Fondée en ' + (maison.fondee || '—');
+        if (maison.siteWeb) document.getElementById('md-site').href = maison.siteWeb;
+
+        // Gradient couleur maison
+        var c = maison.couleur || '#E03B8B';
+        document.getElementById('md-hero-gradient').style.background =
+            'linear-gradient(135deg, rgba(0,0,0,.82) 0%, ' + c + '22 100%)';
+
+        // Stats
+        var kinkaTitres = filterByMaison(maison).length;
+        var seriesUniq  = [...new Set(filterByMaison(maison).map(function(m){ return m.serie; }))].length;
+        document.getElementById('md-stat-titres').textContent = maison.totalTitres || '—';
+        document.getElementById('md-stat-kinka').textContent  = kinkaTitres;
+        document.getElementById('md-stat-series').textContent = seriesUniq;
+
+  
