@@ -4,7 +4,8 @@
 //        calcule les totaux et met à jour le résumé.
 // ====================================================
 
-document.addEventListener('DOMContentLoaded', function() {
+(function _init() {
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
     'use strict';
 
     function formatPrice(price) {
@@ -79,4 +80,4 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Fonctionnalité de code promo à implémenter.');
         });
     }
-});
+})();

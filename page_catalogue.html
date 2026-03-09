@@ -2,638 +2,192 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Catalogue manga KINKA.FR — Shōnen, Seinen, Shōjo, Coffrets.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue - KINKA.FR</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="/asset/image/LogoProjetFilRouge.png">
+    <link rel="stylesheet" href="/asset/css/kinka-shared.css">
     <link rel="stylesheet" href="/asset/css/page_catalogue.css">
     <link rel="stylesheet" href="/asset/css/translate.css">
     <link rel="stylesheet" href="/asset/css/darkmode.css">
 </head>
 <body>
-    <!-- HEADER -->
     <header>
         <nav>
             <a href="/page_accueil.html" class="logo">
                 <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
                 <span class="logo-text">KINKA<span class="fr">.FR</span></span>
             </a>
-            
             <div class="search-bar">
                 <span class="material-symbols-outlined search-icon">search</span>
-                <input type="text" placeholder="Rechercher un manga, un auteur...">
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
             </div>
-            
             <div class="nav-menu">
                 <a href="/page_accueil.html">Accueil</a>
                 <a href="/page_catalogue.html" class="active">Catalogue</a>
                 <a href="/page_promotion.html">Promotions</a>
             </div>
-            
             <div class="nav-actions">
-                <button class="icon-btn">
+                <button class="icon-btn" onclick="window.location.href='/page_favoris.html'" title="Mes favoris" id="favoris-btn">
                     <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
-                <button class="icon-btn">
+                <button class="icon-btn" onclick="window.location.href='/page_profil.html'" title="Mon profil">
                     <span class="material-symbols-outlined">person</span>
                 </button>
-                <button class="connect-btn">Se connecter</button>
-                <button class="icon-btn">
+                <button class="connect-btn" onclick="window.location.href='/pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='/page_panier.html'" title="Mon panier">
                     <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
             </div>
         </nav>
     </header>
 
-    <!-- BREADCRUMB -->
-    <div class="breadcrumb-container">
+    <div class="breadcrumb-bar">
         <div class="breadcrumb">
             <a href="/page_accueil.html">Accueil</a>
             <span class="separator">›</span>
-            <span class="current">Catalogue Boutique</span>
+            <span class="current">Catalogue</span>
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
     <main class="container">
-        <!-- PAGE HEADER -->
-        <section class="page-header">
-            <h1 class="page-title">Catalogue Complet</h1>
-            <p class="page-description">Découvrez plus de 15 000 références neuves et d'occasion.</p>
-            <div class="filter-badges">
-                <button class="badge-filter active">Shônen <span class="close-icon">×</span></button>
-                <button class="badge-filter">En stock <span class="close-icon">×</span></button>
-                <button class="badge-filter-clear">Tout effacer</button>
-            </div>
-        </section>
+        <div class="page-header">
+            <h1 class="page-title">Catalogue Manga</h1>
+            <p class="page-description">Découvrez notre sélection de mangas neufs et d'occasion</p>
+        </div>
 
-        <div class="catalog-layout">
-            <!-- SIDEBAR FILTERS -->
+        <!-- PILLS FILTRES RAPIDES -->
+        <div class="filter-pills">
+            <button class="filter-pill active" data-categorie="">Tout</button>
+            <button class="filter-pill" data-categorie="Shônen">Shōnen</button>
+            <button class="filter-pill" data-categorie="Seinen">Seinen</button>
+            <button class="filter-pill" data-categorie="Shôjo">Shōjo</button>
+            <button class="filter-pill" data-categorie="Josei">Josei</button>
+            <button class="filter-pill" data-categorie="Coffret">Coffrets</button>
+            <button class="filter-pill" data-etat="occasion">Occasion</button>
+            <button class="filter-pill" data-etat="neuf">Neuf</button>
+        </div>
+
+        <div class="catalogue-layout">
+            <!-- SIDEBAR -->
             <aside class="sidebar-filters">
-                <!-- CATEGORIES -->
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+                    <h3 style="font-size:.9rem;font-weight:700;color:var(--text)">Filtres</h3>
+                    <button id="reset-filters" style="font-size:.76rem;color:var(--pink);font-weight:600;background:none;border:none;cursor:pointer;padding:.2rem .5rem;border-radius:4px" onmouseover="this.style.background='var(--pink-soft)'" onmouseout="this.style.background='none'">Réinitialiser</button>
+                </div>
+
+                <!-- Catégorie -->
                 <div class="filter-section">
-                    <h3 class="filter-title">CATÉGORIES</h3>
+                    <p class="filter-title">Catégorie</p>
                     <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span class="filter-label">Shônen</span>
-                            <span class="filter-count">428</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Seinen</span>
-                            <span class="filter-count">216</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Shôjo</span>
-                            <span class="filter-count">98</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Isekai</span>
-                            <span class="filter-count">84</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Yaoi / Yuri</span>
-                            <span class="filter-count">72</span>
-                        </label>
+                        <label class="filter-option"><input type="radio" name="categorie" class="sidebar-checkbox" data-filter-type="categorie" data-filter-value="Shônen"><span class="filter-label">Shōnen</span></label>
+                        <label class="filter-option"><input type="radio" name="categorie" class="sidebar-checkbox" data-filter-type="categorie" data-filter-value="Seinen"><span class="filter-label">Seinen</span></label>
+                        <label class="filter-option"><input type="radio" name="categorie" class="sidebar-checkbox" data-filter-type="categorie" data-filter-value="Shôjo"><span class="filter-label">Shōjo</span></label>
+                        <label class="filter-option"><input type="radio" name="categorie" class="sidebar-checkbox" data-filter-type="categorie" data-filter-value="Josei"><span class="filter-label">Josei</span></label>
+                        <label class="filter-option"><input type="radio" name="categorie" class="sidebar-checkbox" data-filter-type="categorie" data-filter-value="Coffret"><span class="filter-label">Coffrets</span></label>
                     </div>
                 </div>
 
-                <!-- PRIX -->
+                <!-- État -->
                 <div class="filter-section">
-                    <h3 class="filter-title">PRIX</h3>
+                    <p class="filter-title">État</p>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="radio" name="etat" class="sidebar-checkbox" data-filter-type="etat" data-filter-value="neuf"><span class="filter-label">Neuf</span></label>
+                        <label class="filter-option"><input type="radio" name="etat" class="sidebar-checkbox" data-filter-type="etat" data-filter-value="occasion"><span class="filter-label">Occasion</span></label>
+                    </div>
+                </div>
+
+                <!-- Maison d'édition -->
+                <div class="filter-section">
+                    <p class="filter-title">Éditeur</p>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" class="sidebar-checkbox" data-filter-type="editeur" data-filter-value="Glénat"><span class="filter-label">Glénat</span></label>
+                        <label class="filter-option"><input type="checkbox" class="sidebar-checkbox" data-filter-type="editeur" data-filter-value="Ki-oon"><span class="filter-label">Ki-oon</span></label>
+                        <label class="filter-option"><input type="checkbox" class="sidebar-checkbox" data-filter-type="editeur" data-filter-value="Kurokawa"><span class="filter-label">Kurokawa</span></label>
+                        <label class="filter-option"><input type="checkbox" class="sidebar-checkbox" data-filter-type="editeur" data-filter-value="Pika"><span class="filter-label">Pika</span></label>
+                        <label class="filter-option"><input type="checkbox" class="sidebar-checkbox" data-filter-type="editeur" data-filter-value="Kazé Manga"><span class="filter-label">Kazé Manga</span></label>
+                        <label class="filter-option"><input type="checkbox" class="sidebar-checkbox" data-filter-type="editeur" data-filter-value="Panini"><span class="filter-label">Panini</span></label>
+                    </div>
+                </div>
+
+                <!-- Promotions -->
+                <div class="filter-section">
+                    <p class="filter-title">Offres spéciales</p>
+                    <label class="filter-option">
+                        <input type="checkbox" id="filter-promo">
+                        <span class="filter-label">En promotion uniquement</span>
+                    </label>
+                </div>
+
+                <!-- Prix -->
+                <div class="filter-section">
+                    <p class="filter-title">Prix</p>
                     <div class="price-inputs">
-                        <input type="number" placeholder="Min" class="price-input" value="0">
+                        <input type="number" id="price-min" class="price-input" placeholder="0" min="0" max="500">
                         <span class="price-separator">—</span>
-                        <input type="number" placeholder="Max" class="price-input" value="100">
-                    </div>
-                    <div class="price-slider">
-                        <input type="range" min="0" max="100" value="100" class="range-input">
-                    </div>
-                </div>
-
-                <!-- ÉTAT DU LIVRE -->
-                <div class="filter-section">
-                    <h3 class="filter-title">ÉTAT DU LIVRE</h3>
-                    <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="radio" name="etat" checked>
-                            <span class="filter-label">Neuf</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="radio" name="etat">
-                            <span class="filter-label">Occasion - Très bon</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="radio" name="etat">
-                            <span class="filter-label">Occasion - Bon</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="radio" name="etat">
-                            <span class="filter-label">Occasion - Acceptable</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- LANGUE -->
-                <div class="filter-section">
-                    <h3 class="filter-title">LANGUE</h3>
-                    <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span class="filter-label">Français</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Japonais (VO)</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Anglais</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- ÉDITEUR -->
-                <div class="filter-section">
-                    <h3 class="filter-title">ÉDITEUR</h3>
-                    <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Glénat</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Pika</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Kana</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Ki-oon</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Kurokawa</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Panini</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Akata</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- AUTEURS POPULAIRES -->
-                <div class="filter-section">
-                    <h3 class="filter-title">AUTEURS POPULAIRES</h3>
-                    <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Eiichiro Oda</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Gege Akutami</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Tatsuki Fujimoto</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span class="filter-label">Naoki Urasawa</span>
-                        </label>
+                        <input type="number" id="price-max" class="price-input" placeholder="200" min="0" max="500">
+                        <span style="font-size:.78rem;color:var(--text-muted)">€</span>
                     </div>
                 </div>
             </aside>
 
-            <!-- CATALOG CONTENT -->
-            <div class="catalog-content">
-                <!-- RESULTS HEADER -->
+            <!-- GRILLE PRODUITS -->
+            <div class="catalogue-content">
                 <div class="results-header">
-                    <div class="results-info">
-                        <span class="results-count">428</span> résultats
-                        <button class="export-btn">
-                            <span class="material-symbols-outlined">download</span>
-                            Exporter la liste
-                        </button>
+                    <div>
+                        <span class="results-count" id="results-count">0 résultats</span>
                     </div>
                     <div class="results-controls">
-                        <span class="sort-label">Trier par:</span>
-                        <select class="sort-select">
-                            <option>Pertinence</option>
-                            <option>Prix croissant</option>
-                            <option>Prix décroissant</option>
-                            <option>Nouveautés</option>
-                            <option>Popularité</option>
+                        <span class="sort-label">Trier par</span>
+                        <select class="sort-select" id="sort-select">
+                            <option value="pertinence">Pertinence</option>
+                            <option value="prix_asc">Prix croissant</option>
+                            <option value="prix_desc">Prix décroissant</option>
+                            <option value="note">Meilleures notes</option>
+                            <option value="nouveaute">Nouveautés</option>
                         </select>
-                        <div class="view-toggle">
-                            <button class="view-btn active">
-                                <span class="material-symbols-outlined">grid_view</span>
-                            </button>
-                            <button class="view-btn">
-                                <span class="material-symbols-outlined">view_list</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
-
-                <!-- PRODUCTS GRID -->
-                <div class="products-grid">
-                    <!-- Product 1-6 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="products-grid" id="catalogue-grid">
+                    <!-- Généré dynamiquement -->
                 </div>
-
-                <!-- FEATURED SECTION -->
-                <section class="featured-section">
-                    <div class="featured-content">
-                        <div class="featured-text">
-                            <span class="featured-badge">SÉLECTION DE LA SEMAINE</span>
-                            <h2 class="featured-title">Coup de cœur libraire ❤️</h2>
-                            <p class="featured-description">Découvrez Chainsaw Man, la nouvelle pépite fantastique qui passionne nos lecteurs cette semaine. Une histoire explosive signée Tatsuki Fujimoto !</p>
-                            <button class="featured-btn">Découvre la sélection</button>
-                        </div>
-                        <div class="featured-image">
-                            <img src="/asset/image/Chainsaw_man-hero.jpg" alt="Chainsaw Man - Tome 10">
-                        </div>
-                    </div>
-                </section>
-
-                <!-- MORE PRODUCTS -->
-                <div class="products-grid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">Neuf</span>
-                            <img src="/asset/image/One-Piece-Edition-originale-Tome-105.jpg" alt="One Piece - Tome 105">
-                            <div class="product-synopsis">
-                                <p>Luffy affronte Kaido dans un combat épique qui déterminera le sort de Wano !</p>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">One Piece - Tome 105</h3>
-                            <p class="product-author">Eiichiro Oda - Ed. Glénat</p>
-                            <div class="product-footer">
-                                <div>
-                                    <span class="product-price">6,90€</span>
-                                    <p class="product-stock">En stock - Livraison 48h</p>
-                                </div>
-                                <button class="add-to-cart">
-                                    <span class="material-symbols-outlined">add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PAGINATION -->
-                <div class="pagination">
-                    <button class="pagination-btn">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </button>
-                    <button class="pagination-number active">1</button>
-                    <button class="pagination-number">2</button>
-                    <button class="pagination-number">3</button>
-                    <span class="pagination-dots">...</span>
-                    <button class="pagination-number">12</button>
-                    <button class="pagination-btn">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
-                </div>
-
-                <!-- BOTTOM CONTENT -->
-                <section class="bottom-content">
-                    <h2 class="content-title">Acheter vos mangas préférés Kinka.fr</h2>
-                    <p class="content-text">Kinka.fr est la première marketplace française entièrement dédiée à l'univers du manga. Que vous cherchiez les dernières nouveautés Shônen, des pépites Seinen introuvables ou des collections complètes d'occasion, vous trouverez sans conteste les milliers de références. Profitez de notre garantie "Satisfait ou Remboursé" sur tous les achats d'occasion, et bénéficiez de la livraison offerte dès 50€ d'achat.</p>
-                </section>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <img src="/asset/image/LogoProjetFilRouge.png" class="logo-image" alt="Logo">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
-                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+                <p class="footer-description">Votre boutique manga de confiance. Neufs, occasions, coffrets et exclusivités.</p>
             </div>
-
-            <div class="footer-section">
-                <h4>Navigation</h4>
-                <ul>
-                    <li><a href="/page_accueil.html">Accueil</a></li>
-                    <li><a href="/page_catalogue.html">Catalogue</a></li>
-                    <li><a href="/page_promotion.html">Promotions</a></li>
-                    <li><a href="/page_coffret.html">Coffrets</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Compte</h4>
-                <ul>
-                    <li><a href="/pageLogIn.html">Connexion</a></li>
-                    <li><a href="/pageSignUp.html">Inscription</a></li>
-                    <li><a href="#">Mon panier</a></li>
-                    <li><a href="#">Suivi de commande</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="/page_faq.html">FAQ</a></li>
-                    <li><a href="/page_contact.html">Formulaire de contact</a></li>
-                    <li><a href="/page_cgv.html">CGV</a></li>
-                    <li><a href="/page_cgu.html">CGU</a></li>
-                    <li><a href="#">Politique de retour</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Nous contacter</h4>
-                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d5e585d5d425f596d464443464c44034b5f">[email&#160;protected]</a></p>
-                <div class="social-icons">
-                    <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
-                    <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
-                    <a href="#"><img src="/asset/image/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
-                </div>
-            </div>
+            <div class="footer-section"><h4>Catalogue</h4><ul><li><a href="/page_nouveaute.html">Nouveautés</a></li><li><a href="/page_coffret.html">Coffrets</a></li><li><a href="/page_promotion.html">Promotions</a></li><li><a href="/page_coupdecoeur.html">Coups de cœur</a></li></ul></div>
+            <div class="footer-section"><h4>Mon compte</h4><ul><li><a href="/page_profil.html">Mon profil</a></li><li><a href="/page_favoris.html">Mes favoris</a></li><li><a href="/page_panier.html">Mon panier</a></li></ul></div>
+            <div class="footer-section"><h4>Aide</h4><ul><li><a href="/page_faq.html">FAQ</a></li><li><a href="/page_contact.html">Contact</a></li><li><a href="/page_cgv.html">CGV</a></li></ul></div>
         </div>
-
-     <div class="footer-bottom">
-            <p>&copy; 2024 KINKA.FR. Tous droits réservés.</p>
+        <div class="footer-bottom">
+            <p>© 2025 Kinka.fr. Tous droits réservés.</p>
+            <div class="footer-legal"><a href="/page_cgu.html">CGU</a><a href="/page_cgv.html">CGV</a></div>
         </div>
     </footer>
-<script src="/asset/js/panier.js"></script>
-<script src="/asset/js/product_card.js"></script>
-<script src="/asset/js/recherche.js"></script>
-<script src="/asset/js/darkmode.js"></script>
-<script src="/asset/js/translate.js"></script>
+
+    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/authentification.js"></script>
+    <script src="/asset/js/panier.js"></script>
+    <script src="/asset/js/favoris.js"></script>
+    <script src="/asset/js/page_catalogue.js"></script>
+    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/translate.js"></script>
+    <script>(function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();</script>
 </body>
 </html>

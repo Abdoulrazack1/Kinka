@@ -7,7 +7,8 @@
  */
 
 // Attendre que le DOM soit complètement chargé avant d'exécuter le script
-document.addEventListener('DOMContentLoaded', function() {
+(function _init() {
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
     'use strict'; // Active le mode strict pour éviter certaines erreurs courantes
 
     // --- ÉTAPE 1 : RÉCUPÉRER LA REQUÊTE DE RECHERCHE DANS L'URL ---
@@ -153,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     quantite: 1
                 });
 
-                // Feedback visuel : remplace l'icône "+" par un "✓" pendant 1 seconde
+                // Feedback visuel : remplace l'icône "+" par un "" pendant 1 seconde
                 this.innerHTML = '<span class="material-symbols-outlined">check</span>';
                 setTimeout(() => {
                     this.innerHTML = '<span class="material-symbols-outlined">add</span>';
@@ -180,4 +181,4 @@ document.addEventListener('DOMContentLoaded', function() {
         // ---- 8.7 : Ajout de la carte dans la grille ----
         productsGrid.appendChild(card);
     });
-});
+})();

@@ -1,3 +1,9 @@
+/* ================================================================
+   KINKA.FR — page_panier.css
+   Page panier : liste articles, récapitulatif, promotions.
+   Couleur primaire : #E03B8B
+   ================================================================ */
+
 /* ============================================
    panier.css - Styles spécifiques à la page panier
 
@@ -409,24 +415,6 @@
 }
 
 /* ===== BADGE DU COMPTEUR (déjà stylé dans page_accueil, mais on renforce) ===== */
-.panier-count {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #E03B8B;
-    color: white;
-    font-size: 0.7rem;
-    font-weight: 600;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
-    border: 2px solid white;
-    animation: pulse 2s ease infinite;
-}
 
 /* ===== MEDIA QUERIES (responsive) ===== */
 
@@ -513,3 +501,124 @@
         font-size: 1.3rem;
     }
 }
+
+/* Rotation continue (cohérence globale) */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Shimmer horizontal */
+@keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Ping */
+@keyframes ping {
+    0%        { transform: scale(1); opacity: 1; }
+    75%, 100% { transform: scale(2); opacity: 0; }
+}
+/* ── AMÉLIORATIONS PANIER  v3.0 ──────────────────────────────── */
+.panier-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 2rem;
+  align-items: start;
+}
+.panier-vide {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--text-muted);
+}
+.panier-vide .material-symbols-outlined { font-size: 4rem; color: var(--border-dk); display: block; margin: 0 auto 1rem; }
+.panier-vide h2 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--text); }
+.panier-vide p  { margin-bottom: 1.5rem; font-size: 0.88rem; }
+
+.panier-item {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1.25rem; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  margin-bottom: 0.85rem; transition: var(--transition);
+}
+.panier-item:hover { border-color: var(--pink-light); box-shadow: var(--shadow-sm); }
+.panier-item-image {
+  width: 75px; height: 100px; object-fit: cover;
+  border-radius: var(--radius); flex-shrink: 0; border: 1px solid var(--border);
+}
+.panier-item-info { flex: 1; min-width: 0; }
+.panier-item-info h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; line-height: 1.3; }
+.panier-item-meta  { font-size: 0.77rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+.panier-item-prix  { font-size: 0.85rem; color: var(--text); }
+.panier-item-prix strong { color: var(--pink); font-weight: 700; }
+.panier-item-controles {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem; flex-shrink: 0;
+}
+.quantite-controls {
+  display: flex; align-items: center;
+  border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.btn-augmenter, .btn-diminuer {
+  width: 34px; height: 34px; background: var(--bg-muted);
+  border: none; cursor: pointer; font-size: 1.1rem; font-weight: 600;
+  color: var(--text-muted); transition: var(--transition); display: flex; align-items: center; justify-content: center;
+}
+.btn-augmenter:hover, .btn-diminuer:hover { background: var(--pink-soft); color: var(--pink); }
+.quantite-affichage {
+  width: 38px; text-align: center; font-size: 0.9rem; font-weight: 600;
+  color: var(--text); border-left: 1.5px solid var(--border); border-right: 1.5px solid var(--border);
+  line-height: 34px;
+}
+.btn-supprimer {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.77rem; color: var(--text-light); background: none; border: none;
+  cursor: pointer; transition: var(--transition); padding: 0.25rem 0;
+}
+.btn-supprimer:hover { color: #dc2626; }
+.btn-supprimer .material-symbols-outlined { font-size: 1rem; }
+
+.panier-resume {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.5rem; position: sticky; top: 78px;
+}
+.panier-resume h3 {
+  font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
+  color: var(--text); margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.resume-ligne {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.88rem; margin-bottom: 0.75rem; color: var(--text-muted);
+}
+.resume-ligne.total {
+  font-size: 1rem; font-weight: 700; color: var(--text);
+  padding-top: 0.85rem; border-top: 2px solid var(--border); margin-top: 0.85rem;
+}
+.resume-ligne.total span:last-child { color: var(--pink); font-size: 1.25rem; font-family: var(--font-display); }
+.livraison-info {
+  font-size: 0.78rem; color: #16a34a; background: rgba(22,163,74,0.08);
+  border-radius: var(--radius); padding: 0.5rem 0.75rem; margin-bottom: 0.75rem;
+}
+.btn-commander {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: var(--pink); color: white; padding: 0.9rem;
+  border-radius: var(--radius-pill); font-weight: 700; font-size: 0.92rem;
+  cursor: pointer; border: none; transition: var(--transition); margin-top: 1rem;
+}
+.btn-commander:hover { background: var(--pink-dark); box-shadow: var(--shadow-pink); transform: translateY(-2px); }
+.btn-commander:active { transform: translateY(0); }
+.btn-continuer {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: transparent; color: var(--text-muted); padding: 0.7rem;
+  border-radius: var(--radius-pill); font-weight: 600; font-size: 0.85rem;
+  cursor: pointer; border: 1.5px solid var(--border); transition: var(--transition); margin-top: 0.5rem;
+}
+.btn-continuer:hover { border-color: var(--text); color: var(--text); }
+
+@media (max-width: 768px) {
+  .panier-layout { grid-template-columns: 1fr; }
+  .panier-resume { position: static; }
+}
+
+/* ── AJOUTS ─────────────────────────────────────────────── */
+.continuer-achats{display:inline-flex;align-items:center;gap:.45rem;color:var(--pink);font-size:.85rem;font-weight:600;cursor:pointer;background:none;border:none;padding:.5rem;font-family:inherit;transition:var(--transition)}
+.continuer-achats:hover{color:var(--pink-dark)}

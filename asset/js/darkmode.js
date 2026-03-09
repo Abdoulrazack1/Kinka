@@ -3,7 +3,8 @@
 // Compatible avec toutes les pages du projet
 // ============================================
 
-document.addEventListener('DOMContentLoaded', function() {
+(function _initDark() {
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _initDark); return; }
     
     // Verifier si le toggle existe deja, sinon on le cree
     let darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const connectBtn = navActions.querySelector('.connect-btn');
             if (connectBtn) {
                 // Inserer avant le bouton "Se connecter"
-                navActions.insertBefore(bouton, connectBtn.parentElement);
+                navActions.insertBefore(bouton, connectBtn);
             } else {
                 navActions.appendChild(bouton);
             }
@@ -90,4 +91,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     console.log('Dark mode initialise');
-});
+})();

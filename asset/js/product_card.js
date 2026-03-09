@@ -13,7 +13,7 @@
     function initAddToCartButtons() {
         // Vérifier que la fonction addToCart est disponible
         if (typeof window.addToCart !== 'function') {
-            console.error('❌ product-card.js : window.addToCart n’est pas défini. Vérifiez que panier.js est chargé avant ce script.');
+            console.error('[x] product-card.js : window.addToCart n’est pas défini. Vérifiez que panier.js est chargé avant ce script.');
             return;
         }
 
@@ -21,7 +21,7 @@
         const cartButtons = document.querySelectorAll('.product-card .add-to-cart');
 
         if (cartButtons.length === 0) {
-            console.warn('⚠️ Aucun bouton ".product-card .add-to-cart" trouvé.');
+            console.warn('[!] Aucun bouton ".product-card .add-to-cart" trouvé.');
             return;
         }
 
@@ -36,7 +36,7 @@
 
                 const card = this.closest('.product-card');
                 if (!card) {
-                    console.error('❌ Impossible de trouver la carte parente .product-card', this);
+                    console.error('[x] Impossible de trouver la carte parente .product-card', this);
                     return;
                 }
 
@@ -48,7 +48,7 @@
 
                 const titre = titleEl?.textContent?.trim() || '';
                 if (!titre) {
-                    console.error('❌ Titre du produit introuvable', card);
+                    console.error('[x] Titre du produit introuvable', card);
                     return;
                 }
 
@@ -81,7 +81,7 @@
 
                 // --- Feedback visuel sur le bouton ---
                 const originalHTML = this.innerHTML;   // sauvegarde le contenu original (icône + texte éventuel)
-                this.innerHTML = '✓';                  // coche de validation
+                this.innerHTML = '';                  // coche de validation
                 this.style.transition = 'background 0.2s';
                 this.style.backgroundColor = '#4CAF50';
                 this.style.color = 'white';
