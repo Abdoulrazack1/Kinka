@@ -65,8 +65,8 @@
                     <span class="material-symbols-outlined" style="font-size:1rem">recycling</span>
                     Economique &amp; Responsable
                 </div>
-                <h1>Mangas d'Occasion<br><em>jusqu'a -40%</em></h1>
-                <p>Des tomes soigneusement verifies et classes par etat. Economisez sans compromis sur la qualite de lecture.</p>
+                <h1>Mangas d'Occasion<br><em>jusqu'à -40%</em></h1>
+                <p>Des tomes soigneusement vérifiés et classés par état. Économisez sans compromis sur la qualité de lecture.</p>
                 <div class="occasion-hero-stats">
                     <div class="occasion-hero-stat">
                         <strong id="count-occ">--</strong>
@@ -80,7 +80,7 @@
                     <div class="occasion-stat-sep-v"></div>
                     <div class="occasion-hero-stat">
                         <strong>3</strong>
-                        <small>niveaux d'etat</small>
+                        <small>niveaux d'état</small>
                     </div>
                 </div>
             </div>
@@ -91,21 +91,21 @@
             <div class="etat-item etat-tres-bon">
                 <span class="material-symbols-outlined">verified</span>
                 <div>
-                    <strong>Tres bon etat</strong>
+                    <strong>Très bon état</strong>
                     <p>Aucune marque visible. Comme neuf.</p>
                 </div>
             </div>
             <div class="etat-item etat-bon">
                 <span class="material-symbols-outlined">thumb_up</span>
                 <div>
-                    <strong>Bon etat</strong>
-                    <p>Legeres traces d'usure, contenu parfait.</p>
+                    <strong>Bon état</strong>
+                    <p>Légères traces d'usure, contenu parfait.</p>
                 </div>
             </div>
             <div class="etat-item etat-acceptable">
                 <span class="material-symbols-outlined">check_circle</span>
                 <div>
-                    <strong>Etat acceptable</strong>
+                    <strong>État acceptable</strong>
                     <p>Usure visible mais lisible sans souci.</p>
                 </div>
             </div>
@@ -115,9 +115,9 @@
         <div class="occasion-toolbar">
             <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
                 <div class="filter-pills-bar" style="margin-bottom:0">
-                    <button class="filter-pill active" data-etat="">Tous les etats</button>
-                    <button class="filter-pill" data-etat="tres-bon">Tres bon etat</button>
-                    <button class="filter-pill" data-etat="bon">Bon etat</button>
+                    <button class="filter-pill active" data-etat="">Tous les états</button>
+                    <button class="filter-pill" data-etat="tres-bon">Très bon état</button>
+                    <button class="filter-pill" data-etat="bon">Bon état</button>
                     <button class="filter-pill" data-etat="acceptable">Acceptable</button>
                 </div>
                 <span class="occasion-count-badge">
@@ -130,17 +130,14 @@
                     <option value="">Pertinence</option>
                     <option value="prix_asc">Prix croissant</option>
                     <option value="prix_desc">Prix decroissant</option>
-                    <option value="note">Mieux notes</option>
+                    <option value="note">Mieux notés</option>
                 </select>
             </div>
         </div>
 
         <!-- GRILLE -->
         <div id="grid-occasion" class="products-grid"></div>
-        <div id="occasion-empty" class="no-results" style="display:none">
-            <span class="material-symbols-outlined" style="font-size:3.5rem;color:var(--pink);display:block;margin-bottom:1rem">search_off</span>
-            <p>Aucun manga disponible dans cette categorie pour le moment.</p>
-        </div>
+
 
     </main>
 
@@ -151,7 +148,7 @@
                     <img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
-                <p class="footer-description">Votre boutique manga de reference.</p>
+                <p class="footer-description">Votre boutique manga de référence.</p>
             </div>
             <div class="footer-section"><h4>Navigation</h4><ul>
                 <li><a href="/page_accueil.html">Accueil</a></li>
@@ -171,7 +168,7 @@
                 <li><a href="/page_cgv.html">CGV</a></li>
             </ul></div>
         </div>
-        <div class="footer-bottom"><p>&copy; 2025 KINKA.FR &mdash; Tous droits reserves</p></div>
+        <div class="footer-bottom"><p>&copy; 2025 KINKA.FR &mdash; Tous droits réservés</p></div>
     </footer>
 
     <script src="/asset/js/mangadb.js"></script>
@@ -188,16 +185,18 @@
     // ── Grille occasion ──────────────────────────────────────
     (function(){
         var currentEtat = '';
+    var currentSearch = '';
         var currentSort = '';
 
         function renderOccasion() {
             var grid    = document.getElementById('grid-occasion');
-            var empty   = document.getElementById('occasion-empty');
             var countEl = document.getElementById('occasion-count');
             var heroCount = document.getElementById('count-occ');
             if (!grid || typeof filterProducts !== 'function') return;
 
-            var items = filterProducts({ etat: 'occasion' });
+            var _occ_opts = { etat: 'occasion' };
+            if (currentSearch) _occ_opts.query = currentSearch;
+            var items = filterProducts(_occ_opts);
 
             // Sous-filtre état
             if (currentEtat === 'tres-bon')   items = items.filter(function(m){ return m.etatDetail === 'tres-bon' || !m.etatDetail; });
@@ -205,8 +204,8 @@
             if (currentEtat === 'acceptable')  items = items.filter(function(m){ return m.etatDetail === 'acceptable'; });
 
             // Tri
-            if (currentSort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
-            if (currentSort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
+            if (currentSort === 'prix_asc')  items.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pa-pb; });
+            if (currentSort === 'prix_desc') items.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pb-pa; });
             if (currentSort === 'note')      items.sort(function(a,b){ return (b.note||0) - (a.note||0); });
 
             var count = items.length;
@@ -214,11 +213,14 @@
             if (heroCount) heroCount.textContent = count;
 
             if (!count) {
-                grid.innerHTML = '';
-                if (empty) empty.style.display = 'flex';
+                grid.innerHTML = '<div class="occ-empty-state">'
+                    + '<span class="material-symbols-outlined">search_off</span>'
+                    + '<p>Aucun manga disponible dans cette catégorie pour le moment.</p>'
+                    + '<a href="/page_catalogue.html" class="btn-secondary" style="margin-top:1rem;display:inline-flex;align-items:center;gap:.4rem">'
+                    + '<span class="material-symbols-outlined" style="font-size:1rem">explore</span>Voir tout le catalogue</a>'
+                    + '</div>';
                 return;
             }
-            if (empty) empty.style.display = 'none';
             grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
         }
 
@@ -231,6 +233,21 @@
             renderOccasion();
         }
         tryRender();
+
+        // ── Recherche #search-input ──
+        (function() {
+            var _debounce;
+            var inp = document.getElementById('search-input');
+            if (!inp) return;
+            inp.addEventListener('input', function() {
+                clearTimeout(_debounce);
+                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderOccasion(); }, 200);
+            }, false);
+            // Bloquer la redirection vers page_recherche.html
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderOccasion(); }
+            }, true);
+        })();
 
         document.querySelectorAll('.filter-pill').forEach(function(btn) {
             btn.addEventListener('click', function() {

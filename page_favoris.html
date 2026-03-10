@@ -289,8 +289,8 @@
         var sugSection = document.getElementById('fav-suggestions');
         var sugGrid    = document.getElementById('fav-suggestions-grid');
         if (!sugSection || !sugGrid) return;
-        if (favs.length === 0 && typeof mangaDB !== 'undefined') {
-            var suggestions = mangaDB.filter(function(m){ return m.bestseller; }).slice(0, 4);
+        if (favs.length === 0 && typeof mangasDB !== 'undefined') {
+            var suggestions = mangasDB.filter(function(m){ return m.bestseller; }).slice(0, 4);
             if (suggestions.length > 0) {
                 sugGrid.innerHTML = suggestions.map(function(m){ return buildProductCard(m); }).join('');
                 sugSection.style.display = 'block';

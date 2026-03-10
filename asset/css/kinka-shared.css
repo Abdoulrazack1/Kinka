@@ -153,6 +153,92 @@ nav{
 .connect-btn:hover{background:var(--pink-dark);transform:translateY(-1px);box-shadow:var(--shadow-pink)}
 .connect-btn:active{transform:translateY(0)}
 
+/* ── NAV USER DROPDOWN ─────────────────────────────────────────── */
+.nav-user-wrap { position:relative; }
+
+.nav-user-btn {
+  display:flex; align-items:center; gap:.4rem;
+  padding:.38rem .72rem .38rem .42rem;
+  border:1.5px solid var(--border); border-radius:var(--radius-pill);
+  background:#fff; cursor:pointer; transition:var(--transition);
+  font-size:.82rem; font-weight:600; color:var(--text);
+  font-family:inherit;
+}
+.nav-user-btn:hover { border-color:var(--pink); background:var(--pink-soft); color:var(--pink); }
+.nav-user-btn:hover .nav-user-chevron { color:var(--pink); }
+
+.nav-user-avatar {
+  width:26px; height:26px; border-radius:50%;
+  background:linear-gradient(135deg, var(--pink), var(--pink-dark));
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; flex-shrink:0;
+}
+.nav-user-name { max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.nav-user-chevron { font-size:.85rem; color:var(--text-muted); transition:transform .2s ease; }
+.nav-user-btn[aria-expanded="true"] .nav-user-chevron { transform:rotate(180deg); }
+
+.nav-user-dropdown {
+  position:absolute; top:calc(100% + 10px); right:0;
+  min-width:240px;
+  background:#fff; border:1.5px solid var(--border);
+  border-radius:var(--radius-xl); box-shadow:var(--shadow-lg);
+  padding:.5rem; z-index:9999;
+  opacity:0; pointer-events:none;
+  transform:translateY(-6px) scale(.97);
+  transition:opacity .18s ease, transform .18s ease;
+}
+.nav-user-dropdown.open {
+  opacity:1; pointer-events:auto;
+  transform:translateY(0) scale(1);
+}
+.nav-user-dropdown-head {
+  display:flex; align-items:center; gap:.75rem;
+  padding:.75rem .85rem 1rem;
+}
+.nav-user-dropdown-avatar {
+  width:42px; height:42px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg, rgba(224,59,139,.18), rgba(224,59,139,.08));
+  border:2px solid rgba(224,59,139,.3);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--pink);
+}
+.nav-user-dropdown-info { flex:1; min-width:0; }
+.nav-user-dropdown-name {
+  font-size:.88rem; font-weight:700; color:var(--text);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.nav-user-dropdown-email {
+  font-size:.72rem; color:var(--text-muted);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  margin-top:.1rem;
+}
+.nav-user-dropdown-plan {
+  display:inline-flex; align-items:center; gap:.25rem;
+  margin-top:.4rem; padding:.18rem .6rem;
+  border-radius:999px; font-size:.6rem; font-weight:800; letter-spacing:.06em;
+}
+.plan-free     { background:var(--bg-subtle); color:var(--text-muted); border:1px solid var(--border); }
+.plan-premium  { background:rgba(251,191,36,.2); color:#92400e; border:1px solid rgba(251,191,36,.4); }
+.plan-collector{ background:rgba(167,139,250,.2); color:#5b21b6; border:1px solid rgba(167,139,250,.4); }
+.nav-user-dropdown-sep { height:1px; background:var(--border); margin:.25rem .5rem; }
+.nav-user-dropdown-item {
+  display:flex; align-items:center; gap:.65rem;
+  padding:.65rem .85rem; border-radius:var(--radius);
+  font-size:.84rem; font-weight:500; color:var(--text-muted);
+  cursor:pointer; transition:var(--transition);
+  text-decoration:none; background:none; border:none;
+  width:100%; text-align:left; font-family:inherit;
+}
+.nav-user-dropdown-item .material-symbols-outlined { font-size:1rem; flex-shrink:0; }
+.nav-user-dropdown-item:hover { background:var(--bg-muted); color:var(--text); }
+.nav-user-dropdown-item:hover .material-symbols-outlined { color:var(--pink); }
+.nav-user-dropdown-logout { color:#ef4444 !important; }
+.nav-user-dropdown-logout:hover { background:#fef2f2 !important; color:#dc2626 !important; }
+.nav-user-dropdown-logout .material-symbols-outlined { color:#ef4444 !important; }
+body.dark-mode .nav-user-btn { background:var(--bg-card); border-color:var(--border); }
+body.dark-mode .nav-user-dropdown { background:var(--bg-card); border-color:var(--border); }
+body.dark-mode .nav-user-dropdown-item:hover { background:var(--bg-subtle); }
+
 /* ── BUTTONS GLOBAUX ──────────────────────────────────────────── */
 .btn-primary{
   display:inline-flex;align-items:center;gap:.45rem;
@@ -233,13 +319,15 @@ nav{
 /* ── Badge produit ── */
 .product-badge{
   position:absolute;top:.6rem;left:.6rem;z-index:2;
-  background:var(--pink);color:#fff;font-size:.6rem;font-weight:700;
-  padding:.22rem .6rem;border-radius:var(--radius-pill);
+  background:var(--pink);color:#fff;font-size:.62rem;font-weight:700;
+  padding:.24rem .65rem;border-radius:6px;
   letter-spacing:.07em;text-transform:uppercase;
-  box-shadow:0 2px 8px rgba(224,59,139,.35)
+  box-shadow:0 2px 8px rgba(224,59,139,.35);
+  backdrop-filter:blur(4px);
 }
 .product-badge.bestseller{background:linear-gradient(135deg,#f59e0b,#ef4444)}
 .product-badge.occasion{background:#6366f1}
+.product-badge.promo{background:linear-gradient(135deg,#16a34a,#059669)}
 
 /* ── Bouton favoris (overlay haut droite) ── */
 .card-actions{
@@ -487,7 +575,16 @@ footer{background:#1a1a1a;color:rgba(255,255,255,.65);padding:3.5rem 2.5rem 1.5r
 @media(max-width:768px){.etat-legende{grid-template-columns:1fr}.occasion-hero{padding:1.75rem}}
 
 /* ── RANK BADGE ───────────────────────────────────────────────── */
-.rank-badge{position:absolute;top:.6rem;right:.6rem;z-index:2;background:var(--pink);color:white;font-size:.65rem;font-weight:800;padding:.22rem .55rem;border-radius:999px;letter-spacing:.04em}
+.rank-badge{
+  position:absolute;
+  top:.6rem; left:.6rem;   /* top-LEFT — même coin que product-badge */
+  z-index:4;               /* au-dessus de product-badge (z-index:2) */
+  background:var(--pink);color:white;font-size:.65rem;font-weight:800;
+  padding:.22rem .55rem;border-radius:999px;letter-spacing:.04em;
+  box-shadow:0 2px 8px rgba(224,59,139,.35);
+}
+/* Quand rank-badge est présent, masquer product-badge pour éviter l'overlap */
+.product-image:has(.rank-badge) .product-badge { display: none; }
 
 /* ── FILTER PILLS BAR ─────────────────────────────────────────── */
 .filter-pills-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
@@ -566,3 +663,125 @@ footer{background:#1a1a1a;color:rgba(255,255,255,.65);padding:3.5rem 2.5rem 1.5r
 .kinka-toast--info    { background:#2563eb; color:#fff; border-color:#2563eb; }
 .kinka-toast--warning { background:#d97706; color:#fff; border-color:#d97706; }
 .kinka-toast--default { background:var(--text); color:#fff; }
+
+/* ── PRODUCT CARD — CSS AMÉLIORATIONS v20 ──────────────────────── */
+.product-card {
+  border-radius: 14px;
+  border-color: var(--border);
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,.13), 0 0 0 1.5px var(--pink);
+  border-color: var(--pink);
+}
+.product-image {
+  height: 230px;
+  background: linear-gradient(145deg, #f8f9fa 0%, #f0f0f5 100%);
+}
+.product-info {
+  padding: .9rem 1rem 1rem;
+}
+.product-title {
+  font-size: .88rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.product-price {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.add-to-cart {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(224,59,139,.3);
+}
+.add-to-cart:hover {
+  border-radius: 50%;
+  transform: scale(1.18);
+}
+/* Section titles - amélioration */
+.section-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -.025em;
+}
+/* Breadcrumb — meilleur style */
+.breadcrumb-bar {
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border);
+}
+/* Header scroll shadow */
+header.scrolled {
+  box-shadow: 0 2px 20px rgba(0,0,0,.08);
+}
+/* Dark mode card */
+body.dark-mode .product-card {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+body.dark-mode .product-card:hover {
+  box-shadow: 0 20px 48px rgba(0,0,0,.35), 0 0 0 1.5px var(--pink);
+}
+body.dark-mode .add-to-cart {
+  box-shadow: 0 2px 10px rgba(224,59,139,.2);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EFFET BRILLANT SUR LES CARDS — Shine / Glare CSS + JS
+   ══════════════════════════════════════════════════════════════ */
+
+/* Le shine utilise un wrapper interne pour éviter le conflit z-index avec badges et boutons */
+.product-card {
+  isolation: isolate;
+}
+
+/* Shine radial suivant la souris — z-index:1 pour rester SOUS les badges (z-index 2+) */
+.product-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.product-card:hover::after { opacity: 1; }
+
+/* Filet lumineux en coin haut-gauche — z-index:1 sous les badges */
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.16) 0%,
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.product-card:hover::before { opacity: 1; }
+
+/* Dark mode */
+body.dark-mode .product-card::before {
+  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 45%);
+}
+body.dark-mode .product-card::after {
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 70%
+  );
+}

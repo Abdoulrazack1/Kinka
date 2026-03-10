@@ -84,3 +84,26 @@
     width: 1px; height: 36px;
     background: rgba(255,255,255,.15);
 }
+
+/* ── ÉTAT VIDE (aucun résultat) ────────────────────────────────── */
+.occ-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    gap: .5rem;
+}
+.occ-empty-state .material-symbols-outlined {
+    font-size: 4rem;
+    color: var(--pink);
+    opacity: .6;
+}
+.occ-empty-state p {
+    font-size: .95rem;
+    margin: 0;
+    line-height: 1.6;
+}

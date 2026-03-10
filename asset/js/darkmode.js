@@ -26,8 +26,10 @@
         var navActions = document.querySelector('.nav-actions');
         if (navActions) {
             var connectBtn = navActions.querySelector('.connect-btn');
-            if (connectBtn) {
-                navActions.insertBefore(toggle, connectBtn);
+            var navUserWrap = navActions.querySelector('.nav-user-wrap');
+            var insertBefore = connectBtn || navUserWrap;
+            if (insertBefore) {
+                navActions.insertBefore(toggle, insertBefore);
             } else {
                 navActions.appendChild(toggle);
             }

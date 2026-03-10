@@ -72,7 +72,7 @@
             <div class="promo-hero-content">
                 <div class="promo-hero-badge">OFFRES EN COURS</div>
                 <h1 class="promo-hero-title">-50% sur le <span style="color:var(--pink)">2ᵉ tome</span> éligible</h1>
-                <p class="promo-hero-text">Construisez votre collection avec les meilleurs prix. More than 50 titres en promotion, neufs & occasion.</p>
+                <p class="promo-hero-text">Construisez votre collection avec les meilleurs prix. Plus de 50 titres en promotion, neufs &amp; occasion.</p>
                 <div class="promo-hero-features">
                     <span class="promo-feature"><span class="material-symbols-outlined">check_circle</span> Neuf & occasion éligibles</span>
                     <span class="promo-feature"><span class="material-symbols-outlined">check_circle</span> Expédition suivie 48h</span>
@@ -84,7 +84,7 @@
                 </button>
             </div>
             <div class="promo-hero-img">
-                <img src="/asset/image/bannière_poster.jpg" alt="Promotions manga" onerror="this.style.display='none'">
+                <img src="/asset/image/banniere_poster.jpg" alt="Promotions manga" onerror="this.style.display='none'">
             </div>
         </section>
 
@@ -179,14 +179,22 @@
     <script>
     /* ── GRILLE PROMOTIONS (après mangadb.js chargé) ── */
     var currentFilter = '';
+    var currentSearch = '';
 
     function renderPromos() {
         var grid    = document.getElementById('promo-grid');
         var countEl = document.getElementById('promo-count');
         if (!grid) return;
-        var items = filterProducts({ promo: true });
-        if (currentFilter === 'occasion') items = items.filter(function(m){ return m.etat === 'occasion' && m.promo; });
-        else if (currentFilter) items = items.filter(function(m){ return m.categorie === currentFilter; });
+        var _qOpts = { promo: true };
+        if (currentSearch) _qOpts.query = currentSearch;
+        var items = filterProducts(_qOpts);
+        if (currentFilter === 'occasion') {
+            var _occ = { etat: 'occasion' };
+            if (currentSearch) _occ.query = currentSearch;
+            items = filterProducts(_occ);
+        } else if (currentFilter) {
+            items = items.filter(function(m){ return m.categorie === currentFilter; });
+        }
         if (countEl) countEl.textContent = items.length + ' offre' + (items.length > 1 ? 's' : '');
         if (!items.length) { grid.innerHTML = '<div class="no-results">Aucune promo trouvée</div>'; return; }
         grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
@@ -195,11 +203,26 @@
     (function _init(){
     if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
         renderPromos();
+
+        // ── Recherche #search-input ──
+        (function() {
+            var _debounce;
+            var inp = document.getElementById('search-input');
+            if (!inp) return;
+            inp.addEventListener('input', function() {
+                clearTimeout(_debounce);
+                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderPromos(); }, 200);
+            }, false);
+            // Bloquer la redirection vers page_recherche.html
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderPromos(); }
+            }, true);
+        })();
         document.querySelectorAll('#promo-filters .filter-pill').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('#promo-filters .filter-pill').forEach(function(b){ b.classList.remove('active'); });
                 this.classList.add('active');
-                currentFilter = this.dataset.cat || '';
+                currentFilter = this.dataset.filter || '';
                 renderPromos();
             });
         });

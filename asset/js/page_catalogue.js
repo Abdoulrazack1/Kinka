@@ -9,7 +9,7 @@
     let currentFilters = {
         categorie: null,
         etat: null,
-        editeur: null,
+        editeur: [],   // tableau pour multi-sélection
         auteur: null,
         promo: false,
         sort: 'pertinence',
@@ -23,8 +23,9 @@
             const map = {shonen:'Shônen',seinen:'Seinen',shojo:'Shôjo',josei:'Josei',coffret:'Coffret'};
             currentFilters.categorie = map[p.get('categorie')] || null;
         }
-        if (p.get('editeur')) currentFilters.editeur = decodeURIComponent(p.get('editeur'));
+        if (p.get('editeur')) currentFilters.editeur = [decodeURIComponent(p.get('editeur'))];
         if (p.get('auteur'))  currentFilters.auteur  = decodeURIComponent(p.get('auteur'));
+        if (p.get('promo') === 'true') currentFilters.promo = true;
         if (p.get('q')) document.getElementById('search-input') && (document.getElementById('search-input').value = p.get('q'));
     }
 
@@ -32,6 +33,7 @@
         const grid = document.getElementById('catalogue-grid');
         const countEl = document.getElementById('results-count');
         let opts = { ...currentFilters };
+        if (opts.editeur && opts.editeur.length === 0) opts.editeur = null;  // [] → pas de filtre
         const q = document.getElementById('search-input');
         if (q && q.value.trim()) opts.query = q.value.trim();
 
@@ -82,7 +84,13 @@
             const val  = this.dataset.filterValue;
             if (type === 'categorie') currentFilters.categorie = this.checked ? val : null;
             if (type === 'etat') currentFilters.etat = this.checked ? val : null;
-            if (type === 'editeur') currentFilters.editeur = this.checked ? val : null;
+            if (type === 'editeur') {
+                if (this.checked) {
+                    if (!currentFilters.editeur.includes(val)) currentFilters.editeur.push(val);
+                } else {
+                    currentFilters.editeur = currentFilters.editeur.filter(e => e !== val);
+                }
+            }
             renderGrid();
         });
     });
@@ -108,7 +116,7 @@
     // Bouton reset sidebar
     const resetBtn = document.getElementById('reset-filters');
     if (resetBtn) resetBtn.addEventListener('click', function() {
-        currentFilters = {categorie:null,etat:null,editeur:null,auteur:null,promo:false,sort:'pertinence',prixMin:0,prixMax:200};
+        currentFilters = {categorie:null,etat:null,editeur:[],auteur:null,promo:false,sort:'pertinence',prixMin:0,prixMax:200};
         document.querySelectorAll('.sidebar-checkbox').forEach(cb => cb.checked = false);
         if (promoToggle) promoToggle.checked = false;
         if (sortSelect) sortSelect.value = 'pertinence';
@@ -119,4 +127,23 @@
     readURLParams();
     updateActivePills();
     renderGrid();
+
+    // Écoute la barre de recherche pour filtrer la grille en temps réel
+    // ET intercepte Enter pour éviter la redirection de recherche.js vers page_recherche
+    var searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        var searchDebounce;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(renderGrid, 200);
+        });
+        // Surcharger le comportement Enter de recherche.js sur cette page
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                renderGrid();
+            }
+        }, true); // capture phase pour s'exécuter avant recherche.js
+    }
 })();

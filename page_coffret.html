@@ -186,7 +186,7 @@
             if(!grid||typeof filterProducts!=='function') return;
             var items=filterProducts({categorie:'Coffret'});
             if(currentFilter==='promo') items=items.filter(function(m){return m.promo;});
-            else if(currentFilter) items=items.filter(function(m){return m.categorie===currentFilter;});
+            else if(currentFilter) items=items.filter(function(m){return m.genreCategorie===currentFilter;});
             if(currentSort==='prix_asc')  items=items.slice().sort(function(a,b){return a.prix-b.prix;});
             if(currentSort==='prix_desc') items=items.slice().sort(function(a,b){return b.prix-a.prix;});
             if(countEl) countEl.textContent=items.length+' coffret'+(items.length>1?'s':'');

@@ -128,6 +128,7 @@
     <script>
     /* ── GRILLE PRODUITS (après mangadb.js chargé) ── */
     var CAT = 'Seinen';
+    var currentSearch = '';
     var currentSerie = '';
     var currentSort  = '';
 
@@ -137,8 +138,10 @@
         var count = document.getElementById('results-count');
         if (!grid) return;
         var opts = { categorie: CAT };
+        if (currentSearch) opts.query = currentSearch;
         if (currentSerie) opts.serie = currentSerie;
         if (currentSort)  opts.sort  = currentSort;
+        if (typeof filterProducts !== 'function' || typeof buildProductCard !== 'function') return;
         var items = filterProducts(opts);
         if (!items.length) { grid.innerHTML=''; if(empty) empty.style.display='flex'; if(count) count.textContent='0 titre'; return; }
         if(empty) empty.style.display = 'none';
@@ -151,6 +154,21 @@
         btn.classList.add('active');
         currentSerie = serie;
         renderGrid();
+
+        // ── Recherche #search-input ──
+        (function() {
+            var _debounce;
+            var inp = document.getElementById('search-input');
+            if (!inp) return;
+            inp.addEventListener('input', function() {
+                clearTimeout(_debounce);
+                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderGrid(); }, 200);
+            }, false);
+            // Bloquer la redirection vers page_recherche.html
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderGrid(); }
+            }, true);
+        })();
     }
 
     (function _init(){

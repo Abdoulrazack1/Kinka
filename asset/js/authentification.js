@@ -52,9 +52,9 @@ function initAuth() {
                         statut: 'livree',
                         total: 38.90,
                         articles: [
-                            { titre: 'Jujutsu Kaisen — Tome 20', prix: 7.20, qte: 1, image: '/asset/image/Jujutsu Kaisen Tome 20.jpg' },
-                            { titre: 'Chainsaw Man — Tome 12', prix: 7.70, qte: 2, image: '/asset/image/Chainsaw Man Tome 12.jpg' },
-                            { titre: 'My Hero Academia — Tome 37', prix: 7.35, qte: 2, image: '/asset/image/My Hero Academia Tome 37.jpg' }
+                            { titre: 'Jujutsu Kaisen — Tome 20', prix: 7.20, qte: 1, image: '/asset/image/jjk-tome-20.jpg' },
+                            { titre: 'Chainsaw Man — Tome 12', prix: 7.70, qte: 2, image: '/asset/image/chainsaw_man_banniere.jpg' },
+                            { titre: 'My Hero Academia — Tome 37', prix: 7.35, qte: 2, image: '/asset/image/banniere_mha.jpg' }
                         ]
                     },
                     {
@@ -64,8 +64,8 @@ function initAuth() {
                         total: 24.55,
                         articles: [
                             { titre: 'One Piece — Tome 105', prix: 7.20, qte: 1, image: '/asset/image/One-Piece-Edition-originale-Tome-105.jpg' },
-                            { titre: 'Vinland Saga — Tome 27', prix: 8.95, qte: 1, image: '/asset/image/Vinland Saga Tome 27.jpg' },
-                            { titre: 'Spy x Family — Tome 12', prix: 8.40, qte: 1, image: '/asset/image/Spy x Family Tome 12.jpg' }
+                            { titre: 'Vinland Saga — Tome 27', prix: 8.95, qte: 1, image: '/asset/image/One-Piece-Edition-originale-Tome-105.jpg' },
+                            { titre: 'Spy x Family — Tome 12', prix: 8.40, qte: 1, image: '/asset/image/Spyxfamily_tome10.jpg' }
                         ]
                     }
                 ]
@@ -486,7 +486,8 @@ window.auth = {
 
     // ── Protection des pages ──────────────────────────────────
     const currentPath  = window.location.pathname;
-    const protectedPages = ['/page_profil.html', '/page_panier.html', '/page_suivicommande.html', '/page_confirmationcommande.html'];
+    // page_profil gère elle-même l'état non-connecté (affiche #profil-disconnected)
+    const protectedPages = ['/page_panier.html', '/page_suivicommande.html', '/page_confirmationcommande.html'];
     const guestPages     = ['/pageLogIn.html', '/pageSignUp.html', '/page_mdpreinitialisation.html', '/page_nouveaumdp.html'];
 
     if (protectedPages.includes(currentPath)) window.auth.requireAuth();
