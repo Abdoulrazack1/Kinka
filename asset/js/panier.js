@@ -64,7 +64,8 @@ function ajouterAuPanier(produit) {
     }
     sauvegarderPanier();
     mettreAJourCompteur();
-    afficherNotification(' Produit ajouté au panier');
+    if (typeof showToast === 'function') showToast('Ajouté au panier !', 'success');
+    else afficherNotification('Produit ajouté au panier');
 }
 
 function retirerDuPanier(produitId) {
@@ -80,12 +81,13 @@ function viderPanier() {
 }
 
 function modifierQuantite(produitId, nouvelleQuantite) {
+    const MAX_QTY = 10;
     const index = panier.findIndex(function(item) { return item.id === produitId; });
     if (index !== -1) {
         if (nouvelleQuantite <= 0) {
             retirerDuPanier(produitId);
         } else {
-            panier[index].quantite = nouvelleQuantite;
+            panier[index].quantite = Math.min(nouvelleQuantite, MAX_QTY);
             sauvegarderPanier();
             mettreAJourCompteur();
         }
@@ -212,21 +214,128 @@ function gererClicPanier() {
 }
 
 // ============================================
-// MISE À JOUR NAV SELON AUTH
+// MISE À JOUR NAV SELON AUTH — Dropdown profil
 // ============================================
 function mettreAJourNavAuth() {
     try {
         const user = JSON.parse(localStorage.getItem('kinka_current_user'));
         if (!user) return;
         const connectBtn = document.querySelector('.connect-btn');
-        if (connectBtn) {
-            connectBtn.textContent = user.prenom || 'Mon compte';
-            // Supprimer le onclick inline (redirige vers login sinon)
-            connectBtn.removeAttribute('onclick');
-            connectBtn.addEventListener('click', function() {
-                window.location.href = '/page_profil.html';
+        if (!connectBtn) return;
+
+        // Remplacer le bouton connexion par un bouton dropdown profil
+        const isPremium = user.abonnement === 'premium';
+        const isCollector = user.abonnement === 'collector';
+        const planLabel = isCollector ? 'Collector' : isPremium ? 'Premium' : 'Membre';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'nav-user-wrap';
+        wrapper.style.position = 'relative';
+
+        const btn = document.createElement('button');
+        btn.className = 'nav-user-btn';
+        btn.setAttribute('aria-haspopup', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = `
+            <div class="nav-user-avatar">
+                <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">person</span>
+            </div>
+            <span class="nav-user-name">${user.prenom || 'Mon compte'}</span>
+            <span class="material-symbols-outlined nav-user-chevron">expand_more</span>
+        `;
+
+        const dropdown = document.createElement('div');
+        dropdown.className = 'nav-user-dropdown';
+        dropdown.setAttribute('aria-hidden', 'true');
+        dropdown.innerHTML = `
+            <div class="nav-user-dropdown-head">
+                <div class="nav-user-dropdown-avatar">
+                    <span class="material-symbols-outlined" style="font-size:1.5rem;font-variation-settings:'FILL' 1">person</span>
+                </div>
+                <div class="nav-user-dropdown-info">
+                    <div class="nav-user-dropdown-name">${(user.prenom || '') + ' ' + (user.nom || '')}</div>
+                    <div class="nav-user-dropdown-email">${user.email || ''}</div>
+                    <div class="nav-user-dropdown-plan ${isPremium ? 'plan-premium' : isCollector ? 'plan-collector' : 'plan-free'}">
+                        ${isPremium ? '<span class="material-symbols-outlined" style="font-size:.7rem;font-variation-settings:\'FILL\' 1">star</span>' : ''}
+                        ${planLabel.toUpperCase()}
+                    </div>
+                </div>
+            </div>
+            <div class="nav-user-dropdown-sep"></div>
+            <a href="/page_profil.html?section=info" class="nav-user-dropdown-item">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                <span data-i18n="Mes informations">Mes informations</span>
+            </a>
+            <a href="/page_profil.html?section=commandes" class="nav-user-dropdown-item">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <span data-i18n="Mes commandes">Mes commandes</span>
+            </a>
+            <a href="/page_favoris.html" class="nav-user-dropdown-item">
+                <span class="material-symbols-outlined">favorite</span>
+                <span data-i18n="Mes favoris">Mes favoris</span>
+            </a>
+            <div class="nav-user-dropdown-sep"></div>
+            <button class="nav-user-dropdown-item nav-user-dropdown-logout" id="nav-logout-btn">
+                <span class="material-symbols-outlined">logout</span>
+                <span data-i18n="Se déconnecter">Se déconnecter</span>
+            </button>
+        `;
+
+        wrapper.appendChild(btn);
+        wrapper.appendChild(dropdown);
+
+        connectBtn.removeAttribute('onclick');
+        connectBtn.parentNode.replaceChild(wrapper, connectBtn);
+
+        // Toggle dropdown
+        let isOpen = false;
+        function openDropdown() {
+            isOpen = true;
+            dropdown.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+            dropdown.setAttribute('aria-hidden', 'false');
+        }
+        function closeDropdown() {
+            isOpen = false;
+            dropdown.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+            dropdown.setAttribute('aria-hidden', 'true');
+        }
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (isOpen) closeDropdown(); else openDropdown();
+        });
+
+        // Guard : attacher le listener global UNE seule fois par page
+        if (!window._kinkaDropdownListenerAttached) {
+            window._kinkaDropdownListenerAttached = true;
+            document.addEventListener('click', function() {
+                document.querySelectorAll('.nav-user-dropdown.open').forEach(function(d) {
+                    d.classList.remove('open');
+                    var p = d.closest('.nav-user-wrap');
+                    if (p) { var b = p.querySelector('.nav-user-btn'); if (b) b.setAttribute('aria-expanded','false'); }
+                });
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.nav-user-dropdown.open').forEach(function(d) {
+                        d.classList.remove('open');
+                    });
+                }
             });
         }
+        dropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+
+        // Déconnexion
+        dropdown.querySelector('#nav-logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('kinka_current_user');
+            window.location.href = '/page_accueil.html';
+        });
+
+        // Appliquer la traduction si actif
+        if (window.kinka_translate) window.kinka_translate();
+
     } catch (e) { /* silencieux */ }
 }
 

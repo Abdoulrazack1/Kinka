@@ -212,11 +212,11 @@
             var email = form.querySelector('input[type="email"]');
             var msg   = form.querySelector('textarea');
             if (email && !email.value.trim()) { if(typeof showToast==='function') showToast('Veuillez renseigner votre email.','error'); email.focus(); return; }
-            if (msg && !msg.value.trim())     { if(typeof showToast==='function') showToast('Veuillez ecrire votre message.','error'); msg.focus(); return; }
+            if (msg && !msg.value.trim())     { if(typeof showToast==='function') showToast('Veuillez écrire votre message.','error'); msg.focus(); return; }
             var btn = form.querySelector('button[type="submit"], .btn-submit');
             if (btn) { btn.disabled = true; btn.textContent = 'Envoi...'; }
             setTimeout(function() {
-                if(typeof showToast==='function') showToast('Message envoye ! Nous vous repondrons sous 48h.','success');
+                if(typeof showToast==='function') showToast('Message envoyé ! Nous vous répondrons sous 48h.','success');
                 form.reset();
                 if (btn) { btn.disabled = false; btn.textContent = 'Envoyer le message'; }
             }, 900);

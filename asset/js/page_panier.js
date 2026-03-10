@@ -73,7 +73,7 @@ function genererItemPanier(produit) {
 function genererResume(panierData) {
     const total = parseFloat(calculerTotal());
     const nb = compterArticles();
-    const fraisPort = total > 50 ? 0 : 4.90;
+    const fraisPort = total >= 50 ? 0 : 4.90;
     const totalFinal = (total + fraisPort).toFixed(2).replace('.', ',');
     const totalAff = total.toFixed(2).replace('.', ',');
     const manque = (50 - total).toFixed(2).replace('.', ',');

@@ -104,6 +104,7 @@
         var empty = document.getElementById('nouv-empty');
         if (!grid) return;
         var opts = { nouveaute: true };
+        if (currentSearch) opts.query = currentSearch;
         if (cat) opts.categorie = cat;
         var items = (typeof filterProducts === 'function') ? filterProducts(opts) : [];
         if (!items.length) {
@@ -118,6 +119,21 @@
     (function _init() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
         renderNouv('');
+
+        // ── Recherche #search-input ──
+        (function() {
+            var _debounce;
+            var inp = document.getElementById('search-input');
+            if (!inp) return;
+            inp.addEventListener('input', function() {
+                clearTimeout(_debounce);
+                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderNouv(document.querySelector('.filter-pill.active') ? document.querySelector('.filter-pill.active').dataset.cat || '' : ''); }, 200);
+            }, false);
+            // Bloquer la redirection vers page_recherche.html
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderNouv(document.querySelector('.filter-pill.active') ? document.querySelector('.filter-pill.active').dataset.cat || '' : ''); }
+            }, true);
+        })();
         document.querySelectorAll('.filter-pill').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));

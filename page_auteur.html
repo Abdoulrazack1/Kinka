@@ -666,8 +666,8 @@
             ? _allMangas.filter(function(m){ return m.serie === _currentSerie; })
             : _allMangas.slice();
 
-        if (_currentSort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
-        if (_currentSort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
+        if (_currentSort === 'prix_asc')  items.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pa-pb; });
+        if (_currentSort === 'prix_desc') items.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pb-pa; });
         if (_currentSort === 'note')      items.sort(function(a,b){ return (b.note||0)-(a.note||0); });
         if (_currentSort === 'nouveaute') items.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
 

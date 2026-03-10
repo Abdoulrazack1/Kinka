@@ -20,18 +20,36 @@
 
     if (!summaryContainer) return;
 
-    // ── Vider les items placeholder du HTML ──
-    summaryContainer.innerHTML = '';
-
-    // ── Panier vide ──
+    // ── Si le panier localStorage est vide, lire les items hardcodés du HTML ──
     if (cart.length === 0) {
-        summaryContainer.innerHTML =
-            '<p style="padding:1.5rem;text-align:center;color:var(--text-muted);font-size:.86rem">Votre panier est vide.</p>';
-        if (subtotalEl) subtotalEl.textContent = '0,00\u202f€';
-        if (totalEl)    totalEl.textContent    = '0,00\u202f€';
-        if (payButton)  payButton.disabled = true;
+        // Calculer les totaux depuis les items déjà dans le DOM (démo / mode hors-ligne)
+        var htmlItems = summaryContainer.querySelectorAll('.summary-item');
+        var sousTotal = 0;
+        htmlItems.forEach(function(item) {
+            var priceEl = item.querySelector('.item-price');
+            if (priceEl) {
+                var val = parseFloat(priceEl.textContent.replace('€','').replace(',','.').trim()) || 0;
+                var qtyEl = item.querySelector('.item-qty');
+                var qty = 1;
+                if (qtyEl) { var m = qtyEl.textContent.match(/\d+/); if(m) qty = parseInt(m[0]); }
+                sousTotal += val * qty;
+            }
+        });
+        var fraisLivraison = sousTotal >= 50 ? 0 : (sousTotal > 0 ? 4.90 : 0);
+        var total = sousTotal + fraisLivraison;
+        if (subtotalEl) subtotalEl.textContent = fmt(sousTotal);
+        var livraisonEl = document.getElementById('livraison-val');
+        if (livraisonEl) {
+            livraisonEl.textContent = fraisLivraison === 0 ? 'Gratuit' : fmt(fraisLivraison);
+            livraisonEl.className  = fraisLivraison === 0 ? 'free' : '';
+        }
+        if (totalEl) totalEl.textContent = fmt(total);
+        if (payButton) payButton.innerHTML = '<span class="material-symbols-outlined">lock</span> Payer ' + fmt(total);
         return;
     }
+
+    // ── Vider les items placeholder du HTML et injecter les vrais items ──
+    summaryContainer.innerHTML = '';
 
     // ── Construire les lignes ──
     var sousTotal = 0;
@@ -72,7 +90,7 @@
     });
 
     // ── Totaux ──
-    var fraisLivraison = sousTotal >= 50 ? 0 : 3.99;
+    var fraisLivraison = sousTotal >= 50 ? 0 : 4.90;
     var total = sousTotal + fraisLivraison;
 
     if (subtotalEl) subtotalEl.textContent = fmt(sousTotal);

@@ -26,6 +26,9 @@
         }
 
         cartButtons.forEach(btn => {
+            // Skip les cards buildProductCard (data-id) → gérées par kinkaAddToCart (onclick inline)
+            const parentCard = btn.closest('.product-card');
+            if (parentCard && parentCard.dataset.id) return;
             // Éviter d'attacher plusieurs fois l'événement sur le même bouton
             if (btn.dataset.productCardInitialized) return;
             btn.dataset.productCardInitialized = 'true';
@@ -105,3 +108,4 @@
     }
 
 })();
+// Note: initShineEffect est dans mangadb.js (chargé sur toutes les pages avec cards)

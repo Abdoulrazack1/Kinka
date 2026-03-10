@@ -146,6 +146,7 @@
 
     /* ── COUPS DE CŒUR — rendu des articles éditoriaux ── */
     var currentCat = '';
+    var currentSearch = '';
 
     var LIBRARIANS = [
         { name: 'Yuki M.', role: 'Responsable manga shōnen' },
@@ -168,6 +169,8 @@
     };
 
     function buildArticleCard(manga, index) {
+        var favs = []; try { favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]'); } catch(e) {}
+        var isFav = favs.includes(manga.id);
         var isReverse = (index % 2 === 1) ? 'reverse' : '';
         var tagClass = TAG_CLASSES[manga.categorie] || 'tag-shonen';
         var prix = (manga.promo && manga.prixPromo) ? manga.prixPromo : manga.prix;
@@ -207,8 +210,8 @@
                 '<div class="cdc-product-card" onclick="window.location.href=\'/page_detail_produit.html?id=' + manga.id + '\'">' +
                     '<div class="cdc-product-img">' +
                         '<img src="' + manga.image + '" alt="' + manga.titre + '" loading="lazy" onerror="this.src=\'/asset/image/One-Piece-Edition-originale-Tome-105.jpg\'">' +
-                        '<button class="cdc-fav-btn" onclick="kinkaToggleFav(\'' + manga.id + '\',event)" title="Ajouter aux favoris">' +
-                            '<span class="material-symbols-outlined">favorite</span>' +
+                        '<button class="cdc-fav-btn' + (isFav ? ' active' : '') + '" onclick="kinkaToggleFav(\'' + manga.id + '\',event)" title="' + (isFav ? 'Retirer des favoris' : 'Ajouter aux favoris') + '">' +
+                            '<span class="material-symbols-outlined" style="' + (isFav ? 'font-variation-settings:\'FILL\' 1;color:#ef4444' : '') + '">favorite</span>' +
                         '</button>' +
                     '</div>' +
                     '<div class="cdc-product-info">' +
@@ -249,6 +252,7 @@
         if (!articles || typeof filterProducts !== 'function') return;
 
         var opts = { coupDeCoeur: true };
+        if (currentSearch) opts.query = currentSearch;
         if (currentCat) opts.categorie = currentCat;
         var items = filterProducts(opts);
 
@@ -277,6 +281,21 @@
     (function _init(){
     if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
         renderCDC();
+
+        // ── Recherche #search-input ──
+        (function() {
+            var _debounce;
+            var inp = document.getElementById('search-input');
+            if (!inp) return;
+            inp.addEventListener('input', function() {
+                clearTimeout(_debounce);
+                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderCDC(); }, 200);
+            }, false);
+            // Bloquer la redirection vers page_recherche.html
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderCDC(); }
+            }, true);
+        })();
 
         document.querySelectorAll('.filter-pill').forEach(function(btn) {
             btn.addEventListener('click', function() {

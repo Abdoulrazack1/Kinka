@@ -660,8 +660,9 @@
         if (sbName)  sbName.textContent  = fullName || 'Mon Compte';
         if (sbEmail) sbEmail.textContent = currentUser.email || '';
         if (sbPlan) {
-            var planLabel = { gratuit: 'Membre', premium: '⭐ Premium', collector: '💎 Collector' };
-            sbPlan.textContent = planLabel[plan] || 'Membre';
+            var planLabel = { gratuit: 'Membre', premium: 'Premium', collector: 'Collector' };
+            var planIcon  = { gratuit: 'verified', premium: 'star', collector: 'collections_bookmark' };
+            sbPlan.innerHTML = '<span class="material-symbols-outlined" style="font-size:.7rem;font-variation-settings:\'FILL\' 1">'+planIcon[plan]+'</span> '+(planLabel[plan]||'Membre');
         }
         if (sbImg && plan !== 'gratuit') sbImg.style.background = plan === 'premium' ? 'rgba(224,59,139,.12)' : 'rgba(224,59,139,.18)';
 
@@ -693,6 +694,19 @@
 
         renderAbonnement();
         renderCommandes();
+
+        /* ── Section depuis URL param (?section=commandes etc.) ── */
+        (function applyUrlSection() {
+            var params = new URLSearchParams(window.location.search);
+            var sec = params.get('section');
+            if (!sec) return;
+            document.querySelectorAll('.profil-nav-item:not(#btn-deconnexion)').forEach(function(b){ b.classList.remove('active'); });
+            document.querySelectorAll('.profil-section').forEach(function(s){ s.classList.remove('active'); });
+            var navBtn = document.querySelector('.profil-nav-item[data-section="'+sec+'"]');
+            var secEl  = document.getElementById('section-'+sec);
+            if (navBtn) navBtn.classList.add('active');
+            if (secEl)  { secEl.classList.add('active'); if(sec==='favoris') loadFavoris(); }
+        })();
     }
 
     /* ── renderAbonnement ── */
@@ -743,9 +757,10 @@
                     '</div>'+
                 '</div>'+
                 '<div class="commande-articles">'+(cmd.articles||[]).map(function(a){
+                    var qty = a.quantite || a.qte || 1;
                     return '<div class="commande-article"><div class="commande-article-info">'+
                         '<span class="commande-article-titre">'+a.titre+'</span>'+
-                        '<span class="commande-article-prix">×'+a.qte+' — '+(a.prix*a.qte).toFixed(2)+' €</span>'+
+                        '<span class="commande-article-prix">×'+qty+' — '+((a.prix||0)*qty).toFixed(2)+' €</span>'+
                     '</div></div>';
                 }).join('')+'</div>'+
                 '<div class="commande-footer">'+
@@ -796,6 +811,8 @@
         if(idx>=0){users[idx]=currentUser;localStorage.setItem('kinka_users',JSON.stringify(users));}
         var n=((currentUser.prenom||'')+' '+(currentUser.nom||'')).trim();
         document.getElementById('profil-hero-name').textContent = n || 'Mon Compte';
+        var emailEl = document.getElementById('profil-hero-email');
+        if(emailEl) emailEl.textContent = currentUser.email || '';
         if(typeof showToast==='function')showToast('Informations enregistrées');
     }
     function resetInfo() { initProfil(); if(typeof showToast==='function')showToast('Modifications annulées'); }
@@ -811,15 +828,20 @@
         // Vérifier l'ancien mot de passe
         var users=[]; try{users=JSON.parse(localStorage.getItem('kinka_users')||'[]');}catch(e){}
         var idx=users.findIndex(function(u){return u.id===currentUser.id;});
-        if(idx>=0 && users[idx].motDePasse && users[idx].motDePasse!==actuel){
-            if(typeof showToast==='function')showToast('Mot de passe actuel incorrect','error');return;
+        if(idx>=0 && users[idx].password) {
+            // Le password est stocké encodé en btoa() par authentification.js
+            var expectedHash = typeof btoa === 'function' ? btoa(actuel) : actuel;
+            if(users[idx].password !== expectedHash){
+                if(typeof showToast==='function')showToast('Mot de passe actuel incorrect','error');return;
+            }
         }
-        // Sauvegarder le nouveau mot de passe
-        currentUser.motDePasse=n;
+        // Sauvegarder le nouveau mot de passe encodé (cohérence avec authentification.js)
+        var newHash = typeof btoa === 'function' ? btoa(n) : n;
+        currentUser.password=newHash;
         localStorage.setItem('kinka_current_user',JSON.stringify(currentUser));
-        if(idx>=0){users[idx].motDePasse=n;localStorage.setItem('kinka_users',JSON.stringify(users));}
+        if(idx>=0){users[idx].password=newHash;localStorage.setItem('kinka_users',JSON.stringify(users));}
         if(typeof showToast==='function')showToast('Mot de passe mis à jour');
-        ['pwd-actuel','pwd-nouveau','pwd-confirm'].forEach(function(id){document.getElementById(id).value='';});
+        ['pwd-actuel','pwd-nouveau','pwd-confirm'].forEach(function(id){document.getElementById(id).value='';}); 
     }
 
     /* ── deleteAccount ── */

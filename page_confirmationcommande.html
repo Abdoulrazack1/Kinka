@@ -77,7 +77,7 @@
             </p>
             <div class="action-buttons">
                 <a href="/page_catalogue.html" class="btn-primary">Continuer mes achats</a>
-                <a href="#" class="btn-secondary">Suivre ma commande</a>
+                <a href="/page_suivicommande.html" class="btn-secondary">Suivre ma commande</a>
             </div>
         </section>
 
@@ -110,7 +110,7 @@
                 <div id="conf-articles-list">
                 <div class="article-item">
                     <div class="article-info">
-                        <p class="article-title">One Piece - Tome 104</p>
+                        <p class="article-title">One Piece - Tome 105</p>
                         <p class="article-meta">6.90€</p>
                     </div>
                     <p class="article-publisher">Glénat</p>
@@ -129,7 +129,7 @@
                         <p class="article-title">Chainsaw Man - Tome 12</p>
                         <p class="article-meta">7.29€</p>
                     </div>
-                    <p class="article-publisher">Crunchyroll</p>
+                    <p class="article-publisher">Kazé Manga</p>
                 </div>
 
                 <!-- TOTALS -->
@@ -214,8 +214,12 @@
             }).join('');
             var subEl = document.getElementById('conf-subtotal');
             var totEl = document.getElementById('conf-total');
-            if (subEl) subEl.textContent = total.toFixed(2) + '€';
-            if (totEl) totEl.textContent = total.toFixed(2) + '€';
+            var livraison = total >= 50 ? 0 : 4.90;
+            var totalTTC = total + livraison;
+            if (subEl) subEl.textContent = total.toFixed(2).replace('.',',') + ' €';
+            var livEl = document.querySelector('.free-shipping');
+            if (livEl) { livEl.textContent = livraison === 0 ? 'Gratuit' : livraison.toFixed(2).replace('.',',') + ' €'; }
+            if (totEl) totEl.textContent = totalTTC.toFixed(2).replace('.',',') + ' €';
         }
 
         // Date de livraison estimée : +5 jours ouvrés

@@ -1352,3 +1352,25 @@ body.dark-mode .kinka-toast--success { background:#15803d !important; color:#fff
 body.dark-mode .kinka-toast--info    { background:#1d4ed8 !important; color:#fff !important; border-color:#1d4ed8 !important; }
 body.dark-mode .kinka-toast--warning { background:#b45309 !important; color:#fff !important; border-color:#b45309 !important; }
 body.dark-mode .kinka-toast--default { background:var(--bg-subtle) !important; color:var(--text) !important; border-color:var(--border) !important; }
+
+/* ── NAV USER DROPDOWN — dark mode ─────────────────────────── */
+body.dark-mode .nav-user-btn {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text);
+}
+body.dark-mode .nav-user-btn:hover {
+  background: var(--pink-soft);
+  border-color: var(--pink);
+  color: var(--pink);
+}
+body.dark-mode .nav-user-dropdown {
+  background: var(--bg-card);
+  border-color: var(--border);
+  box-shadow: 0 16px 48px rgba(0,0,0,.5);
+}
+body.dark-mode .nav-user-dropdown-name { color: var(--text); }
+body.dark-mode .nav-user-dropdown-item:hover {
+  background: var(--bg-subtle);
+  color: var(--text);
+}

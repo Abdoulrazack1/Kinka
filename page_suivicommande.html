@@ -191,7 +191,7 @@
                         </div>
                     </div>
 
-                    <a href="#" class="carrier-link">Site du transporteur</a>
+                    <a href="https://www.laposte.fr/outils/suivre-vos-envois" target="_blank" rel="noopener" class="carrier-link">Site du transporteur</a>
                 </div>
 
                 <!-- ORDER SUMMARY -->
@@ -337,6 +337,25 @@
                 if (lbl.textContent.trim() === 'Total payé') val.textContent = fmt(total);
             }
         });
+
+        // Articles de la commande
+        var artSection = document.querySelector('.articles-section');
+        if (artSection && order.articles && order.articles.length) {
+            var artH2 = artSection.querySelector('h2');
+            if (artH2) artH2.textContent = 'Articles (' + order.articles.length + ')';
+            // Supprimer les items hardcodés
+            artSection.querySelectorAll('.article-item').forEach(function(el){ el.remove(); });
+            // Insérer les vrais articles
+            var frag = '';
+            order.articles.forEach(function(a) {
+                var lineTotal = ((a.prix||0) * (a.quantite||1)).toFixed(2).replace('.',',');
+                frag += '<div class="article-item"><div class="article-info">' +
+                    '<p class="article-title">' + (a.titre||'Manga') + (a.quantite > 1 ? ' × ' + a.quantite : '') + '</p>' +
+                    '<p class="article-meta">Qté : ' + (a.quantite||1) + ' • ' + lineTotal + ' €</p>' +
+                    '</div></div>';
+            });
+            artSection.insertAdjacentHTML('beforeend', frag);
+        }
 
         // Adresse depuis le profil user
         var currentUser = null;

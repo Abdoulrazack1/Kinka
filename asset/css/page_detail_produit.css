@@ -316,7 +316,10 @@
 
 /* ── SIMILAIRES ────────────────────────────────────────────────── */
 .section-similaires {
+    margin-top: 3rem;
     margin-bottom: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
 }
 .section-similaires h2 {
     font-size: 1.2rem;
@@ -328,7 +331,12 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
+    margin-top: 1.1rem;
 }
+
+/* Cards similaires — hauteur image légèrement réduite vs catalogue */
+#produits-similaires .product-card { cursor: pointer; }
+#produits-similaires .product-image { height: 200px; }
 
 /* ── RESPONSIVE ────────────────────────────────────────────────── */
 @media (max-width: 960px) {

@@ -207,14 +207,18 @@ function initBoutonPanier(p) {
     }
 
     btn.addEventListener('click', function () {
-        const qty = parseInt(document.getElementById('qty-input')?.value) || 1;
-        const prix = (p.promo && p.prixPromo) ? p.prixPromo : p.prix;
+        const qty   = parseInt(document.getElementById('qty-input')?.value) || 1;
+        const prix  = (p.promo && p.prixPromo) ? p.prixPromo : p.prix;
+        const MAX_Q = 10;
 
         // Utiliser kinkaAddToCart de mangadb.js ou fallback localStorage
         let panier = JSON.parse(localStorage.getItem('kinka_panier') || '[]');
         const idx  = panier.findIndex(i => i.id === p.id);
-        if (idx >= 0) panier[idx].quantite = (panier[idx].quantite || 1) + qty;
-        else panier.push({ id: p.id, titre: p.titre, prix: prix, image: p.image, editeur: p.editeur, quantite: qty });
+        if (idx >= 0) {
+            panier[idx].quantite = Math.min((panier[idx].quantite || 1) + qty, Math.min(MAX_Q, p.stock));
+        } else {
+            panier.push({ id: p.id, titre: p.titre, prix: prix, image: p.image, editeur: p.editeur, quantite: Math.min(qty, Math.min(MAX_Q, p.stock)) });
+        }
         localStorage.setItem('kinka_panier', JSON.stringify(panier));
 
         if (typeof updatePanierCount === 'function') updatePanierCount();
@@ -261,7 +265,7 @@ function initBoutonFavoris(p) {
             btn.classList.add('favoris-actif');
             if (icon2) icon2.style.cssText = 'font-size:1.1rem;color:#ef4444;transition:all .2s ease;font-variation-settings:"FILL" 1';
             btn.title = 'Retirer des favoris';
-            if (typeof showToast === 'function') showToast(' Ajouté aux favoris !');
+            if (typeof showToast === 'function') showToast('Ajouté aux favoris !');
         }
         localStorage.setItem('kinka_favoris', JSON.stringify(favs2));
         if (typeof updateFavsCount === 'function') updateFavsCount();
@@ -284,7 +288,7 @@ function chargerSimilaires(produit) {
 
     // Use buildProductCard from mangadb.js if available for full functionality
     if (typeof buildProductCard === 'function') {
-        container.innerHTML = '<div class="products-grid">' + similaires.map(m => buildProductCard(m)).join('') + '</div>';
+        container.innerHTML = similaires.map(m => buildProductCard(m)).join('');
     } else {
         container.innerHTML = similaires.map(m => {
             const prix = (m.promo && m.prixPromo) ? m.prixPromo : m.prix;
