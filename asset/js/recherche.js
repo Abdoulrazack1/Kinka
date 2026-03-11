@@ -23,13 +23,17 @@
         if (dropdown) { dropdown.remove(); dropdown = null; }
     }
 
+    function escapeHtml(str) {
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     function showResults(query) {
         if (!query || query.length < 2) { removeDropdown(); return; }
         if (typeof filterProducts !== 'function') return;
         const results = filterProducts({ query }).slice(0, 7);
         if (!results.length) {
             createDropdown();
-            dropdown.innerHTML = `<div class="search-no-result">Aucun résultat pour "<strong>${query}</strong>"</div>`;
+            dropdown.innerHTML = `<div class="search-no-result">Aucun résultat pour "<strong>${escapeHtml(query)}</strong>"</div>`;
             return;
         }
         createDropdown();

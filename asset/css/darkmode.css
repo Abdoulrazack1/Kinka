@@ -1374,3 +1374,15 @@ body.dark-mode .nav-user-dropdown-item:hover {
   background: var(--bg-subtle);
   color: var(--text);
 }
+
+/* ── Header scrolled en dark mode ── */
+body.dark-mode header.scrolled {
+  box-shadow: 0 2px 24px rgba(0,0,0,.5);
+  border-bottom-color: var(--border);
+}
+/* ── Toast en dark mode ── */
+body.dark-mode .kinka-toast--default {
+  background: var(--bg-subtle);
+  color: var(--text);
+  border-color: var(--border);
+}

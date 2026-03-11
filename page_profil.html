@@ -169,6 +169,34 @@
     <!-- Layout principal -->
     <div id="profil-connected" style="display:none">
         <div class="container">
+            <!-- ── Navigation mobile (tabs) ─────────────────────── -->
+            <nav class="profil-mobile-tabs" id="profil-mobile-tabs">
+                <button class="profil-mobile-tab active" data-section="info">
+                    <span class="material-symbols-outlined">manage_accounts</span>
+                    Infos
+                </button>
+                <button class="profil-mobile-tab" data-section="commandes">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                    Commandes
+                </button>
+                <button class="profil-mobile-tab" data-section="favoris">
+                    <span class="material-symbols-outlined">favorite</span>
+                    Favoris
+                </button>
+                <button class="profil-mobile-tab" data-section="abonnement">
+                    <span class="material-symbols-outlined">workspace_premium</span>
+                    Abonnement
+                </button>
+                <button class="profil-mobile-tab" data-section="securite">
+                    <span class="material-symbols-outlined">lock</span>
+                    Sécurité
+                </button>
+                <button class="profil-mobile-tab profil-mobile-tab-danger" id="mobile-btn-deconnexion">
+                    <span class="material-symbols-outlined">logout</span>
+                    Quitter
+                </button>
+            </nav>
+
             <div class="profil-layout">
 
                 <!-- ── Sidebar nav ─────────────────────────────────── -->
@@ -180,11 +208,13 @@
                             <div class="profil-sidebar-avatar-img" id="profil-sidebar-avatar-img">
                                 <span class="material-symbols-outlined">person</span>
                             </div>
-                            <div class="profil-sidebar-name" id="profil-sidebar-name">—</div>
-                            <div class="profil-sidebar-email" id="profil-sidebar-email">—</div>
-                            <div class="profil-sidebar-plan" id="profil-sidebar-plan">
-                                <span class="material-symbols-outlined" style="font-size:.75rem;font-variation-settings:'FILL' 1">verified</span>
-                                Membre
+                            <div class="profil-sidebar-identity">
+                                <div class="profil-sidebar-name" id="profil-sidebar-name">—</div>
+                                <div class="profil-sidebar-email" id="profil-sidebar-email">—</div>
+                                <div class="profil-sidebar-plan" id="profil-sidebar-plan">
+                                    <span class="material-symbols-outlined" style="font-size:.75rem;font-variation-settings:'FILL' 1">verified</span>
+                                    Membre
+                                </div>
                             </div>
                         </div>
 
@@ -701,11 +731,14 @@
             var sec = params.get('section');
             if (!sec) return;
             document.querySelectorAll('.profil-nav-item:not(#btn-deconnexion)').forEach(function(b){ b.classList.remove('active'); });
+            document.querySelectorAll('.profil-mobile-tab:not(#mobile-btn-deconnexion)').forEach(function(b){ b.classList.remove('active'); });
             document.querySelectorAll('.profil-section').forEach(function(s){ s.classList.remove('active'); });
-            var navBtn = document.querySelector('.profil-nav-item[data-section="'+sec+'"]');
-            var secEl  = document.getElementById('section-'+sec);
-            if (navBtn) navBtn.classList.add('active');
-            if (secEl)  { secEl.classList.add('active'); if(sec==='favoris') loadFavoris(); }
+            var navBtn    = document.querySelector('.profil-nav-item[data-section="'+sec+'"]');
+            var mobileTab = document.querySelector('.profil-mobile-tab[data-section="'+sec+'"]');
+            var secEl     = document.getElementById('section-'+sec);
+            if (navBtn)    navBtn.classList.add('active');
+            if (mobileTab) mobileTab.classList.add('active');
+            if (secEl)     { secEl.classList.add('active'); if(sec==='favoris') loadFavoris(); }
         })();
     }
 
@@ -790,13 +823,38 @@
         btn.addEventListener('click', function(){
             var sec = this.dataset.section;
             document.querySelectorAll('.profil-nav-item:not(#btn-deconnexion)').forEach(function(b){b.classList.remove('active');});
+            document.querySelectorAll('.profil-mobile-tab:not(#mobile-btn-deconnexion)').forEach(function(b){b.classList.remove('active');});
             document.querySelectorAll('.profil-section').forEach(function(s){s.classList.remove('active');});
             this.classList.add('active');
+            // sync mobile tab
+            var mobileTab = document.querySelector('.profil-mobile-tab[data-section="'+sec+'"]');
+            if (mobileTab) mobileTab.classList.add('active');
             var el = document.getElementById('section-'+sec);
             if (el) { el.classList.add('active'); if(sec==='favoris')loadFavoris(); }
         });
     });
+
+    /* ── Mobile tabs ── */
+    document.querySelectorAll('.profil-mobile-tab:not(#mobile-btn-deconnexion)').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            var sec = this.dataset.section;
+            document.querySelectorAll('.profil-nav-item:not(#btn-deconnexion)').forEach(function(b){b.classList.remove('active');});
+            document.querySelectorAll('.profil-mobile-tab:not(#mobile-btn-deconnexion)').forEach(function(b){b.classList.remove('active');});
+            document.querySelectorAll('.profil-section').forEach(function(s){s.classList.remove('active');});
+            this.classList.add('active');
+            // sync desktop nav
+            var desktopBtn = document.querySelector('.profil-nav-item[data-section="'+sec+'"]');
+            if (desktopBtn) desktopBtn.classList.add('active');
+            var el = document.getElementById('section-'+sec);
+            if (el) { el.classList.add('active'); if(sec==='favoris')loadFavoris(); }
+        });
+    });
+
     document.getElementById('btn-deconnexion').addEventListener('click', function(){
+        if (confirm('Se déconnecter ?')) { localStorage.removeItem('kinka_current_user'); window.location.href='/page_accueil.html'; }
+    });
+    var mobileDeco = document.getElementById('mobile-btn-deconnexion');
+    if (mobileDeco) mobileDeco.addEventListener('click', function(){
         if (confirm('Se déconnecter ?')) { localStorage.removeItem('kinka_current_user'); window.location.href='/page_accueil.html'; }
     });
 
@@ -837,9 +895,10 @@
         }
         // Sauvegarder le nouveau mot de passe encodé (cohérence avec authentification.js)
         var newHash = typeof btoa === 'function' ? btoa(n) : n;
-        currentUser.password=newHash;
-        localStorage.setItem('kinka_current_user',JSON.stringify(currentUser));
         if(idx>=0){users[idx].password=newHash;localStorage.setItem('kinka_users',JSON.stringify(users));}
+        // Ne PAS stocker le hash dans la session — on retire le champ password de la session
+        delete currentUser.password;
+        localStorage.setItem('kinka_current_user',JSON.stringify(currentUser));
         if(typeof showToast==='function')showToast('Mot de passe mis à jour');
         ['pwd-actuel','pwd-nouveau','pwd-confirm'].forEach(function(id){document.getElementById(id).value='';}); 
     }

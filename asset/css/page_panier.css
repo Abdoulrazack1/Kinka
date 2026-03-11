@@ -614,3 +614,37 @@
 /* ── AJOUTS ─────────────────────────────────────────────── */
 .continuer-achats{display:inline-flex;align-items:center;gap:.45rem;color:var(--pink);font-size:.85rem;font-weight:600;cursor:pointer;background:none;border:none;padding:.5rem;font-family:inherit;transition:var(--transition)}
 .continuer-achats:hover{color:var(--pink-dark)}
+
+/* ── Animation suppression article ── */
+.panier-item.removing {
+  animation: itemRemove .35s ease forwards;
+  pointer-events: none;
+}
+@keyframes itemRemove {
+  0%   { opacity: 1; transform: translateX(0); max-height: 200px; }
+  60%  { opacity: 0; transform: translateX(30px); }
+  100% { opacity: 0; max-height: 0; padding: 0; margin: 0; overflow: hidden; }
+}
+
+/* ── Barre de progression livraison gratuite ── */
+.livraison-progress { margin: .75rem 0; }
+.livraison-info { font-size: .8rem; color: var(--text-muted); margin-bottom: .4rem; }
+.livraison-bar-wrap {
+  height: 6px;
+  background: var(--bg-muted);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.livraison-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pink), var(--pink-dark));
+  border-radius: 999px;
+  transition: width .6s cubic-bezier(.4,0,.2,1);
+  min-width: 4px;
+}
+.livraison-gratuite {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .82rem; font-weight: 600; color: #16a34a;
+  margin: .5rem 0;
+}
+.livraison-gratuite .material-symbols-outlined { font-size: 1rem; }

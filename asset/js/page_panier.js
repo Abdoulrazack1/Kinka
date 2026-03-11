@@ -89,7 +89,13 @@ function genererResume(panierData) {
                 <span>Livraison</span>
                 <span>${fraisPort === 0 ? '<strong style="color:#22c55e">Gratuite</strong>' : fraisPort.toFixed(2).replace('.', ',') + ' €'}</span>
             </div>
-            ${fraisPort > 0 ? `<p class="livraison-info">Plus que <strong>${manque} €</strong> pour la livraison gratuite !</p>` : ''}
+            ${fraisPort > 0 ? `
+            <div class="livraison-progress">
+                <p class="livraison-info">Plus que <strong>${manque} €</strong> pour la livraison gratuite</p>
+                <div class="livraison-bar-wrap">
+                    <div class="livraison-bar" style="width:${Math.min(100,(total/50)*100).toFixed(0)}%"></div>
+                </div>
+            </div>` : `<p class="livraison-gratuite"><span class="material-symbols-outlined">local_shipping</span> Livraison offerte !</p>`}
             <div class="resume-ligne total">
                 <span>Total TTC</span>
                 <span><strong>${totalFinal} €</strong></span>
@@ -117,12 +123,24 @@ function attacherEvenements() {
             const p = obtenirPanier().find(function(x) { return x.id === id; });
             if (p) {
                 if (p.quantite > 1) {
-                    modifierQuantite(id, p.quantite - 1);
+                    modifierQuantite(id, p.quantite - 1); afficherPanier();
                 } else {
-                    retirerDuPanier(id);
-                    afficherNotification('Produit retiré du panier');
+                    const item = this.closest('.panier-item');
+                    if (item) {
+                        item.classList.add('removing');
+                        setTimeout(function() {
+                            retirerDuPanier(id);
+                            if (typeof showToast === 'function') showToast('Produit retiré du panier');
+                            else afficherNotification('Produit retiré du panier');
+                            afficherPanier();
+                        }, 350);
+                    } else {
+                        retirerDuPanier(id);
+                        if (typeof showToast === 'function') showToast('Produit retiré du panier');
+                        else afficherNotification('Produit retiré du panier');
+                        afficherPanier();
+                    }
                 }
-                afficherPanier();
             }
         });
     });
@@ -130,9 +148,21 @@ function attacherEvenements() {
     document.querySelectorAll('.btn-supprimer').forEach(function(btn) {
         btn.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
-            retirerDuPanier(id);
-            afficherNotification('Produit retiré du panier');
-            afficherPanier();
+            const item = this.closest('.panier-item');
+            if (item) {
+                item.classList.add('removing');
+                setTimeout(function() {
+                    retirerDuPanier(id);
+                    if (typeof showToast === 'function') showToast('Produit retiré du panier');
+                    else afficherNotification('Produit retiré du panier');
+                    afficherPanier();
+                }, 350);
+            } else {
+                retirerDuPanier(id);
+                if (typeof showToast === 'function') showToast('Produit retiré du panier');
+                else afficherNotification('Produit retiré du panier');
+                afficherPanier();
+            }
         });
     });
 

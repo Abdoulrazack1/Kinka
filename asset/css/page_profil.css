@@ -213,7 +213,7 @@
 /* ════════ LAYOUT CONNECTÉ ═════════════════════════════════════════ */
 .profil-layout {
   display: grid;
-  grid-template-columns: 230px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: 2rem;
   align-items: start;
   padding: 2rem 0 4rem;
@@ -231,16 +231,20 @@
 }
 .profil-nav-item {
   width: 100%;
-  display: flex; align-items: center; gap: .65rem;
-  padding: .88rem 1.1rem;
+  display: flex; align-items: center; gap: .75rem;
+  padding: .95rem 1.25rem;
   background: none; border: none;
   border-bottom: 1px solid var(--border);
-  cursor: pointer; font-size: .855rem; font-weight: 500;
+  cursor: pointer; font-size: .88rem; font-weight: 500;
   color: var(--text-muted); text-align: left;
   transition: var(--transition); position: relative;
+  white-space: nowrap; overflow: hidden;
+}
+.profil-nav-item span:not(.material-symbols-outlined):not(.profil-nav-badge) {
+  overflow: hidden; text-overflow: ellipsis;
 }
 .profil-nav-item:last-child { border-bottom: none; }
-.profil-nav-item .material-symbols-outlined { font-size: 1.05rem; flex-shrink: 0; }
+.profil-nav-item .material-symbols-outlined { font-size: 1.1rem; flex-shrink: 0; }
 .profil-nav-item:hover { background: var(--bg-muted); color: var(--text); }
 .profil-nav-item:hover .material-symbols-outlined { color: var(--pink); }
 .profil-nav-item.active {
@@ -252,12 +256,13 @@
 }
 .profil-nav-item.active .material-symbols-outlined { color: var(--pink); }
 .profil-nav-danger { color: #ef4444 !important; }
-.profil-nav-danger:hover { background: #fef2f2 !important; }
+.profil-nav-danger:hover { background: rgba(239,68,68,.06) !important; }
 .profil-nav-badge {
   margin-left: auto; background: var(--pink); color: #fff;
   font-size: .62rem; font-weight: 700;
-  min-width: 18px; height: 18px; border-radius: 999px;
-  display: inline-flex; align-items: center; justify-content: center; padding: 0 .3rem;
+  min-width: 20px; height: 20px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center; padding: 0 .35rem;
+  flex-shrink: 0;
 }
 
 /* ── Contenu ── */
@@ -478,7 +483,7 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
 
 /* ════════ RESPONSIVE ══════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .profil-layout { grid-template-columns: 200px 1fr; }
+  .profil-layout { grid-template-columns: 250px 1fr; }
   .abo-plans-grid { grid-template-columns: 1fr 1fr; }
   .profil-info-grid { grid-template-columns: 1fr; }
 }
@@ -486,6 +491,7 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
   .gate-left { display: none; }
   .gate-wrap { grid-template-columns: 1fr; border-radius: 20px; }
   .abo-plans-grid { grid-template-columns: 1fr; }
+  .profil-layout { grid-template-columns: 220px 1fr; gap: 1.25rem; }
 }
 @media (max-width: 768px) {
   .profil-layout { grid-template-columns: 1fr; padding: 1.25rem 0 2.5rem; }
@@ -496,6 +502,20 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
   .profil-form-row { grid-template-columns: 1fr; }
   .abo-current { flex-direction: column; text-align: center; }
   .abo-current-right { margin-left: 0; }
+  /* Sidebar en mobile : layout horizontal compact */
+  .profil-sidebar-card { display: flex; flex-direction: row; align-items: stretch; border-radius: 14px; }
+  .profil-sidebar-header { flex-direction: row; text-align: left; padding: 1rem 1.25rem; gap: .85rem; flex: 0 0 auto; }
+  .profil-sidebar-header::after { display: none; }
+  .profil-sidebar-avatar-img { width: 52px; height: 52px; margin-bottom: 0; flex-shrink: 0; }
+  .profil-sidebar-avatar-img .material-symbols-outlined { font-size: 1.6rem; }
+  .profil-sidebar-identity { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .profil-sidebar-name { font-size: .88rem; }
+  .profil-sidebar-email { font-size: .72rem; }
+  .profil-sidebar-plan { margin-top: .3rem; font-size: .62rem; padding: .2rem .65rem; }
+  .profil-sidebar-sep { display: none; }
+  .profil-nav { display: none; }
+  .profil-sidebar-footer { display: none; }
+  /* On mobile, navigation becomes tabs below the hero */
 }
 @media (max-width: 480px) {
   .gate-right { padding: 2rem 1.25rem; }
@@ -525,7 +545,7 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.75rem 1rem 1.25rem;
+  padding: 2rem 1.25rem 1.5rem;
   background: linear-gradient(160deg, var(--pink-soft) 0%, rgba(224,59,139,.04) 100%);
   text-align: center;
   position: relative;
@@ -533,46 +553,48 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
 .profil-sidebar-header::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 1.25rem; right: 1.25rem;
+  bottom: 0; left: 0; right: 0;
   height: 1px;
   background: var(--border);
 }
 
 .profil-sidebar-avatar-img {
-  width: 68px; height: 68px;
+  width: 80px; height: 80px;
   border-radius: 50%;
   background: var(--pink-soft);
   display: flex; align-items: center; justify-content: center;
-  border: 2.5px solid var(--pink);
-  margin-bottom: .75rem;
-  box-shadow: 0 0 0 4px rgba(224,59,139,.1);
+  border: 3px solid var(--pink);
+  margin-bottom: 1rem;
+  box-shadow: 0 0 0 5px rgba(224,59,139,.1);
+  flex-shrink: 0;
 }
 .profil-sidebar-avatar-img .material-symbols-outlined {
-  font-size: 2rem; color: var(--pink);
+  font-size: 2.4rem; color: var(--pink);
   font-variation-settings: 'FILL' 1;
 }
 
 .profil-sidebar-name {
-  font-size: .9rem; font-weight: 800; color: var(--text);
-  max-width: 100%; overflow: hidden;
+  font-size: 1rem; font-weight: 800; color: var(--text);
+  width: 100%; overflow: hidden;
   text-overflow: ellipsis; white-space: nowrap;
   letter-spacing: -.02em;
 }
 .profil-sidebar-email {
-  font-size: .72rem; color: var(--text-muted);
-  max-width: 100%; overflow: hidden;
+  font-size: .78rem; color: var(--text-muted);
+  width: 100%; overflow: hidden;
   text-overflow: ellipsis; white-space: nowrap;
-  margin-top: .2rem;
+  margin-top: .3rem;
 }
 .profil-sidebar-plan {
-  display: inline-flex; align-items: center; gap: .3rem;
-  margin-top: .65rem;
-  padding: .25rem .75rem;
+  display: inline-flex; align-items: center; gap: .35rem;
+  margin-top: .75rem;
+  padding: .3rem .9rem;
   background: var(--pink-soft);
   border: 1px solid rgba(224,59,139,.25);
   border-radius: 999px;
-  font-size: .65rem; font-weight: 700; color: var(--pink);
+  font-size: .7rem; font-weight: 700; color: var(--pink);
   letter-spacing: .06em; text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .profil-sidebar-sep { display: none; }
@@ -670,3 +692,47 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
 .pwd-input-wrap .form-input { padding-right: 2.75rem; }
 .pwd-strength { height: 4px; background: var(--border); border-radius: 999px; margin-top: .5rem; overflow: hidden; }
 .pwd-strength-bar { height: 100%; border-radius: 999px; transition: width .3s ease, background .3s ease; }
+
+/* ── Navigation mobile : tabs horizontaux ────────────────────── */
+.profil-mobile-tabs {
+  display: none;
+}
+@media (max-width: 768px) {
+  .profil-mobile-tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 1.25rem;
+    scrollbar-width: none;
+  }
+  .profil-mobile-tabs::-webkit-scrollbar { display: none; }
+  .profil-mobile-tab {
+    display: flex; flex-direction: column; align-items: center; gap: .3rem;
+    padding: .75rem .9rem;
+    background: none; border: none;
+    cursor: pointer; font-size: .7rem; font-weight: 600;
+    color: var(--text-muted); white-space: nowrap;
+    transition: var(--transition); position: relative;
+    flex: 1 0 auto;
+    min-width: 72px;
+  }
+  .profil-mobile-tab .material-symbols-outlined { font-size: 1.2rem; }
+  .profil-mobile-tab:hover { color: var(--text); background: var(--bg-muted); }
+  .profil-mobile-tab.active {
+    color: var(--pink); font-weight: 700;
+  }
+  .profil-mobile-tab.active::after {
+    content: ''; position: absolute; bottom: 0; left: 20%; right: 20%;
+    height: 2.5px; background: var(--pink); border-radius: 2px 2px 0 0;
+  }
+  .profil-mobile-tab-danger { color: #ef4444 !important; }
+}
+
+/* ── Sidebar identity wrapper (needed for flex row on mobile) ── */
+.profil-sidebar-identity {
+  display: flex; flex-direction: column; justify-content: center;
+  min-width: 0; flex: 1;
+}

@@ -7,7 +7,7 @@
     'use strict';
 
     const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('q') || '';
+    let query = urlParams.get('q') || '';
 
     const searchQueryEl    = document.querySelector('.search-query');
     const resultsCountEl   = document.querySelector('.results-count');
@@ -16,6 +16,10 @@
     const sortSelect       = document.querySelector('.sort-select');
 
     if (!productsGrid) return;
+
+    function escapeHtml(str) {
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
 
     if (searchQueryEl) searchQueryEl.textContent = `"${query}"`;
 
@@ -57,7 +61,7 @@
             productsGrid.innerHTML = `
                 <div class="no-results" style="grid-column:1/-1;text-align:center;padding:3rem;">
                     <span class="material-symbols-outlined" style="font-size:4rem;color:#ccc;">search</span>
-                    <h3>Aucun résultat pour "${query}"</h3>
+                    <h3>Aucun résultat pour "${escapeHtml(query)}"</h3>
                     <p>Essayez avec d'autres mots-clés ou parcourez notre <a href="/page_catalogue.html">catalogue</a>.</p>
                 </div>`;
             return;
@@ -93,6 +97,7 @@
                     (m.editeur && m.editeur.toLowerCase().includes(lq)) ||
                     (m.tags    && m.tags.some(t => t.toLowerCase().includes(lq)))
                 );
+                query = newQ;
                 if (searchQueryEl) searchQueryEl.textContent = `"${newQ}"`;
                 renderResults();
             }, 200);
