@@ -331,51 +331,107 @@
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}
+    // Pré-remplir le formulaire avec les données utilisateur connecté
+    if(user){
+        function setVal(id,val){var el=document.getElementById(id);if(el&&val&&!el.value)el.value=val;}
+        setVal('prenom',    user.prenom);
+        setVal('nom',       user.nom);
+        setVal('adresse',   user.adresse);
+        setVal('code-postal', user.codePostal);
+        setVal('ville',     user.ville);
+        setVal('telephone', user.telephone);
+    }
+    }());
+
+    // ── Formatage automatique carte bancaire ─────────────────
+    (function(){
+        var cardNum = document.getElementById('card-number');
+        if(cardNum){
+            cardNum.setAttribute('maxlength','19');
+            cardNum.addEventListener('input', function(){
+                var v = this.value.replace(/\D/g,'').substring(0,16);
+                this.value = v.replace(/(.{4})/g,'$1 ').trim();
+            });
+        }
+        var expiry = document.getElementById('expiration');
+        if(expiry){
+            expiry.setAttribute('maxlength','5');
+            expiry.addEventListener('input', function(e){
+                var v = this.value.replace(/\D/g,'');
+                if(v.length>=3) v = v.substring(0,2)+'/'+v.substring(2,4);
+                this.value = v;
+            });
+        }
+        var cvc = document.getElementById('cvc');
+        if(cvc){
+            cvc.setAttribute('maxlength','4');
+            cvc.addEventListener('input', function(){ this.value = this.value.replace(/\D/g,''); });
+        }
+    })();
 
     // ── Bouton Payer ─────────────────────────────────────────
     (function(){
         var payBtn = document.querySelector('.btn-pay');
         if (!payBtn) return;
+
+        // Validation inline avec état visuel
+        function setFieldError(el, hasError) {
+            if (!el) return;
+            el.style.borderColor = hasError ? '#ef4444' : '';
+            el.style.boxShadow   = hasError ? '0 0 0 3px rgba(239,68,68,.15)' : '';
+        }
+        ['card-number','card-name','expiration','cvc'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.addEventListener('input', function() { setFieldError(this, false); });
+        });
+
         payBtn.addEventListener('click', function() {
-            // Validation simple des champs carte
             var num  = document.getElementById('card-number');
             var name = document.getElementById('card-name');
             var exp  = document.getElementById('expiration');
             var cvv  = document.getElementById('cvc');
-            if (num && !num.value.replace(/\s/g,'').match(/^\d{16}$/))  { showToast('Numéro de carte invalide (16 chiffres).','error'); num.focus(); return; }
-            if (name && !name.value.trim())                              { showToast('Titulaire de la carte requis.','error'); name.focus(); return; }
-            if (exp && !exp.value.match(/^\d{2}\/\d{2}$/))             { showToast('Date d\'expiration invalide (MM/AA).','error'); exp.focus(); return; }
-            if (cvv && !cvv.value.match(/^\d{3,4}$/))                  { showToast('CVV invalide.','error'); cvv.focus(); return; }
+            var firstInvalid = null;
+            if (num && !num.value.replace(/\s/g,'').match(/^\d{16}$/))  { setFieldError(num, true);  if(!firstInvalid) firstInvalid = num; }
+            if (name && !name.value.trim())                               { setFieldError(name, true); if(!firstInvalid) firstInvalid = name; }
+            if (exp && !exp.value.match(/^\d{2}\/\d{2}$/))            { setFieldError(exp, true);  if(!firstInvalid) firstInvalid = exp; }
+            if (cvv && !cvv.value.match(/^\d{3,4}$/))                   { setFieldError(cvv, true);  if(!firstInvalid) firstInvalid = cvv; }
+            if (firstInvalid) {
+                showToast('Veuillez corriger les champs en rouge.', 'error');
+                firstInvalid.focus();
+                return;
+            }
 
-            // Sauvegarder la commande dans localStorage
-            var cart = (typeof window.getCart === 'function') ? window.getCart() : [];
-            var orderId = 'KIN-' + Math.floor(Math.random()*90000+10000);
-            var total = cart.reduce(function(s,i){ return s + (i.prix||0)*(i.quantite||1); }, 0);
-            var order = { id: orderId, date: new Date().toISOString(), articles: cart, total: total, statut: 'en_cours' };
-            try {
-                var orders = JSON.parse(localStorage.getItem('kinka_last_order') || 'null');
-                localStorage.setItem('kinka_last_order', JSON.stringify(order));
-                // Aussi l'ajouter dans le profil user si connecté
-                var currentUser = JSON.parse(localStorage.getItem('kinka_current_user') || 'null');
-                if (currentUser) {
-                    var users = JSON.parse(localStorage.getItem('kinka_users') || '[]');
-                    var idx = users.findIndex(function(u){ return u.id === currentUser.id; });
-                    if (idx >= 0) {
-                        users[idx].commandes = users[idx].commandes || [];
-                        users[idx].commandes.unshift(order);
-                        localStorage.setItem('kinka_users', JSON.stringify(users));
-                        currentUser.commandes = users[idx].commandes;
-                        localStorage.setItem('kinka_current_user', JSON.stringify(currentUser));
+            // État de chargement
+            var origHtml = payBtn.innerHTML;
+            payBtn.disabled = true;
+            payBtn.style.opacity = '.7';
+            payBtn.innerHTML = '<span class="material-symbols-outlined" style="animation:spin .8s linear infinite;font-size:1rem">progress_activity</span> Traitement en cours…';
+
+            setTimeout(function() {
+                // Sauvegarder la commande dans localStorage
+                var cart = (typeof window.getCart === 'function') ? window.getCart() : [];
+                var orderId = 'KIN-' + Math.floor(Math.random()*90000+10000);
+                var total = cart.reduce(function(s,i){ return s + (i.prix||0)*(i.quantite||1); }, 0);
+                var order = { id: orderId, date: new Date().toISOString(), articles: cart, total: total, statut: 'en_cours' };
+                try {
+                    localStorage.setItem('kinka_last_order', JSON.stringify(order));
+                    var currentUser = JSON.parse(localStorage.getItem('kinka_current_user') || 'null');
+                    if (currentUser) {
+                        var users = JSON.parse(localStorage.getItem('kinka_users') || '[]');
+                        var idx = users.findIndex(function(u){ return u.id === currentUser.id; });
+                        if (idx >= 0) {
+                            users[idx].commandes = users[idx].commandes || [];
+                            users[idx].commandes.unshift(order);
+                            localStorage.setItem('kinka_users', JSON.stringify(users));
+                            currentUser.commandes = users[idx].commandes;
+                            localStorage.setItem('kinka_current_user', JSON.stringify(currentUser));
+                        }
                     }
-                }
-            } catch(e) {}
-
-            // Vider le panier
-            localStorage.removeItem('kinka_panier');
-
-            // Redirection
-            window.location.href = '/page_confirmationcommande.html';
+                } catch(e) {}
+                localStorage.removeItem('kinka_panier');
+                window.location.href = '/page_confirmationcommande.html';
+            }, 400);
         });
     })();
     </script>

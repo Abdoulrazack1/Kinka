@@ -10,7 +10,7 @@
 
 /* ── SIDEBAR ──────────────────────────────────────────────────── */
 .sidebar-filters {
-  background: #fff;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem;

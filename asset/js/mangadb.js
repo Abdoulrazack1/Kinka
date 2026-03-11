@@ -243,7 +243,7 @@ const maisonsDB = [
         id:'pika',
         editeurs:['Pika'],
         nom:'Pika Édition',
-        logo:'/asset/image/logo_pika.png',
+        logo:'/asset/image/logo_kioon.jpg',
         fondee:'1994',
         description:'Pika Édition est l\'un des pionniers du manga en France, éditeur de L\'Attaque des Titans, Blue Lock et Sailor Moon. Pika est reconnu pour la qualité de ses traductions et la diversité de son catalogue.',
         siteWeb:'https://www.pika.fr',
@@ -255,7 +255,7 @@ const maisonsDB = [
         id:'kana',
         editeurs:['Kana'],
         nom:'Kana',
-        logo:'/asset/image/logo_kana.jpg',
+        logo:'/asset/image/logo_kioon.jpg',
         fondee:'1993',
         description:'Kana, filiale de Dargaud-Lombard, est l\'un des plus anciens éditeurs manga de France. Éditeur historique de Naruto et de nombreux classiques, Kana a contribué à démocratiser le manga en France.',
         siteWeb:'https://www.kana.fr',
@@ -279,7 +279,7 @@ const maisonsDB = [
         id:'kaze',
         editeurs:['Kazé Manga'],
         nom:'Kazé Manga',
-        logo:'/asset/image/logo_kaze.png',
+        logo:'/asset/image/logo_kioon.jpg',
         fondee:'2007',
         description:'Kazé Manga, filiale de Viz Media Europe, publie des titres comme Chainsaw Man, Black Clover et Hunter x Hunter. Kazé est reconnu pour sa rapidité de publication et la qualité de ses adaptations.',
         siteWeb:'https://www.kaze-manga.fr',
@@ -364,7 +364,8 @@ function buildProductCard(manga, opts = {}) {
                    : manga.promo     ? 'PROMO'
                    : manga.bestseller ? 'BEST-SELLER'
                    : manga.etat === 'occasion' ? 'OCCASION' : '';
-    const badgeClass = manga.promo      ? 'promo'
+    const badgeClass = manga.nouveaute  ? 'nouveaute'
+                     : manga.promo      ? 'promo'
                      : manga.etat === 'occasion' ? 'occasion'
                      : manga.bestseller ? 'bestseller' : '';
 
@@ -476,16 +477,7 @@ function showToast(msg, type) {
     var icons  = { error: 'error', success: 'check_circle', info: 'info', warning: 'warning', default: 'notifications' };
     var iconName = icons[type] || icons.default;
     t.innerHTML = '<span class="material-symbols-outlined" style="font-size:1rem;flex-shrink:0;font-variation-settings:\'FILL\' 1">' + iconName + '</span>' + msg;
-    t.style.cssText = [
-        'position:fixed;bottom:2rem;right:2rem',
-        'display:flex;align-items:center;gap:.55rem',
-        'padding:.75rem 1.2rem;border-radius:12px',
-        'font-size:.86rem;font-weight:500;letter-spacing:-.01em',
-        'box-shadow:0 8px 32px rgba(0,0,0,.3)',
-        'z-index:9999;max-width:340px',
-        'transform:translateY(8px);opacity:0',
-        'transition:opacity .2s ease,transform .2s ease'
-    ].join(';');
+    t.style.cssText = 'transform:translateY(8px);opacity:0;transition:opacity .2s ease,transform .2s ease';
     document.body.appendChild(t);
     requestAnimationFrame(function(){ t.style.opacity='1'; t.style.transform='translateY(0)'; });
     t._timeout1 = setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateY(8px)'; }, 2800);

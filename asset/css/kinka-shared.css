@@ -328,6 +328,7 @@ body.dark-mode .nav-user-dropdown-item:hover { background:var(--bg-subtle); }
 .product-badge.bestseller{background:linear-gradient(135deg,#f59e0b,#ef4444)}
 .product-badge.occasion{background:#6366f1}
 .product-badge.promo{background:linear-gradient(135deg,#16a34a,#059669)}
+.product-badge.nouveaute{background:var(--pink)}
 
 /* ── Bouton favoris (overlay haut droite) ── */
 .card-actions{
@@ -486,29 +487,44 @@ body.dark-mode .nav-user-dropdown-item:hover { background:var(--bg-subtle); }
 .page-btn.active{background:var(--pink);color:#fff;border-color:var(--pink);font-weight:700}
 
 /* ── FOOTER ───────────────────────────────────────────────────── */
-footer{background:#1a1a1a;color:rgba(255,255,255,.65);padding:3.5rem 2.5rem 1.5rem;margin-top:4rem}
+footer{
+  background: linear-gradient(180deg, #14121a 0%, #0f0d14 100%);
+  color:rgba(255,255,255,.65);
+  padding:4rem 2.5rem 1.75rem;
+  margin-top:4rem;
+  position: relative;
+  overflow: hidden;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  opacity: .4;
+}
 .footer-content{
   max-width:1440px;margin:0 auto;
   display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1.2fr;gap:2.5rem;
-  padding-bottom:2.5rem;border-bottom:1px solid rgba(255,255,255,.08)
+  padding-bottom:2.5rem;border-bottom:1px solid rgba(255,255,255,.07)
 }
 .footer-logo{display:flex;align-items:center;gap:.55rem;margin-bottom:.9rem}
 .footer-logo .logo-text{color:#fff;font-size:1.05rem;font-weight:800}
-.footer-description{font-size:.81rem;line-height:1.75;color:rgba(255,255,255,.42)}
-.footer-section h4{color:#fff;font-size:.77rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:1rem}
-.footer-section ul li{margin-bottom:.55rem}
-.footer-section ul a{font-size:.82rem;color:rgba(255,255,255,.48);transition:var(--transition)}
-.footer-section ul a:hover{color:var(--pink);padding-left:4px}
-.contact-info a{font-size:.82rem;color:rgba(255,255,255,.48);transition:var(--transition)}
+.footer-description{font-size:.81rem;line-height:1.75;color:rgba(255,255,255,.38)}
+.footer-section h4{color:rgba(255,255,255,.9);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.1rem}
+.footer-section ul li{margin-bottom:.6rem}
+.footer-section ul a{font-size:.82rem;color:rgba(255,255,255,.42);transition:var(--transition);display:inline-flex;align-items:center;gap:.25rem}
+.footer-section ul a:hover{color:var(--pink);padding-left:5px}
+.contact-info a{font-size:.82rem;color:rgba(255,255,255,.42);transition:var(--transition)}
 .contact-info a:hover{color:var(--pink)}
 .social-icons{display:flex;gap:.6rem;margin-top:.9rem}
-.social-icons a{width:34px;height:34px;border-radius:var(--radius);background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;transition:var(--transition)}
-.social-icons a:hover{background:var(--pink);transform:translateY(-2px)}
+.social-icons a{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.social-icons a:hover{background:var(--pink);border-color:var(--pink);transform:translateY(-3px);box-shadow:0 6px 16px rgba(224,59,139,.35)}
 .social-icons img{width:16px;height:16px;filter:brightness(0) invert(1)}
-.footer-bottom{max-width:1440px;margin:1.5rem auto 0;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.footer-bottom p{font-size:.76rem;color:rgba(255,255,255,.26)}
+.footer-bottom{max-width:1440px;margin:1.75rem auto 0;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.footer-bottom p{font-size:.74rem;color:rgba(255,255,255,.22)}
 .footer-legal{display:flex;gap:1.5rem}
-.footer-legal a{font-size:.76rem;color:rgba(255,255,255,.26);transition:var(--transition)}
+.footer-legal a{font-size:.74rem;color:rgba(255,255,255,.22);transition:var(--transition)}
 .footer-legal a:hover{color:rgba(255,255,255,.6)}
 
 /* ── SKELETON ─────────────────────────────────────────────────── */
@@ -654,15 +670,30 @@ footer{background:#1a1a1a;color:rgba(255,255,255,.65);padding:3.5rem 2.5rem 1.5r
 
 /* ── TOASTS — variantes par type ────────────────────────────── */
 .kinka-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .75rem 1.2rem;
+  border-radius: 12px;
+  font-size: .86rem;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  box-shadow: 0 8px 32px rgba(0,0,0,.25);
+  z-index: 9999;
+  max-width: 340px;
   background: var(--bg-card);
   color: var(--text);
   border: 1px solid var(--border);
+  pointer-events: none;
 }
 .kinka-toast--error   { background:#dc2626; color:#fff; border-color:#dc2626; }
 .kinka-toast--success { background:#16a34a; color:#fff; border-color:#16a34a; }
 .kinka-toast--info    { background:#2563eb; color:#fff; border-color:#2563eb; }
 .kinka-toast--warning { background:#d97706; color:#fff; border-color:#d97706; }
-.kinka-toast--default { background:var(--text); color:#fff; }
+.kinka-toast--default { background:var(--text); color:var(--bg); }
 
 /* ── PRODUCT CARD — CSS AMÉLIORATIONS v20 ──────────────────────── */
 .product-card {
@@ -784,4 +815,28 @@ body.dark-mode .product-card::after {
     rgba(255, 255, 255, 0.02) 40%,
     transparent 70%
   );
+}
+
+/* ── ACCESSIBILITÉ : focus-visible global ──────────────────── */
+:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.connect-btn:focus-visible,
+.icon-btn:focus-visible,
+.profil-nav-item:focus-visible,
+.add-to-cart:focus-visible,
+.card-fav-btn:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--pink-soft);
+}
+/* Supprimer outline pour souris (seulement pour clavier) */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
 }

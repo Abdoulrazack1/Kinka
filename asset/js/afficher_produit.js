@@ -222,7 +222,7 @@ function initBoutonPanier(p) {
         localStorage.setItem('kinka_panier', JSON.stringify(panier));
 
         if (typeof updatePanierCount === 'function') updatePanierCount();
-        if (typeof showToast === 'function') showToast(' Ajouté au panier !');
+        if (typeof showToast === 'function') showToast('Ajouté au panier !');
 
         // Feedback visuel
         const orig = btn.innerHTML;
