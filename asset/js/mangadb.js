@@ -366,8 +366,8 @@ function buildProductCard(manga, opts = {}) {
                    : manga.etat === 'occasion' ? 'OCCASION' : '';
     const badgeClass = manga.nouveaute  ? 'nouveaute'
                      : manga.promo      ? 'promo'
-                     : manga.etat === 'occasion' ? 'occasion'
-                     : manga.bestseller ? 'bestseller' : '';
+                     : manga.bestseller ? 'bestseller'
+                     : manga.etat === 'occasion' ? 'occasion' : '';
 
     const noteStars = manga.note ? (() => {
         const n = Math.round(manga.note * 2) / 2;
@@ -505,37 +505,94 @@ function filterByMaison(maison) {
 // SHINE EFFECT — Suivi de la souris sur les cards
 // Placé ici car mangadb.js est chargé sur toutes les pages cards
 // ============================================================
-(function initShineEffect() {
-    function attachShine(card) {
-        if (card._shineAttached) return;
-        card._shineAttached = true;
+(function initCardHover() {
+    // ── Tilt 3D + Shine au survol de la souris ──────────────────
+    // Paramètres
+    var MAX_TILT    = 10;   // degrés max de rotation
+    var TILT_EASE   = .12;  // facteur d'inertie (0 = raide, 1 = immédiat)
+
+    function attachHover(card) {
+        if (card._hoverAttached) return;
+        card._hoverAttached = true;
+
+        var currentX = 0, currentY = 0;
+        var targetX  = 0, targetY  = 0;
+        var rafId    = null;
+        var isHover  = false;
+
+        function lerp(a, b, t) { return a + (b - a) * t; }
+
+        function tick() {
+            if (!isHover) {
+                // Retour au centre en douceur
+                currentX = lerp(currentX, 0, TILT_EASE * 1.5);
+                currentY = lerp(currentY, 0, TILT_EASE * 1.5);
+                if (Math.abs(currentX) < 0.01 && Math.abs(currentY) < 0.01) {
+                    currentX = 0; currentY = 0;
+                    card.style.setProperty('--tilt-x', '0deg');
+                    card.style.setProperty('--tilt-y', '0deg');
+                    rafId = null;
+                    return;
+                }
+            } else {
+                currentX = lerp(currentX, targetX, TILT_EASE);
+                currentY = lerp(currentY, targetY, TILT_EASE);
+            }
+            card.style.setProperty('--tilt-x', currentX.toFixed(2) + 'deg');
+            card.style.setProperty('--tilt-y', currentY.toFixed(2) + 'deg');
+            rafId = requestAnimationFrame(tick);
+        }
+
         card.addEventListener('mousemove', function(e) {
             var rect = card.getBoundingClientRect();
-            var x = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
-            var y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
-            card.style.setProperty('--mouse-x', x);
-            card.style.setProperty('--mouse-y', y);
+            // Normalise -1 à +1 depuis le centre
+            var nx = ((e.clientX - rect.left) / rect.width  - .5) * 2;
+            var ny = ((e.clientY - rect.top)  / rect.height - .5) * 2;
+
+            // Tilt : incline vers la souris
+            targetY =  nx * MAX_TILT;   // mouvement X -> rotation Y
+            targetX = -ny * MAX_TILT;   // mouvement Y -> rotation X
+
+            // Shine suit la souris
+            var sx = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
+            var sy = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
+            card.style.setProperty('--mouse-x', sx);
+            card.style.setProperty('--mouse-y', sy);
+
+            if (!rafId) rafId = requestAnimationFrame(tick);
         });
+
+        card.addEventListener('mouseenter', function() {
+            isHover = true;
+            if (!rafId) rafId = requestAnimationFrame(tick);
+        });
+
         card.addEventListener('mouseleave', function() {
+            isHover = false;
+            targetX = 0; targetY = 0;
             card.style.setProperty('--mouse-x', '50%');
             card.style.setProperty('--mouse-y', '50%');
+            if (!rafId) rafId = requestAnimationFrame(tick);
         });
     }
+
     function attachAllCards() {
-        document.querySelectorAll('.product-card').forEach(attachShine);
+        document.querySelectorAll('.product-card').forEach(attachHover);
     }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', attachAllCards);
     } else {
         attachAllCards();
     }
+
     if (window.MutationObserver) {
         new MutationObserver(function(mutations) {
             mutations.forEach(function(m) {
                 m.addedNodes.forEach(function(node) {
                     if (node.nodeType !== 1) return;
-                    if (node.classList && node.classList.contains('product-card')) attachShine(node);
-                    if (node.querySelectorAll) node.querySelectorAll('.product-card').forEach(attachShine);
+                    if (node.classList && node.classList.contains('product-card')) attachHover(node);
+                    if (node.querySelectorAll) node.querySelectorAll('.product-card').forEach(attachHover);
                 });
             });
         }).observe(document.body, { childList: true, subtree: true });

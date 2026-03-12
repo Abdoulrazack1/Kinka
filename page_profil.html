@@ -778,8 +778,8 @@
             el.innerHTML = '<div class="profil-empty-state"><span class="material-symbols-outlined">receipt_long</span><h4>Aucune commande</h4><p>Vos achats apparaîtront ici.</p><a href="/page_catalogue.html" class="btn-primary">Découvrir le catalogue</a></div>';
             return;
         }
-        var SL = {livree:'Livrée',en_cours:'En cours',expediee:'Expédiée',annulee:'Annulée'};
-        var SC = {livree:'statut-livree',en_cours:'statut-encours',expediee:'statut-expediee',annulee:'statut-annulee'};
+        var SL = {livree:'Livrée',en_cours:'En cours',expediee:'Expédiée',annulee:'Annulée',preparee:'Préparée'};
+        var SC = {livree:'statut-livree',en_cours:'statut-encours',expediee:'statut-expediee',annulee:'statut-annulee',preparee:'statut-preparee'};
         el.innerHTML = cmds.map(function(cmd){
             return '<div class="commande-card">'+
                 '<div class="commande-header">'+

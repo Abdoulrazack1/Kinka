@@ -84,7 +84,7 @@
 
                 // --- Feedback visuel sur le bouton ---
                 const originalHTML = this.innerHTML;   // sauvegarde le contenu original (icône + texte éventuel)
-                this.innerHTML = '';                  // coche de validation
+                this.innerHTML = '<span class="material-symbols-outlined">check</span>';
                 this.style.transition = 'background 0.2s';
                 this.style.backgroundColor = 'var(--pink, #22c55e)';
                 this.style.color = '#fff';

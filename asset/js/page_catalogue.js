@@ -9,7 +9,7 @@
     let currentFilters = {
         categorie: null,
         etat: null,
-        editeur: [],   // tableau pour multi-sélection
+        editeur: [],
         auteur: null,
         promo: false,
         sort: 'pertinence',
@@ -33,7 +33,7 @@
         const grid = document.getElementById('catalogue-grid');
         const countEl = document.getElementById('results-count');
         let opts = { ...currentFilters };
-        if (opts.editeur && opts.editeur.length === 0) opts.editeur = null;  // [] → pas de filtre
+        if (opts.editeur && opts.editeur.length === 0) opts.editeur = null;
         const q = document.getElementById('search-input');
         if (q && q.value.trim()) opts.query = q.value.trim();
 
@@ -46,14 +46,24 @@
         }
         grid.innerHTML = results.map(m => buildProductCard(m)).join('');
         grid.style.animation = 'none'; grid.offsetHeight; grid.style.animation = 'fadeIn .3s ease';
+        if (typeof window.kinka_translate === 'function') window.kinka_translate();
     }
 
+    // Sync pills ET radios sidebar avec currentFilters
     function updateActivePills() {
         document.querySelectorAll('.filter-pill[data-categorie]').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.categorie === (currentFilters.categorie || ''));
         });
         document.querySelectorAll('.filter-pill[data-etat]').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.etat === (currentFilters.etat || ''));
+        });
+        // Sync radios sidebar état
+        document.querySelectorAll('.sidebar-checkbox[data-filter-type="etat"]').forEach(cb => {
+            cb.checked = cb.dataset.filterValue === currentFilters.etat;
+        });
+        // Sync radios sidebar catégorie
+        document.querySelectorAll('.sidebar-checkbox[data-filter-type="categorie"]').forEach(cb => {
+            cb.checked = cb.dataset.filterValue === currentFilters.categorie;
         });
     }
 
@@ -67,23 +77,44 @@
         });
     });
 
-    // Pills état
+    // Pills état — clic sur un pill déjà actif = désactiver
     document.querySelectorAll('.filter-pill[data-etat]').forEach(btn => {
         btn.addEventListener('click', function() {
             const val = this.dataset.etat;
-            currentFilters.etat = val === '' ? null : val;
+            currentFilters.etat = (currentFilters.etat === val) ? null : val;
             updateActivePills();
             renderGrid();
         });
     });
 
-    // Checkboxes sidebar
+    // Sidebar radios/checkboxes
     document.querySelectorAll('.sidebar-checkbox').forEach(cb => {
         cb.addEventListener('change', function() {
             const type = this.dataset.filterType;
             const val  = this.dataset.filterValue;
-            if (type === 'categorie') currentFilters.categorie = this.checked ? val : null;
-            if (type === 'etat') currentFilters.etat = this.checked ? val : null;
+
+            if (type === 'categorie') {
+                currentFilters.categorie = this.checked ? val : null;
+                // Décocher les autres radios catégorie
+                if (this.checked) {
+                    document.querySelectorAll('.sidebar-checkbox[data-filter-type="categorie"]').forEach(o => {
+                        if (o !== this) o.checked = false;
+                    });
+                }
+                updateActivePills();
+            }
+
+            if (type === 'etat') {
+                currentFilters.etat = this.checked ? val : null;
+                // Décocher les autres radios état
+                if (this.checked) {
+                    document.querySelectorAll('.sidebar-checkbox[data-filter-type="etat"]').forEach(o => {
+                        if (o !== this) o.checked = false;
+                    });
+                }
+                updateActivePills();
+            }
+
             if (type === 'editeur') {
                 if (this.checked) {
                     if (!currentFilters.editeur.includes(val)) currentFilters.editeur.push(val);
@@ -91,6 +122,7 @@
                     currentFilters.editeur = currentFilters.editeur.filter(e => e !== val);
                 }
             }
+
             renderGrid();
         });
     });
@@ -128,8 +160,7 @@
     updateActivePills();
     renderGrid();
 
-    // Écoute la barre de recherche pour filtrer la grille en temps réel
-    // ET intercepte Enter pour éviter la redirection de recherche.js vers page_recherche
+    // Barre de recherche temps réel
     var searchInput = document.getElementById('search-input');
     if (searchInput) {
         var searchDebounce;
@@ -137,13 +168,12 @@
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(renderGrid, 200);
         });
-        // Surcharger le comportement Enter de recherche.js sur cette page
         searchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 renderGrid();
             }
-        }, true); // capture phase pour s'exécuter avant recherche.js
+        }, true);
     }
 })();
