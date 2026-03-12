@@ -1,6 +1,6 @@
 // ============================================================
-// translate.js — Système de traduction FR/EN KINKA.FR v8.0
-// Couverture exhaustive — 873 strings
+// translate.js — Système de traduction FR/EN KINKA.FR v9.0
+// Couverture exhaustive — strings HTML statiques + JS dynamiques
 // ============================================================
 
 const translations = {
@@ -42,9 +42,6 @@ const translations = {
     '42 Rue du Manga': '42 Rue du Manga',
     '5. Responsabilité': '5. Liability',
     '7. Droit de rétractation': '7. Right of withdrawal',
-    ': Sous 24 à 48 heures, notre service client confirme la prise en charge.': ': Within 24 to 48 hours, our customer service confirms processing.',
-    ': Un nouvel exemplaire conforme vous est expédié en priorité, sans attendre la réception du colis retourné.': ': A correct replacement copy is shipped to you as a priority, without waiting for the returned package.',
-    ': une étiquette de retour prépayée vous est fournie, il vous suffit de déposer le colis en point relais.': ': a prepaid return label is provided — simply drop the package at a relay point.',
     'ANNÉE DE PARUTION': 'PUBLICATION YEAR',
     'AVIS LECTEURS (830 VOTES VÉRIFIÉS)': 'READER REVIEWS (830 VERIFIED VOTES)',
     'Accède à ton espace lecteur en quelques secondes.': 'Access your reader space in seconds.',
@@ -880,6 +877,529 @@ const translations = {
     'OCCASION': 'USED',
     'PROMO': 'SALE',
     'Tout voir': 'View all',
+    'Découvrez notre catalogue et ajoutez vos mangas préférés': 'Explore our catalog and add your favorite manga',
+    'Livraison gratuite !': 'Free shipping!',
+    '← Continuer mes achats': '← Continue shopping',
+    'pour la livraison gratuite': 'left for free shipping',
+    'Rupture': 'Out of stock',
+    'Nouveau': 'New',
+    'Best-seller': 'Best seller',
+    'EAN / ISBN': 'EAN / ISBN',
+    'Aucun synopsis disponible pour ce produit.': 'No synopsis available for this product.',
+    'Aucun produit similaire trouvé pour ce manga.': 'No similar products found for this manga.',
+    'Aucun produit spécifié.': 'No product specified.',
+    'Le produit que vous recherchez n\'existe pas ou a été retiré.': 'The product you\'re looking for doesn\'t exist or has been removed.',
+    'Retour au catalogue': 'Back to catalog',
+    'Indisponible': 'Unavailable',
+    'Retirer des favoris': 'Remove from favorites',
+    'exemplaire': 'copy',
+    'exemplaires': 'copies',
+    '— commandez vite !': '— order now!',
+    'disponibles — expédition sous 48h': 'available — ships within 48h',
+    '— revenez bientôt !': '— check back soon!',
+    'EAN / ISBN : ': 'EAN / ISBN: ',
+    'Code promo non disponible pour le moment.': 'Promo code not available at the moment.',
+    'Éditeur inconnu': 'Unknown publisher',
+    'Manga': 'Manga',
+    'Qté\u00a0:': 'Qty:',
+    'Qté :': 'Qty:',
+    'manga trouvé': 'manga found',
+    'mangas trouvés': 'manga found',
+    'résultat': 'result',
+    'Aucun résultat pour': 'No results for',
+    'Essayez avec d\'autres mots-clés ou parcourez notre': 'Try different keywords or browse our',
+    'catalogue': 'catalog',
+    'Aucun manga trouvé pour ces critères.': 'No manga found for these criteria.',
+    'Erreur de chargement.': 'Loading error.',
+    'trouvé': 'found',
+    'trouvés': 'found',
+    'trouvée': 'found',
+    'trouvées': 'found',
+    'disponible': 'available',
+    'disponibles': 'available',
+    'sélectionné': 'selected',
+    'sélectionnés': 'selected',
+    'NOUVEAUTÉ': 'NEW',
+    'COLLECTOR': 'COLLECTOR',
+    'COFFRET': 'BOX SET',
+    'Switch to English': 'Switch to English',
+    'Passer en français': 'Switch to French',
+    'Entre aliens et fantômes, l\'aventure déjantée d\'Okarun et Momo continue ! Nouveau phénomène du manga, Dandadan mêle action survoltée et humour absurde dans un cocktail irrésistible.': 'Between aliens and ghosts, the wild adventure of Okarun and Momo continues! A new manga phenomenon, Dandadan blends high-octane action with absurd humor in an irresistible mix.',
+    'Le Dr Tenma, chirurgien de renom, sauve la vie d\'un garçon plutôt que celle d\'un politicien. Neuf ans plus tard, cet enfant est devenu un tueur en série surnommé "Monster".': 'Dr. Tenma, a renowned surgeon, saves the life of a boy instead of a politician. Nine years later, that child has become a serial killer known as "Monster".',
+    'Rechercher': 'Search',
+    'Suivant': 'Next',
+    'Chargement en cours…': 'Loading…',
+    'Mentions légales': 'Legal notice',
+    'Politique de confidentialité': 'Privacy policy',
+    'Conditions d\'utilisation': 'Terms of use',
+    'Plan du site': 'Site map',
+    'Newsletter': 'Newsletter',
+    'Réseaux sociaux': 'Social media',
+    'Obligatoire': 'Required',
+    'Optionnel': 'Optional',
+    'Confirmer': 'Confirm',
+    'Ouvrir le menu': 'Open menu',
+    'Fermer le menu': 'Close menu',
+    'Menu principal': 'Main menu',
+    'Navigation': 'Navigation',
+    'Recherche': 'Search',
+    'Logo KINKA': 'KINKA logo',
+    'Image du produit': 'Product image',
+    'Couverture du manga': 'Manga cover',
+    'Ajouté !': 'Added!',
+    'Supprimé !': 'Deleted!',
+    'Sauvegardé !': 'Saved!',
+    'Erreur, veuillez réessayer.': 'Error, please try again.',
+    'Action réussie !': 'Action successful!',
+    'Denji, un jeune homme endetté, fusionne avec son démon-chien Pochita et devient Chainsaw Man. Il rejoint l\'Agence de sécurité publique pour chasser les démons. Un shonen brutal et décalé !': 'Denji, a debt-ridden young man, fuses with his devil-dog Pochita and becomes Chainsaw Man. He joins the Public Safety Bureau to hunt devils. A brutal and offbeat shōnen!',
+    'Tanjiro, un jeune charbonnier, voit sa famille massacrée par un démon. Sa sœur Nezuko survit mais est transformée. Il devient pourfendeur de démons pour la sauver et venger les siens.': 'Tanjiro, a young charcoal seller, witnesses his family slaughtered by a demon. His sister Nezuko survives but is transformed. He becomes a demon slayer to save her and avenge his family.',
+    'Dans un monde où 80% de la population possède des super-pouvoirs, Izuku Midoriya est né sans capacités. Pourtant, il rêve de devenir le plus grand héros. Un jour, il rencontre le légendaire All Might...': 'In a world where 80% of the population has superpowers, Izuku Midoriya was born without any abilities. Yet he dreams of becoming the greatest hero. One day, he meets the legendary All Might...',
+    'Yuji Itadori, un lycéen ordinaire doté d\'une force physique hors norme, se retrouve plongé dans le monde des malédictions après avoir avalé un doigt du plus puissant des fléaux.': 'Yuji Itadori, an ordinary high schooler with extraordinary physical strength, is plunged into the world of curses after swallowing a finger of the most powerful cursed spirit.',
+    'Dans un monde post-apocalyptique clos par des murs, l\'humanité vit sous la menace des Titans. Eren Jaeger jure de les exterminer tous après avoir vu sa mère dévorée.': 'In a post-apocalyptic world enclosed by walls, humanity lives under threat from the Titans. Eren Jaeger vows to exterminate them all after watching his mother get devoured.',
+    'Gon Freecss part à la recherche de son père, un Hunter légendaire. Pour le retrouver, il doit lui-même devenir Hunter en réussissant le fameux examen...': 'Gon Freecss sets out to find his father, a legendary Hunter. To track him down, he must become a Hunter himself by passing the infamous exam...',
+    'Nos dernières nouveautés': 'Our latest releases',
+    'Tendances du moment': 'Current trends',
+    'À ne pas manquer': 'Not to be missed',
+    'Sélection de la semaine': 'This week\'s selection',
+    'Coup de cœur de l\'équipe': 'Team\'s staff pick',
+    'Série du moment': 'Series of the moment',
+    'En ce moment sur KINKA': 'Right now on KINKA',
+    'Découvrez notre univers': 'Discover our world',
+    'Votre manga de référence': 'Your ultimate manga store',
+    'Meilleures ventes du mois': 'Best sellers this month',
+    'Passée le': 'Placed on',
+    'Dernière mise à jour': 'Last updated',
+    'Terminée': 'Completed',
+    'Votre passeport manga de confiance': 'Your trusted manga passport',
+    'Aucun résultat': 'No results',
+    'Voir plus': 'See more',
+    'Voir moins': 'See less',
+    'Afficher tout': 'Show all',
+    'Masquer': 'Hide',
+    'Détails': 'Details',
+    'Plus d\'infos': 'More info',
+    'En savoir plus': 'Learn more',
+    'Traitement en cours…': 'Processing…',
+    'Veuillez patienter…': 'Please wait…',
+    'Connexion en cours…': 'Signing in…',
+    'Envoi en cours…': 'Sending…',
+    'Recherche en cours…': 'Searching…',
+    'Une erreur est survenue.': 'An error occurred.',
+    'Veuillez réessayer.': 'Please try again.',
+    'Page introuvable': 'Page not found',
+    'Accès refusé': 'Access denied',
+    'Session expirée': 'Session expired',
+    'Connexion requise': 'Login required',
+    'Erreur de paiement.': 'Payment error.',
+    'Ouvrir': 'Open',
+    'Voir': 'View',
+    'Masquer le mot de passe': 'Hide password',
+    'Afficher le mot de passe': 'Show password',
+    'Livraison offerte !': 'Free shipping!',
+    'En rupture': 'Out of stock',
+    'Disponible': 'Available',
+    'Non disponible': 'Unavailable',
+    'Sur commande': 'On order',
+    'Précommande': 'Pre-order',
+    'Précommander': 'Pre-order',
+    'En précommande': 'On pre-order',
+    'Réservé': 'Reserved',
+    'Vendu': 'Sold',
+    'Vendu !': 'Sold!',
+    'Épuisé': 'Sold out',
+    'Limité': 'Limited',
+    'Exclusif': 'Exclusive',
+    'Nouveau !': 'New!',
+    'Offre spéciale': 'Special offer',
+    'Promo !': 'Sale!',
+    'Soldes': 'Sales',
+    'Remise': 'Discount',
+    'Économisez': 'Save',
+    'Économie': 'Saving',
+    'Partager': 'Share',
+    'Copier le lien': 'Copy link',
+    'Lien copié !': 'Link copied!',
+    'Imprimer': 'Print',
+    'Télécharger': 'Download',
+    'Exporter': 'Export',
+    'Importer': 'Import',
+    'Glisser-déposer': 'Drag and drop',
+    'Parcourir': 'Browse',
+    'Sélectionner': 'Select',
+    'Tout sélectionner': 'Select all',
+    'Désélectionner': 'Deselect',
+    'Tout désélectionner': 'Deselect all',
+    'Réinitialiser les filtres': 'Reset filters',
+    'Aucun filtre': 'No filters',
+    'Aucune option': 'No options',
+    'Aucune donnée': 'No data',
+    'Vide': 'Empty',
+    'Non renseigné': 'Not specified',
+    'N/A': 'N/A',
+    'Synopsis': 'Synopsis',
+    'L\'avis de l\'équipe': 'Team review',
+    'Notre sélection': 'Our selection',
+    '-15% sur tout': '-15% on everything',
+    '26 février 1992': 'February 26, 1992',
+    '29 août 1986': 'August 29, 1986',
+    '3 déc. 2008': 'Dec. 3, 2008',
+    'Abonnement ». Les avantages restent actifs jusqu\'à la fin de la période en cours.': 'Subscription ». Benefits remain active until the end of the current period.',
+    'Abîsse et ses mystérieux artefacts reliques.': 'The Abyss and its mysterious relic artifacts.',
+    'académie ninja aux premiers grands combats. Parfait cadeau pour les fans de la première heure.': 'ninja academy through the first major battles. A perfect gift for long-time fans.',
+    'affrontent dans des batailles épiques, chaque décision peut tout changer.': 'clash in epic battles where every decision can change everything.',
+    'affrontent dans une ville reconstruite après une explosion nucléaire. Tetsuo développe des pouvoirs psychiques qui vont tout bouleverser.': 'clash in a city rebuilt after a nuclear explosion. Tetsuo develops psychic powers that will shake everything up.',
+    'Ai Yazawa avec Nana et Paradise Kiss disponibles chez KINKA.': 'Ai Yazawa with Nana and Paradise Kiss available at KINKA.',
+    'Akira Toriyama avec tous les volumes de Dragon Ball disponibles chez KINKA.': 'Akira Toriyama with all Dragon Ball volumes available at KINKA.',
+    'Aliens, fantômes et aventures folles — tous les tomes de Dandadan par Yukinobu Tatsu disponibles chez KINKA.': 'Aliens, ghosts and wild adventures — all Dandadan volumes by Yukinobu Tatsu available at KINKA.',
+    'Amitié': 'Friendship',
+    'amour et la dépression avec une poésie unique.': 'love and depression with a unique poetry.',
+    'animation et la BD mondiale. Décédé en 2021, il laisse un héritage artistique immense.': 'animation and worldwide comics. Deceased in 2021, he leaves behind an immense artistic legacy.',
+    'Annonce publiée avec succès !': 'Listing published successfully!',
+    'arc de la succession à la couronne de Kakin se révèle plus complexe que prévu.': 'succession arc for the crown of Kakin proves more complex than expected.',
+    'arc Thriller Bark. Luffy et son équipage se retrouvent sur une île mystérieuse, royaume des zombies.': 'Thriller Bark arc. Luffy and his crew find themselves on a mysterious island, kingdom of zombies.',
+    'Astro Boy par Naoki Urasawa. Dans un futur proche, de puissants robots sont assassinés les uns après les autres par une entité mystérieuse.': 'Astro Boy by Naoki Urasawa. In the near future, powerful robots are being assassinated one by one by a mysterious entity.',
+    'Atmosphérique': 'Atmospheric',
+    'Attaque des Titans': 'Attack on Titan',
+    'Attaque des Titans - Coffret Partie 1': 'Attack on Titan - Box Set Part 1',
+    'Attaque des Titans - T.34': 'Attack on Titan - Vol. 34',
+    'Attaque des Titans - Tome 8': 'Attack on Titan - Volume 8',
+    'Attaque des Titans réunis dans un coffret ! La découverte des Titans, la chute de Shiganshina et les premières révélations.': 'Attack on Titan collected in a box set! The discovery of the Titans, the fall of Shiganshina and the first revelations.',
+    'Attaque des Titans, Blue Lock et Sailor Moon. Pika est reconnu pour la qualité de ses traductions et la diversité de son catalogue.': 'Attack on Titan, Blue Lock and Sailor Moon. Pika is known for the quality of its translations and the diversity of its catalog.',
+    'Attaque des Titans, du premier tome à la conclusion épique de la saga, disponibles chez KINKA.': 'Attack on Titan, from the first volume to the epic conclusion of the saga, available at KINKA.',
+    'auteur de manga le plus vendu de tous les temps. Son style graphique unique et sa capacité à créer des mondes vastes et imaginatifs ont redéfini le genre Shōnen.': 'best-selling manga author of all time. His unique art style and ability to create vast, imaginative worlds have redefined the Shōnen genre.',
+    'auteur(e) de': 'author of',
+    'auteurs emblématiques comme Inio Asano.': 'iconic authors such as Inio Asano.',
+    'auteurs et millions de fans à travers le monde.': 'authors and millions of fans around the world.',
+    'aux derniers arcs de la saga finale.': 'through the final saga\'s latest arcs.',
+    'avenir des héros.': 'future of heroes.',
+    'aventure culinaire et fantastique de Dungeon Meshi par Ryoko Kui — tous les tomes disponibles chez KINKA.': 'culinary and fantasy adventure of Dungeon Meshi by Ryoko Kui — all volumes available at KINKA.',
+    'aventure de Son Goku des origines à la saga Cell, en coffret premium. Un monument du manga dans une édition collector somptueuse.': 'Son Goku\'s adventure from the origins to the Cell saga, in a premium box set. A monument of manga in a sumptuous collector edition.',
+    'aventure du jeune ninja qui rêve de devenir Hokage — disponible chez KINKA.': 'adventure of the young ninja who dreams of becoming Hokage — available at KINKA.',
+    'aventure la plus folle du manga !': 'wildest adventure in manga!',
+    'Blister d\'origine intact (si applicable)': 'Original blister intact (if applicable)',
+    'Brouillon sauvegardé !': 'Draft saved!',
+    'btn-moins': 'btn-minus',
+    'btn-plus': 'btn-plus',
+    'Cet email est déjà utilisé.': 'This email is already in use.',
+    'Compétition': 'Competition',
+    'Comédie': 'Comedy',
+    'Connexion réussie.': 'Login successful.',
+    'Coups de cœur KINKA.FR — sélection éditoriale': 'KINKA.FR Staff Picks — editorial selection',
+    'Critique manga certifiée': 'Certified manga critic',
+    'Demon Slayer - Intégrale': 'Demon Slayer - Complete Collection',
+    'Des personnages attachants': 'Endearing characters',
+    'Des émotions brutes et authentiques': 'Raw and authentic emotions',
+    'Dragon Ball - Intégrale East Blue': 'Dragon Ball - East Blue Complete Collection',
+    'Décembre': 'December',
+    'Démons': 'Demons',
+    'Dépassement': 'Surpassing limits',
+    'Dépression': 'Depression',
+    'Détail produit — KINKA.FR': 'Product detail — KINKA.FR',
+    'Effacer tous vos favoris ?': 'Clear all your favorites?',
+    'Effacer vos': 'Clear your',
+    'elle est la guerrière Sailor Moon. Elle doit protéger la Terre avec ses amies, les autres Sailor Senshi.': 'she is the warrior Sailor Moon. She must protect Earth with her friends, the other Sailor Senshi.',
+    'elles ne causent des catastrophes.': 'before they cause disasters.',
+    'emmener bien au-delà de ses rêves.': 'take him far beyond his dreams.',
+    'empereur Kaido dans un duel épique.': 'Emperor Kaido in an epic duel.',
+    'en sortir : battre tous les étages du château Aincrad.': 'to escape: clear all floors of Aincrad castle.',
+    'En stock —': 'In stock —',
+    'ensemble des œuvres de': 'complete works of',
+    'Entrez un nouveau mot de passe': 'Enter a new password',
+    'Entrez votre mot de passe actuel': 'Enter your current password',
+    'Erreur de chargement': 'Loading error',
+    'Europe avec un catalogue varié.': 'Europe with a varied catalog.',
+    'expérience manga': 'manga experience',
+    'Fantômes': 'Ghosts',
+    'Fraternité': 'Brotherhood',
+    'Février': 'February',
+    'histoire avec plus de 250 millions de volumes écoulés. Naruto a accompagné toute une génération de lecteurs à travers le monde et demeure une référence absolue du shōnen.': 'story with over 250 million volumes sold. Naruto has accompanied an entire generation of readers around the world and remains an absolute shōnen reference.',
+    'Histoires matures pour jeunes femmes, émotions profondes.': 'Mature stories for young women, deep emotions.',
+    'humanité entière est pétrifiée par un mystérieux phénomène. Des millénaires plus tard, Senkū, génie de la science, se réveille et entreprend de reconstruire la civilisation.': 'entire humanity is petrified by a mysterious phenomenon. Millennia later, Senkū, a science genius, awakens and sets out to rebuild civilisation.',
+    'humanité.': 'humanity.',
+    'Héritage': 'Legacy',
+    'ils rencontrent. Un manga unique qui mêle fantasy et gastronomie avec humour.': 'they encounter. A unique manga blending fantasy and gastronomy with humour.',
+    'Immortel et Asirpa traversent Hokkaïdo dans une aventure qui mêle survie, cuisine traditionnelle et mystère.': 'Immortal and Asirpa cross Hokkaido in an adventure mixing survival, traditional cuisine and mystery.',
+    'importation du manga japonais, Glénat publie des séries emblématiques comme One Piece, Dragon Ball et Berserk.': 'importing Japanese manga, Glénat publishes iconic series such as One Piece, Dragon Ball and Berserk.',
+    'importe quel vœu.': 'any wish.',
+    'Inoue sont époustouflantes.': 'Inoue are breathtaking.',
+    'Inscription confirmée ! Bienvenue dans la communauté KINKA.': 'Registration confirmed! Welcome to the KINKA community.',
+    'Inscription réussie.': 'Registration successful.',
+    'Inscription réussie. Vous pouvez maintenant vous connecter.': 'Registration successful. You can now log in.',
+    'Intégrale': 'Complete collection',
+    'intégrale complète de Demon Slayer ! Les 23 tomes qui retracent le voyage de Tanjiro du début à la fin, dans un beau coffret collector.': 'complete Demon Slayer collection! All 23 volumes tracing Tanjiro\'s journey from start to finish, in a beautiful collector box set.',
+    'Kazé Manga, filiale de Viz Media Europe, publie des titres comme Chainsaw Man, Black Clover et Hunter x Hunter. Kazé est reconnu pour sa rapidité de publication et la qualité de ses adaptations.': 'Kazé Manga, a subsidiary of Viz Media Europe, publishes titles such as Chainsaw Man, Black Clover and Hunter x Hunter. Kazé is known for its speed of publication and the quality of its adaptations.',
+    'Ki-oon est spécialisé dans les manga populaires et les œuvres de qualité. Éditeur de Jujutsu Kaisen et My Hero Academia en France, Ki-oon est devenu incontournable pour les fans de shōnen.': 'Ki-oon specialises in popular manga and quality works. Publisher of Jujutsu Kaisen and My Hero Academia in France, Ki-oon has become essential for shōnen fans.',
+    'Kinka Premium — Livraison offerte, remises exclusives et accès anticipé aux coffrets collectors.': 'Kinka Premium — Free delivery, exclusive discounts and early access to collector box sets.',
+    'KINKA.FR — Boutique manga en ligne : neufs, occasions, coffrets.': 'KINKA.FR — Online manga store: new, used, box sets.',
+    'KINKA.FR — Maisons d\'édition manga en France': 'KINKA.FR — Manga publishers in France',
+    'KINKA.FR — Mangas d\'occasion jusqu\'à 40% de remise. Tomes vérifiés et garantis.': 'KINKA.FR — Used manga up to 40% off. Verified and guaranteed volumes.',
+    'KINKA.FR — Mangas Josei : Réaliste, nuancé, pour femmes adultes': 'KINKA.FR — Josei Manga: Realistic, nuanced, for adult women',
+    'KINKA.FR — Mangas Shōjo : Romance, émotions, tranches de vie': 'KINKA.FR — Shōjo Manga: Romance, emotions, slice of life',
+    'KINKA.FR — Mangas Shōnen : Action, amitié, dépassement de soi': 'KINKA.FR — Shōnen Manga: Action, friendship, surpassing limits',
+    'KINKA.FR — Votre boutique manga en ligne : neufs, occasions, coffrets, exclusivités.': 'KINKA.FR — Your online manga store: new, used, box sets, exclusives.',
+    'Kurokawa publie des manga variés, des shōnen aux seinen, en passant par les romans de lumière. Éditeur de Spy x Family et Dungeon Meshi, Kurokawa est reconnu pour la qualité de ses traductions.': 'Kurokawa publishes a variety of manga, from shōnen to seinen, including light novels. Publisher of Spy x Family and Dungeon Meshi, Kurokawa is known for the quality of its translations.',
+    'La famille Forger vous attend — tous les tomes de Spy × Family par Tatsuya Endo disponibles chez KINKA.': 'The Forger family awaits — all Spy × Family volumes by Tatsuya Endo available at KINKA.',
+    'Les mots de passe ne correspondent pas': 'Passwords do not match',
+    'Les mots de passe ne correspondent pas.': 'Passwords do not match.',
+    'Lycée': 'High school',
+    'Léa T.': 'Léa T.',
+    'Maison d\'édition — KINKA.FR': 'Publishing House — KINKA.FR',
+    'Meilleures ventes manga KINKA.FR — Les titres les plus populaires du moment.': 'KINKA.FR Best Sellers — The most popular titles right now.',
+    'Mes favoris — KINKA.FR': 'My favorites — KINKA.FR',
+    'Message envoyé ! Nous vous répondrons sous 48h.': 'Message sent! We will reply within 48 hours.',
+    'Mon Compte': 'My Account',
+    'Mon panier — KINKA.FR': 'My cart — KINKA.FR',
+    'Mon Profil — KINKA.FR': 'My Profile — KINKA.FR',
+    'Mot de passe actuel incorrect': 'Current password incorrect',
+    'Mot de passe incorrect.': 'Incorrect password.',
+    'Mot de passe mis à jour avec succès.': 'Password updated successfully.',
+    'Mystère': 'Mystery',
+    'Non authentifié.': 'Not authenticated.',
+    'Nouveautés manga KINKA.FR — Les dernières sorties disponibles immédiatement.': 'KINKA.FR New Releases — The latest releases available immediately.',
+    'Né(e) le': 'Born on',
+    'Okarun et Momo continue ! Nouveau phénomène du manga, Dandadan mêle action survoltée et humour absurde dans un cocktail irrésistible.': 'Okarun and Momo continue! A new manga phenomenon, Dandadan blends electrifying action and absurd humour in an irresistible cocktail.',
+    'One Piece - Intégrale East Blue': 'One Piece - East Blue Complete Collection',
+    'Ototo est un éditeur français spécialisé dans les light novels et les mangas populaires comme Sword Art Online, That Time I Got Reincarnated as a Slime et Made in Abyss.': 'Ototo is a French publisher specialising in light novels and popular manga such as Sword Art Online, That Time I Got Reincarnated as a Slime and Made in Abyss.',
+    'oublient pas.': 'will never forget.',
+    'Page introuvable — KINKA.FR, votre boutique manga.': 'Page not found — KINKA.FR, your manga store.',
+    'Paiement sécurisé — KINKA.FR': 'Secure payment — KINKA.FR',
+    'Passer en mode clair': 'Switch to light mode',
+    'Passer en mode sombre': 'Switch to dark mode',
+    'Plongez dans les univers captivants de Naoki Urasawa — Monster, Pluto, 20th Century Boys — des thrillers psychologiques qui redéfinissent le manga adulte.': 'Dive into the captivating worlds of Naoki Urasawa — Monster, Pluto, 20th Century Boys — psychological thrillers that redefine adult manga.',
+    'Pokémon': 'Pokémon',
+    'Poétique': 'Poetic',
+    'Produit ajouté au panier': 'Product added to cart',
+    'Profil mis à jour.': 'Profile updated.',
+    'Redirection vers le paiement...': 'Redirecting to payment...',
+    'Retrouvez tous les tomes de My Hero Academia et suivez le parcours de Midoriya Izuku vers son destin de héros.': 'Find all My Hero Academia volumes and follow Midoriya Izuku\'s journey towards his destiny as a hero.',
+    'Résultats de recherche — KINKA.FR': 'Search results — KINKA.FR',
+    'Samouraï': 'Samurai',
+    'sauvegardé': 'saved',
+    'Si cet email existe, un lien de réinitialisation a été envoyé.': 'If this email exists, a reset link has been sent.',
+    'Spécialiste shōjo & josei': 'Shōjo & josei specialist',
+    'Stratégie': 'Strategy',
+    'Super-héros': 'Superheroes',
+    'Série :': 'Series:',
+    'Token expiré.': 'Token expired.',
+    'Tous les avantages Premium actifs': 'All Premium benefits active',
+    'un cran ! Isagi Yoichi doit transcender ses limites pour devenir le meilleur attaquant au monde dans ce programme de sélection ultra-compétitif.': 'a notch! Isagi Yoichi must transcend his limits to become the world\'s best striker in this ultra-competitive selection programme.',
+    'un des auteurs les plus inventifs de sa génération.': 'one of the most inventive authors of his generation.',
+    'un des plus anciens éditeurs manga de France. Éditeur historique de Naruto et de nombreux classiques, Kana a contribué à démocratiser le manga en France.': 'one of the oldest manga publishers in France. Historic publisher of Naruto and many classics, Kana has helped democratise manga in France.',
+    'un du sexe opposé.': 'of the opposite sex.',
+    'Un incontournable absolu': 'An absolute must-read',
+    'Un lien de réinitialisation a été envoyé à votre adresse email.': 'A reset link has been sent to your email address.',
+    'un manga générationnel.': 'a generational manga.',
+    'un politicien. Neuf ans plus tard, cet enfant est devenu un tueur en série surnommé "Monster".': 'a politician. Nine years later, that child has become a serial killer known as "Monster".',
+    'Un rythme haletant': 'A breathless pace',
+    'Un scénario complexe et mature': 'A complex and mature storyline',
+    'Un univers visuellement saisissant': 'A visually striking universe',
+    'un utilise leur symbole pour dominer le monde.': 'uses their symbol to dominate the world.',
+    'Un équilibre parfait action / humour': 'A perfect balance of action and humour',
+    'Une atmosphère unique': 'A unique atmosphere',
+    'une des autrices les plus appréciées du seinen.': 'one of the most acclaimed female authors in seinen.',
+    'une des autrices les plus influentes du shōjo et du josei des années 2000.': 'one of the most influential female authors of shōjo and josei in the 2000s.',
+    'une des plus populaires au monde. Endo se distingue par son sens du timing comique et la profondeur émotionnelle de ses personnages.': 'one of the most popular in the world. Endo stands out for his comic timing and the emotional depth of his characters.',
+    'une des sensations manga les plus récentes publiée dans Shōnen Jump+. Mélangeant de façon inédite fantômes, aliens, action survolée et romance adolescente, Dandadan est rapidement devenu un phénomène mondial adapté en anime.': 'one of the most recent manga sensations published in Shōnen Jump+. Uniquely blending ghosts, aliens, electrifying action and teenage romance, Dandadan has rapidly become a global phenomenon adapted into an anime.',
+    'une des œuvres manga les plus vendues et les plus influentes de la décennie 2010. Reconnu pour sa narration complexe, ses twists narratifs, et la profondeur de ses thématiques (liberté, destin, guerre), Isayama a marqué une génération entière de lecteurs.': 'one of the best-selling and most influential manga works of the 2010s. Recognised for its complex storytelling, narrative twists and the depth of its themes (freedom, destiny, war), Isayama has left his mark on an entire generation of readers.',
+    'une forêt. Mais ils vont découvrir la terrible vérité sur leur existence et celle de leurs "parents".': 'a forest. But they will discover the terrible truth about their existence and that of their "parents".',
+    'Une galerie de personnages mémorables': 'A gallery of memorable characters',
+    'Une narration sans temps mort': 'Non-stop storytelling',
+    'une précision rare': 'with rare precision',
+    'une slime. Une nouvelle vie pleine de surprises et de pouvoirs extraordinaires.': 'a slime. A new life full of surprises and extraordinary powers.',
+    'Une écriture profonde et poétique': 'Deep and poetic writing',
+    'unir pour protéger le royaume.': 'unite to protect the kingdom.',
+    'univers de Jujutsu Kaisen avec les 10 premiers tomes réunis ! La naissance de Yuji Itadori et ses premières missions de pourfendeur.': 'world of Jujutsu Kaisen with the first 10 volumes collected! The birth of Yuji Itadori and his first sorcerer missions.',
+    'univers des sorciers et des esprits maudits avec tous les tomes de Jujutsu Kaisen disponibles chez KINKA.': 'world of sorcerers and cursed spirits with all Jujutsu Kaisen volumes available at KINKA.',
+    'utiliser ce pouvoir pour purger le monde des criminels, mais le détective L se met sur sa piste.': 'use this power to purge the world of criminals, but detective L is on his trail.',
+    'Veuillez corriger les champs en rouge.': 'Please correct the fields marked in red.',
+    'Veuillez remplir les champs obligatoires.': 'Please fill in the required fields.',
+    'Veuillez remplir tous les champs.': 'Please fill in all fields.',
+    'Veuillez renseigner votre email.': 'Please enter your email.',
+    'Veuillez saisir une adresse e-mail valide.': 'Please enter a valid email address.',
+    'Veuillez écrire votre message.': 'Please write your message.',
+    'Vous êtes déjà inscrit(e) à notre newsletter !': 'You are already subscribed to our newsletter!',
+    'à sa vie.': 'to his life.',
+    'ère moderne est inévitable.': 'modern era is inevitable.',
+    'École': 'School',
+    'École nationale des beaux-arts de Tokyo.': 'Tokyo National University of Fine Arts.',
+    'Émotion': 'Emotion',
+    'Émotions': 'Emotions',
+    'énergie maudite, ses personnages profonds et son ambiance dark fantasy.': 'cursed energy, its deep characters and its dark fantasy atmosphere.',
+    'Épique': 'Epic',
+    'Équipe': 'Team',
+    'étudiants en mode pour être leur mannequin. Sa rencontre avec George va bouleverser sa vision du monde.': 'fashion students as their model. Her encounter with George will transform her world view.',
+    'Ōoku : Les chambres intérieures': 'Ōoku: The Inner Chambers',
+    'Ōoku : Les chambres intérieures - Tome 1': 'Ōoku: The Inner Chambers - Volume 1',
+    'œuvre de': 'work of',
+    'œuvre de dessin.': 'artistry.',
+    'œuvre de Kentaro Miura dans une présentation luxueuse, un incontournable.': 'Kentaro Miura\'s work in a luxurious presentation — a must-have.',
+    'œuvre de Kentaro Miura.': 'Kentaro Miura\'s work.',
+    'œuvre de Miura, avec des illustrations somptueuses et une narration profonde.': 'Miura\'s work, with sumptuous illustrations and deep storytelling.',
+    'œuvre du cyberpunk.': 'cyberpunk masterwork.',
+    'œuvre viscérale et unique de Tatsuki Fujimoto — Chainsaw Man et ses demons-tondeuses disponibles chez KINKA.': 'visceral and unique work of Tatsuki Fujimoto — Chainsaw Man and its demon chainsaws available at KINKA.',
+    '12 déc. 2013': 'Dec. 12, 2013',
+    '13 déc. 2023': 'Dec. 13, 2023',
+    '19 déc. 2013': 'Dec. 19, 2013',
+    '6 déc. 2023': 'Dec. 6, 2023',
+    '[KINKA] mangadb.js introuvable après 3s — vérifier le chemin /asset/js/mangadb.js': '[KINKA] mangadb.js not found after 3s — check path /asset/js/mangadb.js',
+    'Ajouter aux favoris': 'Add to favorites',
+    'Ajouté !': 'Added!',
+    'Ajouté au panier !': 'Added to cart!',
+    'Angleterre, 1880. Jonathan Joestar mène une vie paisible jusqu\'à l\'arrivée de Dio Brando, un orphelin adopté qui va tenter de lui voler tout ce qu\'il a, jusqu\'à sa vie.': 'England, 1880. Jonathan Joestar lives a peaceful life until the arrival of Dio Brando, an adopted orphan who will attempt to steal everything he has, including his life.',
+    'Aoû': 'Aug',
+    'Asta continue son chemin vers le titre de Sorcier Impérial ! Alors qu\'une nouvelle menace surgit, les Chevaliers Magiques doivent s\'unir pour protéger le royaume.': 'Asta continues his path towards the title of Wizard King! As a new threat emerges, the Magic Knights must unite to protect the kingdom.',
+    'Asta est né sans magie dans un monde où tout le monde en possède. Sa détermination sans faille à devenir le Mage Suprême va l\'emmener bien au-delà de ses rêves.': 'Asta was born without magic in a world where everyone has it. His unwavering determination to become the Wizard King will take him far beyond his dreams.',
+    'Aucun manga de': 'No manga by',
+    'Aucun manga disponible dans cette catégorie pour le moment.': 'No manga available in this category right now.',
+    'Aucun manga trouvé pour ces critères.': 'No manga found for these criteria.',
+    'Aucun produit similaire trouvé pour ce manga.': 'No similar products found for this manga.',
+    'Aucun titre pour cette série.': 'No titles found for this series.',
+    'Aucune commande': 'No orders',
+    'Aucune meilleure vente dans cette catégorie.': 'No bestsellers in this category.',
+    'Aucune promo trouvée': 'No promotions found',
+    'Autre': 'Other',
+    'Chihaya Ayase veut devenir la meilleure joueuse de karuta du monde, un jeu de cartes traditionnel japonais. Un manga sur la passion, le sport et les émotions.': 'Chihaya Ayase wants to become the world\'s best karuta player, a traditional Japanese card game. A manga about passion, sport and emotions.',
+    'Choisissez un auteur dans la barre de navigation ci-dessus.': 'Choose an author from the navigation bar above.',
+    'Coffret premium Berserk en édition noire. Les 10 premiers tomes du chef-d\'œuvre de Kentaro Miura dans une présentation luxueuse, un incontournable.': 'Premium Berserk box set in black edition. The first 10 volumes of Kentaro Miura\'s masterpiece in a luxurious presentation — a must-have.',
+    'Dans ce Japon alternatif, une épidémie a décimé 3/4 des hommes. Les femmes gouvernent le pays, et le shogunat est aux mains de femmes. Les hommes peuplent le harem du shogun.': 'In this alternate Japan, an epidemic has wiped out 3/4 of all men. Women govern the country, and the shogunate is in women\'s hands. Men populate the shogun\'s harem.',
+    'Dans un futur dystopique, Killy erre dans une méga-structure tentaculaire à la recherche d\'humains porteurs d\'un génome particulier. Un chef-d\'œuvre du cyberpunk.': 'In a dystopian future, Killy wanders through a sprawling mega-structure in search of humans carrying a specific genome. A cyberpunk masterpiece.',
+    'Dans un monde où la gastronomie est reine, Toriko le Gourmet Hunter part à la quête des ingrédients les plus rares et les plus dangereux pour créer son menu parfait.': 'In a world where gastronomy is king, Toriko the Gourmet Hunter sets out to find the rarest and most dangerous ingredients to create his perfect menu.',
+    'Denji affronte de nouveaux Diables dans la Partie 2. Les alliances se forment et se brisent dans ce tome haletant qui repousse toujours plus loin les limites du genre.': 'Denji faces new Devils in Part 2. Alliances form and break in this breathtaking volume that keeps pushing the boundaries of the genre.',
+    'Denji, le Chainsaw Man, fait face à de nouveaux démons dans la partie II. Après les événements de la Partie I, Denji reprend une vie normale comme lycéen... mais les démons ne l\'oublient pas.': 'Denji, the Chainsaw Man, faces new demons in Part II. After the events of Part I, Denji resumes a normal life as a high school student... but the demons don\'t forget him.',
+    'Deux jeunes femmes portant le même prénom, Nana, se rencontrent dans un train pour Tokyo. Malgré leurs personnalités opposées, elles vont partager appartement et amitié.': 'Two young women sharing the same name, Nana, meet on a train to Tokyo. Despite their opposite personalities, they will share an apartment and a friendship.',
+    'Début de l\'arc Shippuden. Naruto revient au village après 3 ans d\'entraînement avec Jiraiya. Mais Gaara est enlevé par l\'Akatsuki...': 'Beginning of the Shippuden arc. Naruto returns to the village after 3 years of training with Jiraiya. But Gaara is kidnapped by the Akatsuki...',
+    'Déc': 'Dec',
+    'Découvrez l\'intégralité de l\'œuvre d\'Eiichiro Oda disponible chez KINKA — de ses premières aventures pirates jusqu\'aux derniers arcs de la saga finale.': 'Discover the complete works of Eiichiro Oda available at KINKA — from his first pirate adventures to the latest arcs of the final saga.',
+    'Découvrez l\'œuvre magistrale de Kentaro Miura — Berserk, une saga dark fantasy unique dont chaque volume est un chef-d\'œuvre de dessin.': 'Discover the masterful work of Kentaro Miura — Berserk, a unique dark fantasy saga where every volume is a masterpiece of draughtsmanship.',
+    'Découvrir le catalogue': 'Browse the catalog',
+    'Décrivez l\'': 'Describe the',
+    'Edward et Alphonse Elric sont deux frères alchimistes. Après une transmutation interdite pour ressusciter leur mère, ils partent à la recherche de la Pierre Philosophale.': 'Edward and Alphonse Elric are two alchemist brothers. After a forbidden transmutation to resurrect their mother, they set out to find the Philosopher\'s Stone.',
+    'Edward et Alphonse se rapprochent de la vérité sur la Porte des Vérités. Les homunculi resserrent leur étau sur Amestris dans cet arc haletant.': 'Edward and Alphonse draw closer to the truth behind the Gate of Truth. The homunculi tighten their grip on Amestris in this breathtaking arc.',
+    'Emma, Norman et Ray grandissent dans un orphelinat idyllique entouré d\'une forêt. Mais ils vont découvrir la terrible vérité sur leur existence et celle de leurs "parents".': 'Emma, Norman and Ray grow up in an idyllic orphanage surrounded by a forest. But they will discover the terrible truth about their existence and that of their "parents".',
+    'Erreur de chargement.': 'Loading error.',
+    'est l\'auteur(e) de': 'is the author of',
+    'Futaba aimait Kou au collège mais il a disparu. Au lycée, il réapparaît complètement changé. Leurs retrouvailles vont rouvrir de vieilles blessures et de nouveaux sentiments.': 'Futaba loved Kou in middle school but he disappeared. In high school, he reappears completely changed. Their reunion will reopen old wounds and new feelings.',
+    'Fév': 'Feb',
+    'Ginko est un mushishi, spécialiste des "mushi" — créatures primitives vivant à la frontière du perceptible. Il voyage à travers le Japon médiéval pour étudier ces êtres étranges.': 'Ginko is a mushi-shi, a specialist in "mushi" — primitive creatures living on the border of perception. He travels through medieval Japan to study these strange beings.',
+    'Glénat est l\'un des plus grands éditeurs de manga en France. Pionnier dans l\'importation du manga japonais, Glénat publie des séries emblématiques comme One Piece, Dragon Ball et Berserk.': 'Glénat is one of the largest manga publishers in France. A pioneer in importing Japanese manga, Glénat publishes iconic series such as One Piece, Dragon Ball and Berserk.',
+    'Gon et Killua continuent leurs aventures dans un monde rempli de créatures fantastiques. L\'arc de la succession à la couronne de Kakin se révèle plus complexe que prévu.': 'Gon and Killua continue their adventures in a world full of fantastic creatures. The succession arc for the throne of Kakin proves more complex than expected.',
+    'Guts et ses compagnons poursuivent leur voyage vers Elfhelm. Ce tome posthume illustre la grandeur de l\'œuvre de Miura, avec des illustrations somptueuses et une narration profonde.': 'Guts and his companions continue their journey towards Elfhelm. This posthumous volume illustrates the greatness of Miura\'s work, with sumptuous illustrations and deep storytelling.',
+    'Guts, le mercenaire au glaive gigantesque, combat des démons dans un monde médiéval obscur. L\'introduction au chef-d\'œuvre de Kentaro Miura.': 'Guts, the mercenary with the enormous sword, fights demons in a dark medieval world. The introduction to Kentaro Miura\'s masterpiece.',
+    'générique': 'generic',
+    'Haruna, ancienne championne de softball, veut tomber amoureuse au lycée. Mais elle ne sait pas comment plaire aux garçons. Elle convainc Yoh, populaire, de la coacher en amour.': 'Haruna, a former softball champion, wants to fall in love in high school. But she doesn\'t know how to attract boys. She convinces Yoh, the popular one, to coach her in love.',
+    'histoire de Son Goku, un jeune garçon à la queue de singe, qui part à la recherche des 7 boules de cristal permettant d\'exaucer n\'importe quel vœu.': 'the story of Son Goku, a young boy with a monkey tail, who sets out to find the 7 crystal balls that can grant any wish.',
+    'Honorez l\'héritage d\'Akira Toriyama avec tous les volumes de Dragon Ball disponibles chez KINKA.': 'Honour the legacy of Akira Toriyama with all Dragon Ball volumes available at KINKA.',
+    'Ichigo Kurosaki est un lycéen capable de voir les fantômes. Sa rencontre avec Rukia, une Soul Reaper, va transformer sa vie et le plonger dans les guerres des âmes.': 'Ichigo Kurosaki is a high school student who can see ghosts. His encounter with Rukia, a Soul Reaper, will transform his life and plunge him into the wars of souls.',
+    'intensité monte d\'un cran ! Isagi Yoichi doit transcender ses limites pour devenir le meilleur attaquant au monde dans ce programme de sélection ultra-compétitif.': 'the intensity cranks up! Isagi Yoichi must transcend his limits to become the world\'s best striker in this ultra-competitive selection programme.',
+    'Kagome, collégienne de Tokyo, est aspirée dans un vieux puits et se retrouve au Japon médiéval. Elle y rencontre Inuyasha, mi-humain mi-démon, gardien de la Jewelle des 4 âmes.': 'Kagome, a Tokyo middle schooler, is pulled into an old well and finds herself in medieval Japan. There she meets Inuyasha, half-human half-demon, guardian of the Shikon Jewel.',
+    'Kana, filiale de Dargaud-Lombard, est l\'un des plus anciens éditeurs manga de France. Éditeur historique de Naruto et de nombreux classiques, Kana a contribué à démocratiser le manga en France.': 'Kana, a subsidiary of Dargaud-Lombard, is one of the oldest manga publishers in France. Historic publisher of Naruto and many classics, Kana has helped democratise manga in France.',
+    'Kazuto Kirigaya est l\'un des 10 000 joueurs piégés dans le jeu de réalité virtuelle Sword Art Online. La seule façon d\'en sortir : battre tous les étages du château Aincrad.': 'Kazuto Kirigaya is one of 10,000 players trapped in the virtual reality game Sword Art Online. The only way out: clear all floors of Aincrad castle.',
+    'Ken Takakura et Momo Ayase poursuivent leurs aventures paranormales. De nouveaux esprits surpuissants entrent en scène, et les révélations sur l\'origine de leurs pouvoirs s\'accumulent.': 'Ken Takakura and Momo Ayase continue their paranormal adventures. New overwhelmingly powerful spirits enter the scene, and revelations about the origin of their powers accumulate.',
+    'Kenji et ses amis d\'enfance ont inventé un symbole — l\'Ami — et imaginé une prophétie apocalyptique. Des années plus tard, quelqu\'un utilise leur symbole pour dominer le monde.': 'Kenji and his childhood friends invented a symbol — the Friend — and imagined an apocalyptic prophecy. Years later, someone is using their symbol to dominate the world.',
+    'Kyoko quitte tout pour suivre son idole Shō à Tokyo. Trahie et abandonnée, elle décide de se venger en devenant une star encore plus célèbre que lui.': 'Kyoko leaves everything to follow her idol Shō to Tokyo. Betrayed and abandoned, she decides to take revenge by becoming an even bigger star than him.',
+    'La bataille contre Sukuna atteint son paroxysme ! Gojo est libéré de la prison dimensionnelle et le choc entre les deux plus grands sorciers de l\'ère moderne est inévitable.': 'The battle against Sukuna reaches its climax! Gojo is freed from the dimensional prison and the clash between the two greatest sorcerers of the modern era is inevitable.',
+    'La chasse à l\'or aïnou atteint son apogée ! Sugimoto l\'Immortel et Asirpa traversent Hokkaïdo dans une aventure qui mêle survie, cuisine traditionnelle et mystère.': 'The hunt for Ainu gold reaches its peak! Sugimoto the Immortal and Asirpa cross Hokkaido in an adventure blending survival, traditional cuisine and mystery.',
+    'La famille Forger est de retour pour de nouvelles missions palpitantes ! Loid doit jongler entre ses missions d\'espionnage et les caprices d\'Anya, tandis que Yor affûte ses talents d\'assassin.': 'The Forger family is back for thrilling new missions! Loid must juggle his espionage assignments and Anya\'s whims, while Yor hones her assassin skills.',
+    'La guerre contre les Arrancar prend une dimension épique. Ichigo pousse ses limites pour protéger ses amis dans des combats qui font trembler les dimensions.': 'The war against the Arrancar takes on an epic dimension. Ichigo pushes his limits to protect his friends in battles that shake the very dimensions.',
+    'La guerre finale entre héros et vilains ! Izuku Midoriya, héritier de All Might, doit affronter All For One dans un combat qui déterminera l\'avenir des héros.': 'The final war between heroes and villains! Izuku Midoriya, heir to All Might, must face All For One in a battle that will determine the future of heroes.',
+    'La mission Strix avance. Anya doit maintenant décrocher une étoile supplémentaire à Eden. Les Forger naviguent entre comédie familiale et espionnage de haute voltige.': 'Operation Strix advances. Anya must now earn an additional star at Eden. The Forgers navigate between family comedy and high-stakes espionage.',
+    'La quête de Musashi Miyamoto pour être le plus fort du Japon continue dans ce chef-d\'œuvre du manga historique. Les illustrations d\'Inoue sont époustouflantes.': 'Musashi Miyamoto\'s quest to become the strongest in Japan continues in this masterpiece of historical manga. Inoue\'s illustrations are breathtaking.',
+    'La saga Cell bat son plein. Gohan se révèle être le guerrier le plus puissant de la Terre. Un tome mythique de la saga Dragon Ball Z.': 'The Cell saga is in full swing. Gohan is revealed to be the most powerful warrior on Earth. A legendary volume of the Dragon Ball Z saga.',
+    'Laios et son groupe approchent du nid du dragon fou. Les tensions montent dans cette conclusion épique. Le dernier tome de la saga culinaire fantastique.': 'Laios and his group approach the lair of the mad dragon. Tensions rise in this epic conclusion — the final volume of the fantastic culinary saga.',
+    'Laios et son équipage continuent d\'explorer le donjon tout en cuisinant les monstres qu\'ils rencontrent. Un manga unique qui mêle fantasy et gastronomie avec humour.': 'Laios and his crew continue exploring the dungeon while cooking the monsters they encounter. A unique manga blending fantasy and gastronomy with humour.',
+    'Le combat final contre Muzan Kibutsuji arrive à son apogée ! Tous les pourfendeurs unissent leurs forces dans un affrontement dont le résultat changera le monde des démons à jamais.': 'The final battle against Muzan Kibutsuji reaches its peak! All the Demon Slayers unite their forces in a confrontation whose outcome will change the demon world forever.',
+    'Le summum de l\'expérience manga': 'The ultimate manga experience',
+    'Le tome final de L\'Attaque des Titans ! Eren Jäger déclenche le Roulement de la Terre pour protéger Paradis. La conclusion explosive d\'un manga générationnel.': 'The final volume of Attack on Titan! Eren Jäger unleashes the Rumbling to protect Paradis. The explosive conclusion of a generational manga.',
+    'Le tournoi inter-lycées bat son plein. Karasuno affronte des équipes redoutables dans des matchs tendus où chaque point peut tout changer.': 'The inter-high tournament is in full swing. Karasuno faces formidable teams in tense matches where every point can change everything.',
+    'Les 12 premiers tomes de L\'Attaque des Titans réunis dans un coffret ! La découverte des Titans, la chute de Shiganshina et les premières révélations.': 'The first 12 volumes of Attack on Titan collected in a box set! The discovery of the Titans, the fall of Shiganshina and the first revelations.',
+    'Les origines de l\'aventure One Piece dans un magnifique coffret ! Suivez Luffy qui se constitue son équipage dans les mers de l\'East Blue.': 'The origins of the One Piece adventure in a magnificent box set! Follow Luffy as he assembles his crew in the seas of the East Blue.',
+    'Les révélations sur les Titans s\'accumulent. L\'unité de reconnaissance découvre des secrets terrifiants sur les murailles qui protègent l\'humanité.': 'Revelations about the Titans pile up. The reconnaissance unit discovers terrifying secrets about the walls protecting humanity.',
+    'Light Yagami trouve un carnet dont le nom écrit condamne à mort. Il décide d\'utiliser ce pouvoir pour purger le monde des criminels, mais le détective L se met sur sa piste.': 'Light Yagami finds a notebook whose written names condemn to death. He decides to use this power to purge the world of criminals, but detective L is on his trail.',
+    'Luffy et ses compagnons continuent leur aventure au pays des Wa. La bataille d\'Onigashima atteint son paroxysme ! Le capitaine au chapeau de paille fait face à l\'empereur Kaido dans un duel épique.': 'Luffy and his companions continue their adventure in the Land of Wano. The battle of Onigashima reaches its climax! The straw hat captain faces Emperor Kaido in an epic duel.',
+    'Meiko, jeune diplômée insatisfaite de son emploi de bureau, et son petit ami Taneda, qui rêve de percer avec son groupe de rock. Une histoire sur la jeunesse, les rêves et le deuil.': 'Meiko, a young graduate unhappy with her office job, and her boyfriend Taneda, who dreams of making it with his rock band. A story about youth, dreams and grief.',
+    'Misaki Ayuzawa est la première présidente du conseil des élèves dans un lycée mixte. Son secret ? Elle travaille dans un café maid pour aider sa famille. Usui la découvre...': 'Misaki Ayuzawa is the first student council president at a co-ed school. Her secret? She works at a maid café to support her family. Usui finds out...',
+    'Mode, musique et émotions — découvrez l\'univers d\'Ai Yazawa avec Nana et Paradise Kiss disponibles chez KINKA.': 'Fashion, music and emotions — discover the world of Ai Yazawa with Nana and Paradise Kiss available at KINKA.',
+    'Monkey D. Luffy rêve de devenir le Roi des Pirates. Il part à la conquête du légendaire trésor One Piece. Le début de l\'aventure la plus folle du manga !': 'Monkey D. Luffy dreams of becoming King of the Pirates. He sets out to find the legendary treasure, One Piece. The beginning of manga\'s wildest adventure!',
+    ' n\'est disponible dans notre catalogue.': ' is not available in our catalog.',
+    'Naruto Uzumaki, un jeune ninja au chakra du renard à neuf queues scellé en lui, rêve de devenir le Hokage de son village. Son aventure commence ici !': 'Naruto Uzumaki, a young ninja with the nine-tailed fox\'s chakra sealed within him, dreams of becoming his village\'s Hokage. His adventure begins here!',
+    'Natsu Dragnir et sa partenaire Happy partent à la recherche du père de Natsu, le dragon Ignir. Leur aventure les mènera à rejoindre la guilde de mages Fairy Tail.': 'Natsu Dragneel and his partner Happy set out to find Natsu\'s father, the dragon Igneel. Their adventure will lead them to join the Fairy Tail mage guild.',
+    'Néo-Tokyo, 2019. Des gangs de bikers s\'affrontent dans une ville reconstruite après une explosion nucléaire. Tetsuo développe des pouvoirs psychiques qui vont tout bouleverser.': 'Neo-Tokyo, 2019. Biker gangs clash in a city rebuilt after a nuclear explosion. Tetsuo develops psychic powers that will shake everything up.',
+    'Panini Manga publie des titres populaires comme Demon Slayer, 20th Century Boys et de nombreux shōnen. Filiale du groupe Panini, l\'éditeur est présent dans toute l\'Europe avec un catalogue varié.': 'Panini Manga publishes popular titles such as Demon Slayer, 20th Century Boys and many shōnen. A subsidiary of the Panini group, the publisher is present throughout Europe with a varied catalog.',
+    'Pika Édition est l\'un des pionniers du manga en France, éditeur de L\'Attaque des Titans, Blue Lock et Sailor Moon. Pika est reconnu pour la qualité de ses traductions et la diversité de son catalogue.': 'Pika Édition is one of the pioneers of manga in France, publisher of Attack on Titan, Blue Lock and Sailor Moon. Pika is known for the quality of its translations and the diversity of its catalog.',
+    'Plongez dans l\'univers de Jujutsu Kaisen avec les 10 premiers tomes réunis ! La naissance de Yuji Itadori et ses premières missions de pourfendeur.': 'Dive into the world of Jujutsu Kaisen with the first 10 volumes collected! The birth of Yuji Itadori and his first sorcerer missions.',
+    'Plongez dans l\'univers des sorciers et des esprits maudits avec tous les tomes de Jujutsu Kaisen disponibles chez KINKA.': 'Dive into the world of sorcerers and cursed spirits with all Jujutsu Kaisen volumes available at KINKA.',
+    'Punpun est un garçon ordinaire qui vit des moments extraordinaires. Ce manga sombre et touchant explore la croissance, l\'amour et la dépression avec une poésie unique.': 'Punpun is an ordinary boy who lives extraordinary moments. This dark and touching manga explores growth, love and depression with a unique poetry.',
+    'Qté :': 'Qty:',
+    'Retirer des favoris': 'Remove from favorites',
+    'Retrouvez l\'ensemble des œuvres de': 'Find all the works of',
+    'Retrouvez l\'intégrale de Naruto et vivez l\'aventure du jeune ninja qui rêve de devenir Hokage — disponible chez KINKA.': 'Find the complete Naruto collection and live the adventure of the young ninja who dreams of becoming Hokage — available at KINKA.',
+    'Retrouvez tous les volumes de L\'Attaque des Titans, du premier tome à la conclusion épique de la saga, disponibles chez KINKA.': 'Find all Attack on Titan volumes, from the first volume to the epic conclusion of the saga, available at KINKA.',
+    'Revivez les débuts de Naruto Uzumaki dans ce coffret collector ! Tomes 1 à 27, de l\'académie ninja aux premiers grands combats. Parfait cadeau pour les fans de la première heure.': 'Relive the beginnings of Naruto Uzumaki in this collector box set! Volumes 1 to 27, from the ninja academy to the first great battles. The perfect gift for long-time fans.',
+    'Riko et Reg descendent toujours plus profondément dans l\'Abîsse. Ce tome révèle des secrets bouleversants sur la nature de l\'Abîsse et ses mystérieux artefacts reliques.': 'Riko and Reg descend ever deeper into the Abyss. This volume reveals earth-shattering secrets about the nature of the Abyss and its mysterious relic artifacts.',
+    'Rin Okumura est le fils de Satan. Après la mort de son père adoptif, il décide de devenir exorciste pour venger sa mort et combattre son propre héritage démoniaque.': 'Rin Okumura is the son of Satan. After the death of his adoptive father, he decides to become an exorcist to avenge his death and fight his own demonic heritage.',
+    'Saitama est un héros capable de vaincre n\'importe quel ennemi d\'un seul coup de poing. Mais cette puissance lui a coûté quelque chose d\'inattendu : toutes ses émotions.': 'Saitama is a hero capable of defeating any enemy with a single punch. But this power has cost him something unexpected: all his emotions.',
+    'Sakura Kinomoto libère accidentellement des cartes magiques créées par Clow Reed. Elle doit maintenant les récupérer toutes avant qu\'elles ne causent des catastrophes.': 'Sakura Kinomoto accidentally releases magical cards created by Clow Reed. She must now collect them all before they cause disasters.',
+    'Shizuku, froide et studieuse, est chargée de remettre ses cours à Haru, un élève imprévisible. Leur relation va évoluer de façon totalement inattendue.': 'Shizuku, cold and studious, is tasked with delivering class notes to Haru, an unpredictable student. Their relationship will evolve in a completely unexpected way.',
+    'Shoyo Hinata, petit mais déterminé, veut devenir joueur de volley professionnel. Il rejoint le club de Karasuno et forme une équipe inoubliable avec Tobio Kageyama.': 'Shoyo Hinata, small but determined, wants to become a professional volleyball player. He joins the Karasuno club and forms an unforgettable team with Tobio Kageyama.',
+    '<strong>Ai Yazawa</strong> est une mangaka japonaise emblématique, autrice de <strong>Nana</strong> et <strong>Paradise Kiss</strong>. Ses œuvres se distinguent par leur sens de la mode, leurs personnages féminins complexes et leurs histoires d\'amour et d\'amitié profondes. L\'une des autrices les plus influentes du shōjo et du josei des années 2000.': '<strong>Ai Yazawa</strong> is an iconic Japanese manga artist, author of <strong>Nana</strong> and <strong>Paradise Kiss</strong>. Her works stand out for their sense of fashion, complex female characters and deep stories of love and friendship. One of the most influential female authors of shōjo and josei of the 2000s.',
+    '<strong>Akira Toriyama</strong> était un mangaka et character designer japonais légendaire, créateur de <strong>Dragon Ball</strong>, l\'une des séries les plus influentes de l\'histoire du manga et de la culture pop mondiale. Décédé en mars 2024, son œuvre continue d\'influencer générations d\'auteurs et millions de fans à travers le monde.': '<strong>Akira Toriyama</strong> was a legendary Japanese manga artist and character designer, creator of <strong>Dragon Ball</strong>, one of the most influential series in manga history and global pop culture. Deceased in March 2024, his work continues to inspire generations of authors and millions of fans around the world.',
+    '<strong>Eiichirō Oda</strong> est un mangaka japonais connu pour être l\'auteur du manga <strong>One Piece</strong>. Avec plus de 500 millions d\'exemplaires en circulation dans le monde, il est l\'auteur de manga le plus vendu de tous les temps. Son style graphique unique et sa capacité à créer des mondes vastes et imaginatifs ont redéfini le genre Shōnen.': '<strong>Eiichirō Oda</strong> is a Japanese manga artist known as the author of <strong>One Piece</strong>. With over 500 million copies in circulation worldwide, he is the best-selling manga author of all time. His unique art style and ability to create vast, imaginative worlds have redefined the Shōnen genre.',
+    '<strong>Gege Akutami</strong> est l\'auteur de <strong>Jujutsu Kaisen</strong>, phénomène mondial du manga shōnen. Publié dans le Weekly Shōnen Jump depuis 2018, la série se distingue par son système de magie unique basé sur l\'énergie maudite, ses personnages profonds et son ambiance dark fantasy.': '<strong>Gege Akutami</strong> is the author of <strong>Jujutsu Kaisen</strong>, a global shōnen manga phenomenon. Published in Weekly Shōnen Jump since 2018, the series stands out for its unique cursed energy magic system, deep characters and dark fantasy atmosphere.',
+    '<strong>Hajime Isayama</strong> est le créateur de <strong>L\'Attaque des Titans</strong>, l\'une des œuvres manga les plus vendues et les plus influentes de la décennie 2010. Reconnu pour sa narration complexe, ses twists narratifs, et la profondeur de ses thématiques (liberté, destin, guerre), Isayama a marqué une génération entière de lecteurs.': '<strong>Hajime Isayama</strong> is the creator of <strong>Attack on Titan</strong>, one of the best-selling and most influential manga works of the 2010s. Recognised for its complex storytelling, narrative twists and depth of themes (freedom, destiny, war), Isayama has left his mark on an entire generation of readers.',
+    '<strong>Kentaro Miura</strong> est le légendaire auteur de <strong>Berserk</strong>, chef-d\'œuvre du dark fantasy manga. Reconnu pour la qualité inégalée de son dessin et la profondeur de son univers, son œuvre a influencé une génération entière de créateurs dans les jeux vidéo, l\'animation et la BD mondiale. Décédé en 2021, il laisse un héritage artistique immense.': '<strong>Kentaro Miura</strong> is the legendary author of <strong>Berserk</strong>, a masterpiece of dark fantasy manga. Recognised for the unmatched quality of his artwork and the depth of his universe, his work influenced an entire generation of creators in video games, animation and comics worldwide. Deceased in 2021, he leaves behind an immense artistic legacy.',
+    '<strong>Kōhei Horikoshi</strong> est l\'auteur de <strong>My Hero Academia</strong>, phénomène mondial qui réinvente le genre des super-héros à travers un prisme shōnen japonais. Son sens du design des personnages et sa maîtrise des combats spectaculaires lui ont valu une reconnaissance internationale.': '<strong>Kōhei Horikoshi</strong> is the author of <strong>My Hero Academia</strong>, a global phenomenon that reinvents the superhero genre through a Japanese shōnen lens. His character design skills and mastery of spectacular battles have earned him international recognition.',
+    '<strong>Masashi Kishimoto</strong> est l\'auteur de <strong>Naruto</strong>, l\'une des séries manga les plus vendues de l\'histoire avec plus de 250 millions de volumes écoulés. Naruto a accompagné toute une génération de lecteurs à travers le monde et demeure une référence absolue du shōnen.': '<strong>Masashi Kishimoto</strong> is the author of <strong>Naruto</strong>, one of the best-selling manga series in history with over 250 million volumes sold. Naruto has accompanied an entire generation of readers around the world and remains an absolute shōnen reference.',
+    '<strong>Naoki Urasawa</strong> est l\'un des maîtres incontestés du manga thriller et psychologique. Auteur de <strong>Monster</strong>, <strong>20th Century Boys</strong>, <strong>Pluto</strong> et <strong>Billy Bat</strong>, il est réputé pour ses intrigues labyrinthiques, ses personnages à la psychologie profonde et sa maîtrise narrative hors pair. Multiple lauréat du Osamu Tezuka Cultural Prize.': '<strong>Naoki Urasawa</strong> is one of the undisputed masters of thriller and psychological manga. Author of <strong>Monster</strong>, <strong>20th Century Boys</strong>, <strong>Pluto</strong> and <strong>Billy Bat</strong>, he is renowned for his labyrinthine plots, psychologically deep characters and unparalleled narrative mastery. Multiple winner of the Osamu Tezuka Cultural Prize.',
+    '<strong>Ryoko Kui</strong> est l\'autrice de <strong>Dungeon Meshi (Delicious in Dungeon)</strong>, manga seinen unique qui mêle fantasy épique et gastronomie avec un humour raffiné. Saluée pour son univers rich, ses personnages attachants et son dessin expressif, Kui est devenue en quelques années l\'une des autrices les plus appréciées du seinen.': '<strong>Ryoko Kui</strong> is the author of <strong>Dungeon Meshi (Delicious in Dungeon)</strong>, a unique seinen manga blending epic fantasy and gastronomy with refined humour. Praised for her rich world, endearing characters and expressive artwork, Kui has become one of the most acclaimed seinen authors in just a few years.',
+    '<strong>Tatsuki Fujimoto</strong> est l\'auteur de <strong>Chainsaw Man</strong> et <strong>Fire Punch</strong>, deux séries qui ont redéfini les standards du manga seinen par leur violence graphique, leur humour absurde et leur humanité touchante. Fujimoto est aujourd\'hui l\'un des auteurs les plus inventifs de sa génération.': '<strong>Tatsuki Fujimoto</strong> is the author of <strong>Chainsaw Man</strong> and <strong>Fire Punch</strong>, two series that redefined seinen manga standards through their graphic violence, absurd humour and touching humanity. Fujimoto is today one of the most inventive authors of his generation.',
+    '<strong>Tatsuya Endo</strong> est l\'auteur de <strong>Spy × Family</strong>, phénomène éditorial mondial depuis 2019. Avec son mélange unique d\'espionnage, de comédie familiale et d\'action, la série est rapidement devenue l\'une des plus populaires au monde. Endo se distingue par son sens du timing comique et la profondeur émotionnelle de ses personnages.': '<strong>Tatsuya Endo</strong> is the author of <strong>Spy × Family</strong>, a global publishing phenomenon since 2019. With its unique blend of espionage, family comedy and action, the series has rapidly become one of the most popular in the world. Endo stands out for his comic timing and the emotional depth of his characters.',
+    '<strong>Yukinobu Tatsu</strong> est l\'auteur de <strong>Dandadan</strong>, l\'une des sensations manga les plus récentes publiée dans Shōnen Jump+. Mélangeant de façon inédite fantômes, aliens, action survolée et romance adolescente, Dandadan est rapidement devenu un phénomène mondial adapté en anime.': '<strong>Yukinobu Tatsu</strong> is the author of <strong>Dandadan</strong>, one of the most recent manga sensations published in Shōnen Jump+. Uniquely blending ghosts, aliens, electrifying action and teenage romance, Dandadan has rapidly become a global phenomenon adapted into an anime.',
+    'Sélectionnez un auteur': 'Select an author',
+    'Takemichi continue son voyage dans le temps pour sauver Hinata et ses amis. Les gangs de Tokyo s\'affrontent dans des batailles épiques, chaque décision peut tout changer.': 'Takemichi continues his time travel journey to save Hinata and his friends. Tokyo gangs clash in epic battles where every decision can change everything.',
+    'Thorfinn continue son voyage pour fonder Vinland, une terre sans violence. Ce manga épique explore les Vikings avec une profondeur historique et philosophique remarquable.': 'Thorfinn continues his journey to found Vinland, a land without violence. This epic manga explores the Vikings with remarkable historical and philosophical depth.',
+    'Tohru Honda, orpheline, est recueillie par la famille Soma. Elle découvre leur secret : certains membres se transforment en animaux du zodiaque chinois quand ils sont enlacés par quelqu\'un du sexe opposé.': 'Tohru Honda, an orphan, is taken in by the Soma family. She discovers their secret: certain members transform into Chinese zodiac animals when embraced by someone of the opposite sex.',
+    'Tonkam, filiale de Delcourt, est l\'un des premiers éditeurs manga en France. Ils ont notamment publié Vagabond, Bonne Nuit Punpun et des œuvres d\'auteurs emblématiques comme Inio Asano.': 'Tonkam, a subsidiary of Delcourt, is one of the first manga publishers in France. They notably published Vagabond, Goodnight Punpun and works by iconic authors such as Inio Asano.',
+    'Toute l\'œuvre de': 'All the works of',
+    'Toutes les séries': 'All series',
+    'Traitement en cours…': 'Processing…',
+    'Tranche de vie': 'Slice of life',
+    'Un dessin d\'une précision rare': 'Artwork of rare precision',
+    'Un salaryman ordinaire est tué et se réincarne dans un monde fantastique sous la forme d\'une slime. Une nouvelle vie pleine de surprises et de pouvoirs extraordinaires.': 'An ordinary office worker is killed and reincarnates in a fantasy world as a slime. A new life full of surprises and extraordinary powers.',
+    'Une réinterprétation sombre et adulte d\'Astro Boy par Naoki Urasawa. Dans un futur proche, de puissants robots sont assassinés les uns après les autres par une entité mystérieuse.': 'A dark and adult reinterpretation of Astro Boy by Naoki Urasawa. In the near future, powerful robots are being assassinated one by one by a mysterious entity.',
+    'Usagi Tsukino, lycéenne maladroite et romantique, découvre qu\'elle est la guerrière Sailor Moon. Elle doit protéger la Terre avec ses amies, les autres Sailor Senshi.': 'Usagi Tsukino, a clumsy and romantic high school girl, discovers she is the warrior Sailor Moon. She must protect the Earth with her friends, the other Sailor Senshi.',
+    'Voir tout le catalogue': 'Browse all catalog',
+    'Vos achats apparaîtront ici.': 'Your purchases will appear here.',
+    'Yatora, lycéen brillant mais vide intérieurement, tombe amoureux de la peinture. Il décide de tout sacrifier pour intégrer l\'École nationale des beaux-arts de Tokyo.': 'Yatora, a brilliant but internally empty high school student, falls in love with painting. He decides to sacrifice everything to get into the Tokyo University of the Arts.',
+    'Yuji Itadori, lycéen aux capacités physiques hors du commun, ingère involontairement un doigt de Ryomen Sukuna, le roi des fléaux. Sa vie bascule dans le monde des sorciers.': 'Yuji Itadori, a high school student with extraordinary physical abilities, involuntarily swallows a finger of Ryomen Sukuna, the king of curses. His life plunges into the world of sorcerers.',
+    'Yukari, lycéenne studieuse, est recrutée par un groupe d\'étudiants en mode pour être leur mannequin. Sa rencontre avec George va bouleverser sa vision du monde.': 'Yukari, a studious high school girl, is recruited by a group of fashion students to be their model. Her encounter with George will completely change her world view.',
+    'À Tokyo, des goules — créatures se nourrissant de chair humaine — vivent secrètement parmi les humains. Kaneki Ken, étudiant ordinaire, va être entraîné dans leur monde.': 'In Tokyo, ghouls — creatures that feed on human flesh — live secretly among humans. Kaneki Ken, an ordinary student, will be drawn into their world.',
+};
+
+
+// ============================================================
+// Patches dynamiques — surcharge des fonctions JS génératrices
+// de HTML pour assurer la traduction des éléments injectés
+// ============================================================
+window._kinka_patchDynamicFunctions = function() {
+    if (typeof window.generateDynamicPatch === 'undefined') {
+        window.generateDynamicPatch = true;
+    }
+};
+
+// Dictionnaire rapide EN uniquement (lookup O(1)) utilisé par translateStr()
+window._kinkaEN = null;
+function _getEN() {
+    if (window._kinkaEN) return window._kinkaEN;
+    window._kinkaEN = translations;
+    return window._kinkaEN;
+}
+
+// Helper global exposé pour usage dans les JS dynamiques
+window.tr = function(txt) {
+    if (!txt || typeof txt !== 'string') return txt;
+    if (currentLang !== 'en') return txt;
+    const t = translateText(txt);
+    return t || txt;
 };
 
 
@@ -912,33 +1432,63 @@ function translateText(txt) {
 }
 
 // ============================================================
-// MOTEUR DE TRADUCTION
+// MOTEUR DE TRADUCTION v9 — couverture maximale
 // ============================================================
 function applyTranslations(lang) {
     if (lang === 'fr') { location.reload(); return; }
 
     // 1. Attributs data-i18n (priorité absolue)
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
-        const tr = translateText(el.getAttribute('data-i18n'));
-        if (tr) el.textContent = tr;
+        const key = el.getAttribute('data-i18n');
+        const tr = translateText(key);
+        if (tr) {
+            if (el.hasAttribute('data-i18n-attr')) {
+                el.setAttribute(el.getAttribute('data-i18n-attr'), tr);
+            } else {
+                el.textContent = tr;
+            }
+        }
     });
 
-    // 2. Attributs placeholder / title / alt / aria-label
-    document.querySelectorAll('[placeholder],[title],[alt],[aria-label]').forEach(function(el) {
-        ['placeholder', 'title', 'alt', 'aria-label'].forEach(function(attr) {
+    // 2. Attributs interactifs — placeholder, title, alt, aria-label, aria-placeholder, data-tooltip
+    const ATTRS = ['placeholder', 'title', 'alt', 'aria-label', 'aria-placeholder', 'data-tooltip', 'data-title', 'value'];
+    document.querySelectorAll('[placeholder],[title],[alt],[aria-label],[aria-placeholder],[data-tooltip],[data-title]').forEach(function(el) {
+        ATTRS.forEach(function(attr) {
             if (el.hasAttribute(attr)) {
-                const tr = translateText(el.getAttribute(attr));
+                const val = el.getAttribute(attr);
+                if (!val) return;
+                const tr = translateText(val);
                 if (tr) el.setAttribute(attr, tr);
             }
         });
     });
 
-    // 3. Walker sur tous les nœuds texte du DOM
+    // 3. Options des <select>
+    document.querySelectorAll('select option').forEach(function(opt) {
+        const raw = opt.textContent;
+        if (!raw || !raw.trim()) return;
+        const tr = translateText(raw.trim());
+        if (tr) opt.textContent = tr;
+    });
+
+    // 4. Walker sur tous les nœuds texte du DOM
     walkNode(document.body);
 
-    // 4. Titre de la page
-    const titleTr = translateText(document.title) || translateText(document.title.split(' - ')[0]);
-    if (titleTr) document.title = titleTr;
+    // 5. Titre de la page
+    const titleParts = document.title.split(' - ');
+    const titleTr = translateText(document.title) || translateText(titleParts[0]);
+    if (titleTr) {
+        document.title = titleParts.length > 1
+            ? titleTr + ' - ' + (translateText(titleParts.slice(1).join(' - ')) || titleParts.slice(1).join(' - '))
+            : titleTr;
+    }
+
+    // 6. Meta description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc && metaDesc.content) {
+        const tr = translateText(metaDesc.content);
+        if (tr) metaDesc.content = tr;
+    }
 }
 
 function walkNode(node) {
@@ -946,17 +1496,42 @@ function walkNode(node) {
     if (node.nodeType === Node.TEXT_NODE) {
         const raw = node.textContent;
         if (!raw || !raw.trim()) return;
-        const tr = translateText(raw.trim());
+        const trimmed = raw.trim();
+        // Tenter traduction directe
+        let tr = translateText(trimmed);
         if (tr) {
-            // Préserver les espaces de début/fin
-            const lead = raw.match(/^\s*/)[0];
+            const lead  = raw.match(/^\s*/)[0];
             const trail = raw.match(/\s*$/)[0];
             node.textContent = lead + tr + trail;
+            return;
+        }
+        // Tenter sur le texte sans ponctuation finale si court
+        if (trimmed.length < 120) {
+            const stripped = trimmed.replace(/[!?.,;:]+$/, '');
+            if (stripped !== trimmed) {
+                const trS = translateText(stripped);
+                if (trS) {
+                    const punct = trimmed.slice(stripped.length);
+                    const lead  = raw.match(/^\s*/)[0];
+                    const trail = raw.match(/\s*$/)[0];
+                    node.textContent = lead + trS + punct + trail;
+                }
+            }
         }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
         const tag = node.tagName;
-        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' || tag === 'PRE') return;
+        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' || tag === 'PRE' || tag === 'TEXTAREA') return;
         if (node.id === 'translate-toggle') return;
+        // Attributs inline sur chaque élément
+        ['placeholder', 'title', 'alt', 'aria-label'].forEach(function(attr) {
+            if (node.hasAttribute(attr)) {
+                const val = node.getAttribute(attr);
+                if (val) {
+                    const tr = translateText(val.trim());
+                    if (tr) node.setAttribute(attr, tr);
+                }
+            }
+        });
         node.childNodes.forEach(walkNode);
     }
 }
@@ -995,14 +1570,17 @@ function injectTranslateBtn() {
 }
 
 // ============================================================
-// EXPOSITION GLOBALE (appelé après chaque renderGrid)
+// EXPOSITION GLOBALE (appelé après chaque renderGrid / injection)
 // ============================================================
 window.kinka_translate = function() {
-    if (currentLang === 'en') applyTranslations('en');
+    if (currentLang === 'en') {
+        applyTranslations('en');
+        _patchDynamicFunctions();
+    }
 };
 
 // ============================================================
-// MUTATION OBSERVER — traduit les nœuds injectés dynamiquement
+// MUTATION OBSERVER v9 — traduit les nœuds ET attributs injectés
 // ============================================================
 let _observerStarted = false;
 function startMutationObserver() {
@@ -1010,16 +1588,36 @@ function startMutationObserver() {
     _observerStarted = true;
     let debounce = null;
     const obs = new MutationObserver(function(mutations) {
-        const hasNew = mutations.some(m => m.addedNodes.length > 0);
+        const hasNew = mutations.some(m => m.addedNodes.length > 0 || m.type === 'characterData');
         if (!hasNew) return;
         clearTimeout(debounce);
         debounce = setTimeout(function() {
             mutations.forEach(function(m) {
-                m.addedNodes.forEach(function(n) { walkNode(n); });
+                if (m.type === 'childList') {
+                    m.addedNodes.forEach(function(n) {
+                        walkNode(n);
+                        // Traduire aussi les select/options injectés
+                        if (n.nodeType === Node.ELEMENT_NODE) {
+                            n.querySelectorAll && n.querySelectorAll('select option').forEach(function(opt) {
+                                const raw = opt.textContent;
+                                if (!raw || !raw.trim()) return;
+                                const tr = translateText(raw.trim());
+                                if (tr) opt.textContent = tr;
+                            });
+                            // Attributs sur les nœuds racines injectés
+                            ['placeholder','title','alt','aria-label'].forEach(function(attr) {
+                                if (n.hasAttribute && n.hasAttribute(attr)) {
+                                    const val = n.getAttribute(attr);
+                                    if (val) { const tr = translateText(val.trim()); if (tr) n.setAttribute(attr, tr); }
+                                }
+                            });
+                        }
+                    });
+                }
             });
         }, 60);
     });
-    obs.observe(document.body, { childList: true, subtree: true });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: false });
 }
 
 // ============================================================
@@ -1031,6 +1629,7 @@ function startMutationObserver() {
         if (currentLang === 'en') {
             applyTranslations('en');
             startMutationObserver();
+            _patchDynamicFunctions();
         }
     }
     if (document.readyState === 'loading') {
@@ -1039,3 +1638,184 @@ function startMutationObserver() {
         init();
     }
 })();
+
+// ============================================================
+// PATCH DES FONCTIONS DYNAMIQUES
+// ── Surcharge les fonctions qui génèrent du HTML dynamique
+// ── pour que leurs textes soient traduits quand lang=EN
+// ============================================================
+function _patchDynamicFunctions() {
+    if (currentLang !== 'en') return;
+
+    // ── Patch genererPanierVide (page_panier.js) ─────────────
+    if (typeof window.genererPanierVide === 'function' && !window._kinkaPatched_panierVide) {
+        window._kinkaPatched_panierVide = true;
+        const _orig = window.genererPanierVide;
+        window.genererPanierVide = function() {
+            return `
+        <div class="panier-vide">
+            <div class="panier-vide-icon">
+                <span class="material-symbols-outlined" style="font-size:5rem">shopping_cart</span>
+            </div>
+            <h2>Your cart is empty</h2>
+            <p>Explore our catalog and add your favorite manga</p>
+            <a href="/page_catalogue.html" class="btn-primary">
+                <span class="material-symbols-outlined">explore</span>
+                Explore the catalog
+            </a>
+        </div>`;
+        };
+    }
+
+    // ── Patch genererResume (page_panier.js) ─────────────────
+    if (typeof window.genererResume === 'function' && !window._kinkaPatched_resume) {
+        window._kinkaPatched_resume = true;
+        const _origR = window.genererResume;
+        window.genererResume = function(panierData) {
+            const total = parseFloat(window.calculerTotal ? window.calculerTotal() : 0);
+            const nb    = window.compterArticles ? window.compterArticles() : panierData.length;
+            const fraisPort  = total >= 50 ? 0 : 4.90;
+            const totalFinal = (total + fraisPort).toFixed(2).replace('.', ',');
+            const totalAff   = total.toFixed(2).replace('.', ',');
+            const manque     = (50 - total).toFixed(2).replace('.', ',');
+            return `
+        <div class="panier-resume">
+            <h3>Order summary</h3>
+            <div class="resume-ligne">
+                <span>Subtotal (${nb} item${nb > 1 ? 's' : ''})</span>
+                <span>${totalAff} €</span>
+            </div>
+            <div class="resume-ligne">
+                <span>Shipping</span>
+                <span>${fraisPort === 0 ? '<strong style="color:#22c55e">Free</strong>' : fraisPort.toFixed(2).replace('.', ',') + ' €'}</span>
+            </div>
+            ${fraisPort > 0 ? `
+            <div class="livraison-progress">
+                <p class="livraison-info">Only <strong>${manque} €</strong> left for free shipping!</p>
+                <div class="livraison-bar-wrap">
+                    <div class="livraison-bar" style="width:${Math.min(100,(total/50)*100).toFixed(0)}%"></div>
+                </div>
+            </div>` : `<p class="livraison-gratuite"><span class="material-symbols-outlined">local_shipping</span> Free shipping!</p>`}
+            <div class="resume-ligne total">
+                <span>Total (incl. tax)</span>
+                <span><strong>${totalFinal} €</strong></span>
+            </div>
+            <button class="btn-primary btn-commander">
+                <span class="material-symbols-outlined">lock</span>
+                Place order
+            </button>
+            <a href="/page_catalogue.html" class="continuer-achats">← Continue shopping</a>
+        </div>`;
+        };
+    }
+
+    // ── Patch remplirDisponibilite (afficher_produit.js) ─────
+    if (typeof window.remplirDisponibilite === 'function' && !window._kinkaPatched_dispo) {
+        window._kinkaPatched_dispo = true;
+        window.remplirDisponibilite = function(p) {
+            const el = document.getElementById('produit-disponibilite');
+            if (!el) return;
+            if (p.stock > 0) {
+                el.innerHTML = p.stock <= 3
+                    ? `<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Only ${p.stock} copy${p.stock > 1 ? 'ies' : ''} left</strong> — order now!`
+                    : `<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>${p.stock} copies</strong> available — ships within 48h`;
+                el.style.borderColor = p.stock <= 3 ? 'rgba(245,158,11,.3)' : 'rgba(34,197,94,.3)';
+                el.style.background  = p.stock <= 3 ? 'rgba(245,158,11,.05)' : 'rgba(34,197,94,.05)';
+            } else {
+                el.innerHTML = `<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle">cancel</span> <strong>Out of stock</strong> — check back soon!`;
+                el.style.borderColor = 'rgba(239,68,68,.3)';
+                el.style.background  = 'rgba(239,68,68,.05)';
+            }
+        };
+    }
+
+    // ── Patch remplirSynopsis (afficher_produit.js) ──────────
+    if (typeof window.remplirSynopsis === 'function' && !window._kinkaPatched_syn) {
+        window._kinkaPatched_syn = true;
+        window.remplirSynopsis = function(p) {
+            const el = document.getElementById('synopsis-texte');
+            if (el) {
+                const txt = p.description || 'No synopsis available for this product.';
+                const tr  = translateText(txt);
+                el.textContent = tr || txt;
+            }
+        };
+    }
+
+    // ── Patch remplirCaracteristiques (afficher_produit.js) ──
+    if (typeof window.remplirCaracteristiques === 'function' && !window._kinkaPatched_carac) {
+        window._kinkaPatched_carac = true;
+        window.remplirCaracteristiques = function(p) {
+            const grid = document.getElementById('carac-grid');
+            if (!grid) return;
+            const lignes = [
+                ['Publisher',          p.editeur],
+                ['Collection',         p.collection],
+                ['Category',           p.categorie],
+                ['Series',             p.serie],
+                ['Volume',             p.tome ? 'Volume ' + p.tome : null],
+                ['Publication date',   p.dateParution],
+                ['Pages',              p.pages ? p.pages + ' pages' : null],
+                ['Format',             p.format],
+                ['Condition',          p.etat === 'neuf' ? 'New' : p.etat === 'occasion' ? 'Used' : p.etat],
+                ['Language',           p.langue === 'Français' ? 'French' : p.langue],
+                ['EAN / ISBN',         p.ean],
+            ];
+            grid.innerHTML = lignes
+                .filter(([, v]) => v)
+                .map(([label, val]) => `
+                    <div class="carac-item">
+                        <span class="carac-label">${label}</span>
+                        <span class="carac-value">${val}</span>
+                    </div>`)
+                .join('');
+        };
+    }
+
+    // ── Patch remplirTags (afficher_produit.js) ───────────────
+    if (typeof window.remplirTags === 'function' && !window._kinkaPatched_tags) {
+        window._kinkaPatched_tags = true;
+        window.remplirTags = function(p) {
+            const wrap = document.getElementById('produit-categories');
+            if (!wrap) return;
+            const stockTxt = p.stock > 0 ? 'In stock' : 'Out of stock';
+            const stockClass = p.stock > 0 ? 'stock-tag' : 'rupture-tag';
+            let html = `<span class="category-tag">${p.categorie || 'Manga'}</span>`;
+            if (p.etat === 'occasion') html += `<span class="category-tag" style="background:rgba(99,102,241,.08);color:#6366f1;border-color:rgba(99,102,241,.2)">Used</span>`;
+            html += `<span class="category-tag ${stockClass}">${stockTxt}</span>`;
+            if (p.nouveaute) html += `<span class="category-tag" style="background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.2)">New</span>`;
+            if (p.bestseller) html += `<span class="category-tag" style="background:rgba(245,158,11,.08);color:#d97706;border-color:rgba(245,158,11,.2)">Best seller</span>`;
+            wrap.innerHTML = html;
+        };
+    }
+
+    // ── Patch afficherErreur (afficher_produit.js) ────────────
+    if (typeof window.afficherErreur === 'function' && !window._kinkaPatched_err) {
+        window._kinkaPatched_err = true;
+        window.afficherErreur = function(msg) {
+            const c = document.getElementById('produit-container') || document.querySelector('main');
+            if (!c) return;
+            c.innerHTML = `<div style="text-align:center;padding:5rem 2rem">
+                <span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem">error</span>
+                <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:.5rem">${translateText(msg) || msg}</h2>
+                <p style="color:var(--text-muted);margin-bottom:1.5rem">The product you're looking for doesn't exist or has been removed.</p>
+                <a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex">
+                    <span class="material-symbols-outlined">arrow_back</span> Back to catalog
+                </a>
+            </div>`;
+        };
+    }
+
+    // ── Patch remplirTitre (afficher_produit.js) — titre EN ──
+    // Note: titres manga ne se traduisent pas (noms propres)
+
+    // ── Patch showToast (mangadb.js) ─────────────────────────
+    if (typeof window.showToast === 'function' && !window._kinkaPatched_toast) {
+        window._kinkaPatched_toast = true;
+        const _origToast = window.showToast;
+        window.showToast = function(msg, type) {
+            const tr = translateText(msg);
+            _origToast(tr || msg, type);
+        };
+    }
+}

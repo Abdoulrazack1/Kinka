@@ -327,14 +327,17 @@
         }
 
         // Récapitulatif montant
-        var total = order.total || 0;
+        var sousTotal = order.total || 0;
+        var livraison = sousTotal >= 50 ? 0 : 4.90;
+        var totalPaye = sousTotal + livraison;
         var fmt = function(n){ return n.toFixed(2).replace('.',',')+' €'; };
         document.querySelectorAll('.summary-row').forEach(function(row) {
             var lbl = row.querySelector('span:first-child');
             var val = row.querySelector('span:last-child');
             if (lbl && val) {
-                if (lbl.textContent.trim() === 'Sous-total') val.textContent = fmt(total);
-                if (lbl.textContent.trim() === 'Total payé') val.textContent = fmt(total);
+                if (lbl.textContent.trim() === 'Sous-total') val.textContent = fmt(sousTotal);
+                if (lbl.textContent.trim() === 'Livraison') val.textContent = livraison === 0 ? 'Gratuite' : fmt(livraison);
+                if (lbl.textContent.trim() === 'Total payé') val.textContent = fmt(totalPaye);
             }
         });
 

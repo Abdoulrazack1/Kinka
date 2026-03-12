@@ -665,7 +665,6 @@ footer::before {
 
 /* ── PRODUCT CARD IMPROVEMENTS ────────────────────────────────── */
 .product-card { box-shadow: var(--shadow-sm); }
-.product-card:hover { box-shadow: var(--shadow-lg); }
 .product-image { background: linear-gradient(135deg, var(--bg-subtle) 0%, var(--bg-muted) 100%); }
 
 /* ── TOASTS — variantes par type ────────────────────────────── */
@@ -695,125 +694,254 @@ footer::before {
 .kinka-toast--warning { background:#d97706; color:#fff; border-color:#d97706; }
 .kinka-toast--default { background:var(--text); color:var(--bg); }
 
-/* ── PRODUCT CARD — CSS AMÉLIORATIONS v20 ──────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   PRODUCT CARD — HOVER v21 (tilt 3D + glow + animations)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Base card setup ── */
 .product-card {
-  border-radius: 14px;
+  border-radius: 16px;
   border-color: var(--border);
+  will-change: transform;
+  transform-style: preserve-3d;
+  perspective: 800px;
+  /* Lueur rose cachée sous la carte, révélée au hover */
+  --glow-opacity: 0;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
 }
+
+/* ── Pseudo-élément pour la lueur dessous ── */
+.product-card::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(224,59,139,0.38) 0%,
+    rgba(139,92,246,0.18) 40%,
+    transparent 70%
+  );
+  filter: blur(18px);
+  z-index: -1;
+  opacity: var(--glow-opacity);
+  transition: opacity .4s ease;
+  pointer-events: none;
+  transform: translateZ(-1px) scale(1.02);
+}
+
+/* ── Hover principal — tilt piloté par JS via custom properties ── */
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(0,0,0,.13), 0 0 0 1.5px var(--pink);
+  transform:
+    perspective(800px)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    translateY(-10px);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.16),
+    0 8px 24px rgba(224,59,139,.12),
+    0 0 0 1.5px var(--pink);
   border-color: var(--pink);
+  --glow-opacity: 1;
 }
+
+/* ── Image : zoom + parallax léger ── */
 .product-image {
   height: 230px;
   background: linear-gradient(145deg, #f8f9fa 0%, #f0f0f5 100%);
+  overflow: hidden;
 }
+.product-image img {
+  transition: transform .6s cubic-bezier(.25,.46,.45,.94), filter .6s ease;
+  transform-origin: center 60%;
+}
+.product-card:hover .product-image img {
+  transform: scale(1.1) translateY(-3px);
+  filter: brightness(1.06) saturate(1.15);
+}
+
+/* ── Info zone : remonte légèrement au hover ── */
 .product-info {
   padding: .9rem 1rem 1rem;
+  transition: background .35s ease, transform .3s ease;
 }
+.product-card:hover .product-info {
+  background: linear-gradient(to bottom, var(--bg-card) 0%, var(--pink-soft) 220%);
+}
+
+/* ── Titre ── */
 .product-title {
   font-size: .88rem;
   font-weight: 700;
   line-height: 1.35;
+  transition: color .2s ease, letter-spacing .2s ease;
 }
+.product-card:hover .product-title {
+  color: var(--pink);
+  letter-spacing: -.005em;
+}
+
+/* ── Prix ── */
 .product-price {
   font-size: 1.05rem;
   font-weight: 800;
+  transition: transform .25s ease;
 }
+.product-card:hover .product-price {
+  transform: scale(1.05);
+  transform-origin: left center;
+}
+
+/* ── Bouton panier ── */
 .add-to-cart {
   width: 36px;
   height: 36px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(224,59,139,.3);
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1),
+              background .2s ease,
+              box-shadow .2s ease,
+              border-radius .2s ease;
+}
+.product-card:hover .add-to-cart {
+  /* Pulse d'entrée piloté par animation */
+  animation: cartPulseIn .35s cubic-bezier(.34,1.56,.64,1) forwards;
 }
 .add-to-cart:hover {
-  border-radius: 50%;
-  transform: scale(1.18);
+  border-radius: 50% !important;
+  transform: scale(1.22) !important;
+  box-shadow: 0 6px 20px rgba(224,59,139,.5) !important;
+  animation: none !important;
 }
-/* Section titles - amélioration */
+.add-to-cart:active {
+  transform: scale(.9) !important;
+  animation: none !important;
+}
+@keyframes cartPulseIn {
+  0%   { transform: scale(.85); box-shadow: 0 2px 10px rgba(224,59,139,.3); }
+  60%  { transform: scale(1.1); box-shadow: 0 4px 18px rgba(224,59,139,.45); }
+  100% { transform: scale(1);   box-shadow: 0 3px 14px rgba(224,59,139,.38); }
+}
+
+/* ── Bouton favoris ── */
+.card-actions {
+  transition: opacity .22s ease, transform .22s cubic-bezier(.34,1.56,.64,1);
+}
+.product-card:hover .card-actions {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+.card-fav-btn {
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1), background .15s ease, box-shadow .15s ease;
+}
+.card-fav-btn:hover {
+  transform: scale(1.2) rotate(-8deg);
+  box-shadow: 0 4px 14px rgba(239,68,68,.25);
+}
+
+/* ── Synopsis overlay : fondu plus profond ── */
+.product-synopsis {
+  background: linear-gradient(
+    to top,
+    rgba(8,3,12,.96) 0%,
+    rgba(8,3,12,.6)  45%,
+    rgba(8,3,12,.1)  75%,
+    transparent 100%
+  );
+  transition: opacity .35s ease;
+}
+
+/* ── Badge produit : légère montée au hover ── */
+.product-badge {
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+}
+.product-card:hover .product-badge {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 4px 14px rgba(224,59,139,.45);
+}
+.product-badge.bestseller { background: linear-gradient(135deg,#f59e0b,#ef4444); }
+.product-badge.occasion   { background: #6366f1; }
+.product-badge.promo      { background: linear-gradient(135deg,#16a34a,#059669); }
+.product-badge.nouveaute  { background: var(--pink); }
+
+/* ── Stock badge ── */
+.stock-badge {
+  transition: transform .25s ease, opacity .25s ease;
+}
+.product-card:hover .stock-badge {
+  transform: translateY(-2px);
+}
+
+/* ── Section titles ── */
 .section-title {
   font-size: 1.35rem;
   font-weight: 800;
   letter-spacing: -.025em;
 }
-/* Breadcrumb — meilleur style */
+/* Breadcrumb */
 .breadcrumb-bar {
   background: var(--bg-muted);
   border-bottom: 1px solid var(--border);
 }
-/* Header scroll shadow */
+/* Header scroll */
 header.scrolled {
   box-shadow: 0 2px 20px rgba(0,0,0,.08);
 }
-/* Dark mode card */
-body.dark-mode .product-card {
-  background: var(--bg-card);
-  border-color: var(--border);
-}
+
+/* ── Dark mode ── */
 body.dark-mode .product-card:hover {
-  box-shadow: 0 20px 48px rgba(0,0,0,.35), 0 0 0 1.5px var(--pink);
+  box-shadow:
+    0 28px 64px rgba(0,0,0,.4),
+    0 8px 24px rgba(224,59,139,.18),
+    0 0 0 1.5px var(--pink);
 }
 body.dark-mode .add-to-cart {
   box-shadow: 0 2px 10px rgba(224,59,139,.2);
 }
+body.dark-mode .product-card::after {
+  background: radial-gradient(
+    ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(224,59,139,0.28) 0%,
+    rgba(139,92,246,0.14) 40%,
+    transparent 70%
+  );
+}
 
 /* ══════════════════════════════════════════════════════════════
-   EFFET BRILLANT SUR LES CARDS — Shine / Glare CSS + JS
+   SHINE / GLARE — filet lumineux qui suit la souris (::before)
    ══════════════════════════════════════════════════════════════ */
 
-/* Le shine utilise un wrapper interne pour éviter le conflit z-index avec badges et boutons */
 .product-card {
   isolation: isolate;
 }
 
-/* Shine radial suivant la souris — z-index:1 pour rester SOUS les badges (z-index 2+) */
-.product-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 1;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.04) 40%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.product-card:hover::after { opacity: 1; }
-
-/* Filet lumineux en coin haut-gauche — z-index:1 sous les badges */
+/* Filet de lumière directionnelle (suit la souris) */
 .product-card::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  z-index: 1;
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.16) 0%,
-    transparent 45%
+  z-index: 2;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 50%) var(--mouse-y, 30%),
+    rgba(255,255,255,0.18) 0%,
+    rgba(255,255,255,0.06) 35%,
+    transparent 65%
   );
   opacity: 0;
-  transition: opacity 0.35s ease;
+  transition: opacity .3s ease;
 }
 .product-card:hover::before { opacity: 1; }
 
-/* Dark mode */
+/* Dark mode: shine plus subtil */
 body.dark-mode .product-card::before {
-  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 45%);
-}
-body.dark-mode .product-card::after {
   background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0.02) 40%,
-    transparent 70%
+    400px circle at var(--mouse-x, 50%) var(--mouse-y, 30%),
+    rgba(255,255,255,0.1) 0%,
+    rgba(255,255,255,0.03) 40%,
+    transparent 65%
   );
 }
 
