@@ -32,9 +32,9 @@
   z-index: 1;
   transition: opacity 0.8s ease;
 }
-.hero-slide.slide-1 { background-color: #1a0810; background-image: url('/asset/image/chainsaw_man_banniere.jpg'); }
-.hero-slide.slide-2 { background-color: #0a1020; background-image: url('/asset/image/banniere_jjk.png'); }
-.hero-slide.slide-3 { background-color: #0f1a10; background-image: url('/asset/image/banniere_mha.jpg'); }
+.hero-slide.slide-1 { background-color: #1a0810; background-image: url('/asset/image/chainsaw_man_bannière.jpg'); }
+.hero-slide.slide-2 { background-color: #0a1020; background-image: url('/asset/image/bannière_jjk.png'); }
+.hero-slide.slide-3 { background-color: #0f1a10; background-image: url('/asset/image/bannière_mha.jpg'); }
 .hero-slide.slide-4 { background-color: #1a0a05; background-image: url('/asset/image/Berserk-Tome-41.jpg'); }
 .hero-slide.slide-5 { background-color: #0a1520; background-image: url('/asset/image/Spyxfamily_tome10.jpg'); }
 
