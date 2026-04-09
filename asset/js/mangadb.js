@@ -439,21 +439,24 @@ function kinkaAddToCart(id, e) {
     }
 }
 
-function kinkaToggleFav(id, e) {
+async function kinkaToggleFav(id, e) {
     if (e) { e.preventDefault(); e.stopPropagation(); }
-    let favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
-    // e.currentTarget est null dans les handlers onclick inline → utiliser e.target.closest()
     const btn  = e ? (e.currentTarget || e.target.closest('.card-fav-btn, .btn-favoris')) : null;
     const icon = btn ? btn.querySelector('.material-symbols-outlined') : null;
+    const useApi = typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn() && typeof KinkaAPI !== 'undefined';
+    let favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+
     if (favs.includes(id)) {
         favs = favs.filter(f => f !== id);
         if (btn) btn.classList.remove('active');
         if (icon) { icon.style.fontVariationSettings = "'FILL' 0"; icon.style.color = ''; }
+        if (useApi) { try { await KinkaAPI.favoris.remove(id); } catch (_) {} }
         showToast('Retiré des favoris');
     } else {
         favs.push(id);
         if (btn) btn.classList.add('active');
         if (icon) { icon.style.fontVariationSettings = "'FILL' 1"; icon.style.color = '#ef4444'; }
+        if (useApi) { try { await KinkaAPI.favoris.add(id); } catch (_) {} }
         showToast('Ajouté aux favoris');
     }
     localStorage.setItem('kinka_favoris', JSON.stringify(favs));
