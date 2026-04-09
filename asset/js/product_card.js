@@ -11,19 +11,10 @@
      * Attend que le DOM soit prêt, puis initialise les boutons "Ajouter au panier".
      */
     function initAddToCartButtons() {
-        // Vérifier que la fonction addToCart est disponible
-        if (typeof window.addToCart !== 'function') {
-            console.error('[x] product-card.js : window.addToCart n’est pas défini. Vérifiez que panier.js est chargé avant ce script.');
-            return;
-        }
+        if (typeof window.addToCart !== 'function') return;
 
-        // Sélectionner tous les boutons "+" des cartes produits
         const cartButtons = document.querySelectorAll('.product-card .add-to-cart');
-
-        if (cartButtons.length === 0) {
-            console.warn('[!] Aucun bouton ".product-card .add-to-cart" trouvé.');
-            return;
-        }
+        if (cartButtons.length === 0) return;
 
         cartButtons.forEach(btn => {
             // Skip les cards buildProductCard (data-id) → gérées par kinkaAddToCart (onclick inline)
@@ -38,10 +29,7 @@
                 e.stopPropagation();
 
                 const card = this.closest('.product-card');
-                if (!card) {
-                    console.error('[x] Impossible de trouver la carte parente .product-card', this);
-                    return;
-                }
+                if (!card) return;
 
                 // Récupérer les informations du produit depuis le DOM
                 const titleEl = card.querySelector('.product-title');
@@ -50,17 +38,14 @@
                 const imgEl = card.querySelector('.product-image img');
 
                 const titre = titleEl?.textContent?.trim() || '';
-                if (!titre) {
-                    console.error('[x] Titre du produit introuvable', card);
-                    return;
-                }
+                if (!titre) return;
 
                 const prixTexte = priceEl?.textContent?.trim() || '0';
                 // Convertir "6,90 €" → 6.90
                 const prix = parseFloat(prixTexte.replace('€', '').replace(',', '.').trim()) || 0;
 
                 const editeur = authorEl?.textContent?.trim() || '';
-                const image = imgEl?.getAttribute('src') || '/asset/image/placeholder.jpg';
+                const image = imgEl?.getAttribute('src') || '/asset/image/One-Piece-Edition-originale-Tome-105.jpg';
 
                 // --- Génération d'un ID unique basé sur le titre ---
                 // Cette méthode est un fallback ; pour un site réel, préférez un data-id dans le HTML.
@@ -86,7 +71,7 @@
                 const originalHTML = this.innerHTML;   // sauvegarde le contenu original (icône + texte éventuel)
                 this.innerHTML = '<span class="material-symbols-outlined">check</span>';
                 this.style.transition = 'background 0.2s';
-                this.style.backgroundColor = 'var(--pink, #22c55e)';
+                this.style.backgroundColor = '#22c55e';
                 this.style.color = '#fff';
 
                 // Restauration après 1 seconde
@@ -103,7 +88,6 @@
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initAddToCartButtons);
     } else {
-        // DOM déjà chargé
         initAddToCartButtons();
     }
 

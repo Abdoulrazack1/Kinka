@@ -3,6 +3,7 @@
 // ============================================
 
 let panier = [];
+const MAX_QTY = 10;
 
 // ============================================
 // UTILITAIRE : PARSER UN PRIX (string OU number)
@@ -50,7 +51,10 @@ function ajouterAuPanier(produit) {
     const index = panier.findIndex(function(item) { return item.id === produit.id; });
 
     if (index !== -1) {
-        panier[index].quantite += (produit.quantite && produit.quantite > 1 ? produit.quantite : 1);
+        panier[index].quantite = Math.min(
+            panier[index].quantite + (produit.quantite && produit.quantite > 1 ? produit.quantite : 1),
+            MAX_QTY
+        );
     } else {
         panier.push({
             id: produit.id,
@@ -81,7 +85,6 @@ function viderPanier() {
 }
 
 function modifierQuantite(produitId, nouvelleQuantite) {
-    const MAX_QTY = 10;
     const index = panier.findIndex(function(item) { return item.id === produitId; });
     if (index !== -1) {
         if (nouvelleQuantite <= 0) {
@@ -97,17 +100,13 @@ function modifierQuantite(produitId, nouvelleQuantite) {
 function obtenirPanier() { return panier; }
 
 function calculerTotal() {
-    let total = 0;
-    panier.forEach(function(item) {
-        total += parsePrix(item.prix) * item.quantite;
-    });
-    return total.toFixed(2);
+    return panier.reduce(function(acc, item) {
+        return acc + parsePrix(item.prix) * (item.quantite || 1);
+    }, 0).toFixed(2);
 }
 
 function compterArticles() {
-    let total = 0;
-    panier.forEach(function(item) { total += item.quantite; });
-    return total;
+    return panier.reduce(function(acc, item) { return acc + (item.quantite || 0); }, 0);
 }
 
 // ============================================
@@ -216,6 +215,12 @@ function gererClicPanier() {
 // ============================================
 // MISE À JOUR NAV SELON AUTH — Dropdown profil
 // ============================================
+function _escNav(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function mettreAJourNavAuth() {
     try {
         const user = JSON.parse(localStorage.getItem('kinka_current_user'));
@@ -240,7 +245,7 @@ function mettreAJourNavAuth() {
             <div class="nav-user-avatar">
                 <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">person</span>
             </div>
-            <span class="nav-user-name">${user.prenom || 'Mon compte'}</span>
+            <span class="nav-user-name">${_escNav(user.prenom || 'Mon compte')}</span>
             <span class="material-symbols-outlined nav-user-chevron">expand_more</span>
         `;
 
@@ -253,8 +258,8 @@ function mettreAJourNavAuth() {
                     <span class="material-symbols-outlined" style="font-size:1.5rem;font-variation-settings:'FILL' 1">person</span>
                 </div>
                 <div class="nav-user-dropdown-info">
-                    <div class="nav-user-dropdown-name">${(user.prenom || '') + ' ' + (user.nom || '')}</div>
-                    <div class="nav-user-dropdown-email">${user.email || ''}</div>
+                    <div class="nav-user-dropdown-name">${_escNav((user.prenom || '') + ' ' + (user.nom || ''))}</div>
+                    <div class="nav-user-dropdown-email">${_escNav(user.email || '')}</div>
                     <div class="nav-user-dropdown-plan ${isPremium ? 'plan-premium' : isCollector ? 'plan-collector' : 'plan-free'}">
                         ${isPremium ? '<span class="material-symbols-outlined" style="font-size:.7rem;font-variation-settings:\'FILL\' 1">star</span>' : ''}
                         ${planLabel.toUpperCase()}
@@ -313,8 +318,8 @@ function mettreAJourNavAuth() {
             document.addEventListener('click', function() {
                 document.querySelectorAll('.nav-user-dropdown.open').forEach(function(d) {
                     d.classList.remove('open');
-                    var p = d.closest('.nav-user-wrap');
-                    if (p) { var b = p.querySelector('.nav-user-btn'); if (b) b.setAttribute('aria-expanded','false'); }
+                    const p = d.closest('.nav-user-wrap');
+                    if (p) { const b = p.querySelector('.nav-user-btn'); if (b) b.setAttribute('aria-expanded','false'); }
                 });
             });
             document.addEventListener('keydown', function(e) {

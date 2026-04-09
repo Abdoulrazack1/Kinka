@@ -55,7 +55,7 @@ function remplirTags(p) {
     if (!wrap) return;
     const stockClass = p.stock > 0 ? 'stock-tag' : 'rupture-tag';
     const stockTxt   = p.stock > 0 ? 'En stock' : 'Rupture';
-    let html = `<span class="category-tag">${p.categorie || 'Manga'}</span>`;
+    let html = `<span class="category-tag">${escapeHtml(p.categorie || 'Manga')}</span>`;
     if (p.etat === 'occasion') html += `<span class="category-tag" style="background:rgba(99,102,241,.08);color:#6366f1;border-color:rgba(99,102,241,.2)">Occasion</span>`;
     html += `<span class="category-tag ${stockClass}">${stockTxt}</span>`;
     if (p.nouveaute) html += `<span class="category-tag" style="background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.2)">Nouveau</span>`;
@@ -72,7 +72,7 @@ function remplirTitre(p) {
 // ── AUTEUR + NOTE ────────────────────────────────────────────
 function remplirAuteurNote(p) {
     const auteurEl = document.getElementById('produit-auteur');
-    if (auteurEl) auteurEl.innerHTML = `Par <a href="/page_auteur.html?auteur=${encodeURIComponent(p.auteur)}" class="author-link">${p.auteur}</a> · ${p.editeur || ''}`;
+    if (auteurEl) auteurEl.innerHTML = `Par <a href="/page_auteur.html?auteur=${encodeURIComponent(p.auteur)}" class="author-link">${escapeHtml(p.auteur)}</a> · ${escapeHtml(p.editeur || '')}`;
 
     const noteEl = document.getElementById('produit-note');
     if (noteEl && p.note) noteEl.innerHTML = buildStars(p.note);
@@ -143,8 +143,8 @@ function remplirCaracteristiques(p) {
         .filter(([, v]) => v)
         .map(([label, val]) => `
             <div class="carac-item">
-                <span class="carac-label">${label}</span>
-                <span class="carac-value">${val}</span>
+                <span class="carac-label">${escapeHtml(label)}</span>
+                <span class="carac-value">${escapeHtml(String(val))}</span>
             </div>`)
         .join('');
 }
@@ -183,7 +183,9 @@ function initQuantite(p) {
     const btnPls = document.getElementById('btn-plus');
     if (!input) return;
     const max = Math.max(1, Math.min(10, p.stock || 0));
-    input.max = max;
+    input.min   = 1;
+    input.max   = max;
+    input.value = 1;
     if (btnMin) btnMin.addEventListener('click', () => {
         const v = parseInt(input.value) || 1;
         if (v > 1) input.value = v - 1;
@@ -209,15 +211,15 @@ function initBoutonPanier(p) {
     btn.addEventListener('click', function () {
         const qty   = parseInt(document.getElementById('qty-input')?.value) || 1;
         const prix  = (p.promo && p.prixPromo) ? p.prixPromo : p.prix;
-        const MAX_Q = 10;
+        const limit = typeof MAX_QTY !== 'undefined' ? MAX_QTY : 10;
 
         // Utiliser kinkaAddToCart de mangadb.js ou fallback localStorage
         let panier = JSON.parse(localStorage.getItem('kinka_panier') || '[]');
         const idx  = panier.findIndex(i => i.id === p.id);
         if (idx >= 0) {
-            panier[idx].quantite = Math.min((panier[idx].quantite || 1) + qty, Math.min(MAX_Q, p.stock));
+            panier[idx].quantite = Math.min((panier[idx].quantite || 1) + qty, Math.min(limit, p.stock));
         } else {
-            panier.push({ id: p.id, titre: p.titre, prix: prix, image: p.image, editeur: p.editeur, quantite: Math.min(qty, Math.min(MAX_Q, p.stock)) });
+            panier.push({ id: p.id, titre: p.titre, prix: prix, image: p.image, editeur: p.editeur, quantite: Math.min(qty, Math.min(limit, p.stock)) });
         }
         localStorage.setItem('kinka_panier', JSON.stringify(panier));
 
@@ -292,11 +294,11 @@ function chargerSimilaires(produit) {
     } else {
         container.innerHTML = similaires.map(m => {
             const prix = (m.promo && m.prixPromo) ? m.prixPromo : m.prix;
-            return `<div class="product-card" onclick="window.location.href='/page_detail_produit.html?id=${m.id}'" style="cursor:pointer">
-                <div class="product-image"><img src="${m.image}" alt="${m.titre}" loading="lazy"></div>
+            return `<div class="product-card" onclick="window.location.href='/page_detail_produit.html?id=${encodeURIComponent(m.id)}'" style="cursor:pointer">
+                <div class="product-image"><img src="${escapeHtml(m.image)}" alt="${escapeHtml(m.titre)}" loading="lazy" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'"></div>
                 <div class="product-info">
-                    <h3 class="product-title">${m.titre}</h3>
-                    <p class="product-author">${m.auteur}</p>
+                    <h3 class="product-title">${escapeHtml(m.titre)}</h3>
+                    <p class="product-author">${escapeHtml(m.auteur)}</p>
                     <div class="product-footer">
                         <span class="product-price">${prix.toFixed(2)} €</span>
                     </div>
@@ -317,6 +319,16 @@ function buildStars(note) {
     for (let i = 0; i < empty; i++) html += '<span class="material-symbols-outlined">star_outline</span>';
     html += `</span><span class="rating-text">${note}/5</span></div>`;
     return html;
+}
+
+// ── UTILITAIRE ÉCHAPPEMENT HTML ───────────────────────────────
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 // ── ERREUR ────────────────────────────────────────────────────

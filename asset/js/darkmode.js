@@ -12,22 +12,22 @@
     }
 
     // ── 1. Créer le bouton si absent ──────────────────────────
-    var toggle = document.getElementById('dark-mode-toggle');
+    let toggle = document.getElementById('dark-mode-toggle');
     if (!toggle) {
         toggle = document.createElement('button');
         toggle.id = 'dark-mode-toggle';
         toggle.className = 'icon-btn';
         toggle.setAttribute('title', 'Mode sombre');
-        var icone = document.createElement('span');
+        const icone = document.createElement('span');
         icone.className = 'material-symbols-outlined';
         icone.textContent = 'dark_mode';
         toggle.appendChild(icone);
 
-        var navActions = document.querySelector('.nav-actions');
+        const navActions = document.querySelector('.nav-actions');
         if (navActions) {
-            var connectBtn = navActions.querySelector('.connect-btn');
-            var navUserWrap = navActions.querySelector('.nav-user-wrap');
-            var insertBefore = connectBtn || navUserWrap;
+            const connectBtn = navActions.querySelector('.connect-btn');
+            const navUserWrap = navActions.querySelector('.nav-user-wrap');
+            const insertBefore = connectBtn || navUserWrap;
             if (insertBefore) {
                 navActions.insertBefore(toggle, insertBefore);
             } else {
@@ -38,15 +38,15 @@
 
     // ── 2. Lire la préférence ─────────────────────────────────
     // Migration ancienne clé
-    var _legacyKey = localStorage.getItem('darkMode');
+    const _legacyKey = localStorage.getItem('darkMode');
     if (_legacyKey !== null && localStorage.getItem('kinka_darkmode') === null) {
         localStorage.setItem('kinka_darkmode', _legacyKey === 'enabled' ? '1' : '0');
         localStorage.removeItem('darkMode');
     }
-    var stored = localStorage.getItem('kinka_darkmode');
-    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const stored = localStorage.getItem('kinka_darkmode');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    var isDark = stored !== null ? stored === '1' : prefersDark;
+    const isDark = stored !== null ? stored === '1' : prefersDark;
 
     // ── 3. Appliquer sans transition au chargement ────────────
     if (isDark) _applyDark(false);
@@ -87,7 +87,7 @@
     }
 
     function _updateBtn(dark) {
-        var ic = toggle.querySelector('.material-symbols-outlined');
+        const ic = toggle.querySelector('.material-symbols-outlined');
         if (ic) ic.textContent = dark ? 'light_mode' : 'dark_mode';
         toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
         toggle.setAttribute('title', dark ? 'Mode clair' : 'Mode sombre');
@@ -95,8 +95,11 @@
     }
 
     function _addTransition() {
-        // Transition rapide une seule fois
-        var style = document.createElement('style');
+        // Nettoyer une éventuelle transition précédente encore active
+        const existing = document.head.querySelector('style[data-kinka-transition]');
+        if (existing) existing.remove();
+        const style = document.createElement('style');
+        style.setAttribute('data-kinka-transition', '1');
         style.textContent = '*, *::before, *::after { transition: background-color .2s ease, border-color .2s ease, color .15s ease, box-shadow .2s ease !important; }';
         document.head.appendChild(style);
         setTimeout(function () { style.remove(); }, 400);
