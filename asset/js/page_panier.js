@@ -3,6 +3,16 @@
 // Dépendance : panier.js (chargé avant)
 // ============================================
 
+// ── Utilitaire XSS ───────────────────────────────────────────
+function _escHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 (function _init() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
     afficherPanier();
@@ -34,36 +44,41 @@ function genererPanierVide() {
 }
 
 function genererPanierPlein(panierData) {
-    let html = '<div class="panier-layout">';
-    html += '<div class="panier-liste">';
-    panierData.forEach(function(p) { html += genererItemPanier(p); });
-    html += '</div>';
-    html += genererResume(panierData);
-    html += '</div>';
-    return html;
+    return '<div class="panier-layout">'
+         + '<div class="panier-liste">'
+         + panierData.map(genererItemPanier).join('')
+         + '</div>'
+         + genererResume(panierData)
+         + '</div>';
 }
 
 function genererItemPanier(produit) {
-    const prix = parsePrix(produit.prix);
-    const sous = (prix * produit.quantite).toFixed(2).replace('.', ',');
+    const prix    = parsePrix(produit.prix);
+    const sous    = (prix * produit.quantite).toFixed(2).replace('.', ',');
     const prixAff = prix.toFixed(2).replace('.', ',');
+    const FALLBACK = '/asset/image/One-Piece-Edition-originale-Tome-105.jpg';
+    const imgSrc  = _escHtml(produit.image || FALLBACK);
+    const imgAlt  = _escHtml(produit.titre);
+    const titre   = _escHtml(produit.titre);
+    const meta    = _escHtml(produit.auteur || produit.editeur || '');
+    const id      = _escHtml(produit.id);
     return `
-        <div class="panier-item" data-id="${produit.id}">
-            <img src="${produit.image || '/asset/image/placeholder.jpg'}"
-                 alt="${produit.titre}" class="panier-item-image"
-                 onerror="this.src='/asset/image/placeholder.jpg'">
+        <div class="panier-item" data-id="${id}">
+            <img src="${imgSrc}"
+                 alt="${imgAlt}" class="panier-item-image"
+                 onerror="this.src='${FALLBACK}'">
             <div class="panier-item-info">
-                <h3>${produit.titre}</h3>
-                <p class="panier-item-meta">${produit.auteur || produit.editeur || ''}</p>
+                <h3>${titre}</h3>
+                <p class="panier-item-meta">${meta}</p>
                 <p class="panier-item-prix">${prixAff} € × ${produit.quantite} = <strong>${sous} €</strong></p>
             </div>
             <div class="panier-item-controles">
                 <div class="quantite-controls">
-                    <button class="btn-diminuer" data-id="${produit.id}" aria-label="Diminuer">−</button>
+                    <button class="btn-diminuer" data-id="${id}" aria-label="Diminuer">−</button>
                     <span class="quantite-affichage">${produit.quantite}</span>
-                    <button class="btn-augmenter" data-id="${produit.id}" aria-label="Augmenter">+</button>
+                    <button class="btn-augmenter" data-id="${id}" aria-label="Augmenter">+</button>
                 </div>
-                <button class="btn-supprimer" data-id="${produit.id}">
+                <button class="btn-supprimer" data-id="${id}">
                     <span class="material-symbols-outlined">delete</span> Retirer
                 </button>
             </div>
@@ -73,7 +88,7 @@ function genererItemPanier(produit) {
 function genererResume(panierData) {
     const total = parseFloat(calculerTotal());
     const nb = compterArticles();
-    const fraisPort = total >= 50 ? 0 : 4.90;
+    const fraisPort = total === 0 ? 0 : (total >= 50 ? 0 : 4.90);
     const totalFinal = (total + fraisPort).toFixed(2).replace('.', ',');
     const totalAff = total.toFixed(2).replace('.', ',');
     const manque = (50 - total).toFixed(2).replace('.', ',');
@@ -108,11 +123,27 @@ function genererResume(panierData) {
         </div>`;
 }
 
+// ── Notification retrait (déduplique 4 appels identiques) ────
+function _notifierRetrait() {
+    if (typeof showToast === 'function') showToast('Produit retiré du panier');
+    else afficherNotification('Produit retiré du panier');
+}
+
+// ── Animation + retrait avec délai ───────────────────────────
+function _retirerAvecAnimation(el, id) {
+    if (el) {
+        el.classList.add('removing');
+        setTimeout(function() { retirerDuPanier(id); _notifierRetrait(); afficherPanier(); }, 350);
+    } else {
+        retirerDuPanier(id); _notifierRetrait(); afficherPanier();
+    }
+}
+
 function attacherEvenements() {
     document.querySelectorAll('.btn-augmenter').forEach(function(btn) {
         btn.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
-            const p = obtenirPanier().find(function(x) { return x.id === id; });
+            const p  = obtenirPanier().find(function(x) { return x.id === id; });
             if (p) { modifierQuantite(id, p.quantite + 1); afficherPanier(); }
         });
     });
@@ -120,49 +151,19 @@ function attacherEvenements() {
     document.querySelectorAll('.btn-diminuer').forEach(function(btn) {
         btn.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
-            const p = obtenirPanier().find(function(x) { return x.id === id; });
-            if (p) {
-                if (p.quantite > 1) {
-                    modifierQuantite(id, p.quantite - 1); afficherPanier();
-                } else {
-                    const item = this.closest('.panier-item');
-                    if (item) {
-                        item.classList.add('removing');
-                        setTimeout(function() {
-                            retirerDuPanier(id);
-                            if (typeof showToast === 'function') showToast('Produit retiré du panier');
-                            else afficherNotification('Produit retiré du panier');
-                            afficherPanier();
-                        }, 350);
-                    } else {
-                        retirerDuPanier(id);
-                        if (typeof showToast === 'function') showToast('Produit retiré du panier');
-                        else afficherNotification('Produit retiré du panier');
-                        afficherPanier();
-                    }
-                }
+            const p  = obtenirPanier().find(function(x) { return x.id === id; });
+            if (!p) return;
+            if (p.quantite > 1) {
+                modifierQuantite(id, p.quantite - 1); afficherPanier();
+            } else {
+                _retirerAvecAnimation(this.closest('.panier-item'), id);
             }
         });
     });
 
     document.querySelectorAll('.btn-supprimer').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const item = this.closest('.panier-item');
-            if (item) {
-                item.classList.add('removing');
-                setTimeout(function() {
-                    retirerDuPanier(id);
-                    if (typeof showToast === 'function') showToast('Produit retiré du panier');
-                    else afficherNotification('Produit retiré du panier');
-                    afficherPanier();
-                }, 350);
-            } else {
-                retirerDuPanier(id);
-                if (typeof showToast === 'function') showToast('Produit retiré du panier');
-                else afficherNotification('Produit retiré du panier');
-                afficherPanier();
-            }
+            _retirerAvecAnimation(this.closest('.panier-item'), this.getAttribute('data-id'));
         });
     });
 
