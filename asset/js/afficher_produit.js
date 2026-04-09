@@ -251,22 +251,23 @@ function initBoutonFavoris(p) {
         btn.title = 'Ajouter aux favoris';
     }
 
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', async function () {
+        const useApi = typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn() && typeof KinkaAPI !== 'undefined';
         let favs2 = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
         const icon2 = btn.querySelector('.material-symbols-outlined');
         if (favs2.includes(p.id)) {
-            // Retirer
             favs2 = favs2.filter(f => f !== p.id);
             btn.classList.remove('favoris-actif');
             if (icon2) icon2.style.cssText = 'font-size:1.1rem;color:var(--text-muted);transition:all .2s ease';
             btn.title = 'Ajouter aux favoris';
+            if (useApi) { try { await KinkaAPI.favoris.remove(p.id); } catch (_) {} }
             if (typeof showToast === 'function') showToast('Retiré des favoris');
         } else {
-            // Ajouter
             favs2.push(p.id);
             btn.classList.add('favoris-actif');
             if (icon2) icon2.style.cssText = 'font-size:1.1rem;color:#ef4444;transition:all .2s ease;font-variation-settings:"FILL" 1';
             btn.title = 'Retirer des favoris';
+            if (useApi) { try { await KinkaAPI.favoris.add(p.id); } catch (_) {} }
             if (typeof showToast === 'function') showToast('Ajouté aux favoris !');
         }
         localStorage.setItem('kinka_favoris', JSON.stringify(favs2));
