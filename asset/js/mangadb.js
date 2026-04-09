@@ -315,6 +315,12 @@ const categoriesDB = [
 // FONCTIONS UTILITAIRES
 // ============================================================
 
+function _esc(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function filterProducts(opts = {}) {
     let result = [...mangasDB];
     if (opts.categorie)  result = result.filter(m => m.categorie === opts.categorie);
@@ -331,8 +337,9 @@ function filterProducts(opts = {}) {
         const q = opts.query.toLowerCase();
         result = result.filter(m =>
             m.titre.toLowerCase().includes(q) ||
-            m.serie.toLowerCase().includes(q) ||
-            m.auteur.toLowerCase().includes(q) ||
+            (m.serie  || '').toLowerCase().includes(q) ||
+            (m.auteur || '').toLowerCase().includes(q) ||
+            (m.editeur || '').toLowerCase().includes(q) ||
             (m.tags && m.tags.some(t => t.toLowerCase().includes(q)))
         );
     }
@@ -382,12 +389,12 @@ function buildProductCard(manga, opts = {}) {
     const stockLabel = manga.stock <= 0 ? '<span class="stock-badge rupture">Rupture</span>'
                      : manga.stock <= 3 ? `<span class="stock-badge last">Plus que ${manga.stock}</span>` : '';
 
-    return `<div class="product-card" data-id="${manga.id}" onclick="if(!event.target.closest('.add-to-cart,.card-fav-btn'))window.location.href='/page_detail_produit.html?id=${manga.id}'">
+    return `<div class="product-card" data-id="${_esc(manga.id)}" onclick="if(!event.target.closest('.add-to-cart,.card-fav-btn'))window.location.href='/page_detail_produit.html?id=${encodeURIComponent(manga.id)}'">
         <div class="product-image">
             ${badgeTxt ? `<span class="product-badge ${badgeClass}">${badgeTxt}</span>` : ''}
             ${stockLabel}
-            <img src="${manga.image}" alt="${manga.titre}" loading="lazy" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
-            <div class="product-synopsis"><p>${manga.description || ''}</p></div>
+            <img src="${_esc(manga.image)}" alt="${_esc(manga.titre)}" loading="lazy" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
+            <div class="product-synopsis"><p>${_esc(manga.description || '')}</p></div>
             <div class="card-actions">
                 <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="kinkaToggleFav('${manga.id}',event)" title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">
                     <span class="material-symbols-outlined">favorite</span>
@@ -395,8 +402,8 @@ function buildProductCard(manga, opts = {}) {
             </div>
         </div>
         <div class="product-info">
-            <h3 class="product-title">${manga.titre}</h3>
-            <p class="product-author"><a href="/page_auteur.html?auteur=${encodeURIComponent(manga.auteur)}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none" class="author-card-link">${manga.auteur}</a></p>
+            <h3 class="product-title">${_esc(manga.titre)}</h3>
+            <p class="product-author"><a href="/page_auteur.html?auteur=${encodeURIComponent(manga.auteur)}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none" class="author-card-link">${_esc(manga.auteur)}</a></p>
             ${noteStars}
             <div class="product-footer">
                 <div>
@@ -435,7 +442,8 @@ function kinkaAddToCart(id, e) {
 function kinkaToggleFav(id, e) {
     if (e) { e.preventDefault(); e.stopPropagation(); }
     let favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
-    const btn = e ? e.currentTarget : null;
+    // e.currentTarget est null dans les handlers onclick inline → utiliser e.target.closest()
+    const btn  = e ? (e.currentTarget || e.target.closest('.card-fav-btn, .btn-favoris')) : null;
     const icon = btn ? btn.querySelector('.material-symbols-outlined') : null;
     if (favs.includes(id)) {
         favs = favs.filter(f => f !== id);
@@ -470,12 +478,12 @@ function updateFavsCount() {
 }
 
 function showToast(msg, type) {
-    var old = document.querySelector('.kinka-toast');
+    const old = document.querySelector('.kinka-toast');
     if (old) { clearTimeout(old._timeout1); clearTimeout(old._timeout2); old.remove(); }
-    var t = document.createElement('div');
+    const t = document.createElement('div');
     t.className = 'kinka-toast kinka-toast--' + (type || 'default');
-    var icons  = { error: 'error', success: 'check_circle', info: 'info', warning: 'warning', default: 'notifications' };
-    var iconName = icons[type] || icons.default;
+    const icons  = { error: 'error', success: 'check_circle', info: 'info', warning: 'warning', default: 'notifications' };
+    const iconName = icons[type] || icons.default;
     t.innerHTML = '<span class="material-symbols-outlined" style="font-size:1rem;flex-shrink:0;font-variation-settings:\'FILL\' 1">' + iconName + '</span>' + msg;
     t.style.cssText = 'transform:translateY(8px);opacity:0;transition:opacity .2s ease,transform .2s ease';
     document.body.appendChild(t);
@@ -508,17 +516,17 @@ function filterByMaison(maison) {
 (function initCardHover() {
     // ── Tilt 3D + Shine au survol de la souris ──────────────────
     // Paramètres
-    var MAX_TILT    = 10;   // degrés max de rotation
-    var TILT_EASE   = .12;  // facteur d'inertie (0 = raide, 1 = immédiat)
+    const MAX_TILT  = 10;   // degrés max de rotation
+    const TILT_EASE = .12;  // facteur d'inertie (0 = raide, 1 = immédiat)
 
     function attachHover(card) {
         if (card._hoverAttached) return;
         card._hoverAttached = true;
 
-        var currentX = 0, currentY = 0;
-        var targetX  = 0, targetY  = 0;
-        var rafId    = null;
-        var isHover  = false;
+        let currentX = 0, currentY = 0;
+        let targetX  = 0, targetY  = 0;
+        let rafId    = null;
+        let isHover  = false;
 
         function lerp(a, b, t) { return a + (b - a) * t; }
 
@@ -544,18 +552,18 @@ function filterByMaison(maison) {
         }
 
         card.addEventListener('mousemove', function(e) {
-            var rect = card.getBoundingClientRect();
+            const rect = card.getBoundingClientRect();
             // Normalise -1 à +1 depuis le centre
-            var nx = ((e.clientX - rect.left) / rect.width  - .5) * 2;
-            var ny = ((e.clientY - rect.top)  / rect.height - .5) * 2;
+            const nx = ((e.clientX - rect.left) / rect.width  - .5) * 2;
+            const ny = ((e.clientY - rect.top)  / rect.height - .5) * 2;
 
             // Tilt : incline vers la souris
             targetY =  nx * MAX_TILT;   // mouvement X -> rotation Y
             targetX = -ny * MAX_TILT;   // mouvement Y -> rotation X
 
             // Shine suit la souris
-            var sx = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
-            var sy = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
+            const sx = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1) + '%';
+            const sy = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
             card.style.setProperty('--mouse-x', sx);
             card.style.setProperty('--mouse-y', sy);
 

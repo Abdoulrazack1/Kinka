@@ -37,13 +37,13 @@
     }
 
     // ── Sync search input with query ─────────────────────────
-    var inp = document.getElementById('search-input');
+    const inp = document.getElementById('search-input');
     if (inp && query) inp.value = query;
 
     // ── Render with sort ─────────────────────────────────────
     function renderResults() {
-        var results = baseResults.slice();
-        var sortVal = sortSelect ? sortSelect.value : '';
+        let results = baseResults.slice();
+        const sortVal = sortSelect ? sortSelect.value : '';
 
         if (sortVal === 'Prix croissant')  results.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pa-pb; });
         if (sortVal === 'Prix décroissant') results.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pb-pa; });
@@ -51,7 +51,7 @@
         // 'Meilleures ventes' = default order (bestseller first)
         if (!sortVal || sortVal === 'Meilleures ventes') results.sort(function(a,b){ return (b.bestseller?1:0)-(a.bestseller?1:0); });
 
-        var n = results.length;
+        const n = results.length;
         if (resultsCountEl)   resultsCountEl.textContent   = `${n} manga${n !== 1 ? 's' : ''} trouvé${n !== 1 ? 's' : ''}`;
         if (resultsSummaryEl) resultsSummaryEl.textContent = `${n} résultat${n !== 1 ? 's' : ''} • ${sortVal || 'Meilleures ventes'}`;
 
@@ -83,13 +83,13 @@
 
     // ── Recherche live depuis la page elle-même ───────────────
     if (inp) {
-        var _deb;
+        let _deb;
         inp.addEventListener('input', function() {
             clearTimeout(_deb);
             _deb = setTimeout(function() {
-                var newQ = inp.value.trim();
+                const newQ = inp.value.trim();
                 if (!newQ) { baseResults = []; renderResults(); return; }
-                var lq = newQ.toLowerCase();
+                const lq = newQ.toLowerCase();
                 baseResults = (typeof mangasDB !== 'undefined' ? mangasDB : []).filter(m =>
                     m.titre.toLowerCase().includes(lq) ||
                     (m.serie   && m.serie.toLowerCase().includes(lq)) ||

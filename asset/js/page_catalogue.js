@@ -46,6 +46,8 @@
         }
         grid.innerHTML = results.map(m => buildProductCard(m)).join('');
         grid.style.animation = 'none'; grid.offsetHeight; grid.style.animation = 'fadeIn .3s ease';
+        if (typeof syncFavButtons       === 'function') syncFavButtons();
+        if (typeof gererBoutonsAjout    === 'function') gererBoutonsAjout();
         if (typeof window.kinka_translate === 'function') window.kinka_translate();
     }
 
@@ -130,8 +132,8 @@
     // Sort select
     const sortSelect = document.getElementById('sort-select');
     if (sortSelect) sortSelect.addEventListener('change', function() {
-        const map = {'pertinence':'pertinence','prix_asc':'prix_asc','prix_desc':'prix_desc','note':'note','nouveaute':'nouveaute'};
-        currentFilters.sort = map[this.value] || 'pertinence';
+        const allowed = ['pertinence', 'prix_asc', 'prix_desc', 'note', 'nouveaute'];
+        currentFilters.sort = allowed.includes(this.value) ? this.value : 'pertinence';
         renderGrid();
     });
 
@@ -161,9 +163,9 @@
     renderGrid();
 
     // Barre de recherche temps réel
-    var searchInput = document.getElementById('search-input');
+    const searchInput = document.getElementById('search-input');
     if (searchInput) {
-        var searchDebounce;
+        let searchDebounce;
         searchInput.addEventListener('input', function() {
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(renderGrid, 200);
