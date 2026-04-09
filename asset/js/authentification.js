@@ -156,7 +156,7 @@ function verifyPassword(password, hash) {
 
 // Générer un ID unique
 function generateId() {
-    return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
 }
 
 // ============================================
@@ -170,32 +170,25 @@ function generateId() {
  */
 function register(userData) {
     const users = getUsers();
+    const emailNorm = (userData.email || '').toLowerCase().trim();
 
-    // Vérifier si l'email existe déjà
-    const existingUser = users.find(u => u.email === userData.email);
+    // Vérifier si l'email existe déjà (insensible à la casse)
+    const existingUser = users.find(u => u.email.toLowerCase() === emailNorm);
     if (existingUser) {
         return { success: false, message: 'Cet email est déjà utilisé.' };
     }
 
-    // Créer le nouvel utilisateur
     const newUser = {
-        id: generateId(),
-        email: userData.email,
-        password: hashPassword(userData.password),
-        prenom: userData.prenom || '',
-        nom: userData.nom || '',
-        dateInscription: new Date().toISOString(),
-        // Autres champs optionnels (adresse, téléphone, etc.) pourront être ajoutés plus tard
+        id:               generateId(),
+        email:            emailNorm,
+        password:         hashPassword(userData.password),
+        prenom:           userData.prenom || '',
+        nom:              userData.nom    || '',
+        dateInscription:  new Date().toISOString(),
     };
 
     users.push(newUser);
     saveUsers(users);
-
-    // Connecter automatiquement après inscription (optionnel)
-    // setCurrentUser({ ...newUser, password: undefined }); // on enlève le hash pour la session
-    // return { success: true, message: 'Inscription réussie.', user: { ...newUser, password: undefined } };
-
-    // Ou simplement retourner succès sans connexion automatique
     return { success: true, message: 'Inscription réussie. Vous pouvez maintenant vous connecter.' };
 }
 
@@ -211,7 +204,8 @@ function register(userData) {
  */
 function login(email, password) {
     const users = getUsers();
-    const user = users.find(u => u.email === email);
+    const emailNorm = (email || '').toLowerCase().trim();
+    const user = users.find(u => u.email.toLowerCase() === emailNorm);
 
     if (!user) {
         return { success: false, message: 'Email incorrect.' };
@@ -235,8 +229,6 @@ function login(email, password) {
 
 function logout() {
     setCurrentUser(null);
-    // Optionnel : rediriger vers la page d'accueil ou de connexion
-    // window.location.href = '/page_accueil.html';
 }
 
 // ============================================
@@ -273,27 +265,28 @@ function requireGuest(redirectUrl = '/page_profil.html') {
 
 // Demander un lien de réinitialisation (simulé)
 function requestPasswordReset(email) {
-    const users = getUsers();
-    const user = users.find(u => u.email === email);
+    const users    = getUsers();
+    const emailNorm = (email || '').toLowerCase().trim();
+    const user     = users.find(u => u.email.toLowerCase() === emailNorm);
 
     if (!user) {
         // Pour des raisons de sécurité, on ne dit pas si l'email existe ou non
         return { success: true, message: 'Si cet email existe, un lien de réinitialisation a été envoyé.' };
     }
 
-    // Générer un token unique
-    const token = btoa(email + Date.now() + Math.random()).replace(/=/g, '');
+    // Générer un token unique sans btoa (évite le crash sur les emails avec accents)
+    const token = (Date.now().toString(36) + Math.random().toString(36).substring(2)).replace(/=/g, '');
 
     // Stocker le token avec une expiration (1 heure)
     const resetTokens = JSON.parse(localStorage.getItem(STORAGE_KEYS.RESET_TOKENS)) || {};
     resetTokens[token] = {
-        email: email,
+        email:   emailNorm,
         expires: Date.now() + 3600000 // 1 heure
     };
     localStorage.setItem(STORAGE_KEYS.RESET_TOKENS, JSON.stringify(resetTokens));
 
-    // Simuler l'envoi d'email : afficher le lien dans la console (pour test)
-    console.log(`Lien de réinitialisation (simulé) : /page_nouveaumdp.html?token=${token}`);
+    // En production : envoyer un vrai email avec ce lien
+    // /page_nouveaumdp.html?token=${token}
 
     return { success: true, message: 'Un lien de réinitialisation a été envoyé à votre adresse email.' };
 }
@@ -324,7 +317,7 @@ function resetPassword(token, newPassword) {
     }
 
     const users = getUsers();
-    const userIndex = users.findIndex(u => u.email === validation.email);
+    const userIndex = users.findIndex(u => u.email.toLowerCase() === validation.email.toLowerCase());
     if (userIndex === -1) {
         return { success: false, message: 'Utilisateur introuvable.' };
     }
@@ -431,6 +424,11 @@ window.auth = {
             const email    = document.getElementById('email')?.value?.trim();
             const password = document.getElementById('password')?.value;
             const confirm  = document.getElementById('confirm-password')?.value;
+
+            if (!prenom || !nom || !email || !password) {
+                showToast('Veuillez remplir tous les champs.', 'error');
+                return;
+            }
 
             if (password !== confirm) {
                 showToast('Les mots de passe ne correspondent pas.', 'error');

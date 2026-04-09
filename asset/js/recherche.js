@@ -40,10 +40,10 @@
         dropdown.innerHTML = results.map(m => {
             const prix = m.promo && m.prixPromo ? m.prixPromo : m.prix;
             return `<div class="search-result-item" onclick="window.location.href='/page_detail_produit.html?id=${m.id}'">
-                <img class="search-result-img" src="${m.image}" alt="${m.titre}" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
+                <img class="search-result-img" src="${escapeHtml(m.image)}" alt="${escapeHtml(m.titre)}" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
                 <div class="search-result-info">
-                    <div class="title">${m.titre}</div>
-                    <div class="meta">${m.auteur} · ${m.categorie}</div>
+                    <div class="title">${escapeHtml(m.titre)}</div>
+                    <div class="meta">${escapeHtml(m.auteur)} · ${escapeHtml(m.categorie)}</div>
                     <div class="price">${prix.toFixed(2)} €</div>
                 </div>
             </div>`;

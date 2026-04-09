@@ -14,7 +14,7 @@
 })();
 
 function syncFavButtons() {
-    const favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+    const favs = (JSON.parse(localStorage.getItem('kinka_favoris') || '[]')).map(String);
     document.querySelectorAll('.add-to-fav').forEach(btn => {
         const card = btn.closest('[data-id]');
         if (card) {
@@ -25,7 +25,7 @@ function syncFavButtons() {
 }
 
 function renderFavorisPage(container) {
-    const favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+    const favs = (JSON.parse(localStorage.getItem('kinka_favoris') || '[]')).map(String);
     const countEl = document.getElementById('favoris-total');
     const emptyEl = document.getElementById('favoris-empty');
 
@@ -46,11 +46,12 @@ function renderFavorisPage(container) {
     syncFavButtons();
     if (typeof gererBoutonsAjout === 'function') gererBoutonsAjout();
 }
+
 function clearAllFavs() {
     if (confirm('Effacer tous vos favoris ?')) {
         localStorage.removeItem('kinka_favoris');
         updateFavsCount();
-        var grid = document.getElementById('favoris-grid');
+        const grid = document.getElementById('favoris-grid');
         if (grid) renderFavorisPage(grid);
     }
 }
