@@ -44,9 +44,9 @@
 function remplirImage(p) {
     const img = document.getElementById('produit-image');
     if (!img) return;
-    img.src = p.image || '/asset/image/One-Piece-Edition-originale-Tome-105.jpg';
+    img.src = p.image || 'https://placehold.co/200x290/1a0010/E03B8B?text=KINKA';
     img.alt = p.titre;
-    img.onerror = function() { this.src = '/asset/image/One-Piece-Edition-originale-Tome-105.jpg'; };
+    img.onerror = function() { kinkaImgFallback(this, p.ean || ''); };
 }
 
 // ── TAGS CATÉGORIE + ÉTAT ────────────────────────────────────
