@@ -182,13 +182,12 @@
     
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     /* ── Scroll header ── */
@@ -229,22 +228,18 @@
 
         statsEl.style.display = 'flex';
 
-        var total = 0, promoCount = 0;
-        favs.forEach(function(id) {
-            var m = typeof getMangaById === 'function' ? getMangaById(id) : null;
-            if (!m) return;
-            var prix = (m.promo && m.prixPromo) ? m.prixPromo : m.prix;
-            total += prix;
-            if (m.promo) promoCount++;
-        });
-
-        if (chipNb) chipNb.textContent = favs.length;
-        if (chipS)  chipS.textContent  = favs.length > 1 ? 's' : '';
-        if (countEl) countEl.textContent = favs.length + ' manga' + (favs.length > 1 ? 's' : '') + ' sauvegardé' + (favs.length > 1 ? 's' : '');
-        if (chipVal) chipVal.textContent = total.toFixed(2).replace('.', ',') + ' €';
-        if (statPromo) statPromo.style.display = promoCount > 0 ? 'inline-flex' : 'none';
-        if (chipPromo) chipPromo.textContent = promoCount;
-    }
+        var statEl = document.getElementById('fav-stats');
+        if (!statEl) return;
+        var countEl  = document.getElementById('favoris-total');
+        var chipNb   = document.getElementById('fav-chip-nb');
+        var chipVal  = document.getElementById('fav-chip-val');
+        var statPromo= document.getElementById('fav-stat-promo');
+        var chipPromo= document.getElementById('fav-chip-promo');
+        statEl.style.display = favs.length > 0 ? 'flex' : 'none';
+        if (countEl)   countEl.textContent  = favs.length + ' manga' + (favs.length > 1 ? 's' : '') + ' sauvegardé' + (favs.length > 1 ? 's' : '');
+        if (chipNb)    chipNb.textContent   = favs.length;
+        if (statPromo) statPromo.style.display = 'none';
+        if (chipPromo) chipPromo.textContent = '0'};
 
     /* ── Sort A-Z ── */
     (function(){
@@ -292,10 +287,12 @@
         var sugSection = document.getElementById('fav-suggestions');
         var sugGrid    = document.getElementById('fav-suggestions-grid');
         if (!sugSection || !sugGrid) return;
-        if (favs.length === 0 && typeof mangasDB !== 'undefined') {
-            var suggestions = mangasDB.filter(function(m){ return m.bestseller; }).slice(0, 4);
-            if (suggestions.length > 0) {
-                sugGrid.innerHTML = suggestions.map(function(m){ return buildProductCard(m); }).join('');
+        if (favs.length === 0 && typeof kinkaRenderGrid === 'function') {
+            var sugGrid = document.getElementById('fav-suggestions-grid');
+            var sugSection = document.getElementById('fav-suggestions');
+            if (sugGrid) kinkaRenderGrid('fav-suggestions-grid', { bestseller: '1' }, 4);
+            if (sugSection) sugSection.style.display = 'block';
+        }).join('');
                 sugSection.style.display = 'block';
                 if (typeof gererBoutonsAjout === 'function') gererBoutonsAjout();
             }

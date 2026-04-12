@@ -111,4 +111,31 @@
             if (radio) radio.checked = true;
         });
     });
+
+    // ── Bouton Payer → POST /api/commandes ───────────────────────
+    if (payButton) {
+        payButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            if (typeof KinkaAuth === 'undefined' || !KinkaAuth.isLoggedIn()) {
+                sessionStorage.setItem('kinka_redirect_after_login', window.location.href);
+                window.location.href = '/pageLogIn.html?redirect=1';
+                return;
+            }
+            const adresse = document.querySelector('.delivery-address, [name="adresse"]');
+            const adresseVal = adresse ? adresse.textContent.trim() || adresse.value.trim() : '';
+            payButton.disabled = true;
+            payButton.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Traitement…';
+            try {
+                const commande = await KinkaAPI.commandes.create({ adresse_livraison: adresseVal });
+                localStorage.setItem('kinka_last_order', JSON.stringify(commande));
+                localStorage.removeItem('kinka_panier');
+                if (typeof updatePanierCount === 'function') updatePanierCount();
+                window.location.href = '/page_confirmationcommande.html?id=' + commande.id;
+            } catch(err) {
+                if (typeof showToast === 'function') showToast(err.message || 'Erreur lors du paiement.', 'error');
+                payButton.disabled = false;
+                payButton.innerHTML = '<span class="material-symbols-outlined">lock</span> Réessayer';
+            }
+        });
+    }
 })();

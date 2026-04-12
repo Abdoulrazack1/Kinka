@@ -265,7 +265,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p>contact@kinka.fr</p>
+                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f99a96978d989a8db99290979298d79f8b">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -281,105 +281,79 @@
 
 
     <!-- Scripts -->
-        <script src="/asset/js/kinka-api-client.js"></script>
-        <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-api-client.js"></script>
+    <script src="/asset/js/kinka-auth-guard.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    // ── Chargement dynamique de la commande ──────────────────
+    // ── Chargement depuis l'API ──────────────────────────────
     (function(){
-        var order = null;
-        try { order = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e) {}
+        var params = new URLSearchParams(window.location.search);
+        var cmdId  = params.get('id');
 
-        // Si pas de commande, garder contenu statique démo
-        if (!order) return;
+        function fmt(n){ var m=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc']; var d=new Date(n); return d.getDate()+' '+m[d.getMonth()]+' '+d.getFullYear(); }
+        function fmtEst(n){ var d=new Date(n); d.setDate(d.getDate()+5); var m=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc']; return d.getDate()+' '+m[d.getMonth()]; }
+        function fmtPrix(n){ return parseFloat(n).toFixed(2).replace('.',',')+' €'; }
+        var STATUTS = { en_cours:'En cours', expediee:'En transit', livree:'Livrée', annulee:'Annulée' };
 
-        // Numéro commande
-        var numEl = document.querySelector('.order-number');
-        if (numEl) numEl.textContent = '#' + order.id;
+        function render(order) {
+            var el = function(s){ return document.querySelector(s); };
+            if (el('.order-number')) el('.order-number').textContent = '#' + order.id;
+            if (el('.status-badge')) el('.status-badge').textContent = STATUTS[order.statut] || 'En cours';
+            if (el('.order-date') && order.date) el('.order-date').textContent = 'Passée le ' + fmt(order.date);
+            if (el('.estimated-delivery span') && order.date) el('.estimated-delivery span').textContent = fmtEst(order.date);
 
-        // Statut badge
-        var badge = document.querySelector('.status-badge');
-        var statuts = { en_cours: 'En cours', expediee: 'En transit', livree: 'Livrée', annulee: 'Annulée' };
-        if (badge) badge.textContent = statuts[order.statut] || 'En cours';
+            var sousTotal = parseFloat(order.total || 0);
+            var livraison = sousTotal >= 50 ? 0 : 4.90;
+            var total = sousTotal;
 
-        // Date commande
-        var dateEl = document.querySelector('.order-date');
-        if (dateEl && order.date) {
-            var d = new Date(order.date);
-            var mois = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-            dateEl.textContent = 'Passée le ' + d.getDate() + ' ' + mois[d.getMonth()] + ' ' + d.getFullYear();
-        }
-
-        // Date de livraison estimée (J+5 ouvré approx)
-        var estEl = document.querySelector('.estimated-delivery span');
-        if (estEl && order.date) {
-            var dd = new Date(order.date);
-            dd.setDate(dd.getDate() + 5);
-            var mois2 = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-            estEl.textContent = dd.getDate() + ' ' + mois2[dd.getMonth()];
-        }
-
-        // Récapitulatif montant
-        var sousTotal = order.total || 0;
-        var livraison = sousTotal >= 50 ? 0 : 4.90;
-        var totalPaye = sousTotal + livraison;
-        var fmt = function(n){ return n.toFixed(2).replace('.',',')+' €'; };
-        document.querySelectorAll('.summary-row').forEach(function(row) {
-            var lbl = row.querySelector('span:first-child');
-            var val = row.querySelector('span:last-child');
-            if (lbl && val) {
-                if (lbl.textContent.trim() === 'Sous-total') val.textContent = fmt(sousTotal);
-                if (lbl.textContent.trim() === 'Livraison') val.textContent = livraison === 0 ? 'Gratuite' : fmt(livraison);
-                if (lbl.textContent.trim() === 'Total payé') val.textContent = fmt(totalPaye);
-            }
-        });
-
-        // Articles de la commande
-        var artSection = document.querySelector('.articles-section');
-        if (artSection && order.articles && order.articles.length) {
-            var artH2 = artSection.querySelector('h2');
-            if (artH2) artH2.textContent = 'Articles (' + order.articles.length + ')';
-            // Supprimer les items hardcodés
-            artSection.querySelectorAll('.article-item').forEach(function(el){ el.remove(); });
-            // Insérer les vrais articles
-            var frag = '';
-            order.articles.forEach(function(a) {
-                var lineTotal = ((a.prix||0) * (a.quantite||1)).toFixed(2).replace('.',',');
-                frag += '<div class="article-item"><div class="article-info">' +
-                    '<p class="article-title">' + (a.titre||'Manga') + (a.quantite > 1 ? ' × ' + a.quantite : '') + '</p>' +
-                    '<p class="article-meta">Qté : ' + (a.quantite||1) + ' • ' + lineTotal + ' €</p>' +
-                    '</div></div>';
+            document.querySelectorAll('.summary-row').forEach(function(row){
+                var lbl = row.querySelector('span:first-child');
+                var val = row.querySelector('span:last-child');
+                if (!lbl || !val) return;
+                var t = lbl.textContent.trim();
+                if (t === 'Sous-total')  val.textContent = fmtPrix(sousTotal - livraison);
+                if (t === 'Livraison')   val.textContent = livraison === 0 ? 'Gratuit' : fmtPrix(livraison);
+                if (t === 'Total payé')  val.textContent = fmtPrix(sousTotal);
             });
-            artSection.insertAdjacentHTML('beforeend', frag);
+
+            var statusOrder = ['en_cours','expediee','livree'];
+            var stepIdx = statusOrder.indexOf(order.statut);
+            document.querySelectorAll('.progress-step').forEach(function(step, i){
+                step.classList.toggle('completed', i <= stepIdx);
+                step.classList.toggle('active', i === stepIdx);
+            });
+
+            if (order.articles && order.articles.length) {
+                var list = el('.order-items, .items-list');
+                if (list) {
+                    list.innerHTML = order.articles.map(function(a){
+                        return '<div class="order-item">'
+                            + '<img src="'+(a.image||'')+'" alt="'+a.titre+'" style="width:50px;height:70px;object-fit:cover;border-radius:4px">'
+                            + '<div style="flex:1;padding:0 .75rem"><strong>'+a.titre+'</strong>'
+                            + '<div style="font-size:.85rem;opacity:.7">x'+a.quantite+' · '+fmtPrix(a.prix)+'</div></div>'
+                            + '<div>'+fmtPrix(a.prix * a.quantite)+'</div>'
+                            + '</div>';
+                    }).join('');
+                }
+            }
         }
 
-        // Adresse depuis le profil user
-        var currentUser = null;
-        try { currentUser = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
-        if (currentUser) {
-            var nameEl = document.querySelector('.recipient-name');
-            if (nameEl) nameEl.textContent = (currentUser.prenom || '') + ' ' + (currentUser.nom || '');
-        }
-
-        // Étapes de progression selon statut
-        var steps = document.querySelectorAll('.progress-step');
-        var statutOrder = ['en_cours', 'expediee', 'livree'];
-        var stepIdx = statutOrder.indexOf(order.statut);
-        steps.forEach(function(step, i) {
-            step.classList.remove('completed', 'active');
-            if (i < stepIdx) step.classList.add('completed');
-            else if (i === stepIdx) step.classList.add('active');
-        });
-    })();
-    </script>
+        // Essayer depuis l'API d'abord, sinon localStorage
+        if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn() && cmdId) {
+            KinkaAPI.commandes.getOne(cmdId)
+                .then(function(order){ render(order); })
+                .catch(function(){
+                    var local = null;
+                    try { local = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e){}
+                    if (local) render(local);
 </body>
 </html>

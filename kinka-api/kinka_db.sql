@@ -29,7 +29,12 @@ CREATE TABLE IF NOT EXISTS produits (
   image         TEXT,
   description   TEXT,
   note          DECIMAL(2,1)   DEFAULT 0,
+  genre         JSON,
+  nb_avis       INT            DEFAULT 0,
   stock         INT            DEFAULT 0,
+  mal_id        INT,
+  tome_total    INT,
+  synopsis      TEXT,
   nouveaute     TINYINT(1)     DEFAULT 0,
   promo         TINYINT(1)     DEFAULT 0,
   coup_de_coeur TINYINT(1)     DEFAULT 0,
@@ -53,6 +58,8 @@ CREATE TABLE IF NOT EXISTS utilisateurs (
   pays             VARCHAR(100)   DEFAULT 'France',
   abonnement       VARCHAR(20)    DEFAULT 'gratuit',
   avatar           TEXT,
+  nom_utilisateur  VARCHAR(50) UNIQUE,
+  bio              TEXT,
   date_inscription DATETIME       DEFAULT NOW(),
   updated_at       DATETIME       DEFAULT NOW() ON UPDATE NOW()
 );
@@ -106,3 +113,51 @@ CREATE INDEX idx_produits_promo      ON produits(promo);
 CREATE INDEX idx_produits_nouveaute  ON produits(nouveaute);
 CREATE INDEX idx_produits_bestseller ON produits(bestseller);
 CREATE INDEX idx_commandes_user      ON commandes(user_id);
+
+-- ─── NOUVELLES TABLES ────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS avis (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  user_id      INT NOT NULL,
+  produit_id   VARCHAR(150) NOT NULL,
+  note         TINYINT NOT NULL,
+  commentaire  TEXT,
+  valide       TINYINT(1) DEFAULT 1,
+  created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_avis (user_id, produit_id),
+  FOREIGN KEY (user_id)    REFERENCES utilisateurs(id) ON DELETE CASCADE,
+  FOREIGN KEY (produit_id) REFERENCES produits(id)     ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS annonces (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  user_id      INT NOT NULL,
+  produit_id   VARCHAR(150),
+  titre        VARCHAR(255) NOT NULL,
+  description  TEXT,
+  prix         DECIMAL(6,2) NOT NULL,
+  etat         VARCHAR(30)  NOT NULL,
+  image        TEXT,
+  serie        VARCHAR(200),
+  tome         INT,
+  statut       VARCHAR(20)  DEFAULT 'active',
+  created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id)    REFERENCES utilisateurs(id) ON DELETE CASCADE,
+  FOREIGN KEY (produit_id) REFERENCES produits(id)     ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS series (
+  id           VARCHAR(100) PRIMARY KEY,
+  nom          VARCHAR(200) NOT NULL,
+  auteur       VARCHAR(200),
+  editeur      VARCHAR(100),
+  categorie    VARCHAR(50),
+  image        TEXT,
+  description  TEXT,
+  nb_tomes     INT          DEFAULT 0,
+  terminee     TINYINT(1)   DEFAULT 0,
+  mal_id       INT,
+  created_at   DATETIME     DEFAULT CURRENT_TIMESTAMP
+);

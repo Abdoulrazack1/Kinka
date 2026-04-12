@@ -134,7 +134,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="caa9a5a4beaba9be8aa1a3a4a1abe4acb8">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -150,13 +150,12 @@
 
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
@@ -178,28 +177,17 @@
             var grid  = document.getElementById('cat-grid');
             var empty = document.getElementById('cat-empty');
             var count = document.getElementById('results-count');
-            if (!grid || typeof filterProducts !== 'function') return;
-            var opts = CAT ? { categorie: CAT } : {};
-            if (currentSort) opts.sort = currentSort;
-            var items = filterProducts(opts);
-            if (!items.length) {
-                grid.innerHTML = '';
-                if (empty) empty.style.display = 'flex';
-                if (count) count.textContent = '0 titre';
-                return;
-            }
-            if (empty) empty.style.display = 'none';
-            if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
-            grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
-            if (typeof gererBoutonsAjout === 'function') gererBoutonsAjout();
-            if (typeof syncFavButtons === 'function') syncFavButtons();
-        }
-
-        renderGrid();
-
-        var sortSel = document.getElementById('sort-select');
-        if (sortSel) sortSel.addEventListener('change', function(){ currentSort = this.value; renderGrid(); });
-    })();
-    </script>
+            (function(){
+        window.addEventListener('load', init);
+        function init(){
+            var params=new URLSearchParams(window.location.search);
+            var cat=params.get('categorie')||'';
+            var catMap={'shonen':'Shônen','seinen':'Seinen','shojo':'Shôjo','josei':'Josei'};
+            var catApi=catMap[cat.toLowerCase()]||cat;
+            var grid=document.querySelector('.products-grid,#cat-grid');
+            if(!grid||!catApi||typeof KinkaAPI==='undefined') return;
+            grid.innerHTML='<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+            KinkaAPI.produits.getAll({categorie:catApi,limit:100}).then(function(items){
+                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun manga dans cette catégorie.</p>';return;}
 </body>
 </html>

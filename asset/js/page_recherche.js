@@ -1,111 +1,73 @@
-/**
- * /asset/js/page_recherche.js
- * Affiche les résultats de recherche via buildProductCard (mangadb.js)
- */
+// page_recherche.js — Résultats de recherche via KinkaAPI
 (function _init() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-    'use strict';
+    if (typeof KinkaAPI === 'undefined') { setTimeout(_init, 100); return; }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    let query = urlParams.get('q') || '';
-
-    const searchQueryEl    = document.querySelector('.search-query');
-    const resultsCountEl   = document.querySelector('.results-count');
-    const productsGrid     = document.querySelector('.products-grid');
-    const resultsSummaryEl = document.querySelector('.results-summary');
-    const sortSelect       = document.querySelector('.sort-select');
+    var urlParams    = new URLSearchParams(window.location.search);
+    var query        = urlParams.get('q') || '';
+    var searchQueryEl  = document.querySelector('.search-query');
+    var resultsCountEl = document.querySelector('.results-count');
+    var productsGrid   = document.querySelector('.products-grid');
+    var sortSelect     = document.querySelector('.sort-select');
+    var inp            = document.getElementById('search-input');
 
     if (!productsGrid) return;
-
-    function escapeHtml(str) {
-        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
-
-    if (searchQueryEl) searchQueryEl.textContent = `"${query}"`;
-
-    // ── Base results ─────────────────────────────────────────
-    let baseResults = [];
-    if (query.trim() !== '') {
-        const lq = query.toLowerCase().trim();
-        baseResults = (typeof mangasDB !== 'undefined' ? mangasDB : []).filter(m =>
-            m.titre.toLowerCase().includes(lq) ||
-            (m.serie   && m.serie.toLowerCase().includes(lq)) ||
-            (m.auteur  && m.auteur.toLowerCase().includes(lq)) ||
-            (m.editeur && m.editeur.toLowerCase().includes(lq)) ||
-            (m.tags    && m.tags.some(t => t.toLowerCase().includes(lq)))
-        );
-    }
-
-    // ── Sync search input with query ─────────────────────────
-    const inp = document.getElementById('search-input');
+    if (searchQueryEl && query) searchQueryEl.textContent = '"' + query + '"';
     if (inp && query) inp.value = query;
 
-    // ── Render with sort ─────────────────────────────────────
-    function renderResults() {
-        let results = baseResults.slice();
-        const sortVal = sortSelect ? sortSelect.value : '';
+    var lastItems = [];
 
-        if (sortVal === 'Prix croissant')  results.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pa-pb; });
-        if (sortVal === 'Prix décroissant') results.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pb-pa; });
-        if (sortVal === 'Nouveautés')      results.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
-        // 'Meilleures ventes' = default order (bestseller first)
-        if (!sortVal || sortVal === 'Meilleures ventes') results.sort(function(a,b){ return (b.bestseller?1:0)-(a.bestseller?1:0); });
-
-        const n = results.length;
-        if (resultsCountEl)   resultsCountEl.textContent   = `${n} manga${n !== 1 ? 's' : ''} trouvé${n !== 1 ? 's' : ''}`;
-        if (resultsSummaryEl) resultsSummaryEl.textContent = `${n} résultat${n !== 1 ? 's' : ''} • ${sortVal || 'Meilleures ventes'}`;
-
-        productsGrid.innerHTML = '';
-
-        if (n === 0) {
-            productsGrid.innerHTML = `
-                <div class="no-results" style="grid-column:1/-1;text-align:center;padding:3rem;">
-                    <span class="material-symbols-outlined" style="font-size:4rem;color:#ccc;">search</span>
-                    <h3>Aucun résultat pour "${escapeHtml(query)}"</h3>
-                    <p>Essayez avec d'autres mots-clés ou parcourez notre <a href="/page_catalogue.html">catalogue</a>.</p>
-                </div>`;
+    async function doSearch(q) {
+        if (!q || q.length < 2) {
+            productsGrid.innerHTML = '<div style="text-align:center;padding:3rem;opacity:.5">Entrez un terme de recherche.</div>';
+            if (resultsCountEl) resultsCountEl.textContent = '0 manga trouvé';
             return;
         }
-
-        if (typeof buildProductCard === 'function') {
-            productsGrid.innerHTML = results.map(m => buildProductCard(m)).join('');
-        } else {
-            productsGrid.innerHTML = '<p>Erreur de chargement.</p>';
+        productsGrid.innerHTML = '<div style="text-align:center;padding:3rem;opacity:.4">Chargement…</div>';
+        try {
+            lastItems = await KinkaAPI.produits.search(q);
+            renderResults();
+        } catch (err) {
+            productsGrid.innerHTML = '<p style="padding:2rem;opacity:.5">Erreur de chargement.</p>';
         }
-
-        if (typeof syncFavButtons === 'function') syncFavButtons();
     }
 
-    renderResults();
+    function renderResults() {
+        var results = lastItems.slice();
+        var sortVal = sortSelect ? sortSelect.value : '';
+        if (sortVal === 'Prix croissant')   results.sort(function(a,b){ return parseFloat(a.prix_promo||a.prix) - parseFloat(b.prix_promo||b.prix); });
+        if (sortVal === 'Prix décroissant') results.sort(function(a,b){ return parseFloat(b.prix_promo||b.prix) - parseFloat(a.prix_promo||a.prix); });
+        if (sortVal === 'Nouveautés')       results.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
+        var n = results.length;
+        if (resultsCountEl) resultsCountEl.textContent = n + ' manga' + (n!==1?'s':'') + ' trouvé' + (n!==1?'s':'');
+        if (!n) {
+            productsGrid.innerHTML = '<div class="no-results" style="grid-column:1/-1;text-align:center;padding:3rem">'
+                + '<span class="material-symbols-outlined" style="font-size:4rem;color:#ccc">search</span>'
+                + '<h3>Aucun résultat pour "' + query + '"</h3>'
+                + '<p>Essayez avec d\'autres mots-clés ou parcourez notre <a href="/page_catalogue.html">catalogue</a>.</p>'
+                + '</div>';
+            return;
+        }
+        productsGrid.innerHTML = results.map(function(m) { return buildProductCard(m); }).join('');
+    }
 
-    // ── Tri live ─────────────────────────────────────────────
+    doSearch(query);
+
     if (sortSelect) sortSelect.addEventListener('change', renderResults);
 
-    // ── Recherche live depuis la page elle-même ───────────────
     if (inp) {
-        let _deb;
+        var timer;
         inp.addEventListener('input', function() {
-            clearTimeout(_deb);
-            _deb = setTimeout(function() {
-                const newQ = inp.value.trim();
-                if (!newQ) { baseResults = []; renderResults(); return; }
-                const lq = newQ.toLowerCase();
-                baseResults = (typeof mangasDB !== 'undefined' ? mangasDB : []).filter(m =>
-                    m.titre.toLowerCase().includes(lq) ||
-                    (m.serie   && m.serie.toLowerCase().includes(lq)) ||
-                    (m.auteur  && m.auteur.toLowerCase().includes(lq)) ||
-                    (m.editeur && m.editeur.toLowerCase().includes(lq)) ||
-                    (m.tags    && m.tags.some(t => t.toLowerCase().includes(lq)))
-                );
-                query = newQ;
-                if (searchQueryEl) searchQueryEl.textContent = `"${newQ}"`;
-                renderResults();
-            }, 200);
-        }, false);
-        // Bloquer redirect En vers page_recherche depuis cette page
+            clearTimeout(timer);
+            var q = inp.value.trim();
+            timer = setTimeout(function() {
+                query = q;
+                if (searchQueryEl) searchQueryEl.textContent = '"' + q + '"';
+                doSearch(q);
+            }, 300);
+        });
         inp.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); }
+            if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); clearTimeout(timer); query = inp.value.trim(); doSearch(query); }
         }, true);
     }
 })();
-

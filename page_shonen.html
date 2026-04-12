@@ -108,7 +108,7 @@
 
     <footer>
         <div class="footer-content">
-            <div class="footer-section"><div class="footer-logo"><img src="/asset/image/LogoProjetFilRouge.png" class="logo-image" alt="Logo"><span class="logo-text">KINKA<span class="fr">.FR</span></span></div><p class="footer-description">Votre boutique manga de référence.</p><p class="contact-info">contact@kinka.fr</p></div>
+            <div class="footer-section"><div class="footer-logo"><img src="/asset/image/LogoProjetFilRouge.png" class="logo-image" alt="Logo"><span class="logo-text">KINKA<span class="fr">.FR</span></span></div><p class="footer-description">Votre boutique manga de référence.</p><p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3935342e3b392e1a313334313b743c28">[email&#160;protected]</a></p></div>
             <div class="footer-section"><h4>Catégories</h4><ul><li><a href="/page_shonen.html">Shōnen</a></li><li><a href="/page_seinen.html">Seinen</a></li><li><a href="/page_shojo.html">Shōjo</a></li><li><a href="/page_josei.html">Josei</a></li></ul></div>
             <div class="footer-section"><h4>Support</h4><ul><li><a href="/page_faq.html">FAQ</a></li><li><a href="/page_contact.html">Contact</a></li><li><a href="/page_cgv.html">CGV</a></li></ul></div>
         </div>
@@ -116,70 +116,36 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-
-    /* ── GRILLE PRODUITS (après mangadb.js) ── */
-    var CAT = 'Shônen';
-    var currentSearch = '';
-    var currentSerie = '';
-    var currentSort  = '';
-
-    function renderGrid() {
-        var grid  = document.getElementById('cat-grid');
-        var empty = document.getElementById('cat-empty');
-        var count = document.getElementById('results-count');
-        if (!grid) return;
-        var opts = { categorie: CAT };
-        if (currentSearch) opts.query = currentSearch;
-        if (currentSerie) opts.serie = currentSerie;
-        if (currentSort)  opts.sort  = currentSort;
-        if (typeof filterProducts !== 'function' || typeof buildProductCard !== 'function') return;
-        var items = filterProducts(opts);
-        if (!items.length) { grid.innerHTML=''; if(empty) empty.style.display='flex'; if(count) count.textContent='0 titre'; return; }
-        if(empty) empty.style.display = 'none';
-        if(count) count.textContent = items.length + ' titre' + (items.length>1?'s':'');
-        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
-    }
-
-    function filterBySerie(btn, serie) {
-        document.querySelectorAll('.serie-pill').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        currentSerie = serie;
-        renderGrid();
-
-        // ── Recherche #search-input ──
-        (function() {
-            var _debounce;
-            var inp = document.getElementById('search-input');
-            if (!inp) return;
-            inp.addEventListener('input', function() {
-                clearTimeout(_debounce);
-                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderGrid(); }, 200);
-            }, false);
-            // Bloquer la redirection vers page_recherche.html
-            inp.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderGrid(); }
-            }, true);
-        })();
-    }
-
-    (function _init(){
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
-        renderGrid();
-        document.getElementById('sort-select') && document.getElementById('sort-select').addEventListener('change', function() {
-            currentSort = this.value;
-            renderGrid();
-        });
-    })();</script>
+    window.addEventListener('load', function(){
+        var search='', sort='titre';
+        var grid=document.getElementById('cat-grid'), empty=document.getElementById('cat-empty'), count=document.getElementById('results-count');
+        function render(){
+            if(!grid) return;
+            grid.innerHTML='<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+            var p=(search.length>=2)
+                ?KinkaAPI.produits.search(search).then(function(i){return i.filter(function(m){return m.categorie==='Shônen';});})
+                :KinkaAPI.produits.getAll({categorie:'Shônen',sort:sort,limit:100});
+            p.then(function(items){
+                if(count)count.textContent=items.length+' titre'+(items.length>1?'s':'');
+                if(!items.length){grid.innerHTML='';if(empty)empty.style.display='flex';return;}
+                if(empty)empty.style.display='none';
+                grid.innerHTML=items.map(buildProductCard).join('');
+            }).catch(function(){grid.innerHTML='<p style="opacity:.4;padding:1rem">Erreur.</p>';});
+        }
+        render();
+        var inp=document.getElementById('search-input');
+        if(inp){var d;inp.addEventListener('input',function(){clearTimeout(d);search=inp.value.trim();d=setTimeout(render,250);});}
+        var ss=document.getElementById('sort-select');
+        if(ss)ss.addEventListener('change',function(){sort=this.value;render();});
+    });
+    </script>
 </body>
 </html>

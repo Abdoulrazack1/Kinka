@@ -27,6 +27,16 @@ const schemas = {
     produit_id: [rules.required],
     quantite:   [rules.int, rules.positive],
   },
+  avis: {
+    produit_id:  [rules.required],
+    note:        [rules.required, rules.int, (v) => (Number(v)>=1 && Number(v)<=5) || 'Note entre 1 et 5'],
+    commentaire: [rules.max(2000)],
+  },
+  annonce: {
+    titre: [rules.required, rules.max(255)],
+    prix:  [rules.required, rules.positive],
+    etat:  [rules.required],
+  },
   panierQty: {
     quantite: [rules.required, rules.int],
   },

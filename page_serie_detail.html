@@ -537,7 +537,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fc9f9392889d9f88bc979592979dd29a8e">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -553,40 +553,38 @@
 
 
     <!-- Scripts -->
-        <script src="/asset/js/kinka-api-client.js"></script>
-        <script src="/asset/js/kinka-auth-guard.js"></script>
-        <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-api-client.js"></script>
+    <script src="/asset/js/kinka-auth-guard.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
     </script>
     <script>
-    /* ── GRILLE SÉRIE (après mangadb.js chargé) ── */
-    (function _init(){
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
-        var params = new URLSearchParams(window.location.search);
-        var serie  = params.get('serie') || '';
-        var grid   = document.querySelector('#series-grid, .products-grid');
-        var titleEl = document.querySelector('.serie-title, h1');
-        if (titleEl && serie) titleEl.textContent = serie;
-        // Breadcrumb
-        var bc = document.getElementById('breadcrumb-serie');
-        if (bc && serie) bc.textContent = serie;
-        // Page title
-        if (serie) document.title = serie + ' — KINKA.FR';
-        if (grid && typeof filterProducts === 'function' && serie) {
-            var items = filterProducts({ serie: serie });
-            grid.innerHTML = items.length
-                ? items.map(function(m){ return buildProductCard(m); }).join('')
-                : '<p style="padding:2rem;color:var(--text-muted)">Aucun titre pour cette série.</p>';
-        }
-    })();</script>
+    /* ── GRILLE SÉRIE depuis l'API ── */
+    (function(){
+        window.addEventListener('load', init);
+        function init(){
+            var params=new URLSearchParams(window.location.search);
+            var serie=params.get('serie')||'';
+            var grid=document.querySelector('#series-grid,.products-grid');
+            var titleEl=document.querySelector('.serie-title,h1');
+            if(titleEl&&serie) titleEl.textContent=serie;
+            var bc=document.getElementById('breadcrumb-serie');
+            if(bc&&serie) bc.textContent=serie;
+            if(serie) document.title=serie+' — KINKA.FR';
+            if(!grid||!serie||typeof KinkaAPI==='undefined') return;
+            grid.innerHTML='<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+            KinkaAPI.produits.getAll({serie:serie,sort:'titre',limit:100}).then(function(items){
+                items.sort(function(a,b){return (a.tome||0)-(b.tome||0);});
+                var nbEl=document.getElementById('serie-nb-tomes');
+                if(nbEl) nbEl.textContent=items.length+' tome'+(items.length>1?'s':'');
+                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';return;
 </body>
 </html>

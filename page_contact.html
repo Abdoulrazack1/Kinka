@@ -118,7 +118,7 @@
                         <div class="info-icon">
                             <span class="material-symbols-outlined">mail</span>
                         </div>
-                        <p class="info-text">contact@kinka.fr</p>
+                        <p class="info-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d3b0bcbda7b2b0a793b8babdb8b2fdb5a1">[email&#160;protected]</a></p>
                     </div>
                     <div class="info-card">
                         <div class="info-icon">
@@ -182,7 +182,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6b5b9b8a2b7b5a296bdbfb8bdb7f8b0a4">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -196,12 +196,12 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
@@ -217,13 +217,5 @@
             if (msg && !msg.value.trim())     { if(typeof showToast==='function') showToast('Veuillez écrire votre message.','error'); msg.focus(); return; }
             var btn = form.querySelector('button[type="submit"], .btn-submit');
             if (btn) { btn.disabled = true; btn.textContent = 'Envoi...'; }
-            setTimeout(function() {
-                if(typeof showToast==='function') showToast('Message envoyé ! Nous vous répondrons sous 48h.','success');
-                form.reset();
-                if (btn) { btn.disabled = false; btn.textContent = 'Envoyer le message'; }
-            }, 900);
-        });
-    })();
-    </script>
 </body>
 </html>

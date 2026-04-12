@@ -1,181 +1,135 @@
-// ============================================================
-// page_catalogue.js — Filtres dynamiques + sidebar KINKA.FR
-// ============================================================
-
+// page_catalogue.js — Filtres dynamiques via KinkaAPI
 (function _init() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-    if (!document.getElementById('catalogue-grid')) return;
+    if (typeof KinkaAPI === 'undefined') { setTimeout(_init, 100); return; }
+    var grid = document.getElementById('catalogue-grid');
+    if (!grid) return;
 
-    let currentFilters = {
-        categorie: null,
-        etat: null,
-        editeur: [],
-        auteur: null,
-        promo: false,
-        sort: 'pertinence',
-        prixMin: 0,
-        prixMax: 200,
-    };
+    var filters = { categorie:null, etat:null, editeur:null, promo:false, nouveaute:false, bestseller:false, sort:'titre', prixMin:0, prixMax:200, query:'' };
+    var debounce;
 
-    function readURLParams() {
-        const p = new URLSearchParams(window.location.search);
-        if (p.get('categorie')) {
-            const map = {shonen:'Shônen',seinen:'Seinen',shojo:'Shôjo',josei:'Josei',coffret:'Coffret'};
-            currentFilters.categorie = map[p.get('categorie')] || null;
+    function readURL() {
+        var p = new URLSearchParams(window.location.search);
+        var catMap = { shonen:'Shônen', seinen:'Seinen', shojo:'Shôjo', josei:'Josei', coffret:'Coffret' };
+        if (p.get('categorie'))          filters.categorie  = catMap[p.get('categorie')] || null;
+        if (p.get('editeur'))            filters.editeur    = decodeURIComponent(p.get('editeur'));
+        if (p.get('auteur'))             filters.auteur     = decodeURIComponent(p.get('auteur'));
+        if (p.get('promo')==='true')     filters.promo      = true;
+        if (p.get('nouveaute')==='true') filters.nouveaute  = true;
+        if (p.get('q')) {
+            filters.query = p.get('q');
+            var si = document.getElementById('search-input');
+            if (si) si.value = filters.query;
         }
-        if (p.get('editeur')) currentFilters.editeur = [decodeURIComponent(p.get('editeur'))];
-        if (p.get('auteur'))  currentFilters.auteur  = decodeURIComponent(p.get('auteur'));
-        if (p.get('promo') === 'true') currentFilters.promo = true;
-        if (p.get('q')) document.getElementById('search-input') && (document.getElementById('search-input').value = p.get('q'));
     }
 
-    function renderGrid() {
-        const grid = document.getElementById('catalogue-grid');
-        const countEl = document.getElementById('results-count');
-        let opts = { ...currentFilters };
-        if (opts.editeur && opts.editeur.length === 0) opts.editeur = null;
-        const q = document.getElementById('search-input');
-        if (q && q.value.trim()) opts.query = q.value.trim();
-
-        const results = filterProducts(opts);
-        if (countEl) countEl.textContent = results.length + ' résultat' + (results.length > 1 ? 's' : '');
-
-        if (!results.length) {
-            grid.innerHTML = '<div class="no-results">Aucun manga trouvé pour ces critères.</div>';
-            return;
+    async function render() {
+        var countEl = document.getElementById('results-count');
+        grid.innerHTML = '<div style="opacity:.4;padding:2rem;text-align:center;grid-column:1/-1">Chargement…</div>';
+        try {
+            var items;
+            if (filters.query && filters.query.length >= 2) {
+                items = await KinkaAPI.produits.search(filters.query);
+            } else {
+                var p = { limit: 100 };
+                var sortMap = { pertinence:'titre', titre:'titre', prix_asc:'prix_asc', prix_desc:'prix_desc', note:'note', nouveaute:'nouveaute' };
+                p.sort = sortMap[filters.sort] || 'titre';
+                if (filters.categorie)    p.categorie  = filters.categorie;
+                if (filters.etat)         p.etat       = filters.etat;
+                if (filters.editeur)      p.editeur    = filters.editeur;
+                if (filters.auteur)       p.auteur     = filters.auteur;
+                if (filters.promo)        p.promo      = '1';
+                if (filters.nouveaute)    p.nouveaute  = '1';
+                if (filters.bestseller)   p.bestseller = '1';
+                if (filters.prixMin > 0)  p.min_prix   = filters.prixMin;
+                if (filters.prixMax < 200) p.max_prix  = filters.prixMax;
+                items = await KinkaAPI.produits.getAll(p);
+            }
+            if (countEl) countEl.textContent = items.length + ' résultat' + (items.length > 1 ? 's' : '');
+            if (!items.length) {
+                grid.innerHTML = '<div class="no-results" style="grid-column:1/-1;text-align:center;padding:3rem">Aucun manga trouvé pour ces critères.</div>';
+                return;
+            }
+            grid.innerHTML = items.map(buildProductCard).join('');
+        } catch (err) {
+            grid.innerHTML = '<p style="grid-column:1/-1;padding:2rem;opacity:.5">API inaccessible — vérifier que <strong>npm run dev</strong> tourne dans kinka-api.</p>';
         }
-        grid.innerHTML = results.map(m => buildProductCard(m)).join('');
-        grid.style.animation = 'none'; grid.offsetHeight; grid.style.animation = 'fadeIn .3s ease';
-        if (typeof syncFavButtons       === 'function') syncFavButtons();
-        if (typeof gererBoutonsAjout    === 'function') gererBoutonsAjout();
-        if (typeof window.kinka_translate === 'function') window.kinka_translate();
     }
 
-    // Sync pills ET radios sidebar avec currentFilters
-    function updateActivePills() {
-        document.querySelectorAll('.filter-pill[data-categorie]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.categorie === (currentFilters.categorie || ''));
+    function pills() {
+        document.querySelectorAll('.filter-pill[data-categorie]').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.categorie === (filters.categorie || ''));
         });
-        document.querySelectorAll('.filter-pill[data-etat]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.etat === (currentFilters.etat || ''));
+        document.querySelectorAll('.filter-pill[data-etat]').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.etat === (filters.etat || ''));
         });
-        // Sync radios sidebar état
-        document.querySelectorAll('.sidebar-checkbox[data-filter-type="etat"]').forEach(cb => {
-            cb.checked = cb.dataset.filterValue === currentFilters.etat;
+        document.querySelectorAll('.sidebar-checkbox[data-filter-type="etat"]').forEach(function(cb) {
+            cb.checked = cb.dataset.filterValue === filters.etat;
         });
-        // Sync radios sidebar catégorie
-        document.querySelectorAll('.sidebar-checkbox[data-filter-type="categorie"]').forEach(cb => {
-            cb.checked = cb.dataset.filterValue === currentFilters.categorie;
+        document.querySelectorAll('.sidebar-checkbox[data-filter-type="categorie"]').forEach(function(cb) {
+            cb.checked = cb.dataset.filterValue === filters.categorie;
         });
     }
 
-    // Pills catégorie
-    document.querySelectorAll('.filter-pill[data-categorie]').forEach(btn => {
+    document.querySelectorAll('.filter-pill[data-categorie]').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const val = this.dataset.categorie;
-            currentFilters.categorie = val === '' ? null : val;
-            updateActivePills();
-            renderGrid();
+            filters.categorie = this.dataset.categorie || null; pills(); render();
         });
     });
-
-    // Pills état — clic sur un pill déjà actif = désactiver
-    document.querySelectorAll('.filter-pill[data-etat]').forEach(btn => {
+    document.querySelectorAll('.filter-pill[data-etat]').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const val = this.dataset.etat;
-            currentFilters.etat = (currentFilters.etat === val) ? null : val;
-            updateActivePills();
-            renderGrid();
+            filters.etat = (filters.etat === this.dataset.etat) ? null : this.dataset.etat; pills(); render();
         });
     });
-
-    // Sidebar radios/checkboxes
-    document.querySelectorAll('.sidebar-checkbox').forEach(cb => {
+    document.querySelectorAll('.sidebar-checkbox').forEach(function(cb) {
         cb.addEventListener('change', function() {
-            const type = this.dataset.filterType;
-            const val  = this.dataset.filterValue;
-
+            var type = this.dataset.filterType, val = this.dataset.filterValue;
             if (type === 'categorie') {
-                currentFilters.categorie = this.checked ? val : null;
-                // Décocher les autres radios catégorie
-                if (this.checked) {
-                    document.querySelectorAll('.sidebar-checkbox[data-filter-type="categorie"]').forEach(o => {
-                        if (o !== this) o.checked = false;
-                    });
-                }
-                updateActivePills();
+                filters.categorie = this.checked ? val : null;
+                if (this.checked) document.querySelectorAll('.sidebar-checkbox[data-filter-type="categorie"]').forEach(function(o) { if (o !== cb) o.checked = false; });
+                pills();
             }
-
             if (type === 'etat') {
-                currentFilters.etat = this.checked ? val : null;
-                // Décocher les autres radios état
-                if (this.checked) {
-                    document.querySelectorAll('.sidebar-checkbox[data-filter-type="etat"]').forEach(o => {
-                        if (o !== this) o.checked = false;
-                    });
-                }
-                updateActivePills();
+                filters.etat = this.checked ? val : null;
+                if (this.checked) document.querySelectorAll('.sidebar-checkbox[data-filter-type="etat"]').forEach(function(o) { if (o !== cb) o.checked = false; });
+                pills();
             }
-
-            if (type === 'editeur') {
-                if (this.checked) {
-                    if (!currentFilters.editeur.includes(val)) currentFilters.editeur.push(val);
-                } else {
-                    currentFilters.editeur = currentFilters.editeur.filter(e => e !== val);
-                }
-            }
-
-            renderGrid();
+            if (type === 'editeur') filters.editeur = this.checked ? val : null;
+            render();
         });
     });
 
-    // Sort select
-    const sortSelect = document.getElementById('sort-select');
-    if (sortSelect) sortSelect.addEventListener('change', function() {
-        const allowed = ['pertinence', 'prix_asc', 'prix_desc', 'note', 'nouveaute'];
-        currentFilters.sort = allowed.includes(this.value) ? this.value : 'pertinence';
-        renderGrid();
-    });
+    var sortSel = document.getElementById('sort-select');
+    if (sortSel) sortSel.addEventListener('change', function() { filters.sort = this.value; render(); });
 
-    // Prix
-    const priceMin = document.getElementById('price-min');
-    const priceMax = document.getElementById('price-max');
-    if (priceMin) priceMin.addEventListener('change', function() { currentFilters.prixMin = +this.value || 0; renderGrid(); });
-    if (priceMax) priceMax.addEventListener('change', function() { currentFilters.prixMax = +this.value || 200; renderGrid(); });
+    var prMin = document.getElementById('price-min'), prMax = document.getElementById('price-max');
+    if (prMin) prMin.addEventListener('change', function() { filters.prixMin = +this.value || 0; render(); });
+    if (prMax) prMax.addEventListener('change', function() { filters.prixMax = +this.value || 200; render(); });
 
-    // Promo toggle
-    const promoToggle = document.getElementById('filter-promo');
-    if (promoToggle) promoToggle.addEventListener('change', function() { currentFilters.promo = this.checked; renderGrid(); });
+    var promoToggle = document.getElementById('filter-promo');
+    if (promoToggle) promoToggle.addEventListener('change', function() { filters.promo = this.checked; render(); });
 
-    // Bouton reset sidebar
-    const resetBtn = document.getElementById('reset-filters');
+    var resetBtn = document.getElementById('reset-filters');
     if (resetBtn) resetBtn.addEventListener('click', function() {
-        currentFilters = {categorie:null,etat:null,editeur:[],auteur:null,promo:false,sort:'pertinence',prixMin:0,prixMax:200};
-        document.querySelectorAll('.sidebar-checkbox').forEach(cb => cb.checked = false);
+        filters = { categorie:null, etat:null, editeur:null, promo:false, nouveaute:false, bestseller:false, sort:'titre', prixMin:0, prixMax:200, query:'' };
+        document.querySelectorAll('.sidebar-checkbox').forEach(function(cb) { cb.checked = false; });
         if (promoToggle) promoToggle.checked = false;
-        if (sortSelect) sortSelect.value = 'pertinence';
-        updateActivePills();
-        renderGrid();
+        if (sortSel) sortSel.value = 'pertinence';
+        var si = document.getElementById('search-input'); if (si) si.value = '';
+        pills(); render();
     });
 
-    readURLParams();
-    updateActivePills();
-    renderGrid();
-
-    // Barre de recherche temps réel
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-        let searchDebounce;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchDebounce);
-            searchDebounce = setTimeout(renderGrid, 200);
+    var si = document.getElementById('search-input');
+    if (si) {
+        si.addEventListener('input', function() {
+            filters.query = this.value.trim();
+            clearTimeout(debounce);
+            debounce = setTimeout(render, 300);
         });
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                renderGrid();
-            }
-        }, true);
+        si.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); clearTimeout(debounce); render(); }
+        });
     }
+
+    readURL(); pills(); render();
 })();

@@ -21,8 +21,7 @@ function _isApiAvailable() {
 (function _initPanier() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _initPanier); return; }
     chargerPanier();
-    mettreAJourCompteur();
-    gererBoutonsAjout();
+    if(typeof updatePanierCount==="function") updatePanierCount();
     gererClicPanier();
     mettreAJourNavAuth();
 })();
@@ -42,7 +41,7 @@ async function chargerPanier() {
     } else {
         panier = JSON.parse(localStorage.getItem('kinka_panier') || '[]');
     }
-    mettreAJourCompteur();
+    if(typeof updatePanierCount==="function") updatePanierCount();
     if (typeof window.onPanierPret === 'function') window.onPanierPret();
 }
 
@@ -76,7 +75,7 @@ async function ajouterAuPanier(produit) {
         }
         sauvegarderPanier();
     }
-    mettreAJourCompteur();
+    if(typeof updatePanierCount==="function") updatePanierCount();
     if (typeof showToast === 'function') showToast('Ajouté au panier !', 'success');
     else afficherNotification('Produit ajouté au panier');
 }
@@ -88,7 +87,7 @@ async function retirerDuPanier(produitId) {
     }
     panier = panier.filter(function(item) { return item.id !== produitId; });
     sauvegarderPanier();
-    mettreAJourCompteur();
+    if(typeof updatePanierCount==="function") updatePanierCount();
 }
 
 // ─── Vider ───────────────────────────────────────────────────────
@@ -98,7 +97,7 @@ async function viderPanier() {
     }
     panier = [];
     sauvegarderPanier();
-    mettreAJourCompteur();
+    if(typeof updatePanierCount==="function") updatePanierCount();
 }
 
 // ─── Modifier quantité ───────────────────────────────────────────
@@ -112,7 +111,7 @@ async function modifierQuantite(produitId, nouvelleQuantite) {
     }
     panier[index].quantite = qty;
     sauvegarderPanier();
-    mettreAJourCompteur();
+    if(typeof updatePanierCount==="function") updatePanierCount();
 }
 
 function obtenirPanier() { return panier; }
@@ -127,56 +126,7 @@ function compterArticles() {
     return panier.reduce(function(acc, item) { return acc + (item.quantite || 0); }, 0);
 }
 
-// ─── Icône panier ────────────────────────────────────────────────
-function getIconePanier() {
-    const allBtns = document.querySelectorAll('.icon-btn');
-    for (const btn of allBtns) {
-        const icone = btn.querySelector('.material-symbols-outlined');
-        if (icone && icone.textContent.trim() === 'shopping_cart') return btn;
-    }
-    return null;
-}
-
-function mettreAJourCompteur() {
-    const nb = compterArticles();
-    const btn = getIconePanier();
-    if (!btn) return;
-    let badge = btn.querySelector('.panier-count');
-    if (nb > 0) {
-        if (!badge) { badge = document.createElement('span'); badge.className = 'panier-count'; btn.style.position = 'relative'; btn.appendChild(badge); }
-        badge.textContent = nb > 99 ? '99+' : nb;
-        badge.style.display = 'flex';
-    } else if (badge) {
-        badge.style.display = 'none';
-    }
-}
-
-// ─── Boutons add-to-cart ─────────────────────────────────────────
-function gererBoutonsAjout() {
-    document.querySelectorAll('.add-to-cart').forEach(function(bouton) {
-        const card = bouton.closest('.product-card');
-        if (card && card.dataset.id) return;
-        if (bouton.dataset.panierInit) return;
-        bouton.dataset.panierInit = '1';
-        bouton.addEventListener('click', function(e) {
-            e.preventDefault(); e.stopPropagation();
-            if (card) { ajouterAuPanier(extraireProduit(card)); animerBoutonAjout(bouton); }
-        });
-    });
-}
-
-function extraireProduit(card) {
-    const titre = card.querySelector('.product-title')?.textContent.trim() || '';
-    const id = titre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    return { id, titre, auteur: card.querySelector('.product-author')?.textContent.trim() || '', prix: parsePrix(card.querySelector('.product-price')?.textContent.trim() || '0'), image: card.querySelector('.product-image img')?.src || '' };
-}
-
-function animerBoutonAjout(bouton) {
-    const orig = bouton.innerHTML;
-    bouton.innerHTML = '<span class="material-symbols-outlined">check</span>';
-    setTimeout(function() { bouton.innerHTML = orig; }, 1000);
-}
-
+// ─── Boutons add-to-cart
 // ─── Notification toast fallback ─────────────────────────────────
 function afficherNotification(message) {
     document.querySelectorAll('.panier-notification').forEach(function(n) { n.remove(); });
@@ -190,14 +140,15 @@ function afficherNotification(message) {
 
 // ─── Clic icône panier ───────────────────────────────────────────
 function gererClicPanier() {
-    const btn = getIconePanier();
-    if (btn) {
+    document.querySelectorAll('.icon-btn').forEach(function(btn) {
+        const ic = btn.querySelector('.material-symbols-outlined');
+        if (!ic || ic.textContent.trim() !== 'shopping_cart') return;
         btn.addEventListener('click', function(e) {
             if (window.location.pathname.includes('page_panier')) return;
             e.preventDefault();
             window.location.href = '/page_panier.html';
         });
-    }
+    });
 }
 
 // ─── Mise à jour nav selon auth — Dropdown profil ────────────────
@@ -264,12 +215,8 @@ function mettreAJourNavAuth() {
 
         // Déconnexion via API
         dropdown.querySelector('#nav-logout-btn').addEventListener('click', function() {
-            if (typeof KinkaAuth !== 'undefined') {
-                KinkaAuth.removeToken();
-            } else {
-                localStorage.removeItem('kinka_current_user');
-                localStorage.removeItem('kinka_token');
-            }
+            if (typeof KinkaAuth !== 'undefined') KinkaAuth.removeToken();
+            else { localStorage.removeItem('kinka_current_user'); localStorage.removeItem('kinka_token'); }
             window.location.href = '/page_accueil.html';
         });
 

@@ -121,7 +121,7 @@
             </div>
             
             <div class="products-grid" id="products-grid">
-                <!-- Chargé dynamiquement depuis mangasDB -->
+                <!-- Chargé dynamiquement depuis l'API -->
             </div>
         </section>
 
@@ -338,7 +338,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d4b7bbbaa0b5b7a094bfbdbabfb5fab2a6">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -353,13 +353,12 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){
@@ -380,21 +379,7 @@
                     var card = btn.closest('.tome-card');
                     var titleEl = card ? card.querySelector('.tome-title') : null;
                     var titleTxt = titleEl ? titleEl.textContent : '';
-                    var manga = null;
-                    if (typeof getMangaById === 'function') {
-                        // Chercher dans sagaMap
-                        for (var i = 0; i < sagaMap.length; i++) {
-                            if (titleTxt.indexOf(sagaMap[i].titre) >= 0) {
-                                manga = getMangaById(sagaMap[i].id);
-                                break;
-                            }
-                        }
-                        // Fallback: premier One Piece dispo
-                        if (!manga && typeof mangasDB !== 'undefined') {
-                            manga = mangasDB.find(function(m){ return m.serie === 'One Piece'; });
-                        }
-                    }
-                    if (manga && typeof kinkaAddToCart === 'function') {
+                    if (card && typeof kinkaAddToCart === 'function') {
                         kinkaAddToCart(manga.id, e);
                     } else if (typeof showToast === 'function') {
                         showToast('Ajouté au panier !');
@@ -413,18 +398,15 @@
         if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _renderOda); return; }
         var grid = document.getElementById('products-grid');
         if (!grid) return;
-        if (typeof filterProducts !== 'function' || typeof buildProductCard !== 'function') {
-            var _t = 0;
-            var retry = function(){ if(typeof filterProducts==='function'&&typeof buildProductCard==='function'){ _renderOda(); } else if(++_t<40){ setTimeout(retry,75); } };
-            retry(); return;
-        }
-        var items = filterProducts({ serie: 'One Piece' });
-        if (!items.length) {
-            grid.innerHTML = '<p style="grid-column:1/-1;color:var(--text-muted);padding:2rem">Aucun tome disponible.</p>';
-            return;
-        }
-        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
-    })();
-    </script>
+        (function(){
+        window.addEventListener('load', init);
+        function init(){
+            if(typeof KinkaAPI==='undefined') return;
+            var grid=document.querySelector('#oda-grid,.products-grid');
+            if(!grid) return;
+            grid.innerHTML='<div style="opacity:.4;padding:1rem">Chargement…</div>';
+            KinkaAPI.produits.getAll({serie:'One Piece',sort:'titre',limit:100}).then(function(items){
+                items.sort(function(a,b){return (a.tome||0)-(b.tome||0);});
+                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';return;}
 </body>
 </html>

@@ -149,7 +149,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f1929e9f85909285b19a989f9a90df9783">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -165,70 +165,22 @@
 
 
     <!-- Scripts -->
-     <script src="/asset/js/kinka-api-client.js"></script>
-     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-api-client.js"></script>
+    <script src="/asset/js/kinka-auth-guard.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    
     </script>
     <script>
-    /* ── GRILLE PROMOTIONS (après mangadb.js chargé) ── */
-    var currentFilter = '';
-    var currentSearch = '';
-
-    function renderPromos() {
-        var grid    = document.getElementById('promo-grid');
-        var countEl = document.getElementById('promo-count');
-        if (!grid) return;
-        var _qOpts = { promo: true };
-        if (currentSearch) _qOpts.query = currentSearch;
-        var items = filterProducts(_qOpts);
-        if (currentFilter === 'occasion') {
-            var _occ = { etat: 'occasion' };
-            if (currentSearch) _occ.query = currentSearch;
-            items = filterProducts(_occ);
-        } else if (currentFilter) {
-            items = items.filter(function(m){ return m.categorie === currentFilter; });
-        }
-        if (countEl) countEl.textContent = items.length + ' offre' + (items.length > 1 ? 's' : '');
-        if (!items.length) { grid.innerHTML = '<div class="no-results">Aucune promo trouvée</div>'; return; }
-        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
-    }
-
-    (function _init(){
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
-        renderPromos();
-
-        // ── Recherche #search-input ──
-        (function() {
-            var _debounce;
-            var inp = document.getElementById('search-input');
-            if (!inp) return;
-            inp.addEventListener('input', function() {
-                clearTimeout(_debounce);
-                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderPromos(); }, 200);
-            }, false);
-            // Bloquer la redirection vers page_recherche.html
-            inp.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderPromos(); }
-            }, true);
-        })();
-        document.querySelectorAll('#promo-filters .filter-pill').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('#promo-filters .filter-pill').forEach(function(b){ b.classList.remove('active'); });
-                this.classList.add('active');
-                currentFilter = this.dataset.filter || '';
-                renderPromos();
-            });
-        });
-    })();</script>
+    window.addEventListener('load', function(){
+        kinkaRenderGrid('promo-grid', {sort:'note', limit:50}, 50);
+    });
+    </script>
 </body>
 </html>

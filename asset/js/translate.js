@@ -1241,7 +1241,7 @@ const translations = {
     '13 déc. 2023': 'Dec. 13, 2023',
     '19 déc. 2013': 'Dec. 19, 2013',
     '6 déc. 2023': 'Dec. 6, 2023',
-    '[KINKA] mangadb.js introuvable après 3s — vérifier le chemin /asset/js/mangadb.js': '[KINKA] mangadb.js not found after 3s — check path /asset/js/mangadb.js',
+    '[KINKA] API inaccessible — vérifier que npm run dev tourne dans kinka-api': '[KINKA] API unreachable — check that npm run dev is running in kinka-api',
     'Ajouter aux favoris': 'Add to favorites',
     'Ajouté !': 'Added!',
     'Ajouté au panier !': 'Added to cart!',
@@ -1435,7 +1435,7 @@ function translateText(txt) {
 // MOTEUR DE TRADUCTION v9 — couverture maximale
 // ============================================================
 function applyTranslations(lang) {
-    if (lang === 'fr') { location.reload(); return; }
+    if (lang === 'fr') { document.querySelectorAll('[data-i18n-original]').forEach(function(el){el.textContent=el.getAttribute('data-i18n-original');}); return; }
 
     // 1. Attributs data-i18n (priorité absolue)
     document.querySelectorAll('[data-i18n]').forEach(function(el) {

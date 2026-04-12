@@ -254,7 +254,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d8bbb7b6acb9bbac98b3b1b6b3b9f6beaa">[email&#160;protected]</a></p>
             </div>
             <div class="footer-section"><h4>Navigation</h4><ul><li><a href="/page_accueil.html">Accueil</a></li><li><a href="/page_catalogue.html">Catalogue</a></li><li><a href="/page_promotion.html">Promotions</a></li></ul></div>
             <div class="footer-section"><h4>Compte</h4><ul><li><a href="/pageLogIn.html">Connexion</a></li><li><a href="/pageSignUp.html">Inscription</a></li><li><a href="/page_panier.html">Mon panier</a></li></ul></div>
@@ -264,50 +264,57 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    /* ── Formulaire création d'annonce ── */
+    /* ── Formulaire création d'annonce → POST /api/annonces ── */
     (function(){
-        var form = document.getElementById('annonce-form');
-        if (!form) return;
+        if (!document.getElementById('annonce-form')) return;
 
-        // Bouton "Sauvegarder le brouillon"
-        var draftBtn = form.querySelector('.btn-secondary-large');
-        if (draftBtn) {
-            draftBtn.addEventListener('click', function() {
-                if (typeof showToast === 'function') showToast('Brouillon sauvegardé !', 'success');
-            });
+        // Protéger la page : connexion requise
+        if (typeof KinkaAuth !== 'undefined' && !KinkaAuth.isLoggedIn()) {
+            sessionStorage.setItem('kinka_redirect_after_login', window.location.href);
+            window.location.replace('/pageLogIn.html?redirect=1');
+            return;
         }
 
-        // Bouton "Publier l'annonce"
-        form.addEventListener('submit', function(e) {
+        var form = document.getElementById('annonce-form');
+
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            var titre = form.querySelector('input[placeholder*="titre"], input[placeholder*="Titre"]');
-            var titreVal = titre ? titre.value.trim() : '';
-            // Vérifier champ titre (requis)
-            var titreInput = form.querySelector('.form-group input:not(.isbn-input)');
-            if (!titreVal) {
-                // Chercher le premier input requis non vide
-                var inputs = form.querySelectorAll('input[required], select[required]');
-                var firstEmpty = null;
-                inputs.forEach(function(inp){ if(!inp.value.trim() && !firstEmpty) firstEmpty = inp; });
-                if (firstEmpty) { firstEmpty.focus(); }
-                if (typeof showToast === 'function') showToast('Veuillez remplir les champs obligatoires.', 'error');
+
+            var titre   = (form.querySelector('[name="titre"], input[placeholder*="titre" i], input[placeholder*="Titre"]') || {}).value || '';
+            var desc    = (form.querySelector('[name="description"], textarea') || {}).value || '';
+            var prix    = parseFloat((form.querySelector('[name="prix"], input[type="number"]') || {}).value || 0);
+            var etat    = (form.querySelector('[name="etat"], select') || {}).value || 'bon';
+            var serie   = (form.querySelector('[name="serie"]') || {}).value || '';
+            var tome    = parseInt((form.querySelector('[name="tome"]') || {}).value || 0) || null;
+
+            if (!titre.trim()) {
+                if (typeof showToast === 'function') showToast('Le titre est obligatoire.', 'error');
                 return;
             }
-            if (typeof showToast === 'function') showToast('Annonce publiée avec succès !', 'success');
-            setTimeout(function(){ window.location.href = '/page_occasion.html'; }, 1500);
-        });
-    })();
-    </script>
+            if (!prix || prix <= 0) {
+                if (typeof showToast === 'function') showToast('Entrez un prix valide.', 'error');
+                return;
+            }
+
+            var btn = form.querySelector('[type="submit"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Publication…'; }
+
+            try {
+                await KinkaAPI.annonces.create({ titre: titre.trim(), description: desc.trim(), prix, etat, serie: serie.trim(), tome });
+                if (typeof showToast === 'function') showToast('Annonce publiée ! Redirection…', 'success');
+                setTimeout(function(){ window.location.href = '/page_occasion.html'; }, 1500);
+            } catch(err) {
+                if (typeof showToa
 </body>
 </html>

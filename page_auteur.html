@@ -392,7 +392,7 @@
                 <li><a href="/page_cgv.html">CGV</a></li>
             </ul></div>
             <div class="footer-section"><h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="096a66677d686a7d496260676268276f7b">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -404,13 +404,12 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
@@ -641,15 +640,7 @@
     }
 
     /* ── Récupérer tous les auteurs uniques de la DB ─────────── */
-    function getAllAuteurs() {
-        if (typeof mangasDB === 'undefined') return [];
-        var map = {};
-        mangasDB.forEach(function(m) {
-            if (!map[m.auteur]) map[m.auteur] = [];
-            map[m.auteur].push(m);
-        });
-        return Object.keys(map).sort().map(function(nom) {
-            return { nom: nom, count: map[nom].length };
+    function getAllAuteurs() { return window._auteursList || []; }
         });
     }
 
@@ -698,15 +689,7 @@
 
         // ── Navigation entre auteurs ─────────────────────────
         var navBar = document.getElementById('authors-nav-bar');
-        if (navBar && typeof mangasDB !== 'undefined') {
-            var allAuteurs = getAllAuteurs();
-            navBar.innerHTML = allAuteurs.map(function(a) {
-                var isActive = nomAuteur && a.nom.toLowerCase() === nomAuteur.toLowerCase();
-                return '<a href="/page_auteur.html?auteur=' + encodeURIComponent(a.nom) + '" class="author-nav-link' + (isActive ? ' active' : '') + '">' +
-                    a.nom +
-                    '<span class="nav-count">' + a.count + '</span>' +
-                '</a>';
-            }).join('');
+        if (navBar) { /* alimenté par KinkaAPI dans le .then() ci-dessous */ }).join('');
         }
 
         // ── Si aucun auteur spécifié ─────────────────────────
@@ -722,100 +705,32 @@
             return;
         }
 
-        // ── Récupérer les mangas de cet auteur ───────────────
-        _allMangas = (typeof mangasDB !== 'undefined')
-            ? mangasDB.filter(function(m){ return m.auteur === nomAuteur; })
-            : [];
-
-        if (!_allMangas.length) {
-            document.getElementById('section-profil').innerHTML =
-                '<div class="author-not-found">' +
-                '<span class="material-symbols-outlined">person_off</span>' +
-                '<h2>Auteur introuvable</h2>' +
-                '<p>Aucun manga de "' + nomAuteur + '" n\'est disponible dans notre catalogue.</p>' +
-                '<a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex;margin-top:.5rem">' +
-                '<span class="material-symbols-outlined">arrow_back</span> Retour au catalogue</a>' +
-                '</div>';
-            document.getElementById('author-banner').style.display = 'none';
-            document.querySelector('.section-catalogue-auteur').style.display = 'none';
-            return;
-        }
-
-        // ── Trouver ou construire le profil ──────────────────
-        var auteur = findAuteurByNom(nomAuteur) || makeGenericAuteur(nomAuteur, _allMangas);
-
-        // Breadcrumb & titre
-        document.title = auteur.nom + ' — KINKA.FR';
-        document.getElementById('page-title').textContent = auteur.nom + ' — KINKA.FR';
-        document.getElementById('breadcrumb-auteur').textContent = auteur.nom;
-
-        // Photo
-        var photo = document.getElementById('auteur-photo');
-        if (auteur.photo) {
-            photo.src = auteur.photo;
-            photo.alt = auteur.nom;
-        } else {
-            photo.style.display = 'none';
-        }
-
-        // Infos profil
-        document.getElementById('auteur-nom').textContent = auteur.nom + (auteur.nomKanji ? ' ' + auteur.nomKanji : '');
-        document.getElementById('auteur-pays').textContent = auteur.pays || 'Japon';
-        document.getElementById('auteur-naissance').textContent = auteur.naissance !== '—' ? 'Né(e) le ' + auteur.naissance : '—';
-        document.getElementById('auteur-debut').textContent = auteur.debutCarriere !== '—' ? 'Actif depuis ' + auteur.debutCarriere : '';
-
-        // Bio
-        document.getElementById('auteur-bio').innerHTML = '<p>' + auteur.bio + '</p>';
-
-        // Stats
-        var series = [];
-        _allMangas.forEach(function(m){ if(m.serie && !series.includes(m.serie)) series.push(m.serie); });
-        var notes = _allMangas.filter(function(m){ return m.note; }).map(function(m){ return m.note; });
-        var avgNote = notes.length ? (notes.reduce(function(s,n){ return s+n; }, 0) / notes.length).toFixed(1) : '—';
-
-        document.getElementById('stat-titres').textContent = _allMangas.length;
-        document.getElementById('stat-series').textContent = series.length;
-        document.getElementById('stat-note').textContent = avgNote !== '—' ? avgNote + '/5' : '—';
-
-        // Tags séries dans profil
-        var seriesList = document.getElementById('auteur-series');
-        seriesList.innerHTML = series.map(function(s) {
-            return '<span class="serie-tag">' + s + '</span>';
-        }).join('');
-
-        // ── Banner ───────────────────────────────────────────
-        var cats = {};
-        _allMangas.forEach(function(m){ cats[m.categorie] = (cats[m.categorie]||0)+1; });
-        var mainCat = auteur.mainCat || Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];})[0] || '—';
-
-        document.getElementById('banner-titre').textContent = 'Toute l\'œuvre de ' + auteur.nom;
-        document.getElementById('banner-desc').textContent  = auteur.bannerDesc;
-        document.getElementById('banner-stat-volumes').textContent = auteur.volumesTotal || _allMangas.length;
-        document.getElementById('banner-stat-annee').textContent   = auteur.debutCarriere || '—';
-        document.getElementById('banner-stat-cat').textContent     = mainCat;
-        document.getElementById('banner-quote').textContent        = auteur.bannerQuote || '✦';
-
-        // Couleur ambiance banner
-        if (auteur.couleur) {
-            document.getElementById('author-banner').style.background =
-                'linear-gradient(135deg, #1a1a2e 0%, ' + auteur.couleur + '33 50%, #0f3460 100%)';
-        }
-
-        // ── Filtres par série ─────────────────────────────────
-        var serieFilters = document.getElementById('serie-filters');
-        if (series.length > 1) {
-            serieFilters.innerHTML =
-                '<span class="serie-tag active" data-serie="">Toutes les séries</span>' +
-                series.map(function(s) {
-                    return '<span class="serie-tag" data-serie="' + s + '">' + s + '</span>';
+        // ── Récupérer les mangas de cet auteur via API ──────────
+        KinkaAPI.produits.getAll({limit:500}).then(function(allItems){
+            window._kinkaProductsCache = allItems;
+            _allMangas = allItems.filter(function(m){ return (m.auteur||'')=== nomAuteur; });
+            // Nav auteurs
+            if(navBar){
+                var autMap={};
+                allItems.forEach(function(m){if(m.auteur){if(!autMap[m.auteur])autMap[m.auteur]=0;autMap[m.auteur]++;}});
+                navBar.innerHTML=Object.keys(autMap).sort().map(function(nom){
+                    var active=nomAuteur&&nom.toLowerCase()===nomAuteur.toLowerCase();
+                    return '<a href="/page_auteur.html?auteur='+encodeURIComponent(nom)+'" class="author-nav-link'+(active?' active':'')+'">'
+                        +nom+'<span class="nav-count">'+autMap[nom]+'</span></a>';
                 }).join('');
-
-            serieFilters.querySelectorAll('.serie-tag').forEach(function(tag) {
-                tag.addEventListener('click', function() {
-                    serieFilters.querySelectorAll('.serie-tag').forEach(function(t){ t.classList.remove('active'); });
-                    this.classList.add('active');
-                    _currentSerie = this.dataset.serie || '';
-                    renderGrid();
+            }
+            if(!_allMangas.length){
+                document.getElementById('section-profil').innerHTML=
+                    '<div class="author-not-found"><span class="material-symbols-outlined">person_off</span>'
+                    +'<h2>Auteur introuvable</h2>'
+                    +'<p>Aucun manga de "'+nomAuteur+'" dans notre catalogue.</p>'
+                    +'<a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex;margin-top:.5rem">'
+                    +'<span class="material-symbols-outlined">arrow_back</span> Retour au catalogue</a></div>';
+                document.getElementById('author-banner').style.display='none';
+                var sec=document.querySelector('.section-catalogue-auteur');if(sec)sec.style.display='none';
+                return;
+            }
+            renderGrid();
                 });
             });
         } else {
@@ -836,12 +751,6 @@
 
         // ── Scroll smooth vers l'auteur actif dans la nav ────
         var activeLink = navBar ? navBar.querySelector('.author-nav-link.active') : null;
-        if (activeLink) {
-            setTimeout(function() {
-                activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            }, 100);
-        }
-    })();
-    </script>
+        i
 </body>
 </html>

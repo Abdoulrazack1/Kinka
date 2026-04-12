@@ -314,7 +314,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="60030f0e14010314200b090e0b014e0612">[email&#160;protected]</a></p>
             </div>
             <div class="footer-section"><h4>Navigation</h4><ul>
                 <li><a href="/page_accueil.html">Accueil</a></li>
@@ -339,16 +339,15 @@
     
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-    </script>
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_curr
 </body>
 </html>
