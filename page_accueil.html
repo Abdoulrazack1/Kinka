@@ -445,14 +445,20 @@
     <script src="/asset/js/translate.js"></script>
 
     <script>
-    // ── Header scroll ────────────────────────────────────────
+    // ── Grilles produits ─────────────────────────────────────
     (function() {
-        function initGrids() {
-            kinkaRenderGrid('grid-nouveautes',  { sort: 'nouveaute', limit: 6 }, 6);
-            kinkaRenderGrid('grid-bestsellers', { sort: 'note',      limit: 6 }, 6);
-            kinkaRenderGrid('grid-coupdecoeur', { sort: 'titre',     limit: 6 }, 6);
-        }
-        window.addEventListener('load', initGrids);
+        window.addEventListener('load', function() {
+            function tryRender() {
+                if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
+                    kinkaRenderGrid('grid-nouveautes',  { sort: 'nouveaute', limit: 6 }, 6);
+                    kinkaRenderGrid('grid-bestsellers', { sort: 'note',      limit: 6 }, 6);
+                    kinkaRenderGrid('grid-coupdecoeur', { sort: 'titre',     limit: 6 }, 6);
+                } else {
+                    setTimeout(tryRender, 80);
+                }
+            }
+            tryRender();
+        });
     })();
 
     // ── Hero Carrousel JS (fluide, JS-only) ──────────────────
@@ -473,16 +479,13 @@
             var prev = current;
             current  = ((n % total) + total) % total;
 
-            // Slide sortante : devient "leaving" (reste visible, fade out)
             slides[prev].classList.remove('active');
             slides[prev].classList.add('leaving');
             dots[prev].classList.remove('active');
 
-            // Slide entrante : passe active (z-index:2, fade in)
             slides[current].classList.add('active');
             dots[current].classList.add('active');
 
-            // Après la transition, nettoyer la classe leaving
             setTimeout(function(){
                 slides[prev].classList.remove('leaving');
                 locked = false;
@@ -494,10 +497,7 @@
         function start() { timer = setInterval(next, 5000); }
         function stop()  { clearInterval(timer); }
 
-        // État initial propre
-        slides.forEach(function(s, i) {
-            s.classList.remove('active','leaving');
-        });
+        slides.forEach(function(s) { s.classList.remove('active','leaving'); });
         slides[0].classList.add('active');
         dots[0].classList.add('active');
 
@@ -512,7 +512,7 @@
         var prevBtn = document.getElementById('hero-prev');
         var nextBtn = document.getElementById('hero-next');
         if (prevBtn) prevBtn.addEventListener('click', function() { stop(); prev_s(); start(); });
-        if (nextBtn) nextBtn.addEventListener('click', function() { stop(); next(); start(); });
+        if (nextBtn) nextBtn.addEventListener('click', function() { stop(); next();   start(); });
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowLeft')  { stop(); prev_s(); start(); }

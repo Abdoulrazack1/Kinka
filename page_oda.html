@@ -361,52 +361,35 @@
     <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    (function(){
-        // Boutons panier des tomes Oda — mapping saga → id manga dans DB
-        var sagaMap = [
-            { titre:'East Blue',       id:'op-eastblue' },
-            { titre:'Grandline',       id:'op-grandline' },
-            { titre:'Nouveau Monde',   id:'op-nouveaumonde' },
-            { titre:'actuel',          id:'op-actuel' },
-            { titre:'Color Walk',      id:'op-artbook' },
-            { titre:'Wanted',          id:'op-wanted' }
-        ];
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.add-to-cart-small').forEach(function(btn, idx) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault(); e.stopPropagation();
-                    // Essayer de trouver le manga correspondant
-                    var card = btn.closest('.tome-card');
-                    var titleEl = card ? card.querySelector('.tome-title') : null;
-                    var titleTxt = titleEl ? titleEl.textContent : '';
-                    if (card && typeof kinkaAddToCart === 'function') {
-                        kinkaAddToCart(manga.id, e);
-                    } else if (typeof showToast === 'function') {
-                        showToast('Ajouté au panier !');
-                    }
-                    btn.textContent = '✓';
-                    setTimeout(function(){ btn.textContent = '+'; }, 1000);
-                });
+    // Scroll header
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    // Nav auth
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    // Grille One Piece
+    window.addEventListener('load', function() {
+        var grid = document.querySelector('#oda-grid, .products-grid');
+        if (!grid || typeof KinkaAPI === 'undefined') return;
+        grid.innerHTML = '<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+        KinkaAPI.produits.getAll({ serie: 'One Piece', sort: 'titre', limit: 200 }).then(function(items) {
+            items.sort(function(a,b){ return (a.tome||0) - (b.tome||0); });
+            if (!items.length) {
+                grid.innerHTML = '<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';
+                return;
+            }
+            grid.innerHTML = items.map(buildProductCard).join('');
+        }).catch(function() {
+            grid.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur de chargement.</p>';
+        });
+        // Boutons add-to-cart des cartes tomes statiques
+        document.querySelectorAll('.add-to-cart-small').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault(); e.stopPropagation();
+                if (typeof showToast === 'function') showToast('Ajouté au panier !');
+                btn.textContent = '✓';
+                setTimeout(function(){ btn.textContent = '+'; }, 1000);
             });
         });
-    })();
-    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-
-    /* ── Grille bibliographie One Piece dynamique ── */
-    (function _renderOda(){
-        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _renderOda); return; }
-        var grid = document.getElementById('products-grid');
-        if (!grid) return;
-        (function(){
-        window.addEventListener('load', init);
-        function init(){
-            if(typeof KinkaAPI==='undefined') return;
-            var grid=document.querySelector('#oda-grid,.products-grid');
-            if(!grid) return;
-            grid.innerHTML='<div style="opacity:.4;padding:1rem">Chargement…</div>';
-            KinkaAPI.produits.getAll({serie:'One Piece',sort:'titre',limit:100}).then(function(items){
-                items.sort(function(a,b){return (a.tome||0)-(b.tome||0);});
-                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';return;}
+    });
+    </script>
 </body>
 </html>

@@ -84,7 +84,7 @@
                 </button>
             </div>
             <div class="promo-hero-img">
-                <img src="/asset/image/banniere_promo.jpg" alt="Promotions manga" onerror="this.src='/asset/image/banniere_poster.jpg'">
+                <img src="/asset/image/banniere_promo.jpg" alt="Promotions manga" onerror="this.style.display='none'">
             </div>
         </section>
 
@@ -175,11 +175,15 @@
     <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    
-    </script>
-    <script>
-    window.addEventListener('load', function(){
-        kinkaRenderGrid('promo-grid', {sort:'note', limit:50}, 50);
+    window.addEventListener('load', function() {
+        function tryRender() {
+            if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
+                kinkaRenderGrid('promo-grid', {sort:'note', limit:50}, 50);
+            } else {
+                setTimeout(tryRender, 80);
+            }
+        }
+        tryRender();
     });
     </script>
 </body>

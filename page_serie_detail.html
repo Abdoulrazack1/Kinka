@@ -565,26 +565,50 @@
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    window.addEventListener('load', function() {
+        var params = new URLSearchParams(window.location.search);
+        var serie  = params.get('serie') ? decodeURIComponent(params.get('serie')) : null;
+        var grid   = document.getElementById('series-grid') || document.querySelector('.products-grid');
+        var nbEl   = document.getElementById('serie-nb-tomes');
+        var titleEl = document.getElementById('serie-nom');
+        if (titleEl && serie) titleEl.textContent = serie;
+        if (!grid || !serie || typeof KinkaAPI === 'undefined') return;
+        grid.innerHTML = '<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+        KinkaAPI.produits.getAll({ serie: serie, sort: 'titre', limit: 200 }).then(function(items) {
+            items.sort(function(a,b){ return (a.tome||0)-(b.tome||0); });
+            if (nbEl) nbEl.textContent = items.length + ' tome' + (items.length > 1 ? 's' : '');
+            if (!items.length) {
+                grid.innerHTML = '<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';
+                return;
+            }
+            grid.innerHTML = items.map(buildProductCard).join('');
+        }).catch(function() {
+            grid.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur.</p>';
+        });
+    });
     </script>
     <script>
-    /* ── GRILLE SÉRIE depuis l'API ── */
-    (function(){
-        window.addEventListener('load', init);
-        function init(){
-            var params=new URLSearchParams(window.location.search);
-            var serie=params.get('serie')||'';
-            var grid=document.querySelector('#series-grid,.products-grid');
-            var titleEl=document.querySelector('.serie-title,h1');
-            if(titleEl&&serie) titleEl.textContent=serie;
-            var bc=document.getElementById('breadcrumb-serie');
-            if(bc&&serie) bc.textContent=serie;
-            if(serie) document.title=serie+' — KINKA.FR';
-            if(!grid||!serie||typeof KinkaAPI==='undefined') return;
-            grid.innerHTML='<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
-            KinkaAPI.produits.getAll({serie:serie,sort:'titre',limit:100}).then(function(items){
-                items.sort(function(a,b){return (a.tome||0)-(b.tome||0);});
-                var nbEl=document.getElementById('serie-nb-tomes');
-                if(nbEl) nbEl.textContent=items.length+' tome'+(items.length>1?'s':'');
-                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';return;
+    window.addEventListener('load', function() {
+        var params  = new URLSearchParams(window.location.search);
+        var serie   = params.get('serie') ? decodeURIComponent(params.get('serie')) : null;
+        var grid    = document.getElementById('series-grid') || document.querySelector('.products-grid');
+        var nbEl    = document.getElementById('serie-nb-tomes');
+        var titleEl = document.getElementById('serie-nom');
+        if (titleEl && serie) titleEl.textContent = serie;
+        if (!grid || !serie || typeof KinkaAPI === 'undefined') return;
+        grid.innerHTML = '<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+        KinkaAPI.produits.getAll({ serie: serie, sort: 'titre', limit: 200 }).then(function(items) {
+            items.sort(function(a,b){ return (a.tome||0)-(b.tome||0); });
+            if (nbEl) nbEl.textContent = items.length + ' tome' + (items.length > 1 ? 's' : '');
+            if (!items.length) {
+                grid.innerHTML = '<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';
+                return;
+            }
+            grid.innerHTML = items.map(buildProductCard).join('');
+        }).catch(function() {
+            grid.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur.</p>';
+        });
+    });
+    </script>
 </body>
 </html>

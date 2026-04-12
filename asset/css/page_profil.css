@@ -736,3 +736,202 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
   display: flex; flex-direction: column; justify-content: center;
   min-width: 0; flex: 1;
 }
+
+/* ════════ AMÉLIORATIONS CSS v6 ══════════════════════════════════ */
+
+/* Hero plus impactant */
+.profil-hero {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a0f2e 40%, #0f1a1a 100%);
+    border-radius: 0 0 28px 28px;
+    padding: 3.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.25);
+}
+
+.profil-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 10% 50%, rgba(224,59,139,.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 20%, rgba(99,102,241,.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Avatar plus grand et stylé */
+.profil-hero-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e03b8b, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(224,59,139,.3), 0 8px 24px rgba(0,0,0,.3);
+    flex-shrink: 0;
+}
+
+/* Sidebar cards */
+.profil-sidebar-card {
+    background: var(--bg-card, #1a1a2e);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color .2s;
+}
+.profil-sidebar-card:hover { border-color: rgba(224,59,139,.3); }
+
+/* Tabs navigation */
+.profil-tabs {
+    display: flex;
+    gap: .25rem;
+    background: var(--bg-card, #1a1a2e);
+    border-radius: 12px;
+    padding: .3rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border, rgba(255,255,255,.07));
+}
+.profil-tab {
+    flex: 1;
+    padding: .55rem .5rem;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,.5);
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+}
+.profil-tab:hover { color: rgba(255,255,255,.8); background: rgba(255,255,255,.05); }
+.profil-tab.active {
+    background: linear-gradient(135deg, #e03b8b, #c0307a);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(224,59,139,.35);
+}
+
+/* Sections contenu */
+.profil-section {
+    animation: profil-in .3s ease;
+}
+
+/* Cards form */
+.profil-form-card {
+    background: var(--bg-card, #1a1a2e);
+    border: 1px solid var(--border, rgba(255,255,255,.08));
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+}
+.profil-form-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.profil-form-card h3 .material-symbols-outlined {
+    font-size: 1.1rem;
+    color: #e03b8b;
+}
+
+/* Champs formulaire */
+.profil-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-bottom: .75rem;
+}
+.profil-form-row.full { grid-template-columns: 1fr; }
+.profil-form-label {
+    font-size: .72rem;
+    font-weight: 600;
+    color: rgba(255,255,255,.45);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: .3rem;
+}
+.profil-form-input {
+    width: 100%;
+    padding: .65rem 1rem;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    color: #fff;
+    font-size: .88rem;
+    transition: border-color .2s, background .2s;
+    box-sizing: border-box;
+}
+.profil-form-input:focus {
+    outline: none;
+    border-color: #e03b8b;
+    background: rgba(224,59,139,.06);
+}
+
+/* Commandes */
+.commande-card {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: .75rem;
+    transition: border-color .2s, transform .2s;
+}
+.commande-card:hover {
+    border-color: rgba(224,59,139,.25);
+    transform: translateY(-1px);
+}
+.commande-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+}
+.commande-id { font-weight: 700; display: flex; align-items: center; gap: .4rem; }
+.commande-id .material-symbols-outlined { font-size: .9rem; color: #e03b8b; }
+.commande-statut {
+    padding: .2rem .7rem;
+    border-radius: 20px;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.commande-statut.en_cours  { background: rgba(59,130,246,.15); color: #3b82f6; }
+.commande-statut.livree    { background: rgba(34,197,94,.15);  color: #22c55e; }
+.commande-statut.annulee   { background: rgba(239,68,68,.15);  color: #ef4444; }
+.commande-article          { display: flex; justify-content: space-between; padding: .3rem 0; font-size: .83rem; border-bottom: 1px solid rgba(255,255,255,.05); }
+.commande-article:last-child { border-bottom: none; }
+.commande-footer           { display: flex; justify-content: space-between; align-items: center; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid rgba(255,255,255,.07); }
+.commande-total            { font-size: .9rem; }
+
+/* Zone danger */
+.profil-danger-zone {
+    border: 1px solid rgba(239,68,68,.25);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+.profil-danger-zone h3 {
+    color: #ef4444;
+    font-size: .9rem;
+    font-weight: 700;
+    margin: 0 0 .5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profil-form-row { grid-template-columns: 1fr; }
+    .profil-tab span:not(.material-symbols-outlined) { display: none; }
+    .profil-tabs { gap: .15rem; }
+}

@@ -416,5 +416,12 @@
                 var total = cart.reduce(function(s,i){ return s + (i.prix||0)*(i.quantite||1); }, 0);
                 var order = { id: orderId, date: new Date().toISOString(), articles: cart, total: total, statut: 'en_cours' };
                 localStorage.setItem('kinka_last_order', JSON.stringify(order));
+                window.location.href = '/page_confirmationcommande.html';
+            } catch(err) {
+                if (typeof showToast === 'function') showToast(err.message || 'Erreur lors du paiement.', 'error');
+                if (payButton) { payButton.disabled = false; payButton.textContent = 'Payer'; }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -223,10 +223,23 @@ window.updatePanierCount = async function() {
 };
 
 // ─── BADGE FAVORIS ───────────────────────────────────────────
-window.updateFavsCount = function() {
-    let favs = [];
-    try { favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]'); } catch (_) {}
-    _setBadge('#favoris-count, .favoris-count', favs.length);
+window.updateFavsCount = async function() {
+    let nb = 0;
+    try {
+        if (typeof KinkaAuth !== 'undefined' && typeof KinkaAPI !== 'undefined' && KinkaAuth.isLoggedIn()) {
+            // Connecté : lire depuis l'API et mettre à jour le localStorage
+            const items = await KinkaAPI.favoris.get();
+            nb = items.length;
+            localStorage.setItem('kinka_favoris', JSON.stringify(items.map(function(i){ return i.id; })));
+        } else {
+            // Visiteur : lire le localStorage
+            const favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+            nb = favs.length;
+        }
+    } catch (_) {
+        try { nb = JSON.parse(localStorage.getItem('kinka_favoris') || '[]').length; } catch(__) {}
+    }
+    _setBadge('#favoris-count, .favoris-count', nb);
 };
 
 function _setBadge(selector, nb) {

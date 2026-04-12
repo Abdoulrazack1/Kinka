@@ -241,6 +241,11 @@
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     // Remplir avec les identifiants démo
     function fillDemo() {
-        var emailField = docu
+        var emailField = document.getElementById('email');
+        var pwdField   = document.getElementById('password');
+        if (emailField) emailField.value = 'demo@kinka.fr';
+        if (pwdField)   pwdField.value   = 'demo1234';
+    }
+    </script>
 </body>
 </html>

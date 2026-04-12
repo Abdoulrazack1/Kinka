@@ -160,34 +160,28 @@
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-
-    /* ── CATÉGORIE DYNAMIQUE ── */
-    (function _init(){
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
-        // Lire le paramètre ?cat= depuis l'URL
+    window.addEventListener('load', function() {
         var params = new URLSearchParams(window.location.search);
-        var catParam = params.get('cat') || params.get('categorie') || '';
-        // Mapping URL → valeur BDD
-        var catMap = {shonen:'Shônen',seinen:'Seinen',shojo:'Shôjo',josei:'Josei',coffret:'Coffret'};
-        var CAT = catMap[catParam.toLowerCase()] || catParam || '';
-
-        var currentSort = '';
-
-        function renderGrid() {
-            var grid  = document.getElementById('cat-grid');
-            var empty = document.getElementById('cat-empty');
-            var count = document.getElementById('results-count');
-            (function(){
-        window.addEventListener('load', init);
-        function init(){
-            var params=new URLSearchParams(window.location.search);
-            var cat=params.get('categorie')||'';
-            var catMap={'shonen':'Shônen','seinen':'Seinen','shojo':'Shôjo','josei':'Josei'};
-            var catApi=catMap[cat.toLowerCase()]||cat;
-            var grid=document.querySelector('.products-grid,#cat-grid');
-            if(!grid||!catApi||typeof KinkaAPI==='undefined') return;
-            grid.innerHTML='<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
-            KinkaAPI.produits.getAll({categorie:catApi,limit:100}).then(function(items){
-                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun manga dans cette catégorie.</p>';return;}
+        var cat    = params.get('cat') || params.get('categorie') || '';
+        var catMap = { shonen:'Shônen', seinen:'Seinen', shojo:'Shôjo', josei:'Josei', coffret:'Coffret' };
+        var catApi = catMap[cat] || cat;
+        var grid   = document.getElementById('cat-grid') || document.querySelector('.products-grid');
+        var count  = document.getElementById('results-count');
+        var title  = document.getElementById('cat-title');
+        if (title && catApi) title.textContent = catApi;
+        if (!grid || typeof KinkaAPI === 'undefined') return;
+        grid.innerHTML = '<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+        KinkaAPI.produits.getAll({ categorie: catApi, limit: 100 }).then(function(items) {
+            if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
+            if (!items.length) {
+                grid.innerHTML = '<p style="opacity:.5;padding:2rem">Aucun manga dans cette catégorie.</p>';
+                return;
+            }
+            grid.innerHTML = items.map(buildProductCard).join('');
+        }).catch(function() {
+            grid.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur de chargement.</p>';
+        });
+    });
+    </script>
 </body>
 </html>

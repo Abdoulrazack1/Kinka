@@ -244,6 +244,9 @@
             var cityEl = document.getElementById('conf-user-city');
             if (nameEl) nameEl.textContent = (user.prenom||'') + ' ' + (user.nom||'');
             if (addrEl && user.adresse) addrEl.textContent = user.adresse;
-            if (cityEl && user.ville)   cityEl.textContent = (user.codePostal||'') + ' ' + user.ville + ',
+            if (cityEl && user.ville)   cityEl.textContent = (user.codePostal||'') + ' ' + user.ville + ', France';
+        }
+    })();
+    </script>
 </body>
 </html>
