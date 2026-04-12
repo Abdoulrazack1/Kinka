@@ -307,7 +307,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fa9995948e9b998eba919394919bd49c88">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -322,13 +322,13 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
-    <script src="/asset/js/page_paiement.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
+    <script src="/asset/js/page_paiement.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
@@ -415,26 +415,6 @@
                 var orderId = 'KIN-' + Math.floor(Math.random()*90000+10000);
                 var total = cart.reduce(function(s,i){ return s + (i.prix||0)*(i.quantite||1); }, 0);
                 var order = { id: orderId, date: new Date().toISOString(), articles: cart, total: total, statut: 'en_cours' };
-                try {
-                    localStorage.setItem('kinka_last_order', JSON.stringify(order));
-                    var currentUser = JSON.parse(localStorage.getItem('kinka_current_user') || 'null');
-                    if (currentUser) {
-                        var users = JSON.parse(localStorage.getItem('kinka_users') || '[]');
-                        var idx = users.findIndex(function(u){ return u.id === currentUser.id; });
-                        if (idx >= 0) {
-                            users[idx].commandes = users[idx].commandes || [];
-                            users[idx].commandes.unshift(order);
-                            localStorage.setItem('kinka_users', JSON.stringify(users));
-                            currentUser.commandes = users[idx].commandes;
-                            localStorage.setItem('kinka_current_user', JSON.stringify(currentUser));
-                        }
-                    }
-                } catch(e) {}
-                localStorage.removeItem('kinka_panier');
-                window.location.href = '/page_confirmationcommande.html';
-            }, 400);
-        });
-    })();
-    </script>
+                localStorage.setItem('kinka_last_order', JSON.stringify(order));
 </body>
 </html>

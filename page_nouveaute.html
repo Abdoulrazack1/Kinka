@@ -90,59 +90,17 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-
-    function renderNouv(cat) {
-        var grid  = document.getElementById('grid-nouveautes');
-        var empty = document.getElementById('nouv-empty');
-        if (!grid) return;
-        var opts = { nouveaute: true };
-        if (currentSearch) opts.query = currentSearch;
-        if (cat) opts.categorie = cat;
-        var items = (typeof filterProducts === 'function') ? filterProducts(opts) : [];
-        if (!items.length) {
-            grid.innerHTML = '';
-            if (empty) empty.style.display = 'block';
-            return;
-        }
-        if (empty) empty.style.display = 'none';
-        grid.innerHTML = items.map(m => (typeof buildProductCard === 'function') ? buildProductCard(m) : '').join('');
-    }
-
-    (function _init() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-        renderNouv('');
-
-        // ── Recherche #search-input ──
-        (function() {
-            var _debounce;
-            var inp = document.getElementById('search-input');
-            if (!inp) return;
-            inp.addEventListener('input', function() {
-                clearTimeout(_debounce);
-                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderNouv(document.querySelector('.filter-pill.active') ? document.querySelector('.filter-pill.active').dataset.cat || '' : ''); }, 200);
-            }, false);
-            // Bloquer la redirection vers page_recherche.html
-            inp.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderNouv(document.querySelector('.filter-pill.active') ? document.querySelector('.filter-pill.active').dataset.cat || '' : ''); }
-            }, true);
-        })();
-        document.querySelectorAll('.filter-pill').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                renderNouv(this.dataset.cat);
-            });
-        });
-    })();</script>
+    window.addEventListener('load', function(){
+        kinkaRenderGrid('grid-nouveautes', {sort:'nouveaute', limit:50}, 50);
+    });
+    </script>
 </body>
 </html>

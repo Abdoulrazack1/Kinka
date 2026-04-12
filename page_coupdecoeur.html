@@ -125,7 +125,7 @@
             <div class="footer-section">
                 <div class="footer-logo"><img src="/asset/image/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image"><span class="logo-text">KINKA<span class="fr">.FR</span></span></div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="eb8884859f8a889fab808285808ac58d99">[email&#160;protected]</a></p>
             </div>
             <div class="footer-section"><h4>Catalogue</h4><ul><li><a href="/page_nouveaute.html">Nouveautés</a></li><li><a href="/page_bestsellers.html">Bestsellers</a></li><li><a href="/page_promotion.html">Promotions</a></li><li><a href="/page_coffret.html">Coffrets</a></li></ul></div>
             <div class="footer-section"><h4>Support</h4><ul><li><a href="/page_faq.html">FAQ</a></li><li><a href="/page_contact.html">Contact</a></li><li><a href="/page_cgv.html">CGV</a></li></ul></div>
@@ -134,179 +134,13 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
-    <script>
-    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-
-    /* ── COUPS DE CŒUR — rendu des articles éditoriaux ── */
-    var currentCat = '';
-    var currentSearch = '';
-
-    var LIBRARIANS = [
-        { name: 'Yuki M.', role: 'Responsable manga shōnen' },
-        { name: 'Léa T.', role: 'Experte seinen & josei' },
-        { name: 'Ryo B.', role: 'Spécialiste shōjo & josei' },
-        { name: 'Kaito D.', role: 'Libraire manga depuis 8 ans' },
-        { name: 'Nora S.', role: 'Critique manga certifiée' },
-    ];
-
-    var REASONS = [
-        ['Un univers visuellement saisissant', 'Une narration sans temps mort', 'Des personnages attachants'],
-        ['Un scénario complexe et mature', 'Un dessin d\'une précision rare', 'Une atmosphère unique'],
-        ['Des émotions brutes et authentiques', 'Une écriture profonde et poétique', 'Un incontournable absolu'],
-        ['Un équilibre parfait action / humour', 'Une galerie de personnages mémorables', 'Un rythme haletant'],
-    ];
-
-    var TAG_CLASSES = {
-        'Shônen': 'tag-shonen', 'Seinen': 'tag-seinen',
-        'Shôjo': 'tag-shojo', 'Josei': 'tag-josei'
-    };
-
-    function buildArticleCard(manga, index) {
-        var favs = []; try { favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]'); } catch(e) {}
-        var isFav = favs.includes(manga.id);
-        var isReverse = (index % 2 === 1) ? 'reverse' : '';
-        var tagClass = TAG_CLASSES[manga.categorie] || 'tag-shonen';
-        var prix = (manga.promo && manga.prixPromo) ? manga.prixPromo : manga.prix;
-        var lib = LIBRARIANS[index % LIBRARIANS.length];
-        var reasons = REASONS[index % REASONS.length];
-        var tags = (manga.tags || []).slice(0, 4);
-        var stockOk = manga.stock > 0;
-
-        return '<div class="cdc-article ' + isReverse + '">' +
-            '<div class="cdc-article-left">' +
-                '<div class="cdc-article-header">' +
-                    '<span class="cdc-article-badge ' + tagClass + '">' + (manga.categorie || 'Manga') + '</span>' +
-                    '<span class="cdc-article-num">' + String(index + 1).padStart(2, '0') + '</span>' +
-                '</div>' +
-                '<h2 class="cdc-article-title">' + manga.titre + '</h2>' +
-                '<p class="cdc-article-tagline">' + (manga.serie ? 'Série : ' + manga.serie : manga.auteur) + '</p>' +
-                '<p class="cdc-article-desc">' + (manga.description || '').slice(0, 220) + (manga.description && manga.description.length > 220 ? '…' : '') + '</p>' +
-                '<div class="cdc-article-tags">' +
-                    tags.map(function(t){ return '<span class="cdc-tag">' + t + '</span>'; }).join('') +
-                '</div>' +
-                '<div class="cdc-article-reasons">' +
-                    '<h4>Pourquoi on l\'adore</h4>' +
-                    '<ul>' + reasons.map(function(r){ return '<li><span class="material-symbols-outlined">favorite</span>' + r + '</li>'; }).join('') + '</ul>' +
-                '</div>' +
-                '<div class="cdc-librarian">' +
-                    '<div class="cdc-librarian-avatar">' +
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
-                    '</div>' +
-                    '<div>' +
-                        '<p class="cdc-librarian-name">' + lib.name + '</p>' +
-                        '<p class="cdc-librarian-role">' + lib.role + '</p>' +
-                    '</div>' +
-                '</div>' +
-            '</div>' +
-
-            '<div class="cdc-article-middle">' +
-                '<div class="cdc-product-card" onclick="window.location.href=\'/page_detail_produit.html?id=' + manga.id + '\'">' +
-                    '<div class="cdc-product-img">' +
-                        '<img src="' + manga.image + '" alt="' + manga.titre + '" loading="lazy" onerror="this.src=\'/asset/image/One-Piece-Edition-originale-Tome-105.jpg\'">' +
-                        '<button class="cdc-fav-btn' + (isFav ? ' active' : '') + '" onclick="kinkaToggleFav(\'' + manga.id + '\',event)" title="' + (isFav ? 'Retirer des favoris' : 'Ajouter aux favoris') + '">' +
-                            '<span class="material-symbols-outlined" style="' + (isFav ? 'font-variation-settings:\'FILL\' 1;color:#ef4444' : '') + '">favorite</span>' +
-                        '</button>' +
-                    '</div>' +
-                    '<div class="cdc-product-info">' +
-                        '<h3>' + manga.titre + '</h3>' +
-                        '<p>' + manga.auteur + ' · ' + (manga.editeur || '') + '</p>' +
-                        '<div class="cdc-product-footer">' +
-                            '<span class="cdc-price">' + prix.toFixed(2).replace('.', ',') + ' €</span>' +
-                            '<button class="add-to-cart" onclick="kinkaAddToCart(\'' + manga.id + '\',event)" title="Ajouter au panier">' +
-                                '<span class="material-symbols-outlined">add_shopping_cart</span>' +
-                            '</button>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>' +
-            '</div>' +
-
-            '<div class="cdc-article-right">' +
-                '<div class="cdc-reasons-box">' +
-                    '<h4>Fiche produit</h4>' +
-                    '<div class="cdc-meta-item"><span class="material-symbols-outlined">person</span><div><strong>' + manga.auteur + '</strong><span>Auteur</span></div></div>' +
-                    '<div class="cdc-meta-item"><span class="material-symbols-outlined">business</span><div><strong>' + (manga.editeur || '—') + '</strong><span>Éditeur</span></div></div>' +
-                    (manga.tome ? '<div class="cdc-meta-item"><span class="material-symbols-outlined">menu_book</span><div><strong>Tome ' + manga.tome + '</strong><span>Volume</span></div></div>' : '') +
-                    (manga.pages ? '<div class="cdc-meta-item"><span class="material-symbols-outlined">article</span><div><strong>' + manga.pages + ' pages</strong><span>Format</span></div></div>' : '') +
-                    '<div class="cdc-meta-item"><span class="material-symbols-outlined">payments</span><div><strong>' + prix.toFixed(2).replace('.', ',') + ' €</strong><span>Prix</span></div></div>' +
-                    '<span class="cdc-stock-badge ' + (stockOk ? 'ok' : 'low') + '">' +
-                        '<span class="material-symbols-outlined">' + (stockOk ? 'inventory_2' : 'remove_shopping_cart') + '</span>' +
-                        (stockOk ? (manga.stock <= 3 ? 'Plus que ' + manga.stock + ' ex.' : 'En stock — ' + manga.stock + ' ex.') : 'Rupture de stock') +
-                    '</span>' +
-                '</div>' +
-            '</div>' +
-        '</div>';
-    }
-
-    function renderCDC() {
-        var articles = document.getElementById('cdc-articles');
-        var empty    = document.getElementById('cdc-empty');
-        var statEl   = document.getElementById('stat-total');
-        var autresGrid = document.getElementById('grid-autres');
-        if (!articles || typeof filterProducts !== 'function') return;
-
-        var opts = { coupDeCoeur: true };
-        if (currentSearch) opts.query = currentSearch;
-        if (currentCat) opts.categorie = currentCat;
-        var items = filterProducts(opts);
-
-        if (statEl) statEl.textContent = filterProducts({ coupDeCoeur: true }).length;
-
-        if (!items.length) {
-            articles.innerHTML = '';
-            if (empty) empty.style.display = 'flex';
-        } else {
-            if (empty) empty.style.display = 'none';
-            articles.innerHTML = items.map(function(m, i) {
-                return buildArticleCard(m, i) + (i < items.length - 1 ? '<div class="cdc-separator"></div>' : '');
-            }).join('');
-        }
-
-        // Autres pépites : bestsellers non déjà affichés
-        if (autresGrid && typeof filterProducts === 'function') {
-            var shownIds = items.map(function(m){ return m.id; });
-            var autres = filterProducts({ bestseller: true })
-                .filter(function(m){ return !shownIds.includes(m.id); })
-                .slice(0, 5);
-            autresGrid.innerHTML = autres.map(function(m){ return buildProductCard(m); }).join('');
-        }
-    }
-
-    (function _init(){
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
-        renderCDC();
-
-        // ── Recherche #search-input ──
-        (function() {
-            var _debounce;
-            var inp = document.getElementById('search-input');
-            if (!inp) return;
-            inp.addEventListener('input', function() {
-                clearTimeout(_debounce);
-                _debounce = setTimeout(function() { currentSearch = inp.value.trim(); renderCDC(); }, 200);
-            }, false);
-            // Bloquer la redirection vers page_recherche.html
-            inp.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') { e.stopImmediatePropagation(); e.preventDefault(); currentSearch = inp.value.trim(); renderCDC(); }
-            }, true);
-        })();
-
-        document.querySelectorAll('.filter-pill').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-pill').forEach(function(b){ b.classList.remove('active'); });
-                this.classList.add('active');
-                currentCat = this.dataset.cat || '';
-                renderCDC();
-            });
-        });
-    })();</script>
+    <script>window.addEventListener('load',function(){kinkaRenderGrid('grid-coupdecoeur',{sort:'note',limit:50},50);});</script>
 </body>
 </html>

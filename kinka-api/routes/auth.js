@@ -57,7 +57,7 @@ router.get('/me', authRequired, asyncHandler(async (req, res) => {
 }));
 
 // PUT /api/auth/me
-const ALLOWED_PROFILE_FIELDS = ['prenom', 'nom', 'telephone', 'adresse', 'ville', 'code_postal', 'pays', 'avatar'];
+const ALLOWED_PROFILE_FIELDS = ['prenom', 'nom', 'nom_utilisateur', 'telephone', 'adresse', 'ville', 'code_postal', 'pays', 'avatar', 'bio'];
 
 router.put('/me', authRequired, asyncHandler(async (req, res) => {
   const updates = Object.fromEntries(
@@ -84,6 +84,13 @@ router.put('/password', authRequired, validate(schemas.password), asyncHandler(a
   const hash = await bcrypt.hash(newPassword, 12);
   await db.query('UPDATE utilisateurs SET mot_de_passe = ? WHERE id = ?', [hash, req.user.id]);
   res.json({ success: true, data: { message: 'Mot de passe mis à jour' } });
+}));
+
+
+// DELETE /api/auth/me — Suppression du compte
+router.delete('/me', authRequired, asyncHandler(async (req, res) => {
+  await db.query('DELETE FROM utilisateurs WHERE id = ?', [req.user.id]);
+  res.json({ success: true, data: { message: 'Compte supprimé' } });
 }));
 
 module.exports = router;

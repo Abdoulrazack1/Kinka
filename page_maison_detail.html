@@ -145,7 +145,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cdaea2a3b9acaeb98da6a4a3a6ace3abbf">[email&#160;protected]</a></p>
             </div>
             <div class="footer-section"><h4>Maisons</h4><ul>
                 <li><a href="/page_maison_detail.html?id=glenat">Glénat</a></li>
@@ -163,13 +163,12 @@
     </footer>
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
@@ -181,115 +180,19 @@
         var params  = new URLSearchParams(window.location.search);
         var maisonId = params.get('id') || 'glenat';
 
-        // Attendre que mangadb.js soit chargé (retry jusqu'à 3s)
-        var _t = 0;
-        function tryLoad() {
-            if (typeof getMaisonById !== 'function' || typeof maisonsDB === 'undefined') {
-                if (++_t < 40) { setTimeout(tryLoad, 75); return; }
-                document.getElementById('md-nom').textContent = 'Erreur de chargement';
-                return;
-            }
-            loadMaison();
+        (function(){
+        window.addEventListener('load', init);
+        function init(){
+            var params=new URLSearchParams(window.location.search);
+            var editeur=params.get('editeur')||params.get('maison')||'';
+            var grid=document.querySelector('.products-grid,.maison-grid,#maison-grid');
+            if(!grid||!editeur||typeof KinkaAPI==='undefined') return;
+            grid.innerHTML='<div style="opacity:.4;padding:1rem">Chargement…</div>';
+            KinkaAPI.produits.getAll({editeur:editeur,limit:100}).then(function(items){
+                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun manga disponible.</p>';return;}
+                grid.innerHTML=items.map(buildProductCard).join('');
+            }).catch(function(){grid.innerHTML='<p style="opacity:.4;padding:1rem">Erreur de chargement.</p>';});
         }
-
-        function loadMaison() {
-        // Récupérer la maison depuis maisonsDB
-        var maison = getMaisonById(maisonId);
-        if (!maison) {
-            maison = maisonsDB[0]; // fallback première maison
-        }
-        if (!maison) {
-            document.getElementById('md-nom').textContent = 'Maison introuvable';
-            return;
-        }
-
-        // ── Peupler le hero ──────────────────────────────
-        document.title = maison.nom + ' — KINKA.FR';
-        document.getElementById('page-title').textContent = maison.nom + ' — KINKA.FR';
-        document.getElementById('breadcrumb-nom').textContent = maison.nom;
-        document.getElementById('md-nom').textContent = maison.nom;
-        document.getElementById('md-desc').textContent = maison.description || '';
-        document.getElementById('md-since').textContent = 'Fondée en ' + (maison.fondee || '—');
-
-        var logoEl = document.getElementById('md-logo');
-        logoEl.src = maison.logo || '/asset/image/LogoProjetFilRouge.png';
-        logoEl.alt = maison.nom;
-        logoEl.onerror = function(){ this.src = '/asset/image/LogoProjetFilRouge.png'; };
-
-        var siteEl = document.getElementById('md-site');
-        if (siteEl && maison.siteWeb) { siteEl.href = maison.siteWeb; }
-
-        // Couleur d'ambiance dans le hero gradient
-        var grad = document.getElementById('md-hero-gradient');
-        if (grad && maison.couleur) {
-            grad.style.background = 'radial-gradient(ellipse at 70% 50%, ' + maison.couleur + '22 0%, transparent 65%)';
-        }
-
-        // Récupérer les mangas de cette maison
-        var allItems = (typeof filterByMaison === 'function') ? filterByMaison(maison) : [];
-        if (!allItems.length && typeof mangasDB !== 'undefined') {
-            // Fallback : filtre par editeur manuellement
-            allItems = mangasDB.filter(function(m){
-                return maison.editeurs && maison.editeurs.includes(m.editeur);
-            });
-        }
-
-        // Statistiques hero
-        document.getElementById('md-stat-titres').textContent = maison.totalTitres || allItems.length;
-        document.getElementById('md-stat-kinka').textContent  = allItems.length;
-
-        // Séries uniques
-        var series = [];
-        allItems.forEach(function(m){ if(m.serie && !series.includes(m.serie)) series.push(m.serie); });
-        document.getElementById('md-stat-series').textContent = series.length;
-
-        // ── Navigation entre maisons ─────────────────────
-        var navBar = document.getElementById('md-nav-bar');
-        if (navBar && typeof maisonsDB !== 'undefined') {
-            navBar.innerHTML = maisonsDB.map(function(m) {
-                var isActive = m.id === maisonId ? ' md-nav-active' : '';
-                return '<a href="/page_maison_detail.html?id=' + m.id + '" class="md-nav-link' + isActive + '">' +
-                    '<img src="' + (m.logo || '/asset/image/LogoProjetFilRouge.png') + '" alt="' + m.nom + '" onerror="this.src=\'/asset/image/LogoProjetFilRouge.png\'">' +
-                    m.nom +
-                '</a>';
-            }).join('');
-        }
-
-        // ── Sidebar séries ───────────────────────────────
-        var seriesNav = document.getElementById('md-series-nav');
-        if (seriesNav) {
-            var seriesCount = {};
-            allItems.forEach(function(m){ if(m.serie){ seriesCount[m.serie] = (seriesCount[m.serie]||0)+1; } });
-            var sortedSeries = Object.keys(seriesCount).sort(function(a,b){ return seriesCount[b]-seriesCount[a]; });
-            seriesNav.innerHTML = '<a class="md-serie-link active" data-serie="" href="#">Toutes les séries<span>' + allItems.length + '</span></a>' +
-                sortedSeries.map(function(s){
-                    return '<a class="md-serie-link" data-serie="' + s + '" href="#">' + s + '<span>' + seriesCount[s] + '</span></a>';
-                }).join('');
-
-            seriesNav.querySelectorAll('.md-serie-link').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    seriesNav.querySelectorAll('.md-serie-link').forEach(function(l){ l.classList.remove('active'); });
-                    this.classList.add('active');
-                    renderGrid(allItems, this.dataset.serie, document.getElementById('md-sort').value);
-                });
-            });
-        }
-
-        // ── Tri ──────────────────────────────────────────
-        var sortSel = document.getElementById('md-sort');
-        if (sortSel) {
-            sortSel.addEventListener('change', function() {
-                var activeSerie = (seriesNav && seriesNav.querySelector('.md-serie-link.active')) ? seriesNav.querySelector('.md-serie-link.active').dataset.serie : '';
-                renderGrid(allItems, activeSerie, this.value);
-            });
-        }
-
-        // Rendu initial
-        renderGrid(allItems, '', '');
-        } // fin loadMaison()
-
-        tryLoad();
     })();
 
     function renderGrid(allItems, serie, sort) {
@@ -309,11 +212,6 @@
 
         if (!items.length) {
             grid.innerHTML = '';
-            if (empty) empty.style.display = 'flex';
-            return;
-        }
-        if (empty) empty.style.display = 'none';
-        grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
-    }</script>
+            if (empty) em
 </body>
 </html>

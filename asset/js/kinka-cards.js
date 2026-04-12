@@ -147,7 +147,7 @@ function _buildStars(note) {
 window.kinkaAddToCart = async function(id, e) {
     if (e) { e.preventDefault(); e.stopPropagation(); }
     try {
-        if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn()) {
+        if (typeof KinkaAuth !== 'undefined' && typeof KinkaAPI !== 'undefined' && KinkaAuth.isLoggedIn()) {
             await KinkaAPI.panier.add(id, 1);
         } else {
             const prod = await KinkaAPI.produits.getOne(id).catch(() => null);
@@ -169,19 +169,23 @@ window.kinkaAddToCart = async function(id, e) {
 // ─── TOGGLE FAVORI ───────────────────────────────────────────
 window.kinkaToggleFav = async function(id, e) {
     if (e) { e.preventDefault(); e.stopPropagation(); }
-    const btn    = e?.currentTarget || e?.target?.closest('.card-fav-btn');
-    const useApi = typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn();
+
+    // Trouver le bouton même si on a cliqué sur l'icône à l'intérieur
+    const btn = (e?.target?.closest('.card-fav-btn'))
+             || document.querySelector(`.product-card[data-id="${id}"] .card-fav-btn`);
+
+    const useApi = typeof KinkaAuth !== 'undefined' && typeof KinkaAPI !== 'undefined' && KinkaAuth.isLoggedIn();
     let favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
 
     if (favs.includes(id)) {
         favs = favs.filter(f => f !== id);
-        btn?.classList.remove('active');
-        if (useApi) KinkaAPI.favoris.remove(id).catch(() => {});
+        if (btn) btn.classList.remove('active');
+        if (useApi) KinkaAPI.favoris.remove(id).catch(err => console.warn('[fav]', err));
         if (typeof showToast === 'function') showToast('Retiré des favoris');
     } else {
         favs.push(id);
-        btn?.classList.add('active');
-        if (useApi) KinkaAPI.favoris.add(id).catch(() => {});
+        if (btn) btn.classList.add('active');
+        if (useApi) KinkaAPI.favoris.add(id).catch(err => console.warn('[fav]', err));
         if (typeof showToast === 'function') showToast('Ajouté aux favoris !');
     }
     localStorage.setItem('kinka_favoris', JSON.stringify(favs));
@@ -192,7 +196,7 @@ window.kinkaToggleFav = async function(id, e) {
 window.updatePanierCount = async function() {
     let nb = 0;
     try {
-        if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn()) {
+        if (typeof KinkaAuth !== 'undefined' && typeof KinkaAPI !== 'undefined' && KinkaAuth.isLoggedIn()) {
             const items = await KinkaAPI.panier.get();
             nb = items.reduce((s, i) => s + (i.quantite || 1), 0);
             localStorage.setItem('kinka_panier', JSON.stringify(items));
@@ -236,6 +240,7 @@ function _setBadge(selector, nb) {
 window.kinkaRenderGrid = async function(elementId, filtres, max) {
     const el = document.getElementById(elementId);
     if (!el) return;
+    if (typeof KinkaAPI === 'undefined') { setTimeout(() => kinkaRenderGrid(elementId, filtres, max), 100); return; }
     el.innerHTML = '<div style="opacity:.4;padding:1.5rem;text-align:center;font-size:.85rem">Chargement…</div>';
     try {
         const items = await KinkaAPI.produits.getAll(Object.assign({ limit: max || 6 }, filtres));
@@ -266,7 +271,6 @@ window.filterProducts = opts => (window._kinkaProductsCache || []).filter(m => {
 });
 
 window.syncFavButtons    = () => updateFavsCount();
-window.gererBoutonsAjout = () => {};
 
 // ─── INIT BADGES AU CHARGEMENT ───────────────────────────────
 (function() {

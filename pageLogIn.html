@@ -97,7 +97,7 @@
                     </div>
                     <div class="demo-cred-row">
                         <span class="demo-cred-label">Email</span>
-                        <code class="demo-cred-val" id="demo-email">demo@kinka.fr</code>
+                        <code class="demo-cred-val" id="demo-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3e3f37351a313334313b743c28">[email&#160;protected]</a></code>
                         <button class="demo-copy-btn" onclick="fillDemo()">Utiliser</button>
                     </div>
                     <div class="demo-cred-row">
@@ -211,7 +211,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4d2e2223392c2e390d262423262c632b3f">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -227,25 +227,20 @@
     
 
     <!-- Scripts -->
-        <script src="/asset/js/kinka-api-client.js"></script>
-        <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-api-client.js"></script>
+    <script src="/asset/js/kinka-auth-guard.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
 
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     // Remplir avec les identifiants démo
     function fillDemo() {
-        var emailField = document.getElementById('email');
-        var pwdField = document.getElementById('password');
-        if (emailField) { emailField.value = 'demo@kinka.fr'; emailField.dispatchEvent(new Event('input')); }
-        if (pwdField)   { pwdField.value   = 'demo1234';      pwdField.dispatchEvent(new Event('input')); }
-    }
-    </script>
+        var emailField = docu
 </body>
 </html>

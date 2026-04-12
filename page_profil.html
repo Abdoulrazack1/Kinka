@@ -110,7 +110,7 @@
                     <div class="gate-demo-creds">
                         <div class="gate-cred">
                             <div class="gate-cred-label">Email</div>
-                            <div class="gate-cred-value">demo@kinka.fr</div>
+                            <div class="gate-cred-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f195949c9eb19a989f9a90df9783">[email&#160;protected]</a></div>
                         </div>
                         <div class="gate-cred">
                             <div class="gate-cred-label">Mot de passe</div>
@@ -572,7 +572,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3a5955544e5b594e7a515354515b145c48">[email&#160;protected]</a></p>
             </div>
             <div class="footer-section"><h4>Navigation</h4><ul>
                 <li><a href="/page_accueil.html">Accueil</a></li>
@@ -595,12 +595,12 @@
 
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     /* ── Scroll header ── */
@@ -633,43 +633,35 @@
     };
 
     /* ── loginDemo ── */
-    function loginDemo() {
-        var users = [];
-        try { users = JSON.parse(localStorage.getItem('kinka_users') || '[]'); } catch(e) {}
-        var demo = users.find(function(u){ return u.email === 'demo@kinka.fr'; });
-        if (!demo) {
-            demo = {
-                id: 'user_demo_kinka', email: 'demo@kinka.fr',
-                password: btoa('demo1234'),
-                prenom: 'Sakura', nom: 'Tanaka',
-                dateInscription: new Date('2024-03-20').toISOString(),
-                adresse: '42 Rue du Manga', ville: 'Lyon', codePostal: '69001',
-                telephone: '06 12 34 56 78', abonnement: 'premium',
-                commandes: [
-                    { id:'CMD-2024-0891', date:'2025-02-14', statut:'livree', total:38.90,
-                      articles:[{ titre:'Jujutsu Kaisen — Tome 20', prix:7.20, qte:1 },{ titre:'Chainsaw Man — Tome 12', prix:7.70, qte:2 },{ titre:'My Hero Academia — Tome 37', prix:7.35, qte:2 }] },
-                    { id:'CMD-2025-0124', date:'2025-03-01', statut:'en_cours', total:24.55,
-                      articles:[{ titre:'One Piece — Tome 105', prix:7.20, qte:1 },{ titre:'Vinland Saga — Tome 27', prix:8.95, qte:1 },{ titre:'Spy x Family — Tome 12', prix:8.40, qte:1 }] }
-                ]
-            };
-            users.push(demo);
-            localStorage.setItem('kinka_users', JSON.stringify(users));
+    async function loginDemo() {
+        try {
+            await KinkaAPI.auth.login('demo@kinka.fr', 'demo1234', false);
+            showToast('Connexion démo réussie !', 'success');
+            setTimeout(function(){ location.reload(); }, 700);
+        } catch(e) {
+            // Fallback si le compte démo n'existe pas en BDD
+            showToast('Compte démo non disponible. Créez un compte.', 'info');
         }
-        localStorage.setItem('kinka_current_user', JSON.stringify(demo));
-        location.reload();
     }
 
-    /* ── initProfil ── */
-    function initProfil() {
+    /* ── initProfil — rafraîchit depuis l'API ── */
+    async function initProfil() {
         var raw = null;
         try { raw = localStorage.getItem('kinka_current_user'); } catch(e) {}
 
-        if (!raw) {
-            document.getElementById('profil-disconnected').style.display = 'flex';
-            return;
+        if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn()) {
+            try {
+                var fresh = await KinkaAPI.auth.me();
+                currentUser = fresh;
+                localStorage.setItem('kinka_current_user', JSON.stringify(fresh));
+            } catch(e) {
+                try { currentUser = raw ? JSON.parse(raw) : null; } catch(e2) {}
+            }
+        } else {
+            try { currentUser = raw ? JSON.parse(raw) : null; } catch(e) {}
         }
 
-        currentUser = JSON.parse(raw);
+        if (!currentUser) {
         document.getElementById('profil-disconnected').style.display = 'none';
         document.getElementById('profil-hero').style.display    = 'block';
         document.getElementById('profil-connected').style.display = 'block';
@@ -717,7 +709,7 @@
         if (favs.length) { var nf = document.getElementById('nav-badge-favoris');  nf.textContent = favs.length; nf.style.display = 'inline-flex'; }
 
         /* Formulaire infos */
-        var F = { 'info-prenom':'prenom','info-nom':'nom','info-email':'email','info-tel':'telephone','info-adresse':'adresse','info-cp':'codePostal','info-ville':'ville' };
+        var F = { 'info-prenom':'prenom','info-nom':'nom','info-email':'email','info-tel':'telephone','info-adresse':'adresse','info-cp':'code_postal','info-ville':'ville' };
         for (var id in F) { var el = document.getElementById(id); if (el && currentUser[F[id]]) el.value = currentUser[F[id]]; }
 
         /* Dernière connexion */
@@ -771,50 +763,90 @@
         setTimeout(function(){ window.location.href = '/page_premium.html'; }, 1200);
     }
 
-    /* ── renderCommandes ── */
-    function renderCommandes() {
-        var cmds = currentUser.commandes || [];
+    /* ── renderCommandes → API ── */
+    async function renderCommandes() {
         var el = document.getElementById('commandes-list');
         if (!el) return;
-        if (!cmds.length) {
-            el.innerHTML = '<div class="profil-empty-state"><span class="material-symbols-outlined">receipt_long</span><h4>Aucune commande</h4><p>Vos achats apparaîtront ici.</p><a href="/page_catalogue.html" class="btn-primary">Découvrir le catalogue</a></div>';
-            return;
+        el.innerHTML = '<p style="opacity:.4;padding:1rem;text-align:center">Chargement…</p>';
+
+        try {
+            var cmds = [];
+            if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn()) {
+                cmds = await KinkaAPI.commandes.get();
+            }
+
+            if (!cmds.length) {
+                el.innerHTML = '<div class="profil-empty-state">'
+                    + '<span class="material-symbols-outlined">receipt_long</span>'
+                    + '<h4>Aucune commande</h4>'
+                    + '<p>Vos achats apparaîtront ici.</p>'
+                    + '<a href="/page_catalogue.html" class="btn-primary">Découvrir le catalogue</a>'
+                    + '</div>';
+                return;
+            }
+
+            var SL = {livree:'Livrée',en_cours:'En cours',expediee:'Expédiée',annulee:'Annulée',preparee:'Préparée'};
+            var SC = {livree:'statut-livree',en_cours:'statut-encours',expediee:'statut-expediee',annulee:'statut-annulee'};
+
+            el.innerHTML = cmds.map(function(cmd) {
+                var total = parseFloat(cmd.total || 0);
+                return '<div class="commande-card">'
+                    + '<div class="commande-header">'
+                    +   '<div class="commande-id"><span class="material-symbols-outlined">receipt</span><strong>' + cmd.id + '</strong></div>'
+                    +   '<div class="commande-meta">'
+                    +     '<span class="commande-date">' + new Date(cmd.date).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}) + '</span>'
+                    +     '<span class="commande-statut ' + (SC[cmd.statut]||'') + '">' + (SL[cmd.statut]||cmd.statut) + '</span>'
+                    +   '</div>'
+                    + '</div>'
+                    + '<div class="commande-articles">' + (cmd.articles||[]).map(function(a){
+                        var qty = a.quantite || 1;
+                        return '<div class="commande-article"><div class="commande-article-info">'
+                            + '<span class="commande-article-titre">' + a.titre + '</span>'
+                            + '<span class="commande-article-prix">×' + qty + ' — ' + ((parseFloat(a.prix)||0)*qty).toFixed(2) + ' €</span>'
+                            + '</div></div>';
+                    }).join('') + '</div>'
+                    + '<div class="commande-footer">'
+                    +   '<span class="commande-total">Total : <strong>' + total.toFixed(2) + ' €</strong></span>'
+                    +   '<button class="btn-secondary" style="font-size:.78rem" onclick="window.location.href='/page_suivicommande.html?id=' + cmd.id + ''">'
+                    +     '<span class="material-symbols-outlined">local_shipping</span>Suivre'
+                    +   '</button>'
+                    + '</div>'
+                    + '</div>';
+            }).join('');
+
+            /* Mettre à jour le badge stat */
+            var statEl = document.getElementById('stat-commandes');
+            if (statEl) statEl.textContent = cmds.length;
+            var badge = document.getElementById('nav-badge-commandes');
+            if (badge && cmds.length) { badge.textContent = cmds.length; badge.style.display = 'flex'; }
+
+        } catch(e) {
+            el.innerHTML = '<p style="opacity:.4;padding:1rem">Impossible de charger vos commandes.</p>';
         }
-        var SL = {livree:'Livrée',en_cours:'En cours',expediee:'Expédiée',annulee:'Annulée',preparee:'Préparée'};
-        var SC = {livree:'statut-livree',en_cours:'statut-encours',expediee:'statut-expediee',annulee:'statut-annulee',preparee:'statut-preparee'};
-        el.innerHTML = cmds.map(function(cmd){
-            return '<div class="commande-card">'+
-                '<div class="commande-header">'+
-                    '<div class="commande-id"><span class="material-symbols-outlined">receipt</span><strong>'+cmd.id+'</strong></div>'+
-                    '<div class="commande-meta">'+
-                        '<span class="commande-date">'+new Date(cmd.date).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+'</span>'+
-                        '<span class="commande-statut '+(SC[cmd.statut]||'')+'">'+( SL[cmd.statut]||cmd.statut)+'</span>'+
-                    '</div>'+
-                '</div>'+
-                '<div class="commande-articles">'+(cmd.articles||[]).map(function(a){
-                    var qty = a.quantite || a.qte || 1;
-                    return '<div class="commande-article"><div class="commande-article-info">'+
-                        '<span class="commande-article-titre">'+a.titre+'</span>'+
-                        '<span class="commande-article-prix">×'+qty+' — '+((a.prix||0)*qty).toFixed(2)+' €</span>'+
-                    '</div></div>';
-                }).join('')+'</div>'+
-                '<div class="commande-footer">'+
-                    '<span class="commande-total">Total : <strong>'+cmd.total.toFixed(2)+' €</strong></span>'+
-                    '<button class="btn-secondary" style="font-size:.78rem" onclick="window.location.href=\'/page_suivicommande.html\'">'+
-                        '<span class="material-symbols-outlined">local_shipping</span>Suivre'+
-                    '</button>'+
-                '</div>'+
-            '</div>';
-        }).join('');
     }
 
-    /* ── loadFavoris ── */
-    function loadFavoris() {
-        var grid = document.getElementById('profil-favoris-grid');
+    /* ── loadFavoris depuis l'API ── */
+    async function loadFavoris() {
+        var grid  = document.getElementById('profil-favoris-grid');
         var empty = document.getElementById('profil-favoris-empty');
         if (!grid) return;
-        var favs = []; try { favs = JSON.parse(localStorage.getItem('kinka_favoris')||'[]'); } catch(e){}
-        var items = favs.map(function(id){ return typeof getMangaById==='function'?getMangaById(id):null; }).filter(Boolean);
+        grid.innerHTML = '<p style="opacity:.4;padding:1rem">Chargement…</p>';
+        try {
+            var items = [];
+            if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn()) {
+                items = await KinkaAPI.favoris.get();
+            }
+            if (!items.length) {
+                grid.innerHTML = '';
+                if (empty) empty.style.display = 'flex';
+                return;
+            }
+            if (empty) empty.style.display = 'none';
+            grid.innerHTML = items.map(function(m) { return buildProductCard(m); }).join('');
+        } catch(e) {
+            grid.innerHTML = '<p style="opacity:.4;padding:1rem">Chargement impossible.</p>';
+        }
+    }
         if (!items.length) { grid.innerHTML=''; if(empty)empty.style.display='flex'; return; }
         if (empty) empty.style.display = 'none';
         grid.innerHTML = items.map(function(m){ return typeof buildProductCard==='function'?buildProductCard(m):''; }).join('');
@@ -860,64 +892,80 @@
         if (confirm('Se déconnecter ?')) { localStorage.removeItem('kinka_current_user'); window.location.href='/page_accueil.html'; }
     });
 
-    /* ── saveInfo ── */
-    function saveInfo() {
+    /* ── saveInfo → API PUT /api/auth/me ── */
+    async function saveInfo() {
         if (!currentUser) return;
-        var F = { 'info-prenom':'prenom','info-nom':'nom','info-email':'email','info-tel':'telephone','info-adresse':'adresse','info-cp':'codePostal','info-ville':'ville' };
-        for (var id in F) { var el=document.getElementById(id); if(el)currentUser[F[id]]=el.value; }
-        localStorage.setItem('kinka_current_user', JSON.stringify(currentUser));
-        var users=[]; try{users=JSON.parse(localStorage.getItem('kinka_users')||'[]');}catch(e){}
-        var idx=users.findIndex(function(u){return u.id===currentUser.id;});
-        if(idx>=0){users[idx]=currentUser;localStorage.setItem('kinka_users',JSON.stringify(users));}
-        var n=((currentUser.prenom||'')+' '+(currentUser.nom||'')).trim();
-        document.getElementById('profil-hero-name').textContent = n || 'Mon Compte';
-        var emailEl = document.getElementById('profil-hero-email');
-        if(emailEl) emailEl.textContent = currentUser.email || '';
-        if(typeof showToast==='function')showToast('Informations enregistrées');
+        var FIELDS = {
+            'info-prenom':  'prenom',
+            'info-nom':     'nom',
+            'info-tel':     'telephone',
+            'info-adresse': 'adresse',
+            'info-cp':      'code_postal',
+            'info-ville':   'ville'
+        };
+        var payload = {};
+        for (var htmlId in FIELDS) {
+            var el = document.getElementById(htmlId);
+            if (el) payload[FIELDS[htmlId]] = el.value.trim();
+        }
+        var pseudo = document.getElementById('info-pseudo');
+        if (pseudo && pseudo.value.trim()) payload.nom_utilisateur = pseudo.value.trim();
+        try {
+            var btn = document.querySelector('[onclick="saveInfo()"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Enregistrement…'; }
+            var updated = await KinkaAPI.auth.updateProfil(payload);
+            Object.assign(currentUser, updated);
+            localStorage.setItem('kinka_current_user', JSON.stringify(currentUser));
+            var n = ((currentUser.prenom||'')+' '+(currentUser.nom||'')).trim();
+            var hn = document.getElementById('profil-hero-name');
+            if (hn) hn.textContent = n || currentUser.nom_utilisateur || 'Mon Compte';
+            if (typeof showToast === 'function') showToast('Profil mis à jour ✓', 'success');
+        } catch(err) {
+            if (typeof showToast === 'function') showToast(err.message || 'Erreur de sauvegarde', 'error');
+        } finally {
+            var btn = document.querySelector('[onclick="saveInfo()"]');
+            if (btn) { btn.disabled = false; btn.textContent = 'Enregistrer'; }
+        }
     }
     function resetInfo() { initProfil(); if(typeof showToast==='function')showToast('Modifications annulées'); }
 
-    /* ── changePassword ── */
-    function changePassword() {
-        var actuel=document.getElementById('pwd-actuel').value;
-        var n=document.getElementById('pwd-nouveau').value, c=document.getElementById('pwd-confirm').value;
-        if(!actuel){if(typeof showToast==='function')showToast('Entrez votre mot de passe actuel','error');return;}
-        if(!n){if(typeof showToast==='function')showToast('Entrez un nouveau mot de passe','error');return;}
-        if(n!==c){if(typeof showToast==='function')showToast('Les mots de passe ne correspondent pas','error');return;}
-        if(!currentUser){if(typeof showToast==='function')showToast('Non connecté','error');return;}
-        // Vérifier l'ancien mot de passe
-        var users=[]; try{users=JSON.parse(localStorage.getItem('kinka_users')||'[]');}catch(e){}
-        var idx=users.findIndex(function(u){return u.id===currentUser.id;});
-        if(idx>=0 && users[idx].password) {
-            // Le password est stocké encodé en btoa() par authentification.js
-            var expectedHash = typeof btoa === 'function' ? btoa(actuel) : actuel;
-            if(users[idx].password !== expectedHash){
-                if(typeof showToast==='function')showToast('Mot de passe actuel incorrect','error');return;
-            }
+    /* ── changePassword → API PUT /api/auth/password ── */
+    async function changePassword() {
+        var actuel = document.getElementById('pwd-actuel').value;
+        var n = document.getElementById('pwd-nouveau').value;
+        var conf = document.getElementById('pwd-confirm').value;
+        if (!actuel) { showToast('Entrez votre mot de passe actuel', 'error'); return; }
+        if (!n || n.length < 8) { showToast('Minimum 8 caractères', 'error'); return; }
+        if (n !== conf) { showToast('Les mots de passe ne correspondent pas', 'error'); return; }
+        try {
+            var btn = document.querySelector('[onclick="changePassword()"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Mise à jour…'; }
+            await KinkaAPI.auth.changePassword(actuel, n);
+            ['pwd-actuel','pwd-nouveau','pwd-confirm'].forEach(function(id){
+                var el = document.getElementById(id); if (el) el.value = '';
+            });
+            if (typeof showToast === 'function') showToast('Mot de passe mis à jour ✓', 'success');
+        } catch(err) {
+            if (typeof showToast === 'function') showToast(err.message || 'Erreur', 'error');
+        } finally {
+            var btn = document.querySelector('[onclick="changePassword()"]');
+            if (btn) { btn.disabled = false; btn.textContent = 'Modifier le mot de passe'; }
         }
-        // Sauvegarder le nouveau mot de passe encodé (cohérence avec authentification.js)
-        var newHash = typeof btoa === 'function' ? btoa(n) : n;
-        if(idx>=0){users[idx].password=newHash;localStorage.setItem('kinka_users',JSON.stringify(users));}
-        // Ne PAS stocker le hash dans la session — on retire le champ password de la session
-        delete currentUser.password;
-        localStorage.setItem('kinka_current_user',JSON.stringify(currentUser));
-        if(typeof showToast==='function')showToast('Mot de passe mis à jour');
-        ['pwd-actuel','pwd-nouveau','pwd-confirm'].forEach(function(id){document.getElementById(id).value='';}); 
     }
 
-    /* ── deleteAccount ── */
-    function deleteAccount() {
-        if(confirm('Supprimer définitivement votre compte ?')){
-            if(currentUser){
-                var users=[]; try{users=JSON.parse(localStorage.getItem('kinka_users')||'[]');}catch(e){}
-                users=users.filter(function(u){return u.id!==currentUser.id;});
-                localStorage.setItem('kinka_users',JSON.stringify(users));
-            }
-            localStorage.removeItem('kinka_current_user');
-            localStorage.removeItem('kinka_favoris');
-            localStorage.removeItem('kinka_panier');
-            if(typeof showToast==='function')showToast('Compte supprimé');
-            setTimeout(function(){window.location.href='/page_accueil.html';},1500);
+    /* ── deleteAccount → API DELETE /api/auth/me ── */
+    async function deleteAccount() {
+        if (!confirm('Supprimer définitivement votre compte ? Cette action est irréversible.')) return;
+        try {
+            await KinkaAPI.auth.deleteAccount();
+            KinkaAuth.removeToken();
+            ['kinka_current_user','kinka_favoris','kinka_panier','kinka_token'].forEach(function(k){
+                localStorage.removeItem(k);
+            });
+            if (typeof showToast === 'function') showToast('Compte supprimé. À bientôt !');
+            setTimeout(function(){ window.location.href = '/page_accueil.html'; }, 1500);
+        } catch(err) {
+            if (typeof showToast === 'function') showToast(err.message || 'Erreur lors de la suppression', 'error');
         }
     }
 
@@ -936,16 +984,6 @@
         var pct=0,col='#ef4444';
         if(v.length>=8){pct=33;}
         if(v.length>=8&&/[A-Z]/.test(v)&&/[0-9]/.test(v)){pct=66;col='#f59e0b';}
-        if(v.length>=12&&/[A-Z]/.test(v)&&/[0-9]/.test(v)&&/[^A-Za-z0-9]/.test(v)){pct=100;col='#22c55e';}
-        bar.innerHTML=pct?'<div class="pwd-strength-bar" style="width:'+pct+'%;background:'+col+'"></div>':'';
-    });
-
-    /* ── Init ── */
-    if(document.readyState==='loading'){
-        document.addEventListener('DOMContentLoaded', initProfil);
-    } else {
-        initProfil();
-    }
-    </script>
+        if(v.length>=12&&/[A-Z]/.test(v)&&/[0-9]/.test(v)&&/[^A-Za-z0-9]/.test(v)){pct=100;c
 </body>
 </html>

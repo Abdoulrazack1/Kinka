@@ -15,9 +15,13 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
+  origin: function(origin, callback) {
+    // Autoriser toutes origines en dev (localhost, 127.0.0.1, Live Server, etc.)
+    callback(null, true);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 app.use(express.json());
 
@@ -42,9 +46,11 @@ app.use('/api/produits',  require('./routes/produits'));
 app.use('/api/panier',    require('./routes/panier'));
 app.use('/api/favoris',   require('./routes/favoris'));
 app.use('/api/commandes', require('./routes/commandes'));
+app.use('/api/avis',      require('./routes/avis'));
+app.use('/api/annonces',  require('./routes/annonces'));
 
 app.get('/api/health', (_req, res) =>
-  res.json({ success: true, message: 'Kinka API en ligne 🎌', version: '1.0.0' })
+  res.json({ success: true, message: 'Kinka API en ligne 🎌', version: '2.0.0' })
 );
 
 // 404

@@ -1,81 +1,60 @@
-// ============================================================
-// recherche.js — Barre de recherche avec autocomplete KINKA.FR
-// ============================================================
-
+// recherche.js — Autocomplete barre de recherche via KinkaAPI
 (function _init() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-    const searchInput = document.getElementById('search-input');
-    const searchIcon  = document.querySelector('.search-bar .search-icon');
-    if (!searchInput) return;
+    if (typeof KinkaAPI === 'undefined') { setTimeout(_init, 100); return; }
 
-    let dropdown = null;
-    let debounceTimer = null;
+    var input = document.getElementById('search-input');
+    var icon  = document.querySelector('.search-bar .search-icon');
+    if (!input) return;
 
-    function createDropdown() {
+    var dropdown = null;
+    var timer    = null;
+
+    function esc(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function open() {
         if (dropdown) return;
         dropdown = document.createElement('div');
         dropdown.className = 'search-dropdown';
-        searchInput.parentElement.style.position = 'relative';
-        searchInput.parentElement.appendChild(dropdown);
+        input.parentElement.style.position = 'relative';
+        input.parentElement.appendChild(dropdown);
     }
-
-    function removeDropdown() {
+    function close() {
         if (dropdown) { dropdown.remove(); dropdown = null; }
     }
 
-    function escapeHtml(str) {
-        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    async function show(q) {
+        if (!q || q.length < 2 || typeof KinkaAPI === 'undefined') { close(); return; }
+        try {
+            var results = await KinkaAPI.produits.search(q);
+            open();
+            if (!results.length) {
+                dropdown.innerHTML = '<div class="search-no-result">Aucun résultat pour "<strong>' + esc(q) + '</strong>"</div>';
+                return;
+            }
+            dropdown.innerHTML = results.slice(0, 7).map(function(m) {
+                var prix = m.promo && m.prix_promo ? parseFloat(m.prix_promo) : parseFloat(m.prix || 0);
+                return '<div class="search-result-item" onclick="window.location.href=\'/page_detail_produit.html?id=' + encodeURIComponent(m.id) + '\'">'
+                    + '<img class="search-result-img" src="' + esc(m.image || '/asset/image/One-Piece-Edition-originale-Tome-105.jpg') + '"'
+                    + ' alt="' + esc(m.titre) + '" onerror="this.src=\'/asset/image/One-Piece-Edition-originale-Tome-105.jpg\'">'
+                    + '<div class="search-result-info">'
+                    + '<div class="title">' + esc(m.titre) + '</div>'
+                    + '<div class="meta">' + esc(m.auteur || '') + ' · ' + esc(m.categorie || '') + '</div>'
+                    + '<div class="price">' + prix.toFixed(2) + ' €</div>'
+                    + '</div></div>';
+            }).join('');
+        } catch (_) { close(); }
     }
 
-    function showResults(query) {
-        if (!query || query.length < 2) { removeDropdown(); return; }
-        if (typeof filterProducts !== 'function') return;
-        const results = filterProducts({ query }).slice(0, 7);
-        if (!results.length) {
-            createDropdown();
-            dropdown.innerHTML = `<div class="search-no-result">Aucun résultat pour "<strong>${escapeHtml(query)}</strong>"</div>`;
-            return;
-        }
-        createDropdown();
-        dropdown.innerHTML = results.map(m => {
-            const prix = m.promo && m.prixPromo ? m.prixPromo : m.prix;
-            return `<div class="search-result-item" onclick="window.location.href='/page_detail_produit.html?id=${m.id}'">
-                <img class="search-result-img" src="${escapeHtml(m.image)}" alt="${escapeHtml(m.titre)}" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
-                <div class="search-result-info">
-                    <div class="title">${escapeHtml(m.titre)}</div>
-                    <div class="meta">${escapeHtml(m.auteur)} · ${escapeHtml(m.categorie)}</div>
-                    <div class="price">${prix.toFixed(2)} €</div>
-                </div>
-            </div>`;
-        }).join('');
+    function go() {
+        var q = input.value.trim();
+        if (q) window.location.href = '/page_recherche.html?q=' + encodeURIComponent(q);
     }
 
-    searchInput.addEventListener('input', function() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => showResults(this.value.trim()), 180);
-    });
-
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            removeDropdown();
-            const q = this.value.trim();
-            if (q) window.location.href = '/page_recherche.html?q=' + encodeURIComponent(q);
-        }
-    });
-
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') removeDropdown();
-    });
-
-    if (searchIcon) {
-        searchIcon.addEventListener('click', function() {
-            const q = searchInput.value.trim();
-            if (q) window.location.href = '/page_recherche.html?q=' + encodeURIComponent(q);
-        });
-    }
-
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.search-bar')) removeDropdown();
-    });
+    input.addEventListener('input', function() { clearTimeout(timer); timer = setTimeout(function() { show(input.value.trim()); }, 220); });
+    input.addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); close(); go(); } });
+    input.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+    if (icon) icon.addEventListener('click', go);
+    document.addEventListener('click', function(e) { if (!e.target.closest('.search-bar')) close(); });
 })();

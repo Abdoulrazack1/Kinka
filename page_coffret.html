@@ -151,7 +151,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3935342e3b392e1a313334313b743c28">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -167,54 +167,13 @@
     
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
-    <script src="/asset/js/manga-covers.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
-    <script>
-    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-    (function(){
-        var _t=0;
-        var currentFilter='';
-        var currentSort='pertinence';
-
-        function renderCoffrets(){
-            var grid=document.getElementById('coffret-grid');
-            var countEl=document.getElementById('coffret-count');
-            if(!grid||typeof filterProducts!=='function') return;
-            var items=filterProducts({categorie:'Coffret'});
-            if(currentFilter==='promo') items=items.filter(function(m){return m.promo;});
-            else if(currentFilter) items=items.filter(function(m){return m.genreCategorie===currentFilter;});
-            if(currentSort==='prix_asc')  items=items.slice().sort(function(a,b){return a.prix-b.prix;});
-            if(currentSort==='prix_desc') items=items.slice().sort(function(a,b){return b.prix-a.prix;});
-            if(countEl) countEl.textContent=items.length+' coffret'+(items.length>1?'s':'');
-            if(!items.length){grid.innerHTML='<p style="color:var(--text-muted);padding:1rem">Aucun coffret disponible.</p>';return;}
-            grid.innerHTML=items.map(function(m){return buildProductCard(m);}).join('');
-            if(typeof gererBoutonsAjout==='function') gererBoutonsAjout();
-            if(typeof syncFavButtons==='function') syncFavButtons();
-        }
-
-        function tryRender(){
-            if(typeof filterProducts!=='function'||typeof buildProductCard!=='function'){if(++_t<40)setTimeout(tryRender,75);return;}
-            renderCoffrets();
-            document.querySelectorAll('#coffret-filters .filter-pill').forEach(function(btn){
-                btn.addEventListener('click',function(){
-                    document.querySelectorAll('#coffret-filters .filter-pill').forEach(function(b){b.classList.remove('active');});
-                    this.classList.add('active');
-                    currentFilter=this.dataset.filter||'';
-                    renderCoffrets();
-                });
-            });
-            var sortSel=document.getElementById('coffret-sort');
-            if(sortSel) sortSel.addEventListener('change',function(){currentSort=this.value;renderCoffrets();});
-        }
-        tryRender();
-    })();
-    </script>
+    <script>window.addEventListener('load',function(){kinkaRenderGrid('coffret-grid',{sort:'note',limit:50},50);});</script>
 </body>
 </html>

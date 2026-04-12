@@ -198,7 +198,7 @@
 
             <div class="footer-section">
                 <h4>Nous contacter</h4>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ef8c80819b8e8c9baf848681848ec1899d">[email&#160;protected]</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="/asset/image/icons8-twitter-24.png" alt="Twitter"></a>
                     <a href="#"><img src="/asset/image/icons8-instagram-24.png" alt="Instagram"></a>
@@ -214,14 +214,14 @@
     
 
     <!-- Scripts -->
-        <script src="/asset/js/kinka-api-client.js"></script>
-        <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-api-client.js"></script>
+    <script src="/asset/js/kinka-auth-guard.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
 
     <script>
@@ -239,12 +239,6 @@
         const cls = ['s1','s2','s3','s4'];
         for (let i = 0; i < score; i++) { if(bars[i]) bars[i].classList.add(cls[score-1]); }
     }
-    // Redirection si déjà connecté
-    (function(){
-        if (typeof window.auth !== 'undefined' && window.auth.isAuthenticated()) {
-            window.location.href = '/page_accueil.html';
-        }
-    })();
-    </script>
+    // Redirection
 </body>
 </html>

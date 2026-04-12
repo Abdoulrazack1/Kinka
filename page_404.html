@@ -84,7 +84,7 @@
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
-                <p class="contact-info">contact@kinka.fr</p>
+                <p class="contact-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="93f0fcfde7f2f0e7d3f8fafdf8f2bdf5e1">[email&#160;protected]</a></p>
             </div>
             <div class="footer-section"><h4>Navigation</h4><ul><li><a href="/page_accueil.html">Accueil</a></li><li><a href="/page_catalogue.html">Catalogue</a></li><li><a href="/page_promotion.html">Promotions</a></li></ul></div>
             <div class="footer-section"><h4>Compte</h4><ul><li><a href="/pageLogIn.html">Connexion</a></li><li><a href="/pageSignUp.html">Inscription</a></li><li><a href="/page_panier.html">Mon panier</a></li></ul></div>
@@ -93,16 +93,17 @@
         <div class="footer-bottom"><p>© 2025 KINKA.FR — Tous droits réservés</p></div>
     </footer>
 
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-api-client.js"></script>
+    <script src="/asset/js/kinka-auth-guard.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
-    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-    </script>
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_curr
 </body>
 </html>

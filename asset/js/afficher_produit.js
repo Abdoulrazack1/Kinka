@@ -1,347 +1,193 @@
-// ============================================================
-// afficher_produit.js — Page détail produit  v4.0
-// Dépend de : mangadb.js (chargé avant)
-// ============================================================
-
+// afficher_produit.js — Page détail produit via KinkaAPI
 (function _init() {
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-
-    // ── 1. Récupérer l'ID depuis l'URL ──────────────────────
-    const params = new URLSearchParams(window.location.search);
-    const id     = params.get('id');
-
-    if (!id) { afficherErreur('Aucun produit spécifié.'); return; }
-
-    // CORRIGÉ : getMangaById (pas getProductById)
-    const produit = (typeof getMangaById === 'function') ? getMangaById(id) : null;
-    if (!produit) { afficherErreur('Produit introuvable (ID : ' + id + ').'); return; }
-
-    // ── 2. Peupler la page ──────────────────────────────────
-    document.title = produit.titre + ' — KINKA.FR';
-
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.content = produit.titre + ' — ' + (produit.description || '').slice(0, 120);
-
-    remplirImage(produit);
-    remplirTags(produit);
-    remplirTitre(produit);
-    remplirAuteurNote(produit);
-    remplirPrix(produit);
-    remplirDisponibilite(produit);
-    remplirRef(produit);
-    remplirSynopsis(produit);
-    remplirCaracteristiques(produit);
-    remplirBreadcrumb(produit);
-
-    initTabs();
-    initQuantite(produit);
-    initBoutonPanier(produit);
-    initBoutonFavoris(produit);
-    chargerSimilaires(produit);
+    if (typeof KinkaAPI === 'undefined') { setTimeout(_init, 100); return; }
+    var id = new URLSearchParams(window.location.search).get('id');
+    if (!id) { _err('Aucun produit spécifié.'); return; }
+    KinkaAPI.produits.getOne(id)
+        .then(function(p) {
+            document.title = p.titre + ' — KINKA.FR';
+            _image(p); _tags(p); _titre(p); _auteur(p); _prix(p);
+            _dispo(p); _ref(p); _synopsis(p); _carac(p); _breadcrumb(p);
+            _tabs(); _quantite(p); _panier(p); _favoris(p); _similaires(p);
+        })
+        .catch(function() { _err('Produit introuvable.'); });
 })();
 
-// ── IMAGE ────────────────────────────────────────────────────
-function remplirImage(p) {
-    const img = document.getElementById('produit-image');
-    if (!img) return;
-    img.src = p.image || 'https://placehold.co/200x290/1a0010/E03B8B?text=KINKA';
+function _e(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function _g(id) { return document.getElementById(id); }
+
+function _image(p) {
+    var img = _g('produit-image'); if (!img) return;
+    img.src = p.image || '/asset/image/One-Piece-Edition-originale-Tome-105.jpg';
     img.alt = p.titre;
-    img.onerror = function() { kinkaImgFallback(this, p.ean || ''); };
+    img.onerror = function() { this.src = '/asset/image/One-Piece-Edition-originale-Tome-105.jpg'; };
 }
 
-// ── TAGS CATÉGORIE + ÉTAT ────────────────────────────────────
-function remplirTags(p) {
-    const wrap = document.getElementById('produit-categories');
-    if (!wrap) return;
-    const stockClass = p.stock > 0 ? 'stock-tag' : 'rupture-tag';
-    const stockTxt   = p.stock > 0 ? 'En stock' : 'Rupture';
-    let html = `<span class="category-tag">${escapeHtml(p.categorie || 'Manga')}</span>`;
-    if (p.etat === 'occasion') html += `<span class="category-tag" style="background:rgba(99,102,241,.08);color:#6366f1;border-color:rgba(99,102,241,.2)">Occasion</span>`;
-    html += `<span class="category-tag ${stockClass}">${stockTxt}</span>`;
-    if (p.nouveaute) html += `<span class="category-tag" style="background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.2)">Nouveau</span>`;
-    if (p.bestseller) html += `<span class="category-tag" style="background:rgba(245,158,11,.08);color:#d97706;border-color:rgba(245,158,11,.2)">Best-seller</span>`;
-    wrap.innerHTML = html;
+function _tags(p) {
+    var el = _g('produit-categories'); if (!el) return;
+    var sk = p.stock > 0 ? 'stock-tag' : 'rupture-tag';
+    var h  = '<span class="category-tag">' + _e(p.categorie||'Manga') + '</span>';
+    if (p.etat === 'occasion') h += '<span class="category-tag" style="background:rgba(99,102,241,.08);color:#6366f1;border-color:rgba(99,102,241,.2)">Occasion</span>';
+    h += '<span class="category-tag ' + sk + '">' + (p.stock > 0 ? 'En stock' : 'Rupture') + '</span>';
+    if (p.nouveaute)  h += '<span class="category-tag" style="background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.2)">Nouveau</span>';
+    if (p.bestseller) h += '<span class="category-tag" style="background:rgba(245,158,11,.08);color:#d97706;border-color:rgba(245,158,11,.2)">Best-seller</span>';
+    el.innerHTML = h;
 }
 
-// ── TITRE ────────────────────────────────────────────────────
-function remplirTitre(p) {
-    const el = document.getElementById('produit-titre');
-    if (el) el.textContent = p.titre;
+function _titre(p) { var el = _g('produit-titre'); if (el) el.textContent = p.titre; }
+
+function _stars(note) {
+    var n = Math.round(note*2)/2, full = Math.floor(n), half = n%1>=.5?1:0;
+    var s = '<div class="product-rating"><span class="stars">';
+    for (var i=0;i<full;i++) s += '<span class="material-symbols-outlined filled">star</span>';
+    if (half) s += '<span class="material-symbols-outlined filled">star_half</span>';
+    for (var i=full+half;i<5;i++) s += '<span class="material-symbols-outlined">star_outline</span>';
+    return s + '</span><span class="rating-text">' + note + '/5</span></div>';
 }
 
-// ── AUTEUR + NOTE ────────────────────────────────────────────
-function remplirAuteurNote(p) {
-    const auteurEl = document.getElementById('produit-auteur');
-    if (auteurEl) auteurEl.innerHTML = `Par <a href="/page_auteur.html?auteur=${encodeURIComponent(p.auteur)}" class="author-link">${escapeHtml(p.auteur)}</a> · ${escapeHtml(p.editeur || '')}`;
-
-    const noteEl = document.getElementById('produit-note');
-    if (noteEl && p.note) noteEl.innerHTML = buildStars(p.note);
+function _auteur(p) {
+    var el = _g('produit-auteur');
+    if (el) el.innerHTML = 'Par <a href="/page_auteur.html?auteur=' + encodeURIComponent(p.auteur||'') + '" class="author-link">' + _e(p.auteur||'Inconnu') + '</a> · ' + _e(p.editeur||'');
+    var noteEl = _g('produit-note');
+    if (noteEl && p.note > 0) noteEl.innerHTML = _stars(p.note);
 }
 
-// ── PRIX (gère promo correctement) ──────────────────────────
-function remplirPrix(p) {
-    const el = document.getElementById('produit-prix');
-    if (!el) return;
-
-    const prixAffiche = (p.promo && p.prixPromo) ? p.prixPromo : p.prix;
-    const prixBarre   = (p.promo && p.prixPromo) ? p.prix : null;
-    const pct = prixBarre ? Math.round((1 - prixAffiche / prixBarre) * 100) : 0;
-
-    let html = `<span class="price-main">${prixAffiche.toFixed(2).replace('.', ',')} €</span>`;
-    if (prixBarre) html += `<span class="price-old">${prixBarre.toFixed(2).replace('.', ',')} €</span>`;
-    if (pct > 0)   html += `<span class="price-badge-promo">−${pct}%</span>`;
-    el.innerHTML = html;
+function _prix(p) {
+    var el = _g('produit-prix'); if (!el) return;
+    var pa = p.promo && p.prix_promo ? parseFloat(p.prix_promo) : parseFloat(p.prix);
+    var pb = p.promo && p.prix_promo ? parseFloat(p.prix) : null;
+    var pct = pb ? Math.round((1-pa/pb)*100) : 0;
+    var h = '<span class="price-main">' + pa.toFixed(2).replace('.',',') + ' €</span>';
+    if (pb) h += '<span class="price-old">' + pb.toFixed(2).replace('.',',') + ' €</span>';
+    if (pct > 0) h += '<span class="price-badge-promo">−' + pct + '%</span>';
+    el.innerHTML = h;
 }
 
-// ── DISPONIBILITÉ ────────────────────────────────────────────
-function remplirDisponibilite(p) {
-    const el = document.getElementById('produit-disponibilite');
-    if (!el) return;
+function _dispo(p) {
+    var el = _g('produit-disponibilite'); if (!el) return;
     if (p.stock > 0) {
         el.innerHTML = p.stock <= 3
-            ? `<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Plus que ${p.stock} exemplaire${p.stock > 1 ? 's' : ''}</strong> — commandez vite !`
-            : `<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>${p.stock} exemplaires</strong> disponibles — expédition sous 48h`;
+            ? '<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Plus que ' + p.stock + ' exemplaire' + (p.stock>1?'s':'') + '</strong>'
+            : '<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>' + p.stock + ' exemplaires</strong> disponibles';
         el.style.borderColor = p.stock <= 3 ? 'rgba(245,158,11,.3)' : 'rgba(34,197,94,.3)';
         el.style.background  = p.stock <= 3 ? 'rgba(245,158,11,.05)' : 'rgba(34,197,94,.05)';
     } else {
-        el.innerHTML = `<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle">cancel</span> <strong>Rupture de stock</strong> — revenez bientôt !`;
-        el.style.borderColor = 'rgba(239,68,68,.3)';
-        el.style.background  = 'rgba(239,68,68,.05)';
+        el.innerHTML = '<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle">cancel</span> <strong>Rupture de stock</strong>';
+        el.style.borderColor = 'rgba(239,68,68,.3)'; el.style.background = 'rgba(239,68,68,.05)';
     }
 }
 
-// ── RÉFÉRENCE ────────────────────────────────────────────────
-function remplirRef(p) {
-    const el = document.getElementById('produit-ref');
-    if (el && p.ean) el.textContent = 'EAN / ISBN : ' + p.ean;
+function _ref(p) {
+    var el = _g('produit-ref');
+    if (el && (p.ean||p.isbn)) el.textContent = 'EAN / ISBN : ' + (p.ean||p.isbn);
 }
 
-// ── SYNOPSIS ─────────────────────────────────────────────────
-function remplirSynopsis(p) {
-    const el = document.getElementById('synopsis-texte');
-    if (el) el.textContent = p.description || 'Aucun synopsis disponible pour ce produit.';
+function _synopsis(p) {
+    var el = _g('synopsis-texte');
+    if (el) el.textContent = p.synopsis || p.description || 'Aucun synopsis disponible.';
 }
 
-// ── CARACTÉRISTIQUES ─────────────────────────────────────────
-function remplirCaracteristiques(p) {
-    const grid = document.getElementById('carac-grid');
-    if (!grid) return;
-    const lignes = [
-        ['Éditeur',          p.editeur],
-        ['Collection',       p.collection],
-        ['Catégorie',        p.categorie],
-        ['Série',            p.serie],
-        ['Tome',             p.tome ? 'Tome ' + p.tome : null],
-        ['Date de parution', p.dateParution],
-        ['Pages',            p.pages ? p.pages + ' pages' : null],
-        ['Format',           p.format],
-        ['État',             p.etat === 'neuf' ? 'Neuf' : p.etat === 'occasion' ? 'Occasion' : p.etat],
-        ['Langue',           p.langue],
-        ['EAN / ISBN',       p.ean],
+function _carac(p) {
+    var el = _g('carac-grid'); if (!el) return;
+    var rows = [
+        ['Éditeur', p.editeur], ['Collection', p.collection], ['Catégorie', p.categorie],
+        ['Série', p.serie], ['Tome', p.tome ? 'Tome ' + p.tome : null],
+        ['Tomes au total', p.tome_total ? p.tome_total + ' tomes' : null],
+        ['Date de parution', p.date_parution], ['Pages', p.pages ? p.pages + ' pages' : null],
+        ['Format', p.format], ['État', p.etat === 'neuf' ? 'Neuf' : p.etat === 'occasion' ? 'Occasion' : p.etat],
+        ['Langue', p.langue], ['EAN / ISBN', p.ean || p.isbn],
     ];
-    grid.innerHTML = lignes
-        .filter(([, v]) => v)
-        .map(([label, val]) => `
-            <div class="carac-item">
-                <span class="carac-label">${escapeHtml(label)}</span>
-                <span class="carac-value">${escapeHtml(String(val))}</span>
-            </div>`)
-        .join('');
+    el.innerHTML = rows.filter(function(r){ return r[1]; }).map(function(r){
+        return '<div class="carac-item"><span class="carac-label">' + _e(r[0]) + '</span><span class="carac-value">' + _e(String(r[1])) + '</span></div>';
+    }).join('');
 }
 
-// ── BREADCRUMB ────────────────────────────────────────────────
-function remplirBreadcrumb(p) {
-    const bcCat   = document.getElementById('breadcrumb-categorie');
-    const bcTitre = document.getElementById('breadcrumb-titre');
-    if (bcCat) {
-        bcCat.textContent = p.categorie || 'Manga';
-        bcCat.href = '/page_catalogue.html?categorie=' + (p.categorie || '').toLowerCase().replace('ô', 'o');
-    }
-    if (bcTitre) bcTitre.textContent = p.titre;
+function _breadcrumb(p) {
+    var bc = _g('breadcrumb-categorie'), bt = _g('breadcrumb-titre');
+    if (bc) { bc.textContent = p.categorie || 'Manga'; bc.href = '/page_catalogue.html?categorie=' + (p.categorie||'').toLowerCase().replace(/[ôo]/g,'o'); }
+    if (bt) bt.textContent = p.titre;
 }
 
-// ── ONGLETS ───────────────────────────────────────────────────
-function initTabs() {
-    const tabs   = document.querySelectorAll('.product-tabs .tab-btn');
-    const panels = document.querySelectorAll('.product-tabs .tab-panel');
-    if (!tabs.length) return;
-    tabs.forEach(btn => {
-        btn.addEventListener('click', function () {
-            tabs.forEach(t   => t.classList.remove('active'));
-            panels.forEach(p => p.classList.remove('active'));
+function _tabs() {
+    document.querySelectorAll('.product-tabs .tab-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.product-tabs .tab-btn,.product-tabs .tab-panel').forEach(function(el){ el.classList.remove('active'); });
             btn.classList.add('active');
-            const target = document.getElementById(btn.dataset.tab);
-            if (target) target.classList.add('active');
+            var t = document.getElementById(btn.dataset.tab); if (t) t.classList.add('active');
         });
     });
 }
 
-// ── QUANTITÉ ─────────────────────────────────────────────────
-function initQuantite(p) {
-    const input  = document.getElementById('qty-input');
-    const btnMin = document.getElementById('btn-moins');
-    const btnPls = document.getElementById('btn-plus');
+function _quantite(p) {
+    var input = _g('qty-input'), bm = _g('btn-moins'), bp = _g('btn-plus');
     if (!input) return;
-    const max = Math.max(1, Math.min(10, p.stock || 0));
-    input.min   = 1;
-    input.max   = max;
-    input.value = 1;
-    if (btnMin) btnMin.addEventListener('click', () => {
-        const v = parseInt(input.value) || 1;
-        if (v > 1) input.value = v - 1;
-    });
-    if (btnPls) btnPls.addEventListener('click', () => {
-        const v = parseInt(input.value) || 1;
-        if (v < max) input.value = v + 1;
-    });
+    var max = Math.max(1, Math.min(10, p.stock||0));
+    input.min = 1; input.max = max; input.value = 1;
+    if (bm) bm.addEventListener('click', function(){ var v=parseInt(input.value)||1; if(v>1) input.value=v-1; });
+    if (bp) bp.addEventListener('click', function(){ var v=parseInt(input.value)||1; if(v<max) input.value=v+1; });
 }
 
-// ── BOUTON PANIER ─────────────────────────────────────────────
-function initBoutonPanier(p) {
-    const btn = document.getElementById('btn-ajouter-panier');
-    if (!btn) return;
-
-    // Désactiver si rupture
+function _panier(p) {
+    var btn = _g('btn-ajouter-panier'); if (!btn) return;
     if (p.stock === 0) {
         btn.disabled = true;
         btn.innerHTML = '<span class="material-symbols-outlined">remove_shopping_cart</span> Indisponible';
         return;
     }
-
-    btn.addEventListener('click', function () {
-        const qty   = parseInt(document.getElementById('qty-input')?.value) || 1;
-        const prix  = (p.promo && p.prixPromo) ? p.prixPromo : p.prix;
-        const limit = typeof MAX_QTY !== 'undefined' ? MAX_QTY : 10;
-
-        // Utiliser kinkaAddToCart de mangadb.js ou fallback localStorage
-        let panier = JSON.parse(localStorage.getItem('kinka_panier') || '[]');
-        const idx  = panier.findIndex(i => i.id === p.id);
-        if (idx >= 0) {
-            panier[idx].quantite = Math.min((panier[idx].quantite || 1) + qty, Math.min(limit, p.stock));
-        } else {
-            panier.push({ id: p.id, titre: p.titre, prix: prix, image: p.image, editeur: p.editeur, quantite: Math.min(qty, Math.min(limit, p.stock)) });
+    btn.addEventListener('click', async function() {
+        var qty  = parseInt(_g('qty-input') && _g('qty-input').value) || 1;
+        var orig = btn.innerHTML;
+        btn.disabled = true;
+        try {
+            if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn()) {
+                await KinkaAPI.panier.add(p.id, qty);
+            } else {
+                var panier = JSON.parse(localStorage.getItem('kinka_panier')||'[]');
+                var idx = panier.findIndex(function(i){ return i.id === p.id; });
+                var px  = p.promo && p.prix_promo ? parseFloat(p.prix_promo) : parseFloat(p.prix);
+                if (idx >= 0) panier[idx].quantite = Math.min((panier[idx].quantite||1)+qty, 10);
+                else panier.push({ id:p.id, titre:p.titre, prix:px, image:p.image, editeur:p.editeur, quantite:Math.min(qty,10) });
+                localStorage.setItem('kinka_panier', JSON.stringify(panier));
+            }
+            if (typeof updatePanierCount === 'function') updatePanierCount();
+            if (typeof showToast === 'function') showToast('Ajouté au panier !');
+            btn.innerHTML = '<span class="material-symbols-outlined">check</span> Ajouté !';
+            btn.classList.add('btn-success');
+            setTimeout(function(){ btn.innerHTML = orig; btn.classList.remove('btn-success'); btn.disabled = false; }, 2000);
+        } catch (err) {
+            if (typeof showToast === 'function') showToast(err.message||'Erreur panier', 'error');
+            btn.disabled = false; btn.innerHTML = orig;
         }
-        localStorage.setItem('kinka_panier', JSON.stringify(panier));
-
-        if (typeof updatePanierCount === 'function') updatePanierCount();
-        if (typeof showToast === 'function') showToast('Ajouté au panier !');
-
-        // Feedback visuel
-        const orig = btn.innerHTML;
-        btn.innerHTML = '<span class="material-symbols-outlined">check</span> Ajouté au panier !';
-        btn.classList.add('btn-success');
-        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('btn-success'); }, 2200);
     });
 }
 
-// ── BOUTON FAVORIS (sync localStorage) ───────────────────────
-function initBoutonFavoris(p) {
-    const btn = document.getElementById('btn-favoris');
-    if (!btn) return;
-
-    // État initial depuis localStorage
-    const favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
-    const icon = btn.querySelector('.material-symbols-outlined');
-    if (favs.includes(p.id)) {
-        btn.classList.add('favoris-actif');
-        if (icon) icon.style.cssText = 'font-size:1.1rem;color:#ef4444;transition:all .2s ease;font-variation-settings:"FILL" 1';
-        btn.title = 'Retirer des favoris';
-    } else {
-        if (icon) icon.style.cssText = 'font-size:1.1rem;color:var(--text-muted);transition:all .2s ease';
-        btn.title = 'Ajouter aux favoris';
-    }
-
-    btn.addEventListener('click', async function () {
-        const useApi = typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn() && typeof KinkaAPI !== 'undefined';
-        let favs2 = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
-        const icon2 = btn.querySelector('.material-symbols-outlined');
-        if (favs2.includes(p.id)) {
-            favs2 = favs2.filter(f => f !== p.id);
-            btn.classList.remove('favoris-actif');
-            if (icon2) icon2.style.cssText = 'font-size:1.1rem;color:var(--text-muted);transition:all .2s ease';
-            btn.title = 'Ajouter aux favoris';
-            if (useApi) { try { await KinkaAPI.favoris.remove(p.id); } catch (_) {} }
-            if (typeof showToast === 'function') showToast('Retiré des favoris');
-        } else {
-            favs2.push(p.id);
-            btn.classList.add('favoris-actif');
-            if (icon2) icon2.style.cssText = 'font-size:1.1rem;color:#ef4444;transition:all .2s ease;font-variation-settings:"FILL" 1';
-            btn.title = 'Retirer des favoris';
-            if (useApi) { try { await KinkaAPI.favoris.add(p.id); } catch (_) {} }
-            if (typeof showToast === 'function') showToast('Ajouté aux favoris !');
-        }
-        localStorage.setItem('kinka_favoris', JSON.stringify(favs2));
-        if (typeof updateFavsCount === 'function') updateFavsCount();
+function _favoris(p) {
+    var btn = _g('btn-favoris'); if (!btn) return;
+    var favs = JSON.parse(localStorage.getItem('kinka_favoris')||'[]');
+    if (favs.includes(p.id)) btn.classList.add('favoris-actif');
+    btn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        if (typeof kinkaToggleFav === 'function') kinkaToggleFav(p.id, e);
     });
 }
 
-// ── PRODUITS SIMILAIRES ───────────────────────────────────────
-function chargerSimilaires(produit) {
-    const container = document.getElementById('produits-similaires');
-    if (!container || typeof mangasDB === 'undefined') return;
-
-    const similaires = mangasDB
-        .filter(m => m.id !== produit.id && (m.categorie === produit.categorie || m.serie === produit.serie))
-        .slice(0, 4);
-
-    if (!similaires.length) {
-        container.innerHTML = '<p style="color:var(--text-muted);font-size:.88rem">Aucun produit similaire trouvé pour ce manga.</p>';
-        return;
-    }
-
-    // Use buildProductCard from mangadb.js if available for full functionality
-    if (typeof buildProductCard === 'function') {
-        container.innerHTML = similaires.map(m => buildProductCard(m)).join('');
-    } else {
-        container.innerHTML = similaires.map(m => {
-            const prix = (m.promo && m.prixPromo) ? m.prixPromo : m.prix;
-            return `<div class="product-card" onclick="window.location.href='/page_detail_produit.html?id=${encodeURIComponent(m.id)}'" style="cursor:pointer">
-                <div class="product-image"><img src="${escapeHtml(m.image)}" alt="${escapeHtml(m.titre)}" loading="lazy" onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'"></div>
-                <div class="product-info">
-                    <h3 class="product-title">${escapeHtml(m.titre)}</h3>
-                    <p class="product-author">${escapeHtml(m.auteur)}</p>
-                    <div class="product-footer">
-                        <span class="product-price">${prix.toFixed(2)} €</span>
-                    </div>
-                </div>
-            </div>`;
-        }).join('');
-    }
+function _similaires(p) {
+    var el = _g('produits-similaires'); if (!el) return;
+    el.innerHTML = '<p style="opacity:.4">Chargement…</p>';
+    KinkaAPI.produits.getAll({ categorie: p.categorie, limit: 8 })
+        .then(function(items) {
+            var s = items.filter(function(m){ return m.id !== p.id; }).slice(0, 4);
+            if (!s.length) { el.innerHTML = ''; return; }
+            el.innerHTML = s.map(function(m){ return buildProductCard(m); }).join('');
+        }).catch(function() { el.innerHTML = ''; });
 }
 
-// ── ÉTOILES ───────────────────────────────────────────────────
-function buildStars(note) {
-    const full  = Math.floor(note);
-    const half  = note % 1 >= 0.5 ? 1 : 0;
-    const empty = 5 - full - half;
-    let html = '<div class="product-rating"><span class="stars">';
-    for (let i = 0; i < full;  i++) html += '<span class="material-symbols-outlined filled">star</span>';
-    if (half)                        html += '<span class="material-symbols-outlined filled">star_half</span>';
-    for (let i = 0; i < empty; i++) html += '<span class="material-symbols-outlined">star_outline</span>';
-    html += `</span><span class="rating-text">${note}/5</span></div>`;
-    return html;
-}
-
-// ── UTILITAIRE ÉCHAPPEMENT HTML ───────────────────────────────
-function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-// ── ERREUR ────────────────────────────────────────────────────
-function afficherErreur(msg) {
-    const c = document.getElementById('produit-container') || document.querySelector('main');
-    if (!c) return;
-    c.innerHTML = `<div style="text-align:center;padding:5rem 2rem">
-        <span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem">error</span>
-        <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:.5rem">${msg}</h2>
-        <p style="color:var(--text-muted);margin-bottom:1.5rem">Le produit que vous recherchez n'existe pas ou a été retiré.</p>
-        <a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex">
-            <span class="material-symbols-outlined">arrow_back</span> Retour au catalogue
-        </a>
-    </div>`;
+function _err(msg) {
+    var c = _g('produit-container') || document.querySelector('main'); if (!c) return;
+    c.innerHTML = '<div style="text-align:center;padding:5rem 2rem">'
+        + '<span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem">error</span>'
+        + '<h2>' + _e(msg) + '</h2>'
+        + '<a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex;margin-top:1.5rem">'
+        + '<span class="material-symbols-outlined">arrow_back</span> Retour au catalogue</a></div>';
 }

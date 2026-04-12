@@ -73,11 +73,11 @@
             </div>
             <h1>Merci pour votre commande !</h1>
             <p class="confirmation-message">
-                Votre commande <strong id="conf-order-id">#KIN-82930</strong> a bien été confirmée. Un email récapitulatif a été envoyé à <strong>contact@kinka.fr</strong>.
+                Votre commande <strong id="conf-order-id">#KIN-82930</strong> a bien été confirmée. Un email récapitulatif a été envoyé à <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e784888993868493a78c8e898c86c98195">[email&#160;protected]</a></strong>.
             </p>
             <div class="action-buttons">
                 <a href="/page_catalogue.html" class="btn-primary">Continuer mes achats</a>
-                <a href="/page_suivicommande.html" class="btn-secondary">Suivre ma commande</a>
+                <a href="/page_suivicommande.html" id="conf-suivi-link" class="btn-secondary">Suivre ma commande</a>
             </div>
         </section>
 
@@ -182,12 +182,12 @@
     
     <script src="/asset/js/kinka-api-client.js"></script>
     <script src="/asset/js/kinka-auth-guard.js"></script>
-    <script src="/asset/js/mangadb.js"></script>
+    <script src="/asset/js/kinka-cards.js"></script>
     <script src="/asset/js/authentification.js"></script>
     <script src="/asset/js/panier.js"></script>
     <script src="/asset/js/favoris.js"></script>
-    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/darkmode.js"></script>
+    <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
@@ -201,6 +201,8 @@
 
         // Numéro commande
         var idEl = document.getElementById('conf-order-id');
+        var suiviLink = document.getElementById('conf-suivi-link');
+        if (suiviLink && order.id) suiviLink.href = '/page_suivicommande.html?id=' + order.id;
         if (idEl) idEl.textContent = '#' + order.id;
 
         // Articles
@@ -242,13 +244,6 @@
             var cityEl = document.getElementById('conf-user-city');
             if (nameEl) nameEl.textContent = (user.prenom||'') + ' ' + (user.nom||'');
             if (addrEl && user.adresse) addrEl.textContent = user.adresse;
-            if (cityEl && user.ville)   cityEl.textContent = (user.codePostal||'') + ' ' + user.ville + ', France';
-        }
-
-        // Lien "Suivre ma commande"
-        var suiviBtn = document.querySelector('.btn-secondary');
-        if (suiviBtn) suiviBtn.href = '/page_suivicommande.html';
-    })();
-    </script>
+            if (cityEl && user.ville)   cityEl.textContent = (user.codePostal||'') + ' ' + user.ville + ',
 </body>
 </html>
