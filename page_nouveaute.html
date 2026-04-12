@@ -98,8 +98,15 @@
     <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    window.addEventListener('load', function(){
-        kinkaRenderGrid('grid-nouveautes', {sort:'nouveaute', limit:50}, 50);
+    window.addEventListener('load', function() {
+        function tryRender() {
+            if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
+                kinkaRenderGrid('grid-nouveautes',  {sort:'nouveaute', limit:50}, 50);
+            } else {
+                setTimeout(tryRender, 80);
+            }
+        }
+        tryRender();
     });
     </script>
 </body>

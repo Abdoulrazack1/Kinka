@@ -217,5 +217,12 @@
             if (msg && !msg.value.trim())     { if(typeof showToast==='function') showToast('Veuillez écrire votre message.','error'); msg.focus(); return; }
             var btn = form.querySelector('button[type="submit"], .btn-submit');
             if (btn) { btn.disabled = true; btn.textContent = 'Envoi...'; }
+            setTimeout(function() {
+                if (typeof showToast === 'function') showToast('Message envoyé ! Nous vous répondrons sous 48h.', 'success');
+                form.reset();
+                if (btn) { btn.disabled = false; btn.textContent = 'Envoyer'; }
+            }, 1000);
+        });
+    </script>
 </body>
 </html>

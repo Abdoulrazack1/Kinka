@@ -293,67 +293,38 @@
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
-
-    // ── Chargement depuis l'API ──────────────────────────────
-    (function(){
+    window.addEventListener('load', function() {
         var params = new URLSearchParams(window.location.search);
-        var cmdId  = params.get('id');
-
-        function fmt(n){ var m=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc']; var d=new Date(n); return d.getDate()+' '+m[d.getMonth()]+' '+d.getFullYear(); }
-        function fmtEst(n){ var d=new Date(n); d.setDate(d.getDate()+5); var m=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc']; return d.getDate()+' '+m[d.getMonth()]; }
-        function fmtPrix(n){ return parseFloat(n).toFixed(2).replace('.',',')+' €'; }
-        var STATUTS = { en_cours:'En cours', expediee:'En transit', livree:'Livrée', annulee:'Annulée' };
-
+        var cmdId  = params.get('id') || null;
         function render(order) {
-            var el = function(s){ return document.querySelector(s); };
-            if (el('.order-number')) el('.order-number').textContent = '#' + order.id;
-            if (el('.status-badge')) el('.status-badge').textContent = STATUTS[order.statut] || 'En cours';
-            if (el('.order-date') && order.date) el('.order-date').textContent = 'Passée le ' + fmt(order.date);
-            if (el('.estimated-delivery span') && order.date) el('.estimated-delivery span').textContent = fmtEst(order.date);
-
-            var sousTotal = parseFloat(order.total || 0);
-            var livraison = sousTotal >= 50 ? 0 : 4.90;
-            var total = sousTotal;
-
-            document.querySelectorAll('.summary-row').forEach(function(row){
-                var lbl = row.querySelector('span:first-child');
-                var val = row.querySelector('span:last-child');
-                if (!lbl || !val) return;
-                var t = lbl.textContent.trim();
-                if (t === 'Sous-total')  val.textContent = fmtPrix(sousTotal - livraison);
-                if (t === 'Livraison')   val.textContent = livraison === 0 ? 'Gratuit' : fmtPrix(livraison);
-                if (t === 'Total payé')  val.textContent = fmtPrix(sousTotal);
-            });
-
-            var statusOrder = ['en_cours','expediee','livree'];
-            var stepIdx = statusOrder.indexOf(order.statut);
-            document.querySelectorAll('.progress-step').forEach(function(step, i){
-                step.classList.toggle('completed', i <= stepIdx);
-                step.classList.toggle('active', i === stepIdx);
-            });
-
-            if (order.articles && order.articles.length) {
-                var list = el('.order-items, .items-list');
-                if (list) {
-                    list.innerHTML = order.articles.map(function(a){
-                        return '<div class="order-item">'
-                            + '<img src="'+(a.image||'')+'" alt="'+a.titre+'" style="width:50px;height:70px;object-fit:cover;border-radius:4px">'
-                            + '<div style="flex:1;padding:0 .75rem"><strong>'+a.titre+'</strong>'
-                            + '<div style="font-size:.85rem;opacity:.7">x'+a.quantite+' · '+fmtPrix(a.prix)+'</div></div>'
-                            + '<div>'+fmtPrix(a.prix * a.quantite)+'</div>'
-                            + '</div>';
-                    }).join('');
-                }
+            if (!order) return;
+            var idEl = document.getElementById('cmd-numero');
+            var dateEl = document.getElementById('cmd-date');
+            var statEl = document.getElementById('cmd-statut');
+            var listEl = document.getElementById('cmd-articles');
+            if (idEl)   idEl.textContent   = '#' + order.id;
+            if (dateEl) dateEl.textContent  = new Date(order.date||order.created_at).toLocaleDateString('fr-FR');
+            if (statEl) statEl.textContent  = order.statut || 'en cours';
+            if (listEl && order.articles) {
+                listEl.innerHTML = order.articles.map(function(a) {
+                    return '<div class="cmd-article"><span>' + (a.titre||'') + '</span><span>' + ((a.prix||0)*(a.quantite||1)).toFixed(2) + ' €</span></div>';
+                }).join('');
             }
         }
-
-        // Essayer depuis l'API d'abord, sinon localStorage
         if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn() && cmdId) {
             KinkaAPI.commandes.getOne(cmdId)
-                .then(function(order){ render(order); })
-                .catch(function(){
+                .then(function(order) { render(order); })
+                .catch(function() {
                     var local = null;
-                    try { local = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e){}
+                    try { local = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e) {}
                     if (local) render(local);
+                });
+        } else {
+            var local = null;
+            try { local = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e) {}
+            if (local) render(local);
+        }
+    });
+    </script>
 </body>
 </html>

@@ -412,345 +412,52 @@
     <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
+    // Scroll header
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    // Nav auth
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    /* ── DB enrichie des auteurs ───────────────────────────── */
-    var auteursDB = [
-        {
-            id: 'eiichiro-oda',
-            nom: 'Eiichiro Oda',
-            nomKanji: '尾田 栄一郎',
-            pays: 'Japon',
-            naissance: '1er janvier 1975',
-            debutCarriere: '1997',
-            photo: '/asset/image/eichiro_oda.jpg',
-            bio: 'Eiichirō Oda est un mangaka japonais connu pour être l\'auteur du manga <strong>One Piece</strong>. Avec plus de 500 millions d\'exemplaires en circulation dans le monde, il est l\'auteur de manga le plus vendu de tous les temps. Son style graphique unique et sa capacité à créer des mondes vastes et imaginatifs ont redéfini le genre Shōnen.',
-            volumesTotal: 100,
-            couleur: '#E03B8B',
-            bannerQuote: '⛵',
-            bannerDesc: 'Découvrez l\'intégralité de l\'œuvre d\'Eiichiro Oda disponible chez KINKA — de ses premières aventures pirates jusqu\'aux derniers arcs de la saga finale.',
-        },
-        {
-            id: 'gege-akutami',
-            nom: 'Gege Akutami',
-            nomKanji: '芥見 下々',
-            pays: 'Japon',
-            naissance: '26 février 1992',
-            debutCarriere: '2018',
-            photo: '',
-            bio: '<strong>Gege Akutami</strong> est l\'auteur de <strong>Jujutsu Kaisen</strong>, phénomène mondial du manga shōnen. Publié dans le Weekly Shōnen Jump depuis 2018, la série se distingue par son système de magie unique basé sur l\'énergie maudite, ses personnages profonds et son ambiance dark fantasy.',
-            volumesTotal: 26,
-            couleur: '#6366f1',
-            bannerQuote: '呪',
-            bannerDesc: 'Plongez dans l\'univers des sorciers et des esprits maudits avec tous les tomes de Jujutsu Kaisen disponibles chez KINKA.',
-        },
-        {
-            id: 'hajime-isayama',
-            nom: 'Hajime Isayama',
-            nomKanji: '諫山 創',
-            pays: 'Japon',
-            naissance: '29 août 1986',
-            debutCarriere: '2009',
-            photo: '',
-            bio: '<strong>Hajime Isayama</strong> est le créateur de <strong>L\'Attaque des Titans</strong>, l\'une des œuvres manga les plus vendues et les plus influentes de la décennie 2010. Reconnu pour sa narration complexe, ses twists narratifs, et la profondeur de ses thématiques (liberté, destin, guerre), Isayama a marqué une génération entière de lecteurs.',
-            volumesTotal: 34,
-            couleur: '#b45309',
-            bannerQuote: '⚔',
-            bannerDesc: 'Retrouvez tous les volumes de L\'Attaque des Titans, du premier tome à la conclusion épique de la saga, disponibles chez KINKA.',
-        },
-        {
-            id: 'kentaro-miura',
-            nom: 'Kentaro Miura',
-            nomKanji: '三浦 建太郎',
-            pays: 'Japon',
-            naissance: '11 juillet 1966',
-            debutCarriere: '1989',
-            photo: '',
-            bio: '<strong>Kentaro Miura</strong> est le légendaire auteur de <strong>Berserk</strong>, chef-d\'œuvre du dark fantasy manga. Reconnu pour la qualité inégalée de son dessin et la profondeur de son univers, son œuvre a influencé une génération entière de créateurs dans les jeux vidéo, l\'animation et la BD mondiale. Décédé en 2021, il laisse un héritage artistique immense.',
-            volumesTotal: 41,
-            couleur: '#1a1a1a',
-            bannerQuote: '⚡',
-            bannerDesc: 'Découvrez l\'œuvre magistrale de Kentaro Miura — Berserk, une saga dark fantasy unique dont chaque volume est un chef-d\'œuvre de dessin.',
-        },
-        {
-            id: 'kohei-horikoshi',
-            nom: 'Kōhei Horikoshi',
-            nomKanji: '堀越 耕平',
-            pays: 'Japon',
-            naissance: '20 novembre 1986',
-            debutCarriere: '2014',
-            photo: '',
-            bio: '<strong>Kōhei Horikoshi</strong> est l\'auteur de <strong>My Hero Academia</strong>, phénomène mondial qui réinvente le genre des super-héros à travers un prisme shōnen japonais. Son sens du design des personnages et sa maîtrise des combats spectaculaires lui ont valu une reconnaissance internationale.',
-            volumesTotal: 40,
-            couleur: '#16a34a',
-            bannerQuote: '⚡',
-            bannerDesc: 'Retrouvez tous les tomes de My Hero Academia et suivez le parcours de Midoriya Izuku vers son destin de héros.',
-        },
-        {
-            id: 'tatsuki-fujimoto',
-            nom: 'Tatsuki Fujimoto',
-            nomKanji: '藤本 タツキ',
-            pays: 'Japon',
-            naissance: '10 octobre 1992',
-            debutCarriere: '2017',
-            photo: '',
-            bio: '<strong>Tatsuki Fujimoto</strong> est l\'auteur de <strong>Chainsaw Man</strong> et <strong>Fire Punch</strong>, deux séries qui ont redéfini les standards du manga seinen par leur violence graphique, leur humour absurde et leur humanité touchante. Fujimoto est aujourd\'hui l\'un des auteurs les plus inventifs de sa génération.',
-            volumesTotal: 16,
-            couleur: '#dc2626',
-            bannerQuote: '🔪',
-            bannerDesc: 'L\'œuvre viscérale et unique de Tatsuki Fujimoto — Chainsaw Man et ses demons-tondeuses disponibles chez KINKA.',
-        },
-        {
-            id: 'naoki-urasawa',
-            nom: 'Naoki Urasawa',
-            nomKanji: '浦沢 直樹',
-            pays: 'Japon',
-            naissance: '2 janvier 1960',
-            debutCarriere: '1983',
-            photo: '',
-            bio: '<strong>Naoki Urasawa</strong> est l\'un des maîtres incontestés du manga thriller et psychologique. Auteur de <strong>Monster</strong>, <strong>20th Century Boys</strong>, <strong>Pluto</strong> et <strong>Billy Bat</strong>, il est réputé pour ses intrigues labyrinthiques, ses personnages à la psychologie profonde et sa maîtrise narrative hors pair. Multiple lauréat du Osamu Tezuka Cultural Prize.',
-            volumesTotal: 120,
-            couleur: '#0369a1',
-            bannerQuote: '🔍',
-            bannerDesc: 'Plongez dans les univers captivants de Naoki Urasawa — Monster, Pluto, 20th Century Boys — des thrillers psychologiques qui redéfinissent le manga adulte.',
-        },
-        {
-            id: 'masashi-kishimoto',
-            nom: 'Masashi Kishimoto',
-            nomKanji: '岸本 斉史',
-            pays: 'Japon',
-            naissance: '8 novembre 1974',
-            debutCarriere: '1999',
-            photo: '',
-            bio: '<strong>Masashi Kishimoto</strong> est l\'auteur de <strong>Naruto</strong>, l\'une des séries manga les plus vendues de l\'histoire avec plus de 250 millions de volumes écoulés. Naruto a accompagné toute une génération de lecteurs à travers le monde et demeure une référence absolue du shōnen.',
-            volumesTotal: 72,
-            couleur: '#ea580c',
-            bannerQuote: '🍥',
-            bannerDesc: 'Retrouvez l\'intégrale de Naruto et vivez l\'aventure du jeune ninja qui rêve de devenir Hokage — disponible chez KINKA.',
-        },
-        {
-            id: 'akira-toriyama',
-            nom: 'Akira Toriyama',
-            nomKanji: '鳥山 明',
-            pays: 'Japon',
-            naissance: '5 avril 1955',
-            debutCarriere: '1978',
-            photo: '',
-            bio: '<strong>Akira Toriyama</strong> était un mangaka et character designer japonais légendaire, créateur de <strong>Dragon Ball</strong>, l\'une des séries les plus influentes de l\'histoire du manga et de la culture pop mondiale. Décédé en mars 2024, son œuvre continue d\'influencer générations d\'auteurs et millions de fans à travers le monde.',
-            volumesTotal: 42,
-            couleur: '#f59e0b',
-            bannerQuote: '🐉',
-            bannerDesc: 'Honorez l\'héritage d\'Akira Toriyama avec tous les volumes de Dragon Ball disponibles chez KINKA.',
-        },
-        {
-            id: 'ryoko-kui',
-            nom: 'Ryoko Kui',
-            nomKanji: '九井 諒子',
-            pays: 'Japon',
-            naissance: '1980',
-            debutCarriere: '2014',
-            photo: '',
-            bio: '<strong>Ryoko Kui</strong> est l\'autrice de <strong>Dungeon Meshi (Delicious in Dungeon)</strong>, manga seinen unique qui mêle fantasy épique et gastronomie avec un humour raffiné. Saluée pour son univers rich, ses personnages attachants et son dessin expressif, Kui est devenue en quelques années l\'une des autrices les plus appréciées du seinen.',
-            volumesTotal: 14,
-            couleur: '#10b981',
-            bannerQuote: '🍲',
-            bannerDesc: 'L\'aventure culinaire et fantastique de Dungeon Meshi par Ryoko Kui — tous les tomes disponibles chez KINKA.',
-        },
-        {
-            id: 'tatsuya-endo',
-            nom: 'Tatsuya Endo',
-            nomKanji: '遠藤 達哉',
-            pays: 'Japon',
-            naissance: '27 juillet 1980',
-            debutCarriere: '2019',
-            photo: '',
-            bio: '<strong>Tatsuya Endo</strong> est l\'auteur de <strong>Spy × Family</strong>, phénomène éditorial mondial depuis 2019. Avec son mélange unique d\'espionnage, de comédie familiale et d\'action, la série est rapidement devenue l\'une des plus populaires au monde. Endo se distingue par son sens du timing comique et la profondeur émotionnelle de ses personnages.',
-            volumesTotal: 13,
-            couleur: '#7c3aed',
-            bannerQuote: '🕵',
-            bannerDesc: 'La famille Forger vous attend — tous les tomes de Spy × Family par Tatsuya Endo disponibles chez KINKA.',
-        },
-        {
-            id: 'yukinobu-tatsu',
-            nom: 'Yukinobu Tatsu',
-            nomKanji: '龍 幸伸',
-            pays: 'Japon',
-            naissance: '1990',
-            debutCarriere: '2021',
-            photo: '',
-            bio: '<strong>Yukinobu Tatsu</strong> est l\'auteur de <strong>Dandadan</strong>, l\'une des sensations manga les plus récentes publiée dans Shōnen Jump+. Mélangeant de façon inédite fantômes, aliens, action survolée et romance adolescente, Dandadan est rapidement devenu un phénomène mondial adapté en anime.',
-            volumesTotal: 14,
-            couleur: '#8b5cf6',
-            bannerQuote: '👽',
-            bannerDesc: 'Aliens, fantômes et aventures folles — tous les tomes de Dandadan par Yukinobu Tatsu disponibles chez KINKA.',
-        },
-        {
-            id: 'ai-yazawa',
-            nom: 'Ai Yazawa',
-            nomKanji: '矢沢 あい',
-            pays: 'Japon',
-            naissance: '7 mars 1967',
-            debutCarriere: '1985',
-            photo: '',
-            bio: '<strong>Ai Yazawa</strong> est une mangaka japonaise emblématique, autrice de <strong>Nana</strong> et <strong>Paradise Kiss</strong>. Ses œuvres se distinguent par leur sens de la mode, leurs personnages féminins complexes et leurs histoires d\'amour et d\'amitié profondes. L\'une des autrices les plus influentes du shōjo et du josei des années 2000.',
-            volumesTotal: 21,
-            couleur: '#ec4899',
-            bannerQuote: '♪',
-            bannerDesc: 'Mode, musique et émotions — découvrez l\'univers d\'Ai Yazawa avec Nana et Paradise Kiss disponibles chez KINKA.',
-        },
-    ];
-
-    /* ── Trouver auteur par nom ─────────────────────────────── */
-    function findAuteurByNom(nom) {
-        if (!nom) return null;
-        var nomLower = nom.toLowerCase().trim();
-        return auteursDB.find(function(a) {
-            return a.nom.toLowerCase() === nomLower;
-        }) || null;
-    }
-
-    /* ── Auteur "générique" pour les non listés ─────────────── */
-    function makeGenericAuteur(nom, mangas) {
-        var series = [];
-        mangas.forEach(function(m){ if(m.serie && !series.includes(m.serie)) series.push(m.serie); });
-        var cats = {};
-        mangas.forEach(function(m){ cats[m.categorie] = (cats[m.categorie]||0)+1; });
-        var mainCat = Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];})[0] || '';
-        var dateParsed = mangas.reduce(function(min, m){
-            if (!m.dateParution) return min;
-            var yr = parseInt(m.dateParution.match(/\d{4}/)?.[0]);
-            return (yr && (!min || yr < min)) ? yr : min;
-        }, null);
-        return {
-            id: nom.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-            nom: nom,
-            nomKanji: '',
-            pays: 'Japon',
-            naissance: '—',
-            debutCarriere: dateParsed ? String(dateParsed) : '—',
-            photo: '',
-            bio: '<strong>' + nom + '</strong> est l\'auteur(e) de ' + series.map(function(s){ return '<strong>' + s + '</strong>'; }).join(', ') + ' — disponibles chez KINKA.',
-            volumesTotal: mangas.length,
-            couleur: '#E03B8B',
-            bannerQuote: '✦',
-            bannerDesc: 'Retrouvez l\'ensemble des œuvres de ' + nom + ' disponibles chez KINKA.',
-            mainCat: mainCat,
-        };
-    }
-
-    /* ── Récupérer tous les auteurs uniques de la DB ─────────── */
-    function getAllAuteurs() { return window._auteursList || []; }
-        });
-    }
-
-    /* ── Rendu de la grille ─────────────────────────────────── */
-    var _currentSerie = '';
-    var _currentSort  = '';
-    var _allMangas    = [];
-
-    function renderGrid() {
-        var grid  = document.getElementById('auteur-grid');
-        var empty = document.getElementById('auteur-empty');
-        var count = document.getElementById('catalogue-count');
-        if (!grid) return;
-
-        var items = _currentSerie
-            ? _allMangas.filter(function(m){ return m.serie === _currentSerie; })
-            : _allMangas.slice();
-
-        if (_currentSort === 'prix_asc')  items.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pa-pb; });
-        if (_currentSort === 'prix_desc') items.sort(function(a,b){ var pa=(a.promo&&a.prixPromo)?a.prixPromo:a.prix; var pb=(b.promo&&b.prixPromo)?b.prixPromo:b.prix; return pb-pa; });
-        if (_currentSort === 'note')      items.sort(function(a,b){ return (b.note||0)-(a.note||0); });
-        if (_currentSort === 'nouveaute') items.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
-
-        if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
-
-        if (!items.length) {
-            grid.innerHTML = '';
-            if (empty) empty.style.display = 'flex';
-            return;
-        }
-        if (empty) empty.style.display = 'none';
-
-        if (typeof buildProductCard === 'function') {
-            grid.innerHTML = items.map(function(m){ return buildProductCard(m); }).join('');
-        } else {
-            grid.innerHTML = '<p style="color:#999;text-align:center;padding:2rem">Chargement en cours…</p>';
-        }
-    }
-
-    /* ── Initialisation principale ──────────────────────────── */
-    (function _init(){
-        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-
+    window.addEventListener('load', function() {
         var params    = new URLSearchParams(window.location.search);
         var nomAuteur = params.get('auteur') ? decodeURIComponent(params.get('auteur')) : null;
+        var grid      = document.getElementById('auteur-grid');
+        var empty     = document.getElementById('auteur-empty');
+        var count     = document.getElementById('catalogue-count');
+        var sortSel   = document.getElementById('sort-auteur');
+        var allMangas = [];
+        var currentSort = '';
 
-        // ── Navigation entre auteurs ─────────────────────────
-        var navBar = document.getElementById('authors-nav-bar');
-        if (navBar) { /* alimenté par KinkaAPI dans le .then() ci-dessous */ }).join('');
-        }
-
-        // ── Si aucun auteur spécifié ─────────────────────────
-        if (!nomAuteur) {
-            document.getElementById('section-profil').innerHTML =
-                '<div class="author-not-found">' +
-                '<span class="material-symbols-outlined">person_search</span>' +
-                '<h2>Sélectionnez un auteur</h2>' +
-                '<p>Choisissez un auteur dans la barre de navigation ci-dessus.</p>' +
-                '</div>';
-            document.getElementById('author-banner').style.display = 'none';
-            document.querySelector('.section-catalogue-auteur').style.display = 'none';
-            return;
-        }
-
-        // ── Récupérer les mangas de cet auteur via API ──────────
-        KinkaAPI.produits.getAll({limit:500}).then(function(allItems){
-            window._kinkaProductsCache = allItems;
-            _allMangas = allItems.filter(function(m){ return (m.auteur||'')=== nomAuteur; });
-            // Nav auteurs
-            if(navBar){
-                var autMap={};
-                allItems.forEach(function(m){if(m.auteur){if(!autMap[m.auteur])autMap[m.auteur]=0;autMap[m.auteur]++;}});
-                navBar.innerHTML=Object.keys(autMap).sort().map(function(nom){
-                    var active=nomAuteur&&nom.toLowerCase()===nomAuteur.toLowerCase();
-                    return '<a href="/page_auteur.html?auteur='+encodeURIComponent(nom)+'" class="author-nav-link'+(active?' active':'')+'">'
-                        +nom+'<span class="nav-count">'+autMap[nom]+'</span></a>';
-                }).join('');
-            }
-            if(!_allMangas.length){
-                document.getElementById('section-profil').innerHTML=
-                    '<div class="author-not-found"><span class="material-symbols-outlined">person_off</span>'
-                    +'<h2>Auteur introuvable</h2>'
-                    +'<p>Aucun manga de "'+nomAuteur+'" dans notre catalogue.</p>'
-                    +'<a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex;margin-top:.5rem">'
-                    +'<span class="material-symbols-outlined">arrow_back</span> Retour au catalogue</a></div>';
-                document.getElementById('author-banner').style.display='none';
-                var sec=document.querySelector('.section-catalogue-auteur');if(sec)sec.style.display='none';
+        function renderGrid() {
+            if (!grid) return;
+            var items = allMangas.slice();
+            if (currentSort === 'prix_asc')  items.sort(function(a,b){ return (parseFloat(a.prix)||0)-(parseFloat(b.prix)||0); });
+            if (currentSort === 'prix_desc') items.sort(function(a,b){ return (parseFloat(b.prix)||0)-(parseFloat(a.prix)||0); });
+            if (currentSort === 'note')      items.sort(function(a,b){ return (parseFloat(b.note)||0)-(parseFloat(a.note)||0); });
+            if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
+            if (!items.length) {
+                if (grid)  grid.innerHTML = '';
+                if (empty) empty.style.display = 'flex';
                 return;
             }
+            if (empty) empty.style.display = 'none';
+            grid.innerHTML = items.map(buildProductCard).join('');
+        }
+
+        if (!nomAuteur) return;
+
+        // Titre auteur
+        var h1 = document.getElementById('auteur-nom');
+        if (h1) h1.textContent = nomAuteur;
+
+        if (sortSel) sortSel.addEventListener('change', function(){ currentSort = this.value; renderGrid(); });
+
+        KinkaAPI.produits.getAll({ limit: 500 }).then(function(allItems) {
+            allMangas = allItems.filter(function(m){ return (m.auteur||'').indexOf(nomAuteur) >= 0; });
             renderGrid();
-                });
-            });
-        } else {
-            serieFilters.style.display = 'none';
-        }
-
-        // ── Tri ───────────────────────────────────────────────
-        var sortSel = document.getElementById('sort-auteur');
-        if (sortSel) {
-            sortSel.addEventListener('change', function() {
-                _currentSort = this.value;
-                renderGrid();
-            });
-        }
-
-        // Rendu initial
-        renderGrid();
-
-        // ── Scroll smooth vers l'auteur actif dans la nav ────
-        var activeLink = navBar ? navBar.querySelector('.author-nav-link.active') : null;
-        i
+        }).catch(function() {
+            if (grid) grid.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur de chargement.</p>';
+        });
+    });
+    </script>
 </body>
 </html>

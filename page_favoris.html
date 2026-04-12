@@ -190,126 +190,36 @@
     <script src="/asset/js/recherche.js"></script>
     <script src="/asset/js/translate.js"></script>
     <script>
-    /* ── Scroll header ── */
-    (function(){
-        var h = document.querySelector('header');
-        if (!h) return;
-        window.addEventListener('scroll', function(){ h.classList.toggle('scrolled', window.scrollY > 10); }, {passive:true});
-    })();
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    /* ── Auth label ── */
-    (function(){
-        var user = null;
-        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
-        var btn = document.querySelector('.connect-btn');
-        if (btn && user && user.prenom) {
-            btn.textContent = user.prenom;
-            btn.onclick = function(){ window.location.href = '/page_profil.html'; };
-        }
-    })();
-
-    /* ── Stats bar ── */
     function updateFavStats() {
-        var favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
-        var statsEl  = document.getElementById('fav-stats');
-        var countEl  = document.getElementById('favoris-total');
-        var chipNb   = document.getElementById('fav-chip-nb');
-        var chipS    = document.getElementById('fav-chip-s');
-        var chipVal  = document.getElementById('fav-chip-val');
-        var chipPromo= document.getElementById('fav-chip-promo');
-        var statPromo= document.getElementById('fav-stat-promo');
+        var grid  = document.getElementById('favoris-grid');
+        var total = document.getElementById('favoris-total');
+        if (!grid || !total) return;
+        var cards = grid.querySelectorAll('.product-card');
+        total.textContent = cards.length + ' manga' + (cards.length > 1 ? 's' : '');
+    }
 
-        if (!statsEl) return;
-
-        if (favs.length === 0) {
-            statsEl.style.display = 'none';
-            return;
-        }
-
-        statsEl.style.display = 'flex';
-
-        var statEl = document.getElementById('fav-stats');
-        if (!statEl) return;
-        var countEl  = document.getElementById('favoris-total');
-        var chipNb   = document.getElementById('fav-chip-nb');
-        var chipVal  = document.getElementById('fav-chip-val');
-        var statPromo= document.getElementById('fav-stat-promo');
-        var chipPromo= document.getElementById('fav-chip-promo');
-        statEl.style.display = favs.length > 0 ? 'flex' : 'none';
-        if (countEl)   countEl.textContent  = favs.length + ' manga' + (favs.length > 1 ? 's' : '') + ' sauvegardé' + (favs.length > 1 ? 's' : '');
-        if (chipNb)    chipNb.textContent   = favs.length;
-        if (statPromo) statPromo.style.display = 'none';
-        if (chipPromo) chipPromo.textContent = '0'};
-
-    /* ── Sort A-Z ── */
-    (function(){
-        var sortBtn = document.getElementById('fav-sort-alpha');
-        var sortAsc = true;
-        if (!sortBtn) return;
-        sortBtn.addEventListener('click', function() {
-            var grid = document.getElementById('favoris-grid');
-            if (!grid) return;
-            var cards = Array.from(grid.querySelectorAll('.product-card'));
-            if (cards.length < 2) return;
-            cards.sort(function(a, b) {
-                var ta = (a.querySelector('.product-title') || {}).textContent || '';
-                var tb = (b.querySelector('.product-title') || {}).textContent || '';
-                return sortAsc ? ta.localeCompare(tb, 'fr') : tb.localeCompare(ta, 'fr');
-            });
-            sortAsc = !sortAsc;
-            var label = sortBtn.querySelector('span:last-of-type');
-            if (label && label.tagName !== 'SPAN') label = sortBtn.lastChild;
-            sortBtn.childNodes.forEach(function(n){ if (n.nodeType === 3) n.textContent = sortAsc ? ' A–Z' : ' Z–A'; });
-            cards.forEach(function(c) { grid.appendChild(c); });
-        });
-    })();
-
-    /* ── Clear all ── */
-    (function(){
-        var clearBtn = document.getElementById('fav-clear-all');
-        if (!clearBtn) return;
-        clearBtn.addEventListener('click', function() {
-            var favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
-            if (favs.length === 0) return;
-            if (confirm('Effacer vos ' + favs.length + ' favori' + (favs.length > 1 ? 's' : '') + ' ?')) {
-                localStorage.removeItem('kinka_favoris');
-                if (typeof updateFavsCount === 'function') updateFavsCount();
-                var grid = document.getElementById('favoris-grid');
-                if (grid && typeof renderFavorisPage === 'function') renderFavorisPage(grid);
-                updateFavStats();
-            }
-        });
-    })();
-
-    /* ── Suggestions bestsellers si vide ── */
     function checkSuggestions() {
-        var favs = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+        var grid       = document.getElementById('favoris-grid');
         var sugSection = document.getElementById('fav-suggestions');
-        var sugGrid    = document.getElementById('fav-suggestions-grid');
-        if (!sugSection || !sugGrid) return;
-        if (favs.length === 0 && typeof kinkaRenderGrid === 'function') {
-            var sugGrid = document.getElementById('fav-suggestions-grid');
-            var sugSection = document.getElementById('fav-suggestions');
-            if (sugGrid) kinkaRenderGrid('fav-suggestions-grid', { bestseller: '1' }, 4);
-            if (sugSection) sugSection.style.display = 'block';
-        }).join('');
-                sugSection.style.display = 'block';
-                if (typeof gererBoutonsAjout === 'function') gererBoutonsAjout();
-            }
-        } else {
-            sugSection.style.display = 'none';
-        }
+        if (!grid || !sugSection) return;
+        var cards = grid.querySelectorAll('.product-card');
+        sugSection.style.display = cards.length === 0 ? 'block' : 'none';
     }
 
-    /* ── Observer la grille ── */
-    var grid = document.getElementById('favoris-grid');
-    if (grid) {
-        new MutationObserver(function(){
-            updateFavStats();
-            checkSuggestions();
-        }).observe(grid, { childList: true });
-    }
-    setTimeout(function(){ updateFavStats(); checkSuggestions(); }, 120);
+    // Observer la grille favoris pour mise à jour des stats
+    window.addEventListener('load', function() {
+        var grid = document.getElementById('favoris-grid');
+        if (grid) {
+            new MutationObserver(function() {
+                updateFavStats();
+                checkSuggestions();
+            }).observe(grid, { childList: true });
+        }
+        setTimeout(function() { updateFavStats(); checkSuggestions(); }, 300);
+    });
     </script>
 </body>
 </html>

@@ -315,6 +315,9 @@
                 if (typeof showToast === 'function') showToast('Annonce publiée ! Redirection…', 'success');
                 setTimeout(function(){ window.location.href = '/page_occasion.html'; }, 1500);
             } catch(err) {
-                if (typeof showToa
+                if (typeof showToast === 'function') showToast(err.message || 'Erreur lors de la publication.', 'error');
+            }
+        });
+    </script>
 </body>
 </html>

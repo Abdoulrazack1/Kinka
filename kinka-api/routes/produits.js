@@ -38,7 +38,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
   const where = conditions.join(' AND ');
   const order = SORT_MAP[sort] || SORT_MAP.titre;
-  const lim   = Math.min(Math.max(Number(limit) || 50, 1), 100);
+  const lim   = Math.min(Math.max(Number(limit) || 50, 1), 500);
   const off   = Math.max(Number(offset) || 0, 0);
 
   const [[{ total }]] = await db.query(`SELECT COUNT(*) AS total FROM produits WHERE ${where}`, params);

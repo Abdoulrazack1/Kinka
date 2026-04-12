@@ -13,10 +13,18 @@ const PROTECTED_PAGES = [
 
 // Protection : redirige vers login si page protégée et non connecté
 (function() {
-  if (typeof KinkaAuth === 'undefined') return;
+  if (typeof KinkaAuth === 'undefined') {
+    console.warn('[Guard] KinkaAuth non défini — skip');
+    return;
+  }
   var path = window.location.pathname;
+  var token = localStorage.getItem('kinka_token');
+  var cookie = document.cookie.indexOf('kinka_token') >= 0;
+  var loggedIn = KinkaAuth.isLoggedIn();
+  console.log('[Guard] path=' + path + ' | token=' + !!token + ' | cookie=' + cookie + ' | loggedIn=' + loggedIn);
   var isProtected = PROTECTED_PAGES.some(function(p) { return path.endsWith(p); });
-  if (isProtected && !KinkaAuth.isLoggedIn()) {
+  if (isProtected && !loggedIn) {
+    console.warn('[Guard] NON CONNECTÉ sur page protégée → redirect login');
     sessionStorage.setItem('kinka_redirect_after_login', window.location.href);
     window.location.replace('/pageLogIn.html');
   }

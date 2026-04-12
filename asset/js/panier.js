@@ -158,6 +158,12 @@ function _escNav(str) {
 
 function mettreAJourNavAuth() {
     try {
+        // Vérifier que le token existe ET que l'user est en localStorage
+        if (typeof KinkaAuth !== 'undefined' && !KinkaAuth.isLoggedIn()) {
+            // Token absent : nettoyer les données obsolètes
+            localStorage.removeItem('kinka_current_user');
+            return;
+        }
         const user = JSON.parse(localStorage.getItem('kinka_current_user'));
         if (!user) return;
         const connectBtn = document.querySelector('.connect-btn');

@@ -174,44 +174,155 @@
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
 
-    /* ── MAISON DÉTAIL — chargement dynamique ── */
-    (function _init(){
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_init);return;}
-        var params  = new URLSearchParams(window.location.search);
-        var maisonId = params.get('id') || 'glenat';
-
-        (function(){
-        window.addEventListener('load', init);
-        function init(){
-            var params=new URLSearchParams(window.location.search);
-            var editeur=params.get('editeur')||params.get('maison')||'';
-            var grid=document.querySelector('.products-grid,.maison-grid,#maison-grid');
-            if(!grid||!editeur||typeof KinkaAPI==='undefined') return;
-            grid.innerHTML='<div style="opacity:.4;padding:1rem">Chargement…</div>';
-            KinkaAPI.produits.getAll({editeur:editeur,limit:100}).then(function(items){
-                if(!items.length){grid.innerHTML='<p style="opacity:.5;padding:2rem">Aucun manga disponible.</p>';return;}
-                grid.innerHTML=items.map(buildProductCard).join('');
-            }).catch(function(){grid.innerHTML='<p style="opacity:.4;padding:1rem">Erreur de chargement.</p>';});
-        }
-    })();
+    // ── Données des maisons d'édition ────────────────────────
+    var MAISONS = {
+        "glenat":          { nom:"Glénat Manga",       logo:"/asset/image/logo_glenat.png",   desc:"Pionnier du manga en France depuis 1990, Glénat a introduit Dragon Ball, One Piece et Naruto aux lecteurs francophones.", since:"Fondée en 1990", site:"https://www.glenat.com/manga",         couleur:"#e8002d", stat_total:"500+" },
+        "kioon":           { nom:"Ki-oon",              logo:"/asset/image/logo_kioon.png",    desc:"Label manga de la maison Kana, spécialisé dans les titres seinen et les oeuvres d'auteur exigeantes.",                  since:"Fondée en 2007", site:"https://www.ki-oon.com",              couleur:"#ff6b00", stat_total:"200+" },
+        "kurokawa":        { nom:"Kurokawa",            logo:"/asset/image/logo_kurokawa.png", desc:"Éditeur dynamique qui mise sur les shônen modernes et les light novels adaptés en manga.",                               since:"Fondée en 2006", site:"https://www.kurokawa.fr",             couleur:"#1a1a1a", stat_total:"300+" },
+        "delcourt-tonkam": { nom:"Delcourt / Tonkam",  logo:"/asset/image/logo_delcourt.png", desc:"Tonkam, rachetée par Delcourt, est l'une des plus anciennes enseignes manga de France avec un catalogue varié.",         since:"Fondée en 1993", site:"https://www.editions-delcourt.fr",    couleur:"#2d5a9e", stat_total:"400+" },
+        "pika":            { nom:"Pika Édition",        logo:"/asset/image/logo_pika.png",     desc:"Filiale d'Hachette dédiée au manga, Pika publie des blockbusters comme Fairy Tail, Blue Lock et Kingdom.",              since:"Fondée en 1996", site:"https://www.pika.fr",                 couleur:"#ff9900", stat_total:"350+" },
+        "kana":            { nom:"Kana",                logo:"/asset/image/logo_kana.png",     desc:"Label manga de Dargaud-Lombard, Kana publie des classiques comme Death Note, Hunter x Hunter et Gintama.",              since:"Fondée en 1993", site:"https://www.kana.fr",                 couleur:"#00a0e9", stat_total:"450+" },
+        "panini":          { nom:"Panini Comics",       logo:"/asset/image/logo_panini.png",   desc:"Filiale française de Panini, spécialisée dans les shônen de combat et les mangas populaires.",                          since:"Fondée en 2000", site:"https://www.paninicomics.fr",         couleur:"#e60012", stat_total:"250+" },
+        "kaze":            { nom:"Kazé Manga",          logo:"/asset/image/logo_kaze.png",     desc:"Éditeur spécialisé dans les adaptations de licences populaires et les mangas shôjo.",                                   since:"Fondée en 2005", site:"https://www.kaze-manga.fr",           couleur:"#6600cc", stat_total:"150+" },
+        "ototo":           { nom:"Ototo",               logo:"/asset/image/logo_ototo.png",    desc:"Label manga de la maison BMG, Ototo publie des titres seinen et des oeuvres originales de qualité.",                    since:"Fondée en 2012", site:"https://www.ototo.fr",                couleur:"#009f6b", stat_total:"100+" }
+    };
 
     function renderGrid(allItems, serie, sort) {
+        var editeur = window._kinkaMaisonId || '';
         var grid  = document.getElementById('md-grid');
         var empty = document.getElementById('md-empty');
         var count = document.getElementById('md-count');
         if (!grid) return;
-
         var items = serie ? allItems.filter(function(m){ return m.serie === serie; }) : allItems.slice();
-
-        if (sort === 'prix_asc')  items.sort(function(a,b){ return a.prix - b.prix; });
-        if (sort === 'prix_desc') items.sort(function(a,b){ return b.prix - a.prix; });
-        if (sort === 'note')      items.sort(function(a,b){ return (b.note||0) - (a.note||0); });
+        if (sort === 'prix_asc')  items.sort(function(a,b){ return (parseFloat(a.prix)||0) - (parseFloat(b.prix)||0); });
+        if (sort === 'prix_desc') items.sort(function(a,b){ return (parseFloat(b.prix)||0) - (parseFloat(a.prix)||0); });
+        if (sort === 'note')      items.sort(function(a,b){ return (parseFloat(b.note)||0) - (parseFloat(a.note)||0); });
         if (sort === 'nouveaute') items.sort(function(a,b){ return (b.nouveaute?1:0)-(a.nouveaute?1:0); });
-
+        var statKinka = document.getElementById('md-stat-kinka');
+        if (statKinka) statKinka.textContent = items.length;
         if (count) count.textContent = items.length + ' titre' + (items.length > 1 ? 's' : '');
-
         if (!items.length) {
-            grid.innerHTML = '';
-            if (empty) em
+            grid.innerHTML = '<p style="opacity:.5;padding:2rem;text-align:center">Aucun manga disponible pour cet éditeur.<br><small>Exécutez <code>update_editeurs.sql</code> dans HeidiSQL.</small></p>';
+            if (empty) empty.style.display = 'none';
+            return;
+        }
+        if (empty) empty.style.display = 'none';
+        grid.innerHTML = items.map(buildProductCard).join('');
+    }
+
+    window.addEventListener('load', function() {
+        if (typeof KinkaAPI === 'undefined') return;
+
+        var p  = new URLSearchParams(window.location.search);
+        var id = (p.get('id') || p.get('editeur') || p.get('maison') || 'glenat').toLowerCase();
+        window._kinkaMaisonId = id;
+
+        var maison = MAISONS[id] || {
+            nom: id.charAt(0).toUpperCase() + id.slice(1),
+            desc: '', since: '', site: '#', couleur: '#6366f1', stat_total: '—'
+        };
+
+        // ── Remplir le hero ──────────────────────────────────
+        var nomEl   = document.getElementById('md-nom');
+        var logoEl  = document.getElementById('md-logo');
+        var descEl  = document.getElementById('md-desc');
+        var sinceEl = document.getElementById('md-since');
+        var siteEl  = document.getElementById('md-site');
+        var statEl  = document.getElementById('md-stat-titres');
+        var heroEl  = document.getElementById('md-hero');
+
+        if (nomEl)   nomEl.textContent   = maison.nom;
+        if (descEl)  descEl.textContent  = maison.desc;
+        if (sinceEl) sinceEl.textContent = maison.since;
+        if (siteEl && maison.site !== '#') siteEl.href = maison.site;
+        if (statEl)  statEl.textContent  = maison.stat_total;
+        if (logoEl) {
+            if (maison.logo) {
+                logoEl.src = maison.logo;
+                logoEl.alt = maison.nom;
+                logoEl.onerror = function() {
+                    // Fallback : afficher le nom en texte stylé
+                    var wrap = this.parentNode;
+                    if (wrap) {
+                        wrap.innerHTML = '<div style="font-size:2rem;font-weight:900;color:#fff;letter-spacing:-.02em;text-shadow:0 2px 8px rgba(0,0,0,.4)">' + maison.nom + '</div>';
+                    }
+                };
+            } else {
+                var wrap = logoEl.parentNode;
+                if (wrap) wrap.innerHTML = '<div style="font-size:2rem;font-weight:900;color:#fff">' + maison.nom + '</div>';
+            }
+        }
+        if (heroEl && maison.couleur) {
+            heroEl.style.setProperty('--maison-couleur', maison.couleur);
+        }
+
+        // ── Nom dans le nav ──────────────────────────────────
+        var navNom = document.getElementById('maison-nom');
+        if (navNom) navNom.textContent = maison.nom;
+
+        // ── Grille principale ────────────────────────────────
+        var mainGrid = document.querySelector('#md-grid');
+        if (mainGrid) mainGrid.innerHTML = '<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
+
+        // Mapping id → valeur exacte en BDD
+        var EDITEUR_BDD = {
+            'glenat':           'Glénat',
+            'kioon':            'Ki-oon',
+            'kurokawa':         'Kurokawa',
+            'delcourt-tonkam':  'Delcourt / Tonkam',
+            'pika':             'Pika Édition',
+            'kana':             'Kana',
+            'panini':           'Panini Comics',
+            'kaze':             'Kazé Manga',
+            'ototo':            'Ototo'
+        };
+        var editeurBdd = EDITEUR_BDD[id] || maison.nom || id;
+
+        KinkaAPI.produits.getAll({ editeur: editeurBdd, limit: 500 }).then(function(items) {
+            renderGrid(items, '', 'titre');
+
+            // Stat titres chez KINKA
+            var statKinka = document.getElementById('md-stat-kinka');
+            if (statKinka) statKinka.textContent = items.length;
+            // Stat séries uniques
+            var seriesUniques = [];
+            items.forEach(function(m){ if(m.serie && seriesUniques.indexOf(m.serie)<0) seriesUniques.push(m.serie); });
+            var statSeries = document.getElementById('md-stat-series');
+            if (statSeries) statSeries.textContent = seriesUniques.length;
+
+            // Sidebar séries phares
+            var seriesNav = document.getElementById('md-series-nav');
+            if (seriesNav && seriesUniques.length) {
+                seriesNav.innerHTML = seriesUniques.slice(0,8).map(function(s) {
+                    return '<a href="/page_serie_detail.html?serie=' + encodeURIComponent(s) + '" class="md-series-link">' + s + '</a>';
+                }).join('');
+            }
+
+            // Filtres select
+            var sel = document.getElementById('serie-select');
+            if (sel && seriesUniques.length) {
+                seriesUniques.sort();
+                seriesUniques.forEach(function(s){
+                    var opt = document.createElement('option');
+                    opt.value = s; opt.textContent = s;
+                    sel.appendChild(opt);
+                });
+                sel.addEventListener('change', function(){
+                    var sortVal = (document.getElementById('sort-select')||{}).value||'titre';
+                    renderGrid(items, this.value, sortVal);
+                });
+            }
+            var sortSel = document.getElementById('sort-select');
+            if (sortSel) sortSel.addEventListener('change', function(){
+                var sv = (document.getElementById('serie-select')||{}).value||'';
+                renderGrid(items, sv, this.value);
+            });
+
+        }).catch(function() {
+            var g = document.getElementById('md-grid');
+            if (g) g.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur de chargement.</p>';
+        });
+    });
+    </script>
 </body>
 </html>
