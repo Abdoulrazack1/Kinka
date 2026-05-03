@@ -587,28 +587,6 @@
         });
     });
     </script>
-    <script>
-    window.addEventListener('load', function() {
-        var params  = new URLSearchParams(window.location.search);
-        var serie   = params.get('serie') ? decodeURIComponent(params.get('serie')) : null;
-        var grid    = document.getElementById('series-grid') || document.querySelector('.products-grid');
-        var nbEl    = document.getElementById('serie-nb-tomes');
-        var titleEl = document.getElementById('serie-nom');
-        if (titleEl && serie) titleEl.textContent = serie;
-        if (!grid || !serie || typeof KinkaAPI === 'undefined') return;
-        grid.innerHTML = '<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
-        KinkaAPI.produits.getAll({ serie: serie, sort: 'titre', limit: 200 }).then(function(items) {
-            items.sort(function(a,b){ return (a.tome||0)-(b.tome||0); });
-            if (nbEl) nbEl.textContent = items.length + ' tome' + (items.length > 1 ? 's' : '');
-            if (!items.length) {
-                grid.innerHTML = '<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';
-                return;
-            }
-            grid.innerHTML = items.map(buildProductCard).join('');
-        }).catch(function() {
-            grid.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur.</p>';
-        });
-    });
-    </script>
+
 </body>
 </html>

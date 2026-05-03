@@ -87,6 +87,24 @@ router.put('/password', authRequired, validate(schemas.password), asyncHandler(a
 }));
 
 
+// POST /api/auth/forgot — Demande de réinitialisation
+// Pour un projet école : on log côté serveur, on retourne toujours OK
+// (pour ne pas révéler quels emails existent en BDD).
+// En production : générer un token, l'enregistrer en BDD avec une expiration,
+// envoyer un email avec un lien de réinitialisation.
+router.post('/forgot', asyncHandler(async (req, res) => {
+  const email = String(req.body?.email || '').trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ success: false, errors: { email: 'Email invalide' } });
+  }
+  const [rows] = await db.query('SELECT id FROM utilisateurs WHERE email = ?', [email]);
+  if (rows.length) {
+    console.log(`[auth] Reset request for existing user ${email} — TODO: send email`);
+  }
+  // Toujours retourner success pour éviter l'énumération d'emails
+  res.json({ success: true, data: { message: 'Si cet email existe, un lien de réinitialisation vous a été envoyé.' } });
+}));
+
 // DELETE /api/auth/me — Suppression du compte
 router.delete('/me', authRequired, asyncHandler(async (req, res) => {
   await db.query('DELETE FROM utilisateurs WHERE id = ?', [req.user.id]);

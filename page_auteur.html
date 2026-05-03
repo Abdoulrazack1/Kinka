@@ -451,8 +451,8 @@
 
         if (sortSel) sortSel.addEventListener('change', function(){ currentSort = this.value; renderGrid(); });
 
-        KinkaAPI.produits.getAll({ limit: 500 }).then(function(allItems) {
-            allMangas = allItems.filter(function(m){ return (m.auteur||'').indexOf(nomAuteur) >= 0; });
+        KinkaAPI.produits.getAll({ auteur: nomAuteur, limit: 200 }).then(function(items) {
+            allMangas = items;
             renderGrid();
         }).catch(function() {
             if (grid) grid.innerHTML = '<p style="opacity:.4;padding:1rem">Erreur de chargement.</p>';

@@ -144,7 +144,7 @@
     <script>window.addEventListener('load', function() {
         function tryRender() {
             if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
-                kinkaRenderGrid('grid-coupdecoeur', {sort:'note', limit:20}, 20);
+                kinkaRenderGrid('grid-coupdecoeur', { coup_de_coeur: '1', sort: 'note', limit: 20 }, 20);
             } else {
                 setTimeout(tryRender, 80);
             }

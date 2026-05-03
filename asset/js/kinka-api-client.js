@@ -1,8 +1,10 @@
 // ============================================================
-// kinka-api-client.js — Client API Kinka + Auth + Cookies
+// kinka-api-client.js — Client API Kinka + Auth + Cookies + Toast
+// Version unifiée (front + back) — utilisée par toutes les pages
 // ============================================================
 
-const API = 'http://localhost:3000/api';
+// URL de l'API. Surchargée si window.KINKA_API_URL est défini avant ce script.
+const API = (typeof window !== 'undefined' && window.KINKA_API_URL) || 'http://localhost:3000/api';
 
 // ════════════════════════════════════════════════════════════════
 // COOKIES — utilitaire léger
@@ -34,6 +36,9 @@ const KinkaAuth = {
     localStorage.removeItem('kinka_token');
     localStorage.removeItem('kinka_current_user');
     KinkaCookies.delete('kinka_token');
+    // Vider les favoris/panier locaux pour repartir depuis la BDD à la prochaine connexion
+    localStorage.removeItem('kinka_favoris');
+    localStorage.removeItem('kinka_panier');
   },
   isLoggedIn()  { return !!(localStorage.getItem('kinka_token') || KinkaCookies.get('kinka_token')); },
 
@@ -54,16 +59,39 @@ KinkaAuth.restoreFromCookie();
 // ════════════════════════════════════════════════════════════════
 async function kinkaFetch(path, options = {}) {
   const token = KinkaAuth.getToken();
-  const res = await fetch(API + path, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers
-    },
-    ...options
-  });
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error || `Erreur ${res.status}`);
+  let res;
+  try {
+    res = await fetch(API + path, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...options.headers
+      },
+      ...options
+    });
+  } catch (e) {
+    // Erreur réseau — API down, mauvais CORS, etc.
+    throw new Error('Impossible de joindre le serveur. Vérifiez votre connexion.');
+  }
+
+  let json;
+  try { json = await res.json(); }
+  catch { throw new Error(`Réponse invalide (${res.status})`); }
+
+  if (!res.ok) {
+    // Si JWT expiré ou invalide, nettoyer et rediriger vers login
+    if (res.status === 401 && token) {
+      KinkaAuth.removeToken();
+    }
+    // Construire un message lisible : combiner errors{} ou error
+    const msg = json.error
+      || (json.errors ? Object.values(json.errors).join(', ') : null)
+      || `Erreur ${res.status}`;
+    const err = new Error(msg);
+    err.status = res.status;
+    err.errors = json.errors;
+    throw err;
+  }
   return json.data;
 }
 
@@ -118,6 +146,13 @@ const KinkaAPI = {
 
     async deleteAccount() {
       return kinkaFetch('/auth/me', { method: 'DELETE' });
+    },
+
+    async forgot(email) {
+      return kinkaFetch('/auth/forgot', {
+        method: 'POST',
+        body: JSON.stringify({ email })
+      });
     }
   },
 
@@ -187,9 +222,13 @@ const KinkaAPI = {
       const q = Object.entries(filtres).filter(([,v])=>v).map(([k,v])=>`${k}=${encodeURIComponent(v)}`).join('&');
       return kinkaFetch('/annonces' + (q ? '?' + q : ''));
     },
+    async mesAnnonces() { return kinkaFetch('/annonces/mes-annonces'); },
     async getOne(id)   { return kinkaFetch(`/annonces/${id}`); },
     async create(data) {
       return kinkaFetch('/annonces', { method: 'POST', body: JSON.stringify(data) });
+    },
+    async update(id, data) {
+      return kinkaFetch(`/annonces/${id}`, { method: 'PUT', body: JSON.stringify(data) });
     },
     async delete(id)   { return kinkaFetch(`/annonces/${id}`, { method: 'DELETE' }); }
   },
@@ -200,7 +239,19 @@ const KinkaAPI = {
     async create(data)    {
       return kinkaFetch('/avis', { method: 'POST', body: JSON.stringify(data) });
     },
-    async delete(id)      { return kinkaFetch(`/avis/${id}`, { method: 'DELETE' }); }
+    async delete(produit_id) { return kinkaFetch(`/avis/${encodeURIComponent(produit_id)}`, { method: 'DELETE' }); }
+  },
+
+  // ── DIVERS (newsletter, contact) ──────────────────────────
+  newsletter: {
+    async subscribe(email) {
+      return kinkaFetch('/newsletter', { method: 'POST', body: JSON.stringify({ email }) });
+    }
+  },
+  contact: {
+    async send(data) {
+      return kinkaFetch('/contact', { method: 'POST', body: JSON.stringify(data) });
+    }
   }
 };
 
@@ -213,8 +264,12 @@ window.showToast = function(message, type = 'success', duration = 3000) {
 
   const toast = document.createElement('div');
   toast.className = 'kinka-toast kinka-toast--' + type;
+  toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+  toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
   const icons = { success: 'check_circle', error: 'error', info: 'info', warning: 'warning' };
-  toast.innerHTML = `<span class="material-symbols-outlined" style="font-size:1.1rem;flex-shrink:0">${icons[type]||'info'}</span><span>${message}</span>`;
+  toast.innerHTML = `<span class="material-symbols-outlined" style="font-size:1.1rem;flex-shrink:0">${icons[type]||'info'}</span><span></span>`;
+  // Texte injecté avec textContent pour éviter XSS
+  toast.querySelector('span:last-child').textContent = String(message || '');
   toast.style.cssText = `
     position:fixed;bottom:1.5rem;right:1.5rem;z-index:99999;
     display:flex;align-items:center;gap:.6rem;
@@ -244,11 +299,13 @@ window.showToast = function(message, type = 'success', duration = 3000) {
 // ════════════════════════════════════════════════════════════════
 // BANNIÈRE RGPD / CONSENTEMENT COOKIES
 // ════════════════════════════════════════════════════════════════
-(function initCookieBanner() {
+document.addEventListener('DOMContentLoaded', function initCookieBanner() {
   if (KinkaCookies.get('kinka_cookies_accepted')) return;
 
   const banner = document.createElement('div');
   banner.id = 'kinka-cookie-banner';
+  banner.setAttribute('role', 'region');
+  banner.setAttribute('aria-label', 'Bandeau de consentement aux cookies');
   banner.style.cssText = `
     position:fixed;bottom:0;left:0;right:0;z-index:9998;
     background:var(--bg-card,#1a1a2e);
@@ -265,11 +322,11 @@ window.showToast = function(message, type = 'success', duration = 3000) {
       <a href="/page_cgu.html" style="color:var(--pink,#e03b8b);text-decoration:none">En savoir plus</a>
     </p>
     <div style="display:flex;gap:.6rem;flex-shrink:0">
-      <button id="kinka-cookies-decline" style="
+      <button id="kinka-cookies-decline" type="button" style="
         padding:.45rem 1rem;border-radius:8px;border:1px solid var(--border,rgba(255,255,255,.15));
         background:transparent;color:var(--text-muted,rgba(255,255,255,.6));cursor:pointer;font-size:.82rem
       ">Refuser</button>
-      <button id="kinka-cookies-accept" style="
+      <button id="kinka-cookies-accept" type="button" style="
         padding:.45rem 1.2rem;border-radius:8px;border:none;
         background:var(--pink,#e03b8b);color:#fff;cursor:pointer;font-weight:600;font-size:.82rem
       ">Accepter</button>
@@ -285,11 +342,11 @@ window.showToast = function(message, type = 'success', duration = 3000) {
     KinkaCookies.set('kinka_cookies_accepted', '0', 30);
     banner.remove();
   };
-})();
+});
 
 // ════════════════════════════════════════════════════════════════
 // EXPOSITION GLOBALE
 // ════════════════════════════════════════════════════════════════
-window.KinkaAPI    = KinkaAPI;
-window.KinkaAuth   = KinkaAuth;
+window.KinkaAPI     = KinkaAPI;
+window.KinkaAuth    = KinkaAuth;
 window.KinkaCookies = KinkaCookies;

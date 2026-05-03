@@ -112,6 +112,23 @@
         });
     });
 
+    // ── Pré-remplir le formulaire avec les infos utilisateur ─────
+    (function prefillUserInfo() {
+        let user = null;
+        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch (_) {}
+        if (!user) return;
+        const setVal = (id, val) => {
+            const el = document.getElementById(id);
+            if (el && val && !el.value) el.value = val;
+        };
+        setVal('prenom',      user.prenom);
+        setVal('nom',         user.nom);
+        setVal('adresse',     user.adresse);
+        setVal('code-postal', user.code_postal);
+        setVal('ville',       user.ville);
+        setVal('telephone',   user.telephone);
+    })();
+
     // ── Bouton Payer → POST /api/commandes ───────────────────────
     if (payButton) {
         payButton.addEventListener('click', async function(e) {
@@ -121,8 +138,22 @@
                 window.location.href = '/pageLogIn.html?redirect=1';
                 return;
             }
-            const adresse = document.querySelector('.delivery-address, [name="adresse"]');
-            const adresseVal = adresse ? adresse.textContent.trim() || adresse.value.trim() : '';
+
+            // Construire l'adresse complète à partir du formulaire
+            const _v = id => (document.getElementById(id)?.value || '').trim();
+            const adresseParts = [
+                [_v('prenom'), _v('nom')].filter(Boolean).join(' '),
+                _v('adresse'),
+                [_v('code-postal'), _v('ville')].filter(Boolean).join(' '),
+                _v('telephone') ? 'Tél. ' + _v('telephone') : ''
+            ].filter(Boolean);
+            const adresseVal = adresseParts.join('\n');
+
+            if (!_v('adresse') || !_v('code-postal') || !_v('ville')) {
+                if (typeof showToast === 'function') showToast('Veuillez remplir l\'adresse de livraison.', 'error');
+                return;
+            }
+
             payButton.disabled = true;
             payButton.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Traitement…';
             try {
@@ -130,7 +161,7 @@
                 localStorage.setItem('kinka_last_order', JSON.stringify(commande));
                 localStorage.removeItem('kinka_panier');
                 if (typeof updatePanierCount === 'function') updatePanierCount();
-                window.location.href = '/page_confirmationcommande.html?id=' + commande.id;
+                window.location.href = '/page_confirmationcommande.html?id=' + encodeURIComponent(commande.id);
             } catch(err) {
                 if (typeof showToast === 'function') showToast(err.message || 'Erreur lors du paiement.', 'error');
                 payButton.disabled = false;

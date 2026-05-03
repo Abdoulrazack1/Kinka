@@ -1,0 +1,45 @@
+# ─── Dépendances ────────────────────────────────────
+node_modules/
+**/node_modules/
+.pnp
+.pnp.js
+
+# ─── Variables d'environnement (SECRETS) ────────────
+.env
+.env.local
+.env.*.local
+**/.env
+!**/.env.example
+
+# ─── Logs ──────────────────────────────────────────
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Builds & caches ───────────────────────────────
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# ─── IDE / OS ──────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+*.sublime-*
+# .vscode/ volontairement gardé pour partager les settings du projet (port Live Server)
+
+# ─── Données locales ───────────────────────────────
+*.sqlite
+*.sqlite3
+*.db
+dump.sql
+backup_*.sql
+
+# ─── Couverture de tests ───────────────────────────
+coverage/
+.nyc_output/

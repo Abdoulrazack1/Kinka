@@ -527,22 +527,31 @@
     })();
 
     // ── Newsletter ────────────────────────────────────────────
-    function handleNewsletter() {
+    async function handleNewsletter() {
         var input = document.getElementById('newsletter-email');
         if (!input) return;
         var email = input.value.trim();
-        if (!email || !email.includes('@')) {
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             showToast('Veuillez saisir une adresse e-mail valide.', 'error');
             return;
         }
-        var subs = JSON.parse(localStorage.getItem('kinka_newsletter') || '[]');
-        if (subs.includes(email)) {
-            showToast('Vous êtes déjà inscrit(e) à notre newsletter !');
-        } else {
-            subs.push(email);
-            localStorage.setItem('kinka_newsletter', JSON.stringify(subs));
+        try {
+            if (typeof KinkaAPI !== 'undefined' && KinkaAPI.newsletter) {
+                await KinkaAPI.newsletter.subscribe(email);
+            }
             showToast('Inscription confirmée ! Bienvenue dans la communauté KINKA.');
             input.value = '';
+        } catch (err) {
+            // Fallback localStorage si API indisponible
+            var subs = JSON.parse(localStorage.getItem('kinka_newsletter') || '[]');
+            if (subs.includes(email)) {
+                showToast('Vous êtes déjà inscrit(e) à notre newsletter !');
+            } else {
+                subs.push(email);
+                localStorage.setItem('kinka_newsletter', JSON.stringify(subs));
+                showToast('Inscription enregistrée localement (API indisponible).', 'info');
+                input.value = '';
+            }
         }
     }
 

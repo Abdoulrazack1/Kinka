@@ -161,3 +161,22 @@ CREATE TABLE IF NOT EXISTS series (
   mal_id       INT,
   created_at   DATETIME     DEFAULT CURRENT_TIMESTAMP
 );
+
+-- ─── NEWSLETTER ─────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS newsletter (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  email        VARCHAR(255) UNIQUE NOT NULL,
+  created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ─── MESSAGES DE CONTACT ───────────────────────────────────────
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  nom          VARCHAR(100)  NOT NULL,
+  email        VARCHAR(255)  NOT NULL,
+  sujet        VARCHAR(200)  NOT NULL,
+  message      TEXT          NOT NULL,
+  traite       TINYINT(1)    DEFAULT 0,
+  created_at   DATETIME      DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_contact_traite (traite)
+);

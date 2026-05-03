@@ -70,8 +70,8 @@
         <!-- PAGE HEADER -->
         <div class="page-header">
             <div class="order-title-section">
-                <h1>Commande <span class="order-number">#FR-7890</span></h1>
-                <span class="status-badge">En transit</span>
+                <h1>Commande <span class="order-number" id="cmd-numero">#FR-7890</span></h1>
+                <span class="status-badge" id="cmd-statut">En transit</span>
             </div>
             <a href="#" class="help-link">
                 <span class="material-symbols-outlined">help</span>
@@ -79,7 +79,7 @@
             </a>
         </div>
 
-        <p class="order-date">Passée le 21 Octobre 2025</p>
+        <p class="order-date">Passée le <span id="cmd-date">21 Octobre 2025</span></p>
 
         <div class="tracking-layout">
             
@@ -139,19 +139,21 @@
 
                 <!-- ARTICLES SECTION -->
                 <section class="articles-section">
-                    <h2>Articles (3)</h2>
+                    <h2>Articles</h2>
 
-                    <div class="article-item">
-                        <div class="article-info">
-                            <p class="article-title">One Piece - Tome 100</p>
-                            <p class="article-meta">Qté: 1 • 6,90 €</p>
+                    <div id="cmd-articles">
+                        <div class="article-item">
+                            <div class="article-info">
+                                <p class="article-title">One Piece - Tome 100</p>
+                                <p class="article-meta">Qté: 1 • 6,90 €</p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="article-item">
-                        <div class="article-info">
-                            <p class="article-title">Jujutsu Kaisen - Tome 18</p>
-                            <p class="article-meta">Qté: 2 • 13,80 €</p>
+                        <div class="article-item">
+                            <div class="article-info">
+                                <p class="article-title">Jujutsu Kaisen - Tome 18</p>
+                                <p class="article-meta">Qté: 2 • 13,80 €</p>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -293,6 +295,9 @@
     <script>
     (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
     (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='/page_profil.html';};}}());
+    function _escTracking(s) {
+        return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
     window.addEventListener('load', function() {
         var params = new URLSearchParams(window.location.search);
         var cmdId  = params.get('id') || null;
@@ -303,11 +308,19 @@
             var statEl = document.getElementById('cmd-statut');
             var listEl = document.getElementById('cmd-articles');
             if (idEl)   idEl.textContent   = '#' + order.id;
-            if (dateEl) dateEl.textContent  = new Date(order.date||order.created_at).toLocaleDateString('fr-FR');
-            if (statEl) statEl.textContent  = order.statut || 'en cours';
+            if (dateEl) dateEl.textContent  = new Date(order.date||order.created_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+            if (statEl) {
+                var SL = {livree:'Livrée',en_cours:'En cours',expediee:'Expédiée',annulee:'Annulée',preparee:'Préparée'};
+                statEl.textContent = SL[order.statut] || order.statut || 'En cours';
+            }
             if (listEl && order.articles) {
                 listEl.innerHTML = order.articles.map(function(a) {
-                    return '<div class="cmd-article"><span>' + (a.titre||'') + '</span><span>' + ((a.prix||0)*(a.quantite||1)).toFixed(2) + ' €</span></div>';
+                    var qty = a.quantite || 1;
+                    var prix = (parseFloat(a.prix)||0) * qty;
+                    return '<div class="article-item"><div class="article-info">'
+                        + '<p class="article-title">' + _escTracking(a.titre||'') + '</p>'
+                        + '<p class="article-meta">Qté: ' + qty + ' • ' + prix.toFixed(2).replace('.', ',') + ' €</p>'
+                        + '</div></div>';
                 }).join('');
             }
         }

@@ -16,7 +16,7 @@ const SORT_MAP = {
 // GET /api/produits
 router.get('/', asyncHandler(async (req, res) => {
   const {
-    categorie, etat, editeur, serie,
+    categorie, etat, editeur, serie, auteur,
     promo, nouveaute, bestseller, coup_de_coeur,
     min_prix, max_prix,
     sort = 'titre', limit = 50, offset = 0,
@@ -29,6 +29,7 @@ router.get('/', asyncHandler(async (req, res) => {
   if (etat)                { conditions.push('etat = ?');         params.push(etat); }
   if (editeur)             { conditions.push('editeur = ?');      params.push(editeur); }
   if (serie)               { conditions.push('serie = ?');        params.push(serie); }
+  if (auteur)              { conditions.push('auteur LIKE ?');    params.push(`%${auteur}%`); }
   if (promo === '1')       conditions.push('promo = 1');
   if (nouveaute === '1')   conditions.push('nouveaute = 1');
   if (bestseller === '1')  conditions.push('bestseller = 1');

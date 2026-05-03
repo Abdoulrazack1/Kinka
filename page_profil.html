@@ -612,7 +612,6 @@
 
     /* ── Init page profil au chargement ── */
     window.addEventListener('load', function() {
-        console.log('[Profil] load event - token:', !!localStorage.getItem('kinka_token'));
         initProfil();
         initSectionFromURL();
     });
@@ -814,7 +813,7 @@
                     }).join('') + '</div>'
                     + '<div class="commande-footer">'
                     +   '<span class="commande-total">Total : <strong>' + total.toFixed(2) + ' €</strong></span>'
-                    +   '<button class="btn-secondary" style="font-size:.78rem" onclick="window.location.href=\'/page_suivicommande.html?id=\' + cmd.id">'
+                    +   '<button class="btn-secondary" style="font-size:.78rem" onclick="window.location.href=\'/page_suivicommande.html?id=' + encodeURIComponent(cmd.id) + '\'">'
                     +     '<span class="material-symbols-outlined">local_shipping</span>Suivre'
                     +   '</button>'
                     + '</div>'

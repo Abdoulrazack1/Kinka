@@ -101,7 +101,7 @@
     window.addEventListener('load', function() {
         function tryRender() {
             if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
-                kinkaRenderGrid('grid-nouveautes',  {sort:'nouveaute', limit:50}, 50);
+                kinkaRenderGrid('grid-nouveautes',  { nouveaute: '1', sort: 'nouveaute', limit: 50 }, 50);
             } else {
                 setTimeout(tryRender, 80);
             }

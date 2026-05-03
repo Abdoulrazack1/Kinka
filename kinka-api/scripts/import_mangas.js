@@ -1,13 +1,57 @@
+// ============================================================
 // scripts/import_mangas.js
-// Importe tous les mangas de mangadb.js dans MySQL
-// Lance avec : node scripts/import_mangas.js
+// Importe tous les mangas de asset/js/mangadb.js dans MySQL.
+// Aucune modification manuelle de mangadb.js requise — le script
+// l'évalue dans un sandbox isolé pour récupérer la constante.
+//
+// Usage : npm run import
+// ============================================================
 require('dotenv').config();
 
-const db     = require('../config/db');
-const mangas = require('./mangadb_export.json'); // voir instructions ci-dessous
+const fs   = require('fs');
+const path = require('path');
+const vm   = require('vm');
+const db   = require('../config/db');
+
+const MANGADB_PATH = path.join(__dirname, '..', '..', 'asset', 'js', 'mangadb.js');
+
+// ── Charge mangadb.js dans un sandbox et récupère mangasDB ──────
+function loadMangas() {
+  if (!fs.existsSync(MANGADB_PATH)) {
+    console.error(`❌ Fichier introuvable : ${MANGADB_PATH}`);
+    process.exit(1);
+  }
+  const code = fs.readFileSync(MANGADB_PATH, 'utf8');
+
+  // Sandbox minimaliste : on neutralise window/document/localStorage
+  // pour que le code annexe (effets de hover) ne plante pas.
+  const sandbox = {
+    window:        {},
+    document:      { addEventListener: () => {}, querySelectorAll: () => [], readyState: 'complete' },
+    localStorage:  { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    MutationObserver: function() { return { observe: () => {} }; },
+    setTimeout:    () => {},
+    requestAnimationFrame: () => {},
+    console,
+  };
+  vm.createContext(sandbox);
+  try {
+    vm.runInContext(code, sandbox, { filename: 'mangadb.js' });
+  } catch (e) {
+    console.error('❌ Impossible d\'évaluer mangadb.js :', e.message);
+    process.exit(1);
+  }
+
+  if (!Array.isArray(sandbox.mangasDB)) {
+    console.error('❌ La constante `mangasDB` est introuvable dans mangadb.js');
+    process.exit(1);
+  }
+  return sandbox.mangasDB;
+}
 
 async function run() {
-  console.log(`📦 Import de ${mangas.length} produits...`);
+  const mangas = loadMangas();
+  console.log(`📦 Import de ${mangas.length} produits depuis mangadb.js...`);
 
   const sql = `
     INSERT INTO produits
@@ -17,7 +61,16 @@ async function run() {
        nouveaute, promo, coup_de_coeur, bestseller, tags)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     ON DUPLICATE KEY UPDATE
-      prix = VALUES(prix), stock = VALUES(stock), promo = VALUES(promo)
+      titre = VALUES(titre),
+      prix  = VALUES(prix),
+      prix_promo = VALUES(prix_promo),
+      stock = VALUES(stock),
+      promo = VALUES(promo),
+      nouveaute = VALUES(nouveaute),
+      coup_de_coeur = VALUES(coup_de_coeur),
+      bestseller = VALUES(bestseller),
+      image = VALUES(image),
+      description = VALUES(description)
   `;
 
   let ok = 0, erreurs = 0;
@@ -26,31 +79,31 @@ async function run() {
     try {
       await db.query(sql, [
         m.id,
-        m.titre             || null,
-        m.serie             || null,
-        m.tome              || null,
-        m.auteur            || null,
-        m.editeur           || null,
-        m.collection        || null,
-        m.categorie         || null,
-        m.etat              || 'neuf',
-        m.etatDetail        || null,
-        m.langue            || 'Français',
+        m.titre        || null,
+        m.serie        || null,
+        m.tome         || null,
+        m.auteur       || null,
+        m.editeur      || null,
+        m.collection   || null,
+        m.categorie    || null,
+        m.etat         || 'neuf',
+        m.etatDetail   || null,
+        m.langue       || 'Français',
         m.prix,
-        m.prixPromo         || null,
-        m.pages             || null,
-        m.format            || null,
-        m.dateParution      || null,
-        m.ean               || null,
-        m.image             || null,
-        m.description       || null,
-        m.note              || 0,
-        m.stock             || 0,
+        m.prixPromo    || null,
+        m.pages        || null,
+        m.format       || null,
+        m.dateParution || null,
+        m.ean          || null,
+        m.image        || null,
+        m.description  || null,
+        m.note         || 0,
+        m.stock        || 0,
         m.nouveaute   ? 1 : 0,
         m.promo       ? 1 : 0,
         m.coupDeCoeur ? 1 : 0,
         m.bestseller  ? 1 : 0,
-        m.tags ? JSON.stringify(m.tags) : null
+        m.tags ? JSON.stringify(m.tags) : null,
       ]);
       ok++;
     } catch (err) {
@@ -59,24 +112,11 @@ async function run() {
     }
   }
 
-  console.log(`✅ ${ok} produits importés, ${erreurs} erreurs`);
-  process.exit(0);
+  console.log(`\n✅ ${ok} produits importés, ${erreurs} erreurs`);
+  process.exit(erreurs ? 1 : 0);
 }
 
-run();
-
-/*
- * ─── AVANT DE LANCER CE SCRIPT ────────────────────────────────────
- *
- * 1. Ouvre asset/js/mangadb.js
- * 2. Remplace la première ligne par :      module.exports = [
- * 3. Remplace la dernière ligne (];) par : ];
- * 4. Dans un terminal node, lance :
- *      node -e "
- *        const data = require('./asset/js/mangadb.js');
- *        require('fs').writeFileSync('scripts/mangadb_export.json', JSON.stringify(data, null, 2));
- *      "
- * 5. Puis lance : npm run import
- *
- * ──────────────────────────────────────────────────────────────────
- */
+run().catch(err => {
+  console.error('❌ Erreur fatale :', err);
+  process.exit(1);
+});

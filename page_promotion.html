@@ -178,7 +178,7 @@
     window.addEventListener('load', function() {
         function tryRender() {
             if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
-                kinkaRenderGrid('promo-grid', {sort:'note', limit:50}, 50);
+                kinkaRenderGrid('promo-grid', { promo: '1', sort: 'prix_asc', limit: 50 }, 50);
             } else {
                 setTimeout(tryRender, 80);
             }

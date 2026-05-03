@@ -19,6 +19,9 @@ router.get('/', asyncHandler(async (req, res) => {
   if (max_prix) { conditions.push('a.prix <= ?');     params.push(Number(max_prix)); }
 
   const where = conditions.join(' AND ');
+  const lim   = Math.min(Math.max(Number(limit) || 50, 1), 100);
+  const off   = Math.max(Number(offset) || 0, 0);
+
   const [[{ total }]] = await db.query(`SELECT COUNT(*) AS total FROM annonces a WHERE ${where}`, params);
   const [rows] = await db.query(
     `SELECT a.*, u.prenom, u.nom, u.nom_utilisateur, u.avatar
@@ -27,10 +30,10 @@ router.get('/', asyncHandler(async (req, res) => {
      WHERE ${where}
      ORDER BY a.created_at DESC
      LIMIT ? OFFSET ?`,
-    [...params, Math.min(Number(limit), 100), Math.max(Number(offset), 0)]
+    [...params, lim, off]
   );
 
-  res.json({ success: true, data: rows, total });
+  res.json({ success: true, data: rows, total, limit: lim, offset: off });
 }));
 
 // GET /api/annonces/mes-annonces

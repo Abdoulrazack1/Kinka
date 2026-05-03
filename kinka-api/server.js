@@ -48,6 +48,8 @@ app.use('/api/favoris',   require('./routes/favoris'));
 app.use('/api/commandes', require('./routes/commandes'));
 app.use('/api/avis',      require('./routes/avis'));
 app.use('/api/annonces',  require('./routes/annonces'));
+app.use('/api/mangas',    require('./routes/mangas'));   // ← FIX : route existait mais n'était pas montée
+app.use('/api',           require('./routes/divers'));   // newsletter + contact
 
 app.get('/api/health', (_req, res) =>
   res.json({ success: true, message: 'Kinka API en ligne 🎌', version: '2.0.0' })

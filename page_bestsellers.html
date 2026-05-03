@@ -103,7 +103,7 @@
     window.addEventListener('load', function() {
         function tryRender() {
             if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
-                kinkaRenderGrid('grid-bestsellers', {sort:'note', limit:50}, 50);
+                kinkaRenderGrid('grid-bestsellers', { bestseller: '1', sort: 'note', limit: 50 }, 50);
             } else {
                 setTimeout(tryRender, 80);
             }

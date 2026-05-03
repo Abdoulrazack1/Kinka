@@ -73,9 +73,27 @@
   // ── Réinitialisation mot de passe (page_mdpreinitialisation) ──
   const resetForm = document.querySelector('.reset-form, .mdp-reset-form');
   if (resetForm) {
-    resetForm.addEventListener('submit', function(e) {
+    resetForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      showToast("Si cet email existe, un lien de réinitialisation vous sera envoyé.", 'info');
+      const email = document.getElementById('email')?.value?.trim();
+      const btn   = resetForm.querySelector('button[type="submit"], .btn-submit');
+      if (!email) {
+        showToast('Veuillez saisir votre adresse e-mail.', 'error');
+        return;
+      }
+      if (btn) { btn.disabled = true; btn.textContent = 'Envoi…'; }
+      try {
+        if (typeof KinkaAPI !== 'undefined' && KinkaAPI.auth.forgot) {
+          await KinkaAPI.auth.forgot(email);
+        }
+        showToast("Si cet email existe, un lien de réinitialisation vous sera envoyé.", 'info');
+        resetForm.reset();
+      } catch (err) {
+        // Même message pour ne pas révéler l'existence d'un email
+        showToast("Si cet email existe, un lien de réinitialisation vous sera envoyé.", 'info');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined">send</span> Envoyer le lien de réinitialisation'; }
+      }
     });
   }
 

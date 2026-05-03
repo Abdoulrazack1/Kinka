@@ -308,6 +308,7 @@
             }
 
             var btn = form.querySelector('[type="submit"]');
+            var origBtnText = btn ? btn.innerHTML : '';
             if (btn) { btn.disabled = true; btn.textContent = 'Publication…'; }
 
             try {
@@ -316,8 +317,10 @@
                 setTimeout(function(){ window.location.href = '/page_occasion.html'; }, 1500);
             } catch(err) {
                 if (typeof showToast === 'function') showToast(err.message || 'Erreur lors de la publication.', 'error');
+                if (btn) { btn.disabled = false; btn.innerHTML = origBtnText; }
             }
         });
+    })();
     </script>
 </body>
 </html>

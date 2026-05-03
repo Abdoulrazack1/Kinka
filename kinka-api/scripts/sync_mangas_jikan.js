@@ -1,6 +1,6 @@
 // sync_mangas_jikan.js v3.0 — Délais augmentés + debug + éditeurs FR
 require('dotenv').config();
-const db = require('./config/db');
+const db = require('../config/db');
 
 const JIKAN_BASE = 'https://api.jikan.moe/v4';
 

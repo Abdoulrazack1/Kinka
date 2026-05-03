@@ -195,6 +195,8 @@
 
     // ── Remplir avec les données de la vraie commande ────────
     (function(){
+        function _esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
         var order = null;
         try { order = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e) {}
         if (!order) return;
@@ -202,7 +204,7 @@
         // Numéro commande
         var idEl = document.getElementById('conf-order-id');
         var suiviLink = document.getElementById('conf-suivi-link');
-        if (suiviLink && order.id) suiviLink.href = '/page_suivicommande.html?id=' + order.id;
+        if (suiviLink && order.id) suiviLink.href = '/page_suivicommande.html?id=' + encodeURIComponent(order.id);
         if (idEl) idEl.textContent = '#' + order.id;
 
         // Articles
@@ -212,18 +214,22 @@
             if (countEl) countEl.textContent = order.articles.length;
             var total = 0;
             listEl.innerHTML = order.articles.map(function(a) {
-                var lineTotal = (a.prix||0) * (a.quantite||1);
+                var qty = a.quantite || 1;
+                var lineTotal = (parseFloat(a.prix)||0) * qty;
                 total += lineTotal;
-                return '<div class="article-item"><div class="article-info"><p class="article-title">' + a.titre + (a.quantite > 1 ? ' × ' + a.quantite : '') + '</p><p class="article-meta">' + lineTotal.toFixed(2) + '€</p></div><p class="article-publisher">' + (a.editeur||'') + '</p></div>';
+                return '<div class="article-item"><div class="article-info"><p class="article-title">'
+                    + _esc(a.titre) + (qty > 1 ? ' × ' + qty : '')
+                    + '</p><p class="article-meta">' + lineTotal.toFixed(2) + '€</p></div>'
+                    + '<p class="article-publisher">' + _esc(a.editeur||'') + '</p></div>';
             }).join('');
             var subEl = document.getElementById('conf-subtotal');
             var totEl = document.getElementById('conf-total');
             var livraison = total >= 50 ? 0 : 4.90;
             var totalTTC = total + livraison;
-            if (subEl) subEl.textContent = total.toFixed(2).replace('.',',') + ' €';
+            if (subEl) subEl.textContent = total.toFixed(2).replace('.',',') + ' €';
             var livEl = document.querySelector('.free-shipping');
-            if (livEl) { livEl.textContent = livraison === 0 ? 'Gratuit' : livraison.toFixed(2).replace('.',',') + ' €'; }
-            if (totEl) totEl.textContent = totalTTC.toFixed(2).replace('.',',') + ' €';
+            if (livEl) { livEl.textContent = livraison === 0 ? 'Gratuit' : livraison.toFixed(2).replace('.',',') + ' €'; }
+            if (totEl) totEl.textContent = totalTTC.toFixed(2).replace('.',',') + ' €';
         }
 
         // Date de livraison estimée : +5 jours ouvrés
@@ -235,16 +241,19 @@
             ddEl.innerHTML = '<span class="material-symbols-outlined">local_shipping</span>' + jours[d.getDay()] + ' ' + d.getDate() + ' ' + mois[d.getMonth()];
         }
 
-        // Infos user
+        // Infos user — l'API utilise snake_case (code_postal)
         var user = null;
         try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
         if (user) {
             var nameEl = document.getElementById('conf-user-name');
             var addrEl = document.getElementById('conf-user-address');
             var cityEl = document.getElementById('conf-user-city');
-            if (nameEl) nameEl.textContent = (user.prenom||'') + ' ' + (user.nom||'');
+            if (nameEl) nameEl.textContent = ((user.prenom||'') + ' ' + (user.nom||'')).trim();
             if (addrEl && user.adresse) addrEl.textContent = user.adresse;
-            if (cityEl && user.ville)   cityEl.textContent = (user.codePostal||'') + ' ' + user.ville + ', France';
+            if (cityEl && user.ville) {
+                var cp = user.code_postal || user.codePostal || '';
+                cityEl.textContent = (cp + ' ' + user.ville + ', ' + (user.pays || 'France')).trim();
+            }
         }
     })();
     </script>
