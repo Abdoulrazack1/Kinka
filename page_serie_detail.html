@@ -576,6 +576,25 @@
         grid.innerHTML = '<div style="opacity:.4;padding:1rem;text-align:center">Chargement…</div>';
         KinkaAPI.produits.getAll({ serie: serie, sort: 'titre', limit: 200 }).then(function(items) {
             items.sort(function(a,b){ return (a.tome||0)-(b.tome||0); });
+        // ── HERO dynamique : récupérer les infos de la série depuis l'API ──
+        try {
+            // Trouver titre & auteur dans le hero (sélecteurs souples)
+            var heroTitle  = document.querySelector('.serie-title, .product-title-large, .page-header h1, .serie-detail-title, h1.title-serie, h1');
+            var heroAuthor = document.querySelector('.serie-author, .product-author, .author-name');
+            var heroSyno   = document.querySelector('.serie-synopsis, .product-description, .description-section p, .synopsis-text, .serie-desc');
+            var heroCover  = document.querySelector('.serie-cover img, .hero-cover, .serie-detail-cover img');
+            var nbTomesEls = document.querySelectorAll('.nb-tomes, .serie-nb-tomes, [data-nb-tomes]');
+
+            if (heroTitle && serie)  heroTitle.textContent  = serie;
+            var first = items[0];
+            if (first) {
+                if (heroAuthor && first.auteur) heroAuthor.textContent = first.auteur;
+                if (heroSyno   && first.description) heroSyno.textContent  = first.description.split('. Tome')[0]; // virer le suffixe "Tome X de la série"
+                if (heroCover  && first.image) heroCover.src = first.image;
+            }
+            nbTomesEls.forEach(function(el){ el.textContent = items.length; });
+        } catch(_) {}
+
             if (nbEl) nbEl.textContent = items.length + ' tome' + (items.length > 1 ? 's' : '');
             if (!items.length) {
                 grid.innerHTML = '<p style="opacity:.5;padding:2rem">Aucun tome disponible.</p>';
