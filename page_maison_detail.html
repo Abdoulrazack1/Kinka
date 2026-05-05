@@ -256,6 +256,22 @@
             heroEl.style.setProperty('--maison-couleur', maison.couleur);
         }
 
+        // ── Nav bar (liens vers les autres maisons) ──────────
+        var navBar = document.getElementById('md-nav-bar');
+        if (navBar) {
+            var navHtml = '';
+            Object.keys(MAISONS).forEach(function(key){
+                var m = MAISONS[key];
+                var active = key === id ? ' md-nav-active' : '';
+                var logoHtml = m.logo
+                    ? '<img src="' + m.logo + '" alt="' + m.nom + '" onerror="this.style.display=\'none\'">'
+                    : '';
+                navHtml += '<a href="/page_maison_detail.html?id=' + key + '" class="md-nav-link' + active + '">'
+                         + logoHtml + m.nom + '</a>';
+            });
+            navBar.innerHTML = navHtml;
+        }
+
         // ── Nom dans le nav ──────────────────────────────────
         var navNom = document.getElementById('maison-nom');
         if (navNom) navNom.textContent = maison.nom;
@@ -279,7 +295,7 @@
         var editeurBdd = EDITEUR_BDD[id] || maison.nom || id;
 
         KinkaAPI.produits.getAll({ editeur: editeurBdd, limit: 500 }).then(function(items) {
-            renderGrid(items, '', 'titre');
+            renderGrid(items, '', '');
 
             // Stat titres chez KINKA
             var statKinka = document.getElementById('md-stat-kinka');
@@ -290,33 +306,31 @@
             var statSeries = document.getElementById('md-stat-series');
             if (statSeries) statSeries.textContent = seriesUniques.length;
 
-            // Sidebar séries phares
+            // Sidebar séries phares (avec compteur de tomes par série)
             var seriesNav = document.getElementById('md-series-nav');
             if (seriesNav && seriesUniques.length) {
+                // Compter le nombre de tomes par série
+                var countBySerie = {};
+                items.forEach(function(m){
+                    if (!m.serie) return;
+                    countBySerie[m.serie] = (countBySerie[m.serie] || 0) + 1;
+                });
                 seriesNav.innerHTML = seriesUniques.slice(0,8).map(function(s) {
-                    return '<a href="/page_serie_detail.html?serie=' + encodeURIComponent(s) + '" class="md-series-link">' + s + '</a>';
+                    var nb = countBySerie[s] || 0;
+                    return '<a href="/page_serie_detail.html?serie=' + encodeURIComponent(s) + '" class="md-serie-link">'
+                         + '<span style="background:transparent;color:inherit;padding:0;min-width:0;flex:1;text-align:left;font-weight:inherit">' + s + '</span>'
+                         + '<span>' + nb + '</span>'
+                         + '</a>';
                 }).join('');
             }
 
-            // Filtres select
-            var sel = document.getElementById('serie-select');
-            if (sel && seriesUniques.length) {
-                seriesUniques.sort();
-                seriesUniques.forEach(function(s){
-                    var opt = document.createElement('option');
-                    opt.value = s; opt.textContent = s;
-                    sel.appendChild(opt);
-                });
-                sel.addEventListener('change', function(){
-                    var sortVal = (document.getElementById('sort-select')||{}).value||'titre';
-                    renderGrid(items, this.value, sortVal);
+            // Bind sort dropdown (le vrai ID dans le HTML est "md-sort")
+            var sortSel = document.getElementById('md-sort');
+            if (sortSel) {
+                sortSel.addEventListener('change', function(){
+                    renderGrid(items, '', this.value);
                 });
             }
-            var sortSel = document.getElementById('sort-select');
-            if (sortSel) sortSel.addEventListener('change', function(){
-                var sv = (document.getElementById('serie-select')||{}).value||'';
-                renderGrid(items, sv, this.value);
-            });
 
         }).catch(function() {
             var g = document.getElementById('md-grid');
