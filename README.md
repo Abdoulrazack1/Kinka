@@ -10,13 +10,15 @@
 [![Vanilla JS](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Figma](https://img.shields.io/badge/Design-Figma-F24E1E?logo=figma&logoColor=white)](https://www.figma.com/)
 
-<!-- 📽️ GIF/Vidéo à ajouter ici : 30s parcours client
-     1) navigation catalogue + filtres
-     2) ajout panier (mode invité → localStorage)
-     3) login (le panier suit en MySQL)
-     4) checkout + confirmation -->
+## 🌐 Démo en direct (UI statique sans backend)
 
-<!-- 🖼️ Screenshots à ajouter : accueil, fiche produit, panier, checkout, dark mode -->
+**→ [https://abdoulrazack1.github.io/Kinka/page_accueil.html](https://abdoulrazack1.github.io/Kinka/page_accueil.html)**
+
+[![Kinka — Page d'accueil](asset/screenshots/home.png)](https://abdoulrazack1.github.io/Kinka/page_accueil.html)
+
+![Scroll through Kinka — Hero Chainsaw Man → Maisons d'édition → Catégories → Premium](asset/screenshots/scroll.gif)
+
+> ⚠️ La version live sur GitHub Pages affiche l'UI complète (CSS, navigation, mode sombre, i18n) mais **sans données dynamiques** — le backend Node/Express/MySQL n'est pas déployé. Pour la version complète avec catalogue, panier et auth, suis les instructions d'installation ci-dessous.
 
 ---
 
