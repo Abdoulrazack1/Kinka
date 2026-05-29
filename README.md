@@ -1,7 +1,38 @@
-# Kinka
+# 🛒 Kinka — E-commerce de Mangas
 
-Boutique e-commerce de mangas — projet pédagogique DWWM.
-Maquette Figma, intégration HTML/CSS responsive, JavaScript vanilla, backend Node.js/Express + MySQL.
+> **Plateforme e-commerce full-stack pour libraires de mangas** — catalogue filtré, panier hybride (localStorage invité / MySQL connecté), tunnel d'achat complet, annonces seconde main, avis, i18n FR/EN.
+> Vanilla JS frontend (no framework), Node/Express/MySQL backend, JWT auth.
+
+[![Node](https://img.shields.io/badge/node-%E2%89%A518-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white)](https://expressjs.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![JWT](https://img.shields.io/badge/JWT-000000?logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
+[![Vanilla JS](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Figma](https://img.shields.io/badge/Design-Figma-F24E1E?logo=figma&logoColor=white)](https://www.figma.com/)
+
+<!-- 📽️ GIF/Vidéo à ajouter ici : 30s parcours client
+     1) navigation catalogue + filtres
+     2) ajout panier (mode invité → localStorage)
+     3) login (le panier suit en MySQL)
+     4) checkout + confirmation -->
+
+<!-- 🖼️ Screenshots à ajouter : accueil, fiche produit, panier, checkout, dark mode -->
+
+---
+
+## 💡 Pourquoi Kinka
+
+| Use case | Comment Kinka le résout |
+|---|---|
+| **Visiteur ajoute des articles** | Panier en `localStorage` — pas de friction d'inscription |
+| **Visiteur s'inscrit après** | Migration auto du panier `localStorage` → MySQL au login (sans perte) |
+| **Vendre du neuf et de l'occasion** | Catalogue principal + section "Annonces" avec CRUD utilisateur |
+| **i18n FR/EN** | Système de traduction custom, 1800+ chaînes |
+| **Auth solide pour DWWM** | JWT + bcrypt (12 rounds) + rate-limit + auth-guard côté client |
+
+**Pas une démo** — 41 pages HTML, 38 feuilles CSS, 18 scripts JS, 32 endpoints API, mode sombre + responsive complet.
+
+---
 
 ## Stack
 
