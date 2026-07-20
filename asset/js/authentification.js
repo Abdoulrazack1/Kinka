@@ -1,4 +1,20 @@
 // authentification.js — Formulaires login/signup + cookies "se souvenir de moi"
+
+// ── Fusion du panier invité (localStorage) vers le compte (API) ──
+// À appeler juste après une connexion/inscription réussie : pousse chaque
+// article du panier invité vers l'API puis vide le localStorage, pour qu'un
+// visiteur qui remplit son panier ne le perde pas en se connectant.
+async function fusionnerPanierInvite() {
+  let local = [];
+  try { local = JSON.parse(localStorage.getItem('kinka_panier') || '[]'); } catch (_) { local = []; }
+  if (!Array.isArray(local) || !local.length) return;
+  for (const item of local) {
+    if (!item || !item.id) continue;
+    try { await KinkaAPI.panier.add(item.id, item.quantite || 1); } catch (_) { /* stock/plafond : on ignore */ }
+  }
+  localStorage.removeItem('kinka_panier');
+}
+
 (function initForms() {
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initForms); return; }
 
@@ -27,6 +43,7 @@
 
       try {
         await KinkaAPI.auth.login(email, password, remember);
+        await fusionnerPanierInvite();
         showToast('Connexion réussie !', 'success');
         // Redirect vers la page d'origine si protégée
         const redirect = sessionStorage.getItem('kinka_redirect_after_login');
@@ -61,6 +78,7 @@
 
       try {
         await KinkaAPI.auth.register(email, pwd, prenom, nom || '');
+        await fusionnerPanierInvite();
         showToast('Compte créé ! Bienvenue ' + prenom + ' !', 'success');
         setTimeout(() => { window.location.href = '/page_accueil.html'; }, 800);
       } catch(err) {

@@ -87,6 +87,12 @@ CREATE TABLE IF NOT EXISTS commande_articles (
   FOREIGN KEY (commande_id) REFERENCES commandes(id) ON DELETE CASCADE
 );
 
+-- Compteur atomique par année pour numéroter les commandes sans condition de course
+CREATE TABLE IF NOT EXISTS compteurs (
+  annee   INT PRIMARY KEY,
+  dernier INT NOT NULL DEFAULT 0
+);
+
 -- ─── PANIER ──────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS panier (
   user_id      INT            NOT NULL,

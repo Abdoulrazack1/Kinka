@@ -47,21 +47,48 @@ function genererResume(panierData) {
 
 function _notifierRetrait() { if (typeof showToast==='function') showToast('Produit retiré du panier'); }
 
-function _retirerAvecAnimation(el, id) {
-    if (el) { el.classList.add('removing'); setTimeout(function(){ retirerDuPanier(id); _notifierRetrait(); afficherPanier(); }, 350); }
-    else { retirerDuPanier(id); _notifierRetrait(); afficherPanier(); }
+// NB : modifierQuantite/retirerDuPanier sont async (appel API si connecté).
+// Il faut donc les `await` AVANT de réafficher, sinon on redessine l'ancien état
+// (bug : le panier ne se rafraîchissait pas pour les utilisateurs connectés).
+async function _retirerAvecAnimation(el, id) {
+    if (el) el.classList.add('removing');
+    await new Promise(function(resolve) { setTimeout(resolve, el ? 350 : 0); });
+    await retirerDuPanier(id);
+    _notifierRetrait();
+    afficherPanier();
 }
 
 function attacherEvenements() {
     document.querySelectorAll('.btn-augmenter').forEach(function(btn) {
-        btn.addEventListener('click', function() { const id=this.getAttribute('data-id'); const p=obtenirPanier().find(function(x){return x.id===id;}); if(p){modifierQuantite(id,p.quantite+1);afficherPanier();} });
+        btn.addEventListener('click', async function() {
+            const id = this.getAttribute('data-id');
+            const p  = obtenirPanier().find(function(x) { return x.id === id; });
+            if (!p) return;
+            await modifierQuantite(id, p.quantite + 1);
+            afficherPanier();
+        });
     });
+
     document.querySelectorAll('.btn-diminuer').forEach(function(btn) {
-        btn.addEventListener('click', function() { const id=this.getAttribute('data-id'); const p=obtenirPanier().find(function(x){return x.id===id;}); if(!p)return; if(p.quantite>1){modifierQuantite(id,p.quantite-1);afficherPanier();}else{_retirerAvecAnimation(this.closest('.panier-item'),id);} });
+        btn.addEventListener('click', async function() {
+            const id = this.getAttribute('data-id');
+            const p  = obtenirPanier().find(function(x) { return x.id === id; });
+            if (!p) return;
+            if (p.quantite > 1) {
+                await modifierQuantite(id, p.quantite - 1);
+                afficherPanier();
+            } else {
+                await _retirerAvecAnimation(this.closest('.panier-item'), id);
+            }
+        });
     });
+
     document.querySelectorAll('.btn-supprimer').forEach(function(btn) {
-        btn.addEventListener('click', function() { _retirerAvecAnimation(this.closest('.panier-item'),this.getAttribute('data-id')); });
+        btn.addEventListener('click', async function() {
+            await _retirerAvecAnimation(this.closest('.panier-item'), this.getAttribute('data-id'));
+        });
     });
+
     const btnCommander = document.querySelector('.btn-commander');
-    if (btnCommander) btnCommander.addEventListener('click', function() { window.location.href='/page_paiement.html'; });
+    if (btnCommander) btnCommander.addEventListener('click', function() { window.location.href = '/page_paiement.html'; });
 }

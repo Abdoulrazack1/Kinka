@@ -7,12 +7,19 @@ const asyncHandler     = require('../middleware/asyncHandler');
 const router = express.Router();
 
 // ─── Génère un ID de commande : CMD-2026-0042 ────────────────────
+// Utilise un compteur atomique par année (INSERT ... ON DUPLICATE KEY UPDATE
+// + LAST_INSERT_ID) : la ligne est verrouillée le temps de l'incrément, donc
+// deux commandes simultanées ne peuvent plus obtenir le même numéro.
+// Un rollback laisse au pire un "trou" dans la numérotation, jamais un doublon.
 async function genCommandeId(conn) {
   const year = new Date().getFullYear();
-  const [[{ count }]] = await conn.query(
-    'SELECT COUNT(*) AS count FROM commandes WHERE YEAR(date) = ?', [year]
+  await conn.query(
+    `INSERT INTO compteurs (annee, dernier) VALUES (?, LAST_INSERT_ID(1))
+     ON DUPLICATE KEY UPDATE dernier = LAST_INSERT_ID(dernier + 1)`,
+    [year]
   );
-  return `CMD-${year}-${String(count + 1).padStart(4, '0')}`;
+  const [[{ n }]] = await conn.query('SELECT LAST_INSERT_ID() AS n');
+  return `CMD-${year}-${String(n).padStart(4, '0')}`;
 }
 
 // ─── Charge les articles de N commandes en 1 seule requête ───────

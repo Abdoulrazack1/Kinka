@@ -83,6 +83,18 @@ CREATE TABLE IF NOT EXISTS annonces (
   FOREIGN KEY (produit_id) REFERENCES produits(id) ON DELETE SET NULL
 );
 
+-- Compteur atomique par année pour numéroter les commandes sans condition de course
+CREATE TABLE IF NOT EXISTS compteurs (
+  annee   INT PRIMARY KEY,
+  dernier INT NOT NULL DEFAULT 0
+);
+
+-- Amorce le compteur avec le nombre de commandes déjà existantes par année,
+-- pour que la première commande post-migration ne réutilise pas un numéro existant.
+INSERT INTO compteurs (annee, dernier)
+  SELECT YEAR(date), COUNT(*) FROM commandes GROUP BY YEAR(date)
+ON DUPLICATE KEY UPDATE dernier = GREATEST(dernier, VALUES(dernier));
+
 CREATE TABLE IF NOT EXISTS series (
   id           VARCHAR(100) PRIMARY KEY,
   nom          VARCHAR(200) NOT NULL,
