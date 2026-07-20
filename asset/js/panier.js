@@ -13,22 +13,22 @@ function parsePrix(prix) {
 }
 
 // ─── Savoir si on peut utiliser l'API ───────────────────────────
-function _isApiAvailable() {
+function estApiDisponible() {
     return typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn() && typeof KinkaAPI !== 'undefined';
 }
 
 // ─── Initialisation ──────────────────────────────────────────────
-(function _initPanier() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _initPanier); return; }
+(function initPanier() {
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initPanier); return; }
     chargerPanier();
-    if(typeof updatePanierCount==="function") updatePanierCount();
+    if (typeof updatePanierCount === 'function') updatePanierCount();
     gererClicPanier();
-    mettreAJourNavAuth();
+    // Le menu utilisateur de la nav est géré par nav-user-menu.js (auto-init)
 })();
 
 // ─── Chargement (localStorage ou API) ───────────────────────────
 async function chargerPanier() {
-    if (_isApiAvailable()) {
+    if (estApiDisponible()) {
         try {
             const items = await KinkaAPI.panier.get();
             // Normaliser le format API → format local
@@ -61,16 +61,16 @@ async function ajouterAuPanier(id, qty = 1) {
     if (!id) return false;
     qty = Math.max(1, parseInt(qty, 10) || 1);
 
-    if (_isApiAvailable()) {
+    if (estApiDisponible()) {
         try {
             await KinkaAPI.panier.add(id, qty);
         } catch (err) {
             if (typeof showToast === 'function') showToast(err.message || 'Impossible d\'ajouter au panier', 'error');
             return false;
         }
-        await _refleterEnMemoire(id, qty);
+        await refleterEnMemoire(id, qty);
     } else {
-        const ok = await _ajouterEnLocal(id, qty);
+        const ok = await ajouterEnLocal(id, qty);
         if (!ok) return false;
         sauvegarderPanier();
     }
@@ -82,12 +82,12 @@ async function ajouterAuPanier(id, qty = 1) {
 }
 
 // Charge les détails d'un produit depuis l'API (pour l'affichage local).
-async function _chargerProduit(id) {
+async function chargerProduit(id) {
     try { return await KinkaAPI.produits.getOne(id); } catch (_) { return null; }
 }
 
 // Convertit un produit API en item de panier local.
-function _versItemPanier(prod, quantite) {
+function versItemPanier(prod, quantite) {
     const prix = prod.promo && prod.prix_promo ? parsePrix(prod.prix_promo) : parsePrix(prod.prix);
     return {
         id:       prod.id,
@@ -101,32 +101,32 @@ function _versItemPanier(prod, quantite) {
 }
 
 // Après un ajout API réussi : reflète le changement dans la variable `panier`.
-async function _refleterEnMemoire(id, qty) {
+async function refleterEnMemoire(id, qty) {
     const index = panier.findIndex(function(item) { return item.id === id; });
     if (index !== -1) {
         panier[index].quantite = Math.min(panier[index].quantite + qty, MAX_QTY);
         return;
     }
-    const prod = await _chargerProduit(id);
-    if (prod) panier.push(_versItemPanier(prod, qty));
+    const prod = await chargerProduit(id);
+    if (prod) panier.push(versItemPanier(prod, qty));
 }
 
 // Mode invité : ajoute au panier local (retourne false si produit introuvable).
-async function _ajouterEnLocal(id, qty) {
+async function ajouterEnLocal(id, qty) {
     const index = panier.findIndex(function(item) { return item.id === id; });
     if (index !== -1) {
         panier[index].quantite = Math.min(panier[index].quantite + qty, MAX_QTY);
         return true;
     }
-    const prod = await _chargerProduit(id);
+    const prod = await chargerProduit(id);
     if (!prod) { if (typeof showToast === 'function') showToast('Produit introuvable', 'error'); return false; }
-    panier.push(_versItemPanier(prod, qty));
+    panier.push(versItemPanier(prod, qty));
     return true;
 }
 
 // ─── Retirer ─────────────────────────────────────────────────────
 async function retirerDuPanier(produitId) {
-    if (_isApiAvailable()) {
+    if (estApiDisponible()) {
         try { await KinkaAPI.panier.remove(produitId); } catch (_) {}
     }
     panier = panier.filter(function(item) { return item.id !== produitId; });
@@ -136,7 +136,7 @@ async function retirerDuPanier(produitId) {
 
 // ─── Vider ───────────────────────────────────────────────────────
 async function viderPanier() {
-    if (_isApiAvailable()) {
+    if (estApiDisponible()) {
         try { await KinkaAPI.panier.vider(); } catch (_) {}
     }
     panier = [];
@@ -150,7 +150,7 @@ async function modifierQuantite(produitId, nouvelleQuantite) {
     if (index === -1) return;
     if (nouvelleQuantite <= 0) { await retirerDuPanier(produitId); return; }
     const qty = Math.min(nouvelleQuantite, MAX_QTY);
-    if (_isApiAvailable()) {
+    if (estApiDisponible()) {
         try { await KinkaAPI.panier.updateQty(produitId, qty); } catch (_) {}
     }
     panier[index].quantite = qty;
@@ -193,85 +193,6 @@ function gererClicPanier() {
             window.location.href = '/page_panier.html';
         });
     });
-}
-
-// ─── Mise à jour nav selon auth — Dropdown profil ────────────────
-function _escNav(str) {
-    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-function mettreAJourNavAuth() {
-    try {
-        // Vérifier que le token existe ET que l'user est en localStorage
-        if (typeof KinkaAuth !== 'undefined' && !KinkaAuth.isLoggedIn()) {
-            // Token absent : nettoyer les données obsolètes
-            localStorage.removeItem('kinka_current_user');
-            return;
-        }
-        const user = JSON.parse(localStorage.getItem('kinka_current_user'));
-        if (!user) return;
-        const connectBtn = document.querySelector('.connect-btn');
-        if (!connectBtn) return;
-
-        const isPremium = user.abonnement === 'premium';
-        const isCollector = user.abonnement === 'collector';
-        const planLabel = isCollector ? 'Collector' : isPremium ? 'Premium' : 'Membre';
-
-        const wrapper = document.createElement('div');
-        wrapper.className = 'nav-user-wrap';
-        wrapper.style.position = 'relative';
-
-        const btn = document.createElement('button');
-        btn.className = 'nav-user-btn';
-        btn.setAttribute('aria-haspopup','true');
-        btn.setAttribute('aria-expanded','false');
-        btn.innerHTML = `<div class="nav-user-avatar"><span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">person</span></div><span class="nav-user-name">${_escNav(user.prenom || 'Mon compte')}</span><span class="material-symbols-outlined nav-user-chevron">expand_more</span>`;
-
-        const dropdown = document.createElement('div');
-        dropdown.className = 'nav-user-dropdown';
-        dropdown.setAttribute('aria-hidden','true');
-        dropdown.innerHTML = `
-            <div class="nav-user-dropdown-head">
-                <div class="nav-user-dropdown-avatar"><span class="material-symbols-outlined" style="font-size:1.5rem;font-variation-settings:'FILL' 1">person</span></div>
-                <div class="nav-user-dropdown-info">
-                    <div class="nav-user-dropdown-name">${_escNav((user.prenom||'')+' '+(user.nom||''))}</div>
-                    <div class="nav-user-dropdown-email">${_escNav(user.email||'')}</div>
-                    <div class="nav-user-dropdown-plan ${isPremium?'plan-premium':isCollector?'plan-collector':'plan-free'}">${isPremium?'<span class="material-symbols-outlined" style="font-size:.7rem;font-variation-settings:\'FILL\' 1">star</span>':''}${planLabel.toUpperCase()}</div>
-                </div>
-            </div>
-            <div class="nav-user-dropdown-sep"></div>
-            <a href="/page_profil.html?section=info" class="nav-user-dropdown-item"><span class="material-symbols-outlined">manage_accounts</span><span data-i18n="Mes informations">Mes informations</span></a>
-            <a href="/page_profil.html?section=commandes" class="nav-user-dropdown-item"><span class="material-symbols-outlined">receipt_long</span><span data-i18n="Mes commandes">Mes commandes</span></a>
-            <a href="/page_favoris.html" class="nav-user-dropdown-item"><span class="material-symbols-outlined">favorite</span><span data-i18n="Mes favoris">Mes favoris</span></a>
-            <div class="nav-user-dropdown-sep"></div>
-            <button class="nav-user-dropdown-item nav-user-dropdown-logout" id="nav-logout-btn"><span class="material-symbols-outlined">logout</span><span data-i18n="Se déconnecter">Se déconnecter</span></button>`;
-
-        wrapper.appendChild(btn);
-        wrapper.appendChild(dropdown);
-        connectBtn.removeAttribute('onclick');
-        connectBtn.parentNode.replaceChild(wrapper, connectBtn);
-
-        let isOpen = false;
-        function openDropdown() { isOpen=true; dropdown.classList.add('open'); btn.setAttribute('aria-expanded','true'); dropdown.setAttribute('aria-hidden','false'); }
-        function closeDropdown() { isOpen=false; dropdown.classList.remove('open'); btn.setAttribute('aria-expanded','false'); dropdown.setAttribute('aria-hidden','true'); }
-        btn.addEventListener('click', function(e) { e.stopPropagation(); if (isOpen) closeDropdown(); else openDropdown(); });
-
-        if (!window._kinkaDropdownListenerAttached) {
-            window._kinkaDropdownListenerAttached = true;
-            document.addEventListener('click', function() { document.querySelectorAll('.nav-user-dropdown.open').forEach(function(d) { d.classList.remove('open'); const p=d.closest('.nav-user-wrap'); if(p){const b=p.querySelector('.nav-user-btn');if(b)b.setAttribute('aria-expanded','false');} }); });
-            document.addEventListener('keydown', function(e) { if(e.key==='Escape') document.querySelectorAll('.nav-user-dropdown.open').forEach(function(d){d.classList.remove('open');}); });
-        }
-        dropdown.addEventListener('click', function(e) { e.stopPropagation(); });
-
-        // Déconnexion via API
-        dropdown.querySelector('#nav-logout-btn').addEventListener('click', function() {
-            if (typeof KinkaAuth !== 'undefined') KinkaAuth.removeToken();
-            else { localStorage.removeItem('kinka_current_user'); localStorage.removeItem('kinka_token'); }
-            window.location.href = '/page_accueil.html';
-        });
-
-        if (window.kinka_translate) window.kinka_translate();
-    } catch (e) { /* silencieux */ }
 }
 
 // ─── Exposition globale ──────────────────────────────────────────

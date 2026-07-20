@@ -1,187 +1,263 @@
 // afficher_produit.js — Page détail produit via KinkaAPI
-(function _init() {
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); return; }
-    if (typeof KinkaAPI === 'undefined') { setTimeout(_init, 100); return; }
+// Récupère le produit depuis l'API (id en query string) puis remplit chaque
+// section de la page. Une fonction = une section, nommée explicitement.
+
+(function init() {
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); return; }
+    if (typeof KinkaAPI === 'undefined') { setTimeout(init, 100); return; }
+
     var id = new URLSearchParams(window.location.search).get('id');
-    if (!id) { _err('Aucun produit spécifié.'); return; }
+    if (!id) { afficherErreur('Aucun produit spécifié.'); return; }
+
     KinkaAPI.produits.getOne(id)
-        .then(function(p) {
-            document.title = p.titre + ' — KINKA.FR';
-            _image(p); _tags(p); _titre(p); _auteur(p); _prix(p);
-            _dispo(p); _ref(p); _synopsis(p); _carac(p); _breadcrumb(p);
-            _tabs(); _quantite(p); _panier(p); _favoris(p); _similaires(p);
+        .then(function(produit) {
+            document.title = produit.titre + ' — KINKA.FR';
+            afficherImage(produit);
+            afficherTags(produit);
+            afficherTitre(produit);
+            afficherAuteur(produit);
+            afficherPrix(produit);
+            afficherDisponibilite(produit);
+            afficherReference(produit);
+            afficherSynopsis(produit);
+            afficherCaracteristiques(produit);
+            afficherBreadcrumb(produit);
+            initOnglets();
+            initSelecteurQuantite(produit);
+            initBoutonPanier(produit);
+            initBoutonFavoris(produit);
+            afficherProduitsSimilaires(produit);
         })
-        .catch(function() { _err('Produit introuvable.'); });
+        .catch(function() { afficherErreur('Produit introuvable.'); });
 })();
 
-function _e(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function _g(id) { return document.getElementById(id); }
+// ─── Utilitaires ─────────────────────────────────────────────────
+function escapeHtml(s) {
+    return String(s || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 
-function _image(p) {
-    var img = _g('produit-image'); if (!img) return;
-    img.src = p.image || '/asset/image/One-Piece-Edition-originale-Tome-105.jpg';
-    img.alt = p.titre;
+function getById(id) { return document.getElementById(id); }
+
+// ─── Sections ────────────────────────────────────────────────────
+function afficherImage(produit) {
+    var img = getById('produit-image'); if (!img) return;
+    img.src = produit.image || '/asset/image/One-Piece-Edition-originale-Tome-105.jpg';
+    img.alt = produit.titre;
     img.onerror = function() { this.src = '/asset/image/One-Piece-Edition-originale-Tome-105.jpg'; };
 }
 
-function _tags(p) {
-    var el = _g('produit-categories'); if (!el) return;
-    var sk = p.stock > 0 ? 'stock-tag' : 'rupture-tag';
-    var h  = '<span class="category-tag">' + _e(p.categorie||'Manga') + '</span>';
-    if (p.etat === 'occasion') h += '<span class="category-tag" style="background:rgba(99,102,241,.08);color:#6366f1;border-color:rgba(99,102,241,.2)">Occasion</span>';
-    h += '<span class="category-tag ' + sk + '">' + (p.stock > 0 ? 'En stock' : 'Rupture') + '</span>';
-    if (p.nouveaute)  h += '<span class="category-tag" style="background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.2)">Nouveau</span>';
-    if (p.bestseller) h += '<span class="category-tag" style="background:rgba(245,158,11,.08);color:#d97706;border-color:rgba(245,158,11,.2)">Best-seller</span>';
-    el.innerHTML = h;
+function afficherTags(produit) {
+    var el = getById('produit-categories'); if (!el) return;
+    var classeStock = produit.stock > 0 ? 'stock-tag' : 'rupture-tag';
+    var html = '<span class="category-tag">' + escapeHtml(produit.categorie || 'Manga') + '</span>';
+    if (produit.etat === 'occasion') {
+        html += '<span class="category-tag" style="background:rgba(99,102,241,.08);color:#6366f1;border-color:rgba(99,102,241,.2)">Occasion</span>';
+    }
+    html += '<span class="category-tag ' + classeStock + '">' + (produit.stock > 0 ? 'En stock' : 'Rupture') + '</span>';
+    if (produit.nouveaute) {
+        html += '<span class="category-tag" style="background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.2)">Nouveau</span>';
+    }
+    if (produit.bestseller) {
+        html += '<span class="category-tag" style="background:rgba(245,158,11,.08);color:#d97706;border-color:rgba(245,158,11,.2)">Best-seller</span>';
+    }
+    el.innerHTML = html;
 }
 
-function _titre(p) { var el = _g('produit-titre'); if (el) el.textContent = p.titre; }
-
-function _stars(note) {
-    var n = Math.round(note*2)/2, full = Math.floor(n), half = n%1>=.5?1:0;
-    var s = '<div class="product-rating"><span class="stars">';
-    for (var i=0;i<full;i++) s += '<span class="material-symbols-outlined filled">star</span>';
-    if (half) s += '<span class="material-symbols-outlined filled">star_half</span>';
-    for (var i=full+half;i<5;i++) s += '<span class="material-symbols-outlined">star_outline</span>';
-    return s + '</span><span class="rating-text">' + note + '/5</span></div>';
+function afficherTitre(produit) {
+    var el = getById('produit-titre');
+    if (el) el.textContent = produit.titre;
 }
 
-function _auteur(p) {
-    var el = _g('produit-auteur');
-    if (el) el.innerHTML = 'Par <a href="/page_auteur.html?auteur=' + encodeURIComponent(p.auteur||'') + '" class="author-link">' + _e(p.auteur||'Inconnu') + '</a> · ' + _e(p.editeur||'');
-    var noteEl = _g('produit-note');
-    if (noteEl && p.note > 0) noteEl.innerHTML = _stars(p.note);
+function genererEtoiles(note) {
+    var n = Math.round(note * 2) / 2;
+    var pleines = Math.floor(n);
+    var demie = n % 1 >= 0.5 ? 1 : 0;
+    var html = '<div class="product-rating"><span class="stars">';
+    for (var i = 0; i < pleines; i++) html += '<span class="material-symbols-outlined filled">star</span>';
+    if (demie) html += '<span class="material-symbols-outlined filled">star_half</span>';
+    for (var j = pleines + demie; j < 5; j++) html += '<span class="material-symbols-outlined">star_outline</span>';
+    return html + '</span><span class="rating-text">' + note + '/5</span></div>';
 }
 
-function _prix(p) {
-    var el = _g('produit-prix'); if (!el) return;
-    var pa = p.promo && p.prix_promo ? parseFloat(p.prix_promo) : parseFloat(p.prix);
-    var pb = p.promo && p.prix_promo ? parseFloat(p.prix) : null;
-    var pct = pb ? Math.round((1-pa/pb)*100) : 0;
-    var h = '<span class="price-main">' + pa.toFixed(2).replace('.',',') + ' €</span>';
-    if (pb) h += '<span class="price-old">' + pb.toFixed(2).replace('.',',') + ' €</span>';
-    if (pct > 0) h += '<span class="price-badge-promo">−' + pct + '%</span>';
-    el.innerHTML = h;
+function afficherAuteur(produit) {
+    var el = getById('produit-auteur');
+    if (el) {
+        el.innerHTML = 'Par <a href="/page_auteur.html?auteur=' + encodeURIComponent(produit.auteur || '')
+            + '" class="author-link">' + escapeHtml(produit.auteur || 'Inconnu') + '</a> · ' + escapeHtml(produit.editeur || '');
+    }
+    var noteEl = getById('produit-note');
+    if (noteEl && produit.note > 0) noteEl.innerHTML = genererEtoiles(produit.note);
 }
 
-function _dispo(p) {
-    var el = _g('produit-disponibilite'); if (!el) return;
-    if (p.stock > 0) {
-        el.innerHTML = p.stock <= 3
-            ? '<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Plus que ' + p.stock + ' exemplaire' + (p.stock>1?'s':'') + '</strong>'
-            : '<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>' + p.stock + ' exemplaires</strong> disponibles';
-        el.style.borderColor = p.stock <= 3 ? 'rgba(245,158,11,.3)' : 'rgba(34,197,94,.3)';
-        el.style.background  = p.stock <= 3 ? 'rgba(245,158,11,.05)' : 'rgba(34,197,94,.05)';
+function afficherPrix(produit) {
+    var el = getById('produit-prix'); if (!el) return;
+    var prixActuel = produit.promo && produit.prix_promo ? parseFloat(produit.prix_promo) : parseFloat(produit.prix);
+    var prixBarre  = produit.promo && produit.prix_promo ? parseFloat(produit.prix) : null;
+    var pourcentage = prixBarre ? Math.round((1 - prixActuel / prixBarre) * 100) : 0;
+    var html = '<span class="price-main">' + prixActuel.toFixed(2).replace('.', ',') + ' €</span>';
+    if (prixBarre)      html += '<span class="price-old">' + prixBarre.toFixed(2).replace('.', ',') + ' €</span>';
+    if (pourcentage > 0) html += '<span class="price-badge-promo">−' + pourcentage + '%</span>';
+    el.innerHTML = html;
+}
+
+function afficherDisponibilite(produit) {
+    var el = getById('produit-disponibilite'); if (!el) return;
+    if (produit.stock > 0) {
+        el.innerHTML = produit.stock <= 3
+            ? '<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Plus que ' + produit.stock + ' exemplaire' + (produit.stock > 1 ? 's' : '') + '</strong>'
+            : '<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>' + produit.stock + ' exemplaires</strong> disponibles';
+        el.style.borderColor = produit.stock <= 3 ? 'rgba(245,158,11,.3)' : 'rgba(34,197,94,.3)';
+        el.style.background  = produit.stock <= 3 ? 'rgba(245,158,11,.05)' : 'rgba(34,197,94,.05)';
     } else {
         el.innerHTML = '<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle">cancel</span> <strong>Rupture de stock</strong>';
-        el.style.borderColor = 'rgba(239,68,68,.3)'; el.style.background = 'rgba(239,68,68,.05)';
+        el.style.borderColor = 'rgba(239,68,68,.3)';
+        el.style.background  = 'rgba(239,68,68,.05)';
     }
 }
 
-function _ref(p) {
-    var el = _g('produit-ref');
-    if (el && (p.ean||p.isbn)) el.textContent = 'EAN / ISBN : ' + (p.ean||p.isbn);
+function afficherReference(produit) {
+    var el = getById('produit-ref');
+    if (el && (produit.ean || produit.isbn)) el.textContent = 'EAN / ISBN : ' + (produit.ean || produit.isbn);
 }
 
-function _synopsis(p) {
-    var el = _g('synopsis-texte');
-    if (el) el.textContent = p.synopsis || p.description || 'Aucun synopsis disponible.';
+function afficherSynopsis(produit) {
+    var el = getById('synopsis-texte');
+    if (el) el.textContent = produit.synopsis || produit.description || 'Aucun synopsis disponible.';
 }
 
-function _carac(p) {
-    var el = _g('carac-grid'); if (!el) return;
-    var rows = [
-        ['Éditeur', p.editeur], ['Collection', p.collection], ['Catégorie', p.categorie],
-        ['Série', p.serie], ['Tome', p.tome ? 'Tome ' + p.tome : null],
-        ['Tomes au total', p.tome_total ? p.tome_total + ' tomes' : null],
-        ['Date de parution', p.date_parution], ['Pages', p.pages ? p.pages + ' pages' : null],
-        ['Format', p.format], ['État', p.etat === 'neuf' ? 'Neuf' : p.etat === 'occasion' ? 'Occasion' : p.etat],
-        ['Langue', p.langue], ['EAN / ISBN', p.ean || p.isbn],
+function afficherCaracteristiques(produit) {
+    var el = getById('carac-grid'); if (!el) return;
+    var lignes = [
+        ['Éditeur', produit.editeur],
+        ['Collection', produit.collection],
+        ['Catégorie', produit.categorie],
+        ['Série', produit.serie],
+        ['Tome', produit.tome ? 'Tome ' + produit.tome : null],
+        ['Tomes au total', produit.tome_total ? produit.tome_total + ' tomes' : null],
+        ['Date de parution', produit.date_parution],
+        ['Pages', produit.pages ? produit.pages + ' pages' : null],
+        ['Format', produit.format],
+        ['État', produit.etat === 'neuf' ? 'Neuf' : produit.etat === 'occasion' ? 'Occasion' : produit.etat],
+        ['Langue', produit.langue],
+        ['EAN / ISBN', produit.ean || produit.isbn],
     ];
-    el.innerHTML = rows.filter(function(r){ return r[1]; }).map(function(r){
-        return '<div class="carac-item"><span class="carac-label">' + _e(r[0]) + '</span><span class="carac-value">' + _e(String(r[1])) + '</span></div>';
-    }).join('');
+    el.innerHTML = lignes
+        .filter(function(ligne) { return ligne[1]; })
+        .map(function(ligne) {
+            return '<div class="carac-item"><span class="carac-label">' + escapeHtml(ligne[0])
+                + '</span><span class="carac-value">' + escapeHtml(String(ligne[1])) + '</span></div>';
+        })
+        .join('');
 }
 
-function _breadcrumb(p) {
-    var bc = _g('breadcrumb-categorie'), bt = _g('breadcrumb-titre');
-    if (bc) { bc.textContent = p.categorie || 'Manga'; bc.href = '/page_catalogue.html?categorie=' + (p.categorie||'').toLowerCase().replace(/[ôo]/g,'o'); }
-    if (bt) bt.textContent = p.titre;
+function afficherBreadcrumb(produit) {
+    var lienCategorie = getById('breadcrumb-categorie');
+    var lienTitre     = getById('breadcrumb-titre');
+    if (lienCategorie) {
+        lienCategorie.textContent = produit.categorie || 'Manga';
+        lienCategorie.href = '/page_catalogue.html?categorie=' + (produit.categorie || '').toLowerCase().replace(/[ôo]/g, 'o');
+    }
+    if (lienTitre) lienTitre.textContent = produit.titre;
 }
 
-function _tabs() {
+function initOnglets() {
     document.querySelectorAll('.product-tabs .tab-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            document.querySelectorAll('.product-tabs .tab-btn,.product-tabs .tab-panel').forEach(function(el){ el.classList.remove('active'); });
+            document.querySelectorAll('.product-tabs .tab-btn,.product-tabs .tab-panel').forEach(function(el) {
+                el.classList.remove('active');
+            });
             btn.classList.add('active');
-            var t = document.getElementById(btn.dataset.tab); if (t) t.classList.add('active');
+            var panneau = document.getElementById(btn.dataset.tab);
+            if (panneau) panneau.classList.add('active');
         });
     });
 }
 
-function _quantite(p) {
-    var input = _g('qty-input'), bm = _g('btn-moins'), bp = _g('btn-plus');
+function initSelecteurQuantite(produit) {
+    var input = getById('qty-input');
+    var btnMoins = getById('btn-moins');
+    var btnPlus  = getById('btn-plus');
     if (!input) return;
-    var max = Math.max(1, Math.min(10, p.stock||0));
-    input.min = 1; input.max = max; input.value = 1;
-    if (bm) bm.addEventListener('click', function(){ var v=parseInt(input.value)||1; if(v>1) input.value=v-1; });
-    if (bp) bp.addEventListener('click', function(){ var v=parseInt(input.value)||1; if(v<max) input.value=v+1; });
+
+    var max = Math.max(1, Math.min(10, produit.stock || 0));
+    input.min = 1;
+    input.max = max;
+    input.value = 1;
+
+    if (btnMoins) btnMoins.addEventListener('click', function() {
+        var v = parseInt(input.value) || 1;
+        if (v > 1) input.value = v - 1;
+    });
+    if (btnPlus) btnPlus.addEventListener('click', function() {
+        var v = parseInt(input.value) || 1;
+        if (v < max) input.value = v + 1;
+    });
 }
 
-function _panier(p) {
-    var btn = _g('btn-ajouter-panier'); if (!btn) return;
-    if (p.stock === 0) {
+function initBoutonPanier(produit) {
+    var btn = getById('btn-ajouter-panier'); if (!btn) return;
+    if (produit.stock === 0) {
         btn.disabled = true;
         btn.innerHTML = '<span class="material-symbols-outlined">remove_shopping_cart</span> Indisponible';
         return;
     }
     btn.addEventListener('click', async function() {
         // Délègue au point d'entrée unique ajouterAuPanier(id, qty) de panier.js
-        var qty  = parseInt(_g('qty-input') && _g('qty-input').value) || 1;
-        var orig = btn.innerHTML;
+        var qty = parseInt(getById('qty-input') && getById('qty-input').value) || 1;
+        var contenuOrigine = btn.innerHTML;
         btn.disabled = true;
         var ok = false;
         try {
             ok = (typeof window.ajouterAuPanier === 'function')
-               ? await window.ajouterAuPanier(p.id, qty)
+               ? await window.ajouterAuPanier(produit.id, qty)
                : false;
         } catch (_) { ok = false; }
         if (ok) {
             btn.innerHTML = '<span class="material-symbols-outlined">check</span> Ajouté !';
             btn.classList.add('btn-success');
-            setTimeout(function(){ btn.innerHTML = orig; btn.classList.remove('btn-success'); btn.disabled = false; }, 2000);
+            setTimeout(function() {
+                btn.innerHTML = contenuOrigine;
+                btn.classList.remove('btn-success');
+                btn.disabled = false;
+            }, 2000);
         } else {
-            btn.disabled = false; btn.innerHTML = orig;
+            btn.disabled = false;
+            btn.innerHTML = contenuOrigine;
         }
     });
 }
 
-function _favoris(p) {
-    var btn = _g('btn-favoris'); if (!btn) return;
-    var favs = JSON.parse(localStorage.getItem('kinka_favoris')||'[]');
-    if (favs.includes(p.id)) btn.classList.add('favoris-actif');
+function initBoutonFavoris(produit) {
+    var btn = getById('btn-favoris'); if (!btn) return;
+    var favoris = JSON.parse(localStorage.getItem('kinka_favoris') || '[]');
+    if (favoris.includes(produit.id)) btn.classList.add('favoris-actif');
     btn.addEventListener('click', function(e) {
-        e.preventDefault(); e.stopPropagation();
-        if (typeof kinkaToggleFav === 'function') kinkaToggleFav(p.id, e);
+        e.preventDefault();
+        e.stopPropagation();
+        if (typeof kinkaToggleFav === 'function') kinkaToggleFav(produit.id, e);
     });
 }
 
-function _similaires(p) {
-    var el = _g('produits-similaires'); if (!el) return;
+function afficherProduitsSimilaires(produit) {
+    var el = getById('produits-similaires'); if (!el) return;
     el.innerHTML = '<p style="opacity:.4">Chargement…</p>';
-    KinkaAPI.produits.getAll({ categorie: p.categorie, limit: 8 })
+    KinkaAPI.produits.getAll({ categorie: produit.categorie, limit: 8 })
         .then(function(items) {
-            var s = items.filter(function(m){ return m.id !== p.id; }).slice(0, 4);
-            if (!s.length) { el.innerHTML = ''; return; }
-            el.innerHTML = s.map(function(m){ return buildProductCard(m); }).join('');
-        }).catch(function() { el.innerHTML = ''; });
+            var similaires = items.filter(function(m) { return m.id !== produit.id; }).slice(0, 4);
+            if (!similaires.length) { el.innerHTML = ''; return; }
+            el.innerHTML = similaires.map(function(m) { return buildProductCard(m); }).join('');
+        })
+        .catch(function() { el.innerHTML = ''; });
 }
 
-function _err(msg) {
-    var c = _g('produit-container') || document.querySelector('main'); if (!c) return;
-    c.innerHTML = '<div style="text-align:center;padding:5rem 2rem">'
+function afficherErreur(message) {
+    var container = getById('produit-container') || document.querySelector('main');
+    if (!container) return;
+    container.innerHTML = '<div style="text-align:center;padding:5rem 2rem">'
         + '<span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem">error</span>'
-        + '<h2>' + _e(msg) + '</h2>'
+        + '<h2>' + escapeHtml(message) + '</h2>'
         + '<a href="/page_catalogue.html" class="btn-primary" style="display:inline-flex;margin-top:1.5rem">'
         + '<span class="material-symbols-outlined">arrow_back</span> Retour au catalogue</a></div>';
 }

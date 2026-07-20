@@ -23,30 +23,30 @@ function buildProductCard(m) {
                      : m.bestseller ? 'bestseller' : m.etat === 'occasion' ? 'occasion' : '';
     const stockLabel = m.stock <= 0 ? '<span class="stock-badge rupture">Rupture</span>'
                      : m.stock <= 3 ? `<span class="stock-badge last">Plus que ${m.stock}</span>` : '';
-    const noteStars  = note > 0 ? _buildStars(note) : '';
+    const noteStars  = note > 0 ? construireEtoiles(note) : '';
 
-    return `<div class="product-card" data-id="${_e(m.id)}"
+    return `<div class="product-card" data-id="${escapeHtml(m.id)}"
         onclick="if(!event.target.closest('.add-to-cart,.card-fav-btn'))window.location.href='/page_detail_produit.html?id=${encodeURIComponent(m.id)}'">
         <div class="product-image">
             ${badgeTxt ? `<span class="product-badge ${badgeClass}">${badgeTxt}</span>` : ''}
             ${stockLabel}
-            <img src="${_e(img)}" alt="${_e(m.titre || '')}" loading="lazy"
+            <img src="${escapeHtml(img)}" alt="${escapeHtml(m.titre || '')}" loading="lazy"
                  onerror="this.src='/asset/image/One-Piece-Edition-originale-Tome-105.jpg'">
-            ${desc ? `<div class="product-synopsis"><p>${_e(desc)}</p></div>` : ''}
+            ${desc ? `<div class="product-synopsis"><p>${escapeHtml(desc)}</p></div>` : ''}
             <div class="card-actions">
                 <button class="card-fav-btn${isFav ? ' active' : ''}"
-                    onclick="kinkaToggleFav('${_e(m.id)}', event)"
+                    onclick="kinkaToggleFav('${escapeHtml(m.id)}', event)"
                     title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">
                     <span class="material-symbols-outlined">favorite</span>
                 </button>
             </div>
         </div>
         <div class="product-info">
-            <h3 class="product-title">${_e(m.titre || '')}</h3>
+            <h3 class="product-title">${escapeHtml(m.titre || '')}</h3>
             <p class="product-author">
                 <a href="/page_auteur.html?auteur=${encodeURIComponent(m.auteur || '')}"
                    onclick="event.stopPropagation()"
-                   style="color:inherit;text-decoration:none">${_e(m.auteur || m.editeur || '')}</a>
+                   style="color:inherit;text-decoration:none">${escapeHtml(m.auteur || m.editeur || '')}</a>
             </p>
             ${noteStars}
             <div class="product-footer">
@@ -55,7 +55,7 @@ function buildProductCard(m) {
                     ${prixOrig ? `<span class="product-price-old">${prixOrig.toFixed(2)} €</span>` : ''}
                 </div>
                 <button class="add-to-cart"
-                    onclick="kinkaAddToCart('${_e(m.id)}', event)"
+                    onclick="kinkaAddToCart('${escapeHtml(m.id)}', event)"
                     title="Ajouter au panier">
                     <span class="material-symbols-outlined">add_shopping_cart</span>
                 </button>
@@ -64,7 +64,7 @@ function buildProductCard(m) {
     </div>`;
 }
 
-function _buildStars(note) {
+function construireEtoiles(note) {
     const n = Math.round(note * 2) / 2;
     const full = Math.floor(n), half = n % 1 >= 0.5 ? 1 : 0;
     let s = '';
@@ -194,7 +194,7 @@ window.updatePanierCount = async function() {
         const p = JSON.parse(localStorage.getItem('kinka_panier') || '[]');
         nb = p.reduce((s, i) => s + (i.quantite || 1), 0);
     }
-    _setBadge('#panier-count, .panier-count', nb);
+    majBadge('#panier-count, .panier-count', nb);
     // Badge dynamique sur l'icône shopping_cart
     document.querySelectorAll('.icon-btn').forEach(btn => {
         const ic = btn.querySelector('.material-symbols-outlined');
@@ -225,10 +225,10 @@ window.updateFavsCount = async function() {
     } catch (_) {
         try { nb = JSON.parse(localStorage.getItem('kinka_favoris') || '[]').length; } catch(__) {}
     }
-    _setBadge('#favoris-count, .favoris-count', nb);
+    majBadge('#favoris-count, .favoris-count', nb);
 };
 
-function _setBadge(selector, nb) {
+function majBadge(selector, nb) {
     document.querySelectorAll(selector).forEach(el => {
         el.textContent = nb > 99 ? '99+' : nb;
         el.style.display = nb > 0 ? 'flex' : 'none';
@@ -279,7 +279,7 @@ window.syncFavButtons    = () => updateFavsCount();
 })();
 
 // ─── ESCAPE HTML ─────────────────────────────────────────────
-function _e(s) {
+function escapeHtml(s) {
     return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
