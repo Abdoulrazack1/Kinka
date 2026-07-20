@@ -1,19 +1,20 @@
 // ============================================================
-// scripts/import_mangas.js
-// Importe tous les mangas de asset/js/mangadb.js dans MySQL.
-// Aucune modification manuelle de mangadb.js requise — le script
-// l'évalue dans un sandbox isolé pour récupérer la constante.
+// _archive/import_mangas.js  (LEGACY — conservé pour référence)
+// Importait les fausses données de _archive/mangadb.js dans MySQL.
+// Le catalogue réel provient désormais de scripts/seed_big.js et
+// scripts/sync_mangas_jikan.js. Ce script n'est plus branché sur npm.
 //
-// Usage : npm run import
+// Exécution manuelle éventuelle, depuis la racine du repo :
+//   node _archive/import_mangas.js
 // ============================================================
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', 'kinka-api', '.env') });
 
 const fs   = require('fs');
-const path = require('path');
 const vm   = require('vm');
-const db   = require('../config/db');
+const db   = require(path.join(__dirname, '..', 'kinka-api', 'config', 'db'));
 
-const MANGADB_PATH = path.join(__dirname, '..', '..', 'asset', 'js', 'mangadb.js');
+const MANGADB_PATH = path.join(__dirname, 'mangadb.js');
 
 // ── Charge mangadb.js dans un sandbox et récupère mangasDB ──────
 function loadMangas() {

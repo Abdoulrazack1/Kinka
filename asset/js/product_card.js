@@ -92,4 +92,4 @@
     }
 
 })();
-// Note: initShineEffect est dans mangadb.js (chargé sur toutes les pages avec cards)
+// Note : l'effet de survol/tilt des cartes est géré par initCardHover() dans kinka-cards.js.
