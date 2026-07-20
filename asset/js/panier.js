@@ -50,34 +50,78 @@ function sauvegarderPanier() {
 }
 
 // ─── Ajouter au panier ───────────────────────────────────────────
-async function ajouterAuPanier(produit) {
-    const prixNormalise = parsePrix(produit.prix);
-    const index = panier.findIndex(function(item) { return item.id === produit.id; });
+// POINT D'ENTRÉE UNIQUE du site pour ajouter un produit au panier.
+// Signature : ajouterAuPanier(id, qty). On travaille uniquement à partir
+// d'un identifiant produit (jamais du texte affiché à l'écran) ; les détails
+// d'affichage (titre, prix, image) sont relus depuis l'API.
+// Renvoie true si l'ajout a réussi, false sinon.
+async function ajouterAuPanier(id, qty = 1) {
+    // Compat : d'anciens appels passaient un objet { id, quantite }
+    if (id && typeof id === 'object') { qty = id.quantite || qty; id = id.id; }
+    if (!id) return false;
+    qty = Math.max(1, parseInt(qty, 10) || 1);
 
     if (_isApiAvailable()) {
         try {
-            await KinkaAPI.panier.add(produit.id, produit.quantite || 1);
-            // Mettre à jour la liste locale
-            if (index !== -1) {
-                panier[index].quantite = Math.min(panier[index].quantite + (produit.quantite || 1), MAX_QTY);
-            } else {
-                panier.push({ id: produit.id, titre: produit.titre || '', auteur: produit.auteur || '', prix: prixNormalise, image: produit.image || '', editeur: produit.editeur || '', quantite: produit.quantite || 1 });
-            }
+            await KinkaAPI.panier.add(id, qty);
         } catch (err) {
             if (typeof showToast === 'function') showToast(err.message || 'Impossible d\'ajouter au panier', 'error');
-            return;
+            return false;
         }
+        await _refleterEnMemoire(id, qty);
     } else {
-        if (index !== -1) {
-            panier[index].quantite = Math.min(panier[index].quantite + (produit.quantite || 1), MAX_QTY);
-        } else {
-            panier.push({ id: produit.id, titre: produit.titre || '', auteur: produit.auteur || '', prix: prixNormalise, image: produit.image || '', editeur: produit.editeur || '', quantite: produit.quantite || 1 });
-        }
+        const ok = await _ajouterEnLocal(id, qty);
+        if (!ok) return false;
         sauvegarderPanier();
     }
-    if(typeof updatePanierCount==="function") updatePanierCount();
+
+    if (typeof updatePanierCount === 'function') updatePanierCount();
     if (typeof showToast === 'function') showToast('Ajouté au panier !', 'success');
     else afficherNotification('Produit ajouté au panier');
+    return true;
+}
+
+// Charge les détails d'un produit depuis l'API (pour l'affichage local).
+async function _chargerProduit(id) {
+    try { return await KinkaAPI.produits.getOne(id); } catch (_) { return null; }
+}
+
+// Convertit un produit API en item de panier local.
+function _versItemPanier(prod, quantite) {
+    const prix = prod.promo && prod.prix_promo ? parsePrix(prod.prix_promo) : parsePrix(prod.prix);
+    return {
+        id:       prod.id,
+        titre:    prod.titre || '',
+        auteur:   prod.auteur || '',
+        prix:     prix,
+        image:    prod.image || '',
+        editeur:  prod.editeur || '',
+        quantite: Math.min(quantite, MAX_QTY)
+    };
+}
+
+// Après un ajout API réussi : reflète le changement dans la variable `panier`.
+async function _refleterEnMemoire(id, qty) {
+    const index = panier.findIndex(function(item) { return item.id === id; });
+    if (index !== -1) {
+        panier[index].quantite = Math.min(panier[index].quantite + qty, MAX_QTY);
+        return;
+    }
+    const prod = await _chargerProduit(id);
+    if (prod) panier.push(_versItemPanier(prod, qty));
+}
+
+// Mode invité : ajoute au panier local (retourne false si produit introuvable).
+async function _ajouterEnLocal(id, qty) {
+    const index = panier.findIndex(function(item) { return item.id === id; });
+    if (index !== -1) {
+        panier[index].quantite = Math.min(panier[index].quantite + qty, MAX_QTY);
+        return true;
+    }
+    const prod = await _chargerProduit(id);
+    if (!prod) { if (typeof showToast === 'function') showToast('Produit introuvable', 'error'); return false; }
+    panier.push(_versItemPanier(prod, qty));
+    return true;
 }
 
 // ─── Retirer ─────────────────────────────────────────────────────
@@ -231,5 +275,6 @@ function mettreAJourNavAuth() {
 }
 
 // ─── Exposition globale ──────────────────────────────────────────
-window.addToCart = ajouterAuPanier;
-window.getCart   = obtenirPanier;
+window.ajouterAuPanier = ajouterAuPanier;   // point d'entrée unique
+window.addToCart       = ajouterAuPanier;   // alias de compatibilité
+window.getCart         = obtenirPanier;

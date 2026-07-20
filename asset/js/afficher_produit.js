@@ -136,27 +136,21 @@ function _panier(p) {
         return;
     }
     btn.addEventListener('click', async function() {
+        // Délègue au point d'entrée unique ajouterAuPanier(id, qty) de panier.js
         var qty  = parseInt(_g('qty-input') && _g('qty-input').value) || 1;
         var orig = btn.innerHTML;
         btn.disabled = true;
+        var ok = false;
         try {
-            if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn()) {
-                await KinkaAPI.panier.add(p.id, qty);
-            } else {
-                var panier = JSON.parse(localStorage.getItem('kinka_panier')||'[]');
-                var idx = panier.findIndex(function(i){ return i.id === p.id; });
-                var px  = p.promo && p.prix_promo ? parseFloat(p.prix_promo) : parseFloat(p.prix);
-                if (idx >= 0) panier[idx].quantite = Math.min((panier[idx].quantite||1)+qty, 10);
-                else panier.push({ id:p.id, titre:p.titre, prix:px, image:p.image, editeur:p.editeur, quantite:Math.min(qty,10) });
-                localStorage.setItem('kinka_panier', JSON.stringify(panier));
-            }
-            if (typeof updatePanierCount === 'function') updatePanierCount();
-            if (typeof showToast === 'function') showToast('Ajouté au panier !');
+            ok = (typeof window.ajouterAuPanier === 'function')
+               ? await window.ajouterAuPanier(p.id, qty)
+               : false;
+        } catch (_) { ok = false; }
+        if (ok) {
             btn.innerHTML = '<span class="material-symbols-outlined">check</span> Ajouté !';
             btn.classList.add('btn-success');
             setTimeout(function(){ btn.innerHTML = orig; btn.classList.remove('btn-success'); btn.disabled = false; }, 2000);
-        } catch (err) {
-            if (typeof showToast === 'function') showToast(err.message||'Erreur panier', 'error');
+        } else {
             btn.disabled = false; btn.innerHTML = orig;
         }
     });

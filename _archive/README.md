@@ -17,3 +17,10 @@ Remplacé par les scripts de seed réels. Exécution manuelle éventuelle :
 ```bash
 node _archive/import_mangas.js
 ```
+
+## `product_card.js` et `page_produit.js`
+Anciens gestionnaires d'« ajout au panier » qui **reconstruisaient un id produit
+et le prix à partir du texte affiché dans le DOM** (fragile : cassait au moindre
+changement de format d'affichage). Ils n'étaient chargés par aucune page HTML.
+Remplacés par le point d'entrée unique `ajouterAuPanier(id, qty)` de
+`asset/js/panier.js`, piloté uniquement par `data-id`.

@@ -144,25 +144,11 @@ function _buildStars(note) {
 })();
 
 // ─── AJOUTER AU PANIER ───────────────────────────────────────
+// Délègue au point d'entrée unique ajouterAuPanier(id) défini dans panier.js.
 window.kinkaAddToCart = async function(id, e) {
     if (e) { e.preventDefault(); e.stopPropagation(); }
-    try {
-        if (typeof KinkaAuth !== 'undefined' && typeof KinkaAPI !== 'undefined' && KinkaAuth.isLoggedIn()) {
-            await KinkaAPI.panier.add(id, 1);
-        } else {
-            const prod = await KinkaAPI.produits.getOne(id).catch(() => null);
-            if (!prod) return;
-            const p   = JSON.parse(localStorage.getItem('kinka_panier') || '[]');
-            const idx = p.findIndex(x => x.id === id);
-            const px  = prod.promo && prod.prix_promo ? parseFloat(prod.prix_promo) : parseFloat(prod.prix);
-            if (idx >= 0) p[idx].quantite = Math.min((p[idx].quantite || 1) + 1, 10);
-            else p.push({ id, titre: prod.titre, prix: px, image: prod.image, editeur: prod.editeur, quantite: 1 });
-            localStorage.setItem('kinka_panier', JSON.stringify(p));
-        }
-        updatePanierCount();
-        if (typeof showToast === 'function') showToast('Ajouté au panier !');
-    } catch (err) {
-        if (typeof showToast === 'function') showToast(err.message || 'Erreur panier', 'error');
+    if (typeof window.ajouterAuPanier === 'function') {
+        await window.ajouterAuPanier(id, 1);
     }
 };
 
