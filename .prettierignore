@@ -1,0 +1,7 @@
+node_modules/
+**/node_modules/
+_archive/
+asset/js/translate.js
+kinka-api/kinka_db.sql
+kinka-api/kinka_db_migrate.sql
+*.min.js

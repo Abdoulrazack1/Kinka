@@ -1,0 +1,21 @@
+{
+  "name": "kinka",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Kinka.fr — boutique manga (front vanilla + API Node/Express/MySQL)",
+  "scripts": {
+    "dev": "npm --prefix kinka-api run dev",
+    "start": "npm --prefix kinka-api start",
+    "seed:big": "npm --prefix kinka-api run seed:big",
+    "sync": "npm --prefix kinka-api run sync",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "eslint": "^9.9.0",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3"
+  }
+}
