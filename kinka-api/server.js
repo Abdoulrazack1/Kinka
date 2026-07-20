@@ -14,10 +14,20 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
+// En production, on whiteliste explicitement les origines autorisées
+// (variable CORS_ORIGINS = liste séparée par des virgules, ou à défaut CLIENT_URL).
+// En dev, on reste permissif pour Live Server / localhost / 127.0.0.1.
+const IS_PROD       = process.env.NODE_ENV === 'production';
+const CORS_WHITELIST = (process.env.CORS_ORIGINS || process.env.CLIENT_URL || '')
+  .split(',').map(o => o.trim()).filter(Boolean);
+
 app.use(cors({
   origin: function(origin, callback) {
-    // Autoriser toutes origines en dev (localhost, 127.0.0.1, Live Server, etc.)
-    callback(null, true);
+    // Requêtes sans origine (curl, apps mobiles, same-origin) : toujours autorisées
+    if (!origin) return callback(null, true);
+    if (!IS_PROD) return callback(null, true);                 // dev : tout autoriser
+    if (CORS_WHITELIST.includes(origin)) return callback(null, true);
+    return callback(new Error(`Origine non autorisée par CORS : ${origin}`));
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

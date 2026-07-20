@@ -3,12 +3,25 @@
 // Doc : https://docs.api.jikan.moe/
 
 const express      = require('express');
+const rateLimit    = require('express-rate-limit');
 const db           = require('../config/db');
 const asyncHandler = require('../middleware/asyncHandler');
+const { authRequired } = require('../middleware/auth');
+const { adminRequired } = require('../middleware/admin');
 
 const router = express.Router();
 
 const JIKAN_BASE = 'https://api.jikan.moe/v4';
+
+// Rate-limit dédié aux routes de synchronisation : très bas (écritures massives
+// en base + appels à l'API externe Jikan). 2 appels / heure / IP.
+const syncLimiter = rateLimit({
+  windowMs: 60 * 60_000,
+  max: 2,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Synchronisation limitée à 2 appels par heure' }
+});
 
 // ─── Mapping catégorie MAL → Kinka ──────────────────────────────
 const DEMO_MAP = {
@@ -127,7 +140,7 @@ router.get('/:mal_id', asyncHandler(async (req, res) => {
 // Synchronise les N mangas les plus populaires en France
 // Body : { limit: 100, page: 1, type: "manga" }
 // ════════════════════════════════════════════════════════════════
-router.post('/sync', asyncHandler(async (req, res) => {
+router.post('/sync', syncLimiter, authRequired, adminRequired, asyncHandler(async (req, res) => {
   const limit   = Math.min(parseInt(req.body?.limit) || 50, 200);
   const page    = Math.max(parseInt(req.body?.page)  || 1, 1);
   const type    = req.body?.type || 'manga'; // manga | manhwa | manhua
@@ -218,7 +231,7 @@ router.post('/sync', asyncHandler(async (req, res) => {
 // Importe un manga précis par son ID MAL + tous ses tomes
 // Body : { mal_id: 13, editeur: "Glénat" }
 // ════════════════════════════════════════════════════════════════
-router.post('/sync-one', asyncHandler(async (req, res) => {
+router.post('/sync-one', syncLimiter, authRequired, adminRequired, asyncHandler(async (req, res) => {
   const { mal_id, editeur = null } = req.body;
   if (!mal_id) return res.status(400).json({ success: false, error: 'mal_id requis' });
 

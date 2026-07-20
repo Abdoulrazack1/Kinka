@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS utilisateurs (
   code_postal      VARCHAR(10),
   pays             VARCHAR(100)   DEFAULT 'France',
   abonnement       VARCHAR(20)    DEFAULT 'gratuit',
+  role             VARCHAR(20)    DEFAULT 'user',
   avatar           TEXT,
   nom_utilisateur  VARCHAR(50) UNIQUE,
   bio              TEXT,

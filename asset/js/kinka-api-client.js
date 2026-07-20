@@ -12,7 +12,9 @@ const API = (typeof window !== 'undefined' && window.KINKA_API_URL) || 'http://l
 const KinkaCookies = {
   set(name, value, days = 30) {
     const exp = new Date(Date.now() + days * 864e5).toUTCString();
-    document.cookie = `${name}=${encodeURIComponent(value)};expires=${exp};path=/;SameSite=Lax`;
+    // En HTTPS (prod), ajoute Secure pour interdire toute transmission en clair.
+    const secure = (typeof location !== 'undefined' && location.protocol === 'https:') ? ';Secure' : '';
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${exp};path=/;SameSite=Lax${secure}`;
   },
   get(name) {
     const match = document.cookie.split('; ').find(r => r.startsWith(name + '='));
