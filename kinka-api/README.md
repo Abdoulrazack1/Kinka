@@ -6,8 +6,7 @@ kinka-api/
 ├── server.js                  # Point d'entrée
 ├── package.json
 ├── .env.example               # → copier en .env
-├── kinka_db.sql               # Schéma BDD à importer
-├── kinka-api-client.js        # Client JS à inclure dans les pages HTML
+├── kinka_db.sql               # Base complète (schéma + données) à importer
 ├── config/
 │   └── db.js                  # Pool MySQL
 ├── middleware/

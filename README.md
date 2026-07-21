@@ -105,8 +105,7 @@ Kinka/
     ├── server.js                   ← point d'entrée Express
     ├── package.json
     ├── .env.example                ← copier en .env
-    ├── kinka_db.sql                ← schéma BDD à importer
-    ├── kinka_db_migrate.sql        ← migrations incrémentales
+    ├── kinka_db.sql                ← base complète (schéma + données) à importer
     ├── config/db.js                ← pool MySQL (mysql2/promise)
     ├── middleware/
     │   ├── auth.js                 ← vérification JWT
