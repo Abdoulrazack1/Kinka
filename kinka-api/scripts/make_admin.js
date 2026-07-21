@@ -3,30 +3,30 @@
 // Usage :
 //   node scripts/make_admin.js email@exemple.fr            → promeut admin
 //   node scripts/make_admin.js email@exemple.fr user       → rétrograde
-require('dotenv').config();
-const db = require('../config/db');
+require('dotenv').config();                                        // charge le .env
+const db = require('../config/db');                               // pool MySQL
 
-(async () => {
-  const email = (process.argv[2] || '').trim().toLowerCase();
-  const role  = (process.argv[3] || 'admin').trim();
+(async () => {                                                    // IIFE async
+  const email = (process.argv[2] || '').trim().toLowerCase();     // 1er argument : email
+  const role  = (process.argv[3] || 'admin').trim();              // 2e argument : rôle (admin par défaut)
 
-  if (!email) {
-    console.error('Usage : node scripts/make_admin.js <email> [admin|user]');
-    process.exit(1);
+  if (!email) {                                                  // email manquant
+    console.error('Usage : node scripts/make_admin.js <email> [admin|user]'); // aide
+    process.exit(1);                                             // sortie en échec
   }
-  if (!['admin', 'user'].includes(role)) {
-    console.error('Rôle invalide (attendu : admin ou user)');
-    process.exit(1);
+  if (!['admin', 'user'].includes(role)) {                       // rôle non reconnu
+    console.error('Rôle invalide (attendu : admin ou user)');    // message d'erreur
+    process.exit(1);                                             // sortie en échec
   }
 
-  const [result] = await db.query(
+  const [result] = await db.query(                               // met à jour le rôle de l'utilisateur
     'UPDATE utilisateurs SET role = ? WHERE email = ?', [role, email]
   );
 
-  if (result.affectedRows === 0) {
-    console.error(`❌ Aucun utilisateur avec l'email ${email}`);
-    process.exit(1);
+  if (result.affectedRows === 0) {                               // aucun utilisateur mis à jour
+    console.error(`❌ Aucun utilisateur avec l'email ${email}`);  // email introuvable
+    process.exit(1);                                             // sortie en échec
   }
-  console.log(`✅ ${email} → rôle "${role}"`);
-  process.exit(0);
-})().catch(err => { console.error('❌', err.message); process.exit(1); });
+  console.log(`✅ ${email} → rôle "${role}"`);                    // confirmation
+  process.exit(0);                                               // sortie en succès
+})().catch(err => { console.error('❌', err.message); process.exit(1); }); // gestion d'erreur globale
