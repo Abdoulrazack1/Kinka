@@ -154,53 +154,53 @@ const series = [
 ];
 
 // ─── HELPERS ─────────────────────────────────────────────────
-function slugify(str) {
-  return str.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+function slugify(str) {                                       // transforme un nom de s\u00e9rie en slug
+  return str.toLowerCase()                                    // minuscules
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')         // retire les accents
+    .replace(/[^a-z0-9]+/g, '-')                              // non alphanum\u00e9riques \u2192 tiret
+    .replace(/^-|-$/g, '');                                   // supprime les tirets en d\u00e9but/fin
 }
 
 // EAN/ISBN aléatoire mais déterministe pour un (slug, tome) donné
-function fakeEan(slug, tome) {
-  let hash = 0;
-  const key = slug + '-' + tome;
-  for (let i = 0; i < key.length; i++) hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
-  const base = Math.abs(hash).toString().padStart(12, '0').slice(0, 12);
-  return '978' + base.slice(0, 9) + (base.charCodeAt(0) % 10);
+function fakeEan(slug, tome) {                                // génère un faux EAN reproductible
+  let hash = 0;                                               // accumulateur de hachage
+  const key = slug + '-' + tome;                              // clé unique (slug + tome)
+  for (let i = 0; i < key.length; i++) hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0; // hachage simple
+  const base = Math.abs(hash).toString().padStart(12, '0').slice(0, 12); // 12 chiffres issus du hash
+  return '978' + base.slice(0, 9) + (base.charCodeAt(0) % 10);  // préfixe 978 + chiffres + clé
 }
 
 // ─── GÉNÉRATION ──────────────────────────────────────────────
-function generateProducts() {
-  const produits = [];
-  const today = new Date();
-  const thisYear = today.getFullYear();
+function generateProducts() {                                 // construit tous les produits à insérer
+  const produits = [];                                        // accumulateur
+  const today = new Date();                                   // date du jour
+  const thisYear = today.getFullYear();                       // année courante
 
-  for (const s of series) {
-    const slug = slugify(s.nom);
-    const T = s.tomes;
-    if (T === 0) continue;
+  for (const s of series) {                                   // pour chaque série du catalogue
+    const slug = slugify(s.nom);                              // slug de la série
+    const T = s.tomes;                                        // nombre de tomes
+    if (T === 0) continue;                                    // série en cours (0 tome) : on saute
 
-    for (let t = 1; t <= T; t++) {
+    for (let t = 1; t <= T; t++) {                            // pour chaque tome
       // Date de parution approximative : étalée sur (thisYear - dateDebut) années
-      const annees = Math.max(1, thisYear - s.dateDebut);
-      const tomeAnnee = s.dateDebut + Math.floor((t - 1) * annees / Math.max(T, 1));
-      const tomeMois  = ((t * 3) % 12) + 1;
-      const dateParution = `${tomeAnnee}-${String(tomeMois).padStart(2,'0')}-15`;
+      const annees = Math.max(1, thisYear - s.dateDebut);     // durée de publication (années)
+      const tomeAnnee = s.dateDebut + Math.floor((t - 1) * annees / Math.max(T, 1)); // année estimée du tome
+      const tomeMois  = ((t * 3) % 12) + 1;                   // mois estimé (1–12)
+      const dateParution = `${tomeAnnee}-${String(tomeMois).padStart(2,'0')}-15`; // date "AAAA-MM-15"
 
       // Variations de prix légères
-      const prix = +(s.prix + ((t * 7) % 5) * 0.10).toFixed(2);
+      const prix = +(s.prix + ((t * 7) % 5) * 0.10).toFixed(2); // léger écart de prix selon le tome
 
       // 15% des tomes en occasion
-      const isOccasion = (t % 7) === 0 && t > 1;
-      const prixFinal  = isOccasion ? +(prix * 0.55).toFixed(2) : prix;
-      const etat       = isOccasion ? 'occasion' : 'neuf';
-      const etatDetail = isOccasion ? (['neuf','tres-bon','bon'][t % 3]) : null;
+      const isOccasion = (t % 7) === 0 && t > 1;              // un tome sur 7 en occasion
+      const prixFinal  = isOccasion ? +(prix * 0.55).toFixed(2) : prix; // occasion = -45 %
+      const etat       = isOccasion ? 'occasion' : 'neuf';    // état
+      const etatDetail = isOccasion ? (['neuf','tres-bon','bon'][t % 3]) : null; // détail d'état (occasion)
 
       // Stock variable
-      const stock = isOccasion
-        ? (1 + (t % 3))
-        : (t === T ? 5 + (t % 8) : 8 + (t % 15));
+      const stock = isOccasion                                // stock selon l'état/le tome
+        ? (1 + (t % 3))                                       // occasion : peu d'exemplaires
+        : (t === T ? 5 + (t % 8) : 8 + (t % 15));             // dernier tome plus rare
 
       // Flags
       const isNouveaute   = t > T - 3 && !isOccasion;        // 3 derniers tomes = nouveautés
@@ -210,58 +210,58 @@ function generateProducts() {
       const isBestseller  = t <= 3 || t > T - 3;             // les premiers et les derniers
 
       // Note 4.3 - 5.0
-      const note = +(4.3 + ((t * 13) % 8) * 0.1).toFixed(1);
+      const note = +(4.3 + ((t * 13) % 8) * 0.1).toFixed(1);  // note pseudo-aléatoire entre 4.3 et 5.0
 
       // Pages variables
-      const pages = 192 + ((t * 5) % 50);
+      const pages = 192 + ((t * 5) % 50);                     // nombre de pages variable
 
       // Description : générique au tome 1 pour réutiliser, sinon variation
-      const desc = t === 1
-        ? s.description
-        : `Tome ${t} de la série ${s.nom}. ${s.description.slice(0, 100)}...`;
+      const desc = t === 1                                    // description du tome
+        ? s.description                                       // tome 1 : description de la série
+        : `Tome ${t} de la série ${s.nom}. ${s.description.slice(0, 100)}...`; // autres tomes : variation
 
-      const titre = `${s.nom} - Tome ${t}`;
+      const titre = `${s.nom} - Tome ${t}`;                   // titre du produit
 
-      produits.push({
-        id:         isOccasion ? `${slug}-${t}-occ` : `${slug}-${t}`,
-        titre,
-        serie:      s.nom,
-        tome:       t,
-        auteur:     s.auteur,
-        editeur:    s.editeur,
-        collection: s.categorie === 'Seinen' ? 'Seinen Manga' : 'Shōnen Manga',
-        categorie:  s.categorie,
-        etat,
-        etat_detail: etatDetail,
-        langue:     'Français',
-        prix:       prixFinal,
-        prix_promo: prixPromo,
-        pages,
-        format:     s.categorie === 'Seinen' ? '12.5 × 18.5 cm' : '11.5 × 18 cm',
-        date_parution: dateParution,
-        ean:        fakeEan(slug, t),
-        image:      s.image,
-        description: desc,
-        note,
-        stock,
-        nouveaute:  isNouveaute ? 1 : 0,
-        promo:      isPromo ? 1 : 0,
-        coup_de_coeur: isCoupDeCoeur ? 1 : 0,
-        bestseller: isBestseller ? 1 : 0,
-        tags:       JSON.stringify(s.tags),
+      produits.push({                                        // ajoute le produit généré
+        id:         isOccasion ? `${slug}-${t}-occ` : `${slug}-${t}`, // id (suffixe -occ si occasion)
+        titre,                                               // titre "Série - Tome N"
+        serie:      s.nom,                                   // nom de la série
+        tome:       t,                                       // numéro de tome
+        auteur:     s.auteur,                                // auteur
+        editeur:    s.editeur,                               // éditeur
+        collection: s.categorie === 'Seinen' ? 'Seinen Manga' : 'Shōnen Manga', // collection
+        categorie:  s.categorie,                             // catégorie
+        etat,                                                // neuf / occasion
+        etat_detail: etatDetail,                             // détail d'état (occasion)
+        langue:     'Français',                              // langue
+        prix:       prixFinal,                               // prix affiché
+        prix_promo: prixPromo,                               // prix promo éventuel
+        pages,                                               // nombre de pages
+        format:     s.categorie === 'Seinen' ? '12.5 × 18.5 cm' : '11.5 × 18 cm', // format selon la catégorie
+        date_parution: dateParution,                         // date de parution estimée
+        ean:        fakeEan(slug, t),                        // faux EAN reproductible
+        image:      s.image,                                 // visuel de la série
+        description: desc,                                   // description
+        note,                                                // note
+        stock,                                               // stock
+        nouveaute:  isNouveaute ? 1 : 0,                     // flag nouveauté
+        promo:      isPromo ? 1 : 0,                         // flag promo
+        coup_de_coeur: isCoupDeCoeur ? 1 : 0,                // flag coup de cœur
+        bestseller: isBestseller ? 1 : 0,                    // flag best-seller
+        tags:       JSON.stringify(s.tags),                  // tags sérialisés en JSON
       });
     }
   }
-  return produits;
+  return produits;                                           // renvoie tous les produits générés
 }
 
 // ─── INSERTION ───────────────────────────────────────────────
-async function run() {
-  const produits = generateProducts();
-  console.log(`📦 Génération de ${produits.length} produits depuis ${series.length} séries...`);
-  console.log(`   (${produits.filter(p=>p.etat==='occasion').length} occasions, ${produits.filter(p=>p.promo).length} en promo)`);
+async function run() {                                        // point d'entrée du seed
+  const produits = generateProducts();                        // génère tous les produits
+  console.log(`📦 Génération de ${produits.length} produits depuis ${series.length} séries...`); // total généré
+  console.log(`   (${produits.filter(p=>p.etat==='occasion').length} occasions, ${produits.filter(p=>p.promo).length} en promo)`); // répartition
 
-  const sql = `
+  const sql = `                                              // requête d'upsert produit (réutilisée pour chaque ligne)
     INSERT INTO produits
       (id, titre, serie, tome, auteur, editeur, collection, categorie,
        etat, etat_detail, langue, prix, prix_promo, pages, format,
@@ -281,39 +281,39 @@ async function run() {
       description = VALUES(description)
   `;
 
-  let ok = 0, err = 0;
+  let ok = 0, err = 0;                                        // compteurs succès/erreurs
   // Insertion en transaction pour la performance
-  const conn = await db.getConnection();
-  try {
-    await conn.beginTransaction();
-    for (const p of produits) {
-      try {
-        await conn.query(sql, [
+  const conn = await db.getConnection();                     // connexion dédiée
+  try {                                                      // bloc transactionnel
+    await conn.beginTransaction();                           // ouvre la transaction
+    for (const p of produits) {                              // pour chaque produit généré
+      try {                                                  // isole les erreurs par produit
+        await conn.query(sql, [                              // upsert du produit
           p.id, p.titre, p.serie, p.tome, p.auteur, p.editeur, p.collection, p.categorie,
           p.etat, p.etat_detail, p.langue, p.prix, p.prix_promo, p.pages, p.format,
           p.date_parution, p.ean, p.image, p.description, p.note, p.stock,
           p.nouveaute, p.promo, p.coup_de_coeur, p.bestseller, p.tags,
         ]);
-        ok++;
-        if (ok % 200 === 0) console.log(`  ${ok}/${produits.length} insérés...`);
-      } catch (e) {
-        err++;
-        if (err <= 5) console.error(`  ❌ ${p.id}: ${e.message}`);
+        ok++;                                                // succès
+        if (ok % 200 === 0) console.log(`  ${ok}/${produits.length} insérés...`); // progression tous les 200
+      } catch (e) {                                          // erreur sur ce produit
+        err++;                                               // incrémente
+        if (err <= 5) console.error(`  ❌ ${p.id}: ${e.message}`); // n'affiche que les 5 premières
       }
     }
-    await conn.commit();
-  } catch (e) {
-    await conn.rollback();
-    console.error('❌ Erreur transaction:', e.message);
-  } finally {
-    conn.release();
+    await conn.commit();                                     // valide la transaction
+  } catch (e) {                                              // erreur globale de transaction
+    await conn.rollback();                                   // annule tout
+    console.error('❌ Erreur transaction:', e.message);      // log
+  } finally {                                                // dans tous les cas
+    conn.release();                                          // libère la connexion
   }
 
-  console.log(`\n✅ Seed terminé : ${ok} produits insérés, ${err} erreurs`);
-  process.exit(err && err === produits.length ? 1 : 0);
+  console.log(`\n✅ Seed terminé : ${ok} produits insérés, ${err} erreurs`); // bilan
+  process.exit(err && err === produits.length ? 1 : 0);      // échec seulement si tout a échoué
 }
 
-run().catch(err => {
-  console.error('❌ Erreur fatale :', err);
-  process.exit(1);
+run().catch(err => {                                         // exécute et gère les erreurs fatales
+  console.error('❌ Erreur fatale :', err);                  // log
+  process.exit(1);                                           // sortie en échec
 });
