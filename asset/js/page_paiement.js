@@ -2,170 +2,170 @@
 // page_paiement.js — Récapitulatif panier & totaux
 // ====================================================
 
-(function _init() {
-    'use strict';
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', _init);
-        return;
+(function _init() {                                                  // IIFE d'initialisation de la page paiement
+    'use strict';                                                   // mode strict
+    if (document.readyState === 'loading') {                        // DOM pas prêt
+        document.addEventListener('DOMContentLoaded', _init);       // attend le DOM
+        return;                                                    // et sort
     }
 
-    // ── Formater un prix en "X,XX\u202f€" ────────────────────────
-    function fmt(price) {
-        return price.toFixed(2).replace('.', ',') + '\u202f€';
+    // ── Formater un prix en "X,XX €" ────────────────────────
+    function fmt(price) {                                           // formate un prix (espace fine insécable + €)
+        return price.toFixed(2).replace('.', ',') + ' €';      // 2 décimales, virgule, €
     }
 
-    const cart             = typeof window.getCart === 'function' ? window.getCart() : [];
-    const summaryContainer = document.querySelector('.summary-items');
-    const subtotalEl       = document.getElementById('subtotal-val');
-    const totalEl          = document.getElementById('total-val');
-    const livraisonEl      = document.getElementById('livraison-val');
-    const payButton        = document.querySelector('.btn-pay');
+    const cart             = typeof window.getCart === 'function' ? window.getCart() : []; // panier courant
+    const summaryContainer = document.querySelector('.summary-items'); // conteneur du récapitulatif
+    const subtotalEl       = document.getElementById('subtotal-val'); // affichage sous-total
+    const totalEl          = document.getElementById('total-val');    // affichage total
+    const livraisonEl      = document.getElementById('livraison-val'); // affichage frais de port
+    const payButton        = document.querySelector('.btn-pay');      // bouton payer
 
-    if (!summaryContainer) return;
+    if (!summaryContainer) return;                                 // pas de récapitulatif : rien
 
     // ── Mettre à jour l'affichage des totaux ─────────────────────
-    function afficherTotaux(sousTotal) {
-        const frais = sousTotal === 0 ? 0 : (sousTotal >= 50 ? 0 : 4.90);
-        const total = sousTotal + frais;
+    function afficherTotaux(sousTotal) {                           // calcule et affiche les totaux
+        const frais = sousTotal === 0 ? 0 : (sousTotal >= 50 ? 0 : 4.90); // livraison offerte dès 50 €
+        const total = sousTotal + frais;                          // total TTC
 
-        if (subtotalEl)  subtotalEl.textContent = fmt(sousTotal);
-        if (livraisonEl) {
-            livraisonEl.textContent = frais === 0 ? 'Gratuit' : fmt(frais);
-            livraisonEl.className   = frais === 0 ? 'free' : '';
+        if (subtotalEl)  subtotalEl.textContent = fmt(sousTotal);  // affiche le sous-total
+        if (livraisonEl) {                                        // affiche la livraison
+            livraisonEl.textContent = frais === 0 ? 'Gratuit' : fmt(frais); // gratuit ou montant
+            livraisonEl.className   = frais === 0 ? 'free' : '';  // style "gratuit"
         }
-        if (totalEl) totalEl.textContent = fmt(total);
-        if (payButton) payButton.innerHTML =
-            '<span class="material-symbols-outlined">lock</span> Payer ' + fmt(total);
+        if (totalEl) totalEl.textContent = fmt(total);            // affiche le total
+        if (payButton) payButton.innerHTML =                      // met à jour le libellé du bouton payer
+            '<span class="material-symbols-outlined">lock</span> Payer ' + fmt(total); // "Payer X €"
     }
 
     // ── Panier vide : lire les items déjà présents dans le DOM (démo) ──
-    if (cart.length === 0) {
-        let sousTotal = 0;
-        summaryContainer.querySelectorAll('.summary-item').forEach(function(item) {
-            const priceEl = item.querySelector('.item-price');
-            if (!priceEl) return;
-            const val   = parseFloat(priceEl.textContent.replace('€', '').replace(',', '.').trim()) || 0;
-            const qtyEl = item.querySelector('.item-qty');
-            let   qty   = 1;
-            if (qtyEl) {
-                const m = qtyEl.textContent.match(/\d+/);
-                if (m) qty = parseInt(m[0], 10);
+    if (cart.length === 0) {                                       // panier vide (mode démo statique)
+        let sousTotal = 0;                                        // sous-total calculé depuis le DOM
+        summaryContainer.querySelectorAll('.summary-item').forEach(function(item) { // pour chaque ligne affichée
+            const priceEl = item.querySelector('.item-price');    // prix de la ligne
+            if (!priceEl) return;                                 // absent : ignore
+            const val   = parseFloat(priceEl.textContent.replace('€', '').replace(',', '.').trim()) || 0; // prix numérique
+            const qtyEl = item.querySelector('.item-qty');        // quantité affichée
+            let   qty   = 1;                                      // quantité par défaut
+            if (qtyEl) {                                          // si présente
+                const m = qtyEl.textContent.match(/\d+/);         // extrait le nombre
+                if (m) qty = parseInt(m[0], 10);                 // convertit en entier
             }
-            sousTotal += val * qty;
+            sousTotal += val * qty;                              // ajoute au sous-total
         });
-        afficherTotaux(sousTotal);
-        return;
+        afficherTotaux(sousTotal);                               // affiche les totaux
+        return;                                                  // terminé (rien à injecter)
     }
 
     // ── Injecter les vrais articles depuis le panier ──────────────
-    summaryContainer.innerHTML = '';
-    let sousTotal = 0;
+    summaryContainer.innerHTML = '';                              // vide le récapitulatif
+    let sousTotal = 0;                                            // sous-total accumulé
 
-    cart.forEach(function(item) {
-        const prixLigne = (item.prix || 0) * (item.quantite || 1);
-        sousTotal += prixLigne;
+    cart.forEach(function(item) {                                 // pour chaque article du panier
+        const prixLigne = (item.prix || 0) * (item.quantite || 1); // sous-total de la ligne
+        sousTotal += prixLigne;                                  // ajoute au sous-total
 
-        const ligne  = document.createElement('div');
-        ligne.className = 'summary-item';
+        const ligne  = document.createElement('div');            // conteneur de la ligne
+        ligne.className = 'summary-item';                        // classe CSS
 
-        const info   = document.createElement('div');
-        info.className = 'item-info';
+        const info   = document.createElement('div');            // bloc infos produit
+        info.className = 'item-info';                            // classe CSS
 
-        const titre  = document.createElement('h3');
-        titre.className   = 'item-title';
-        titre.textContent = item.titre || 'Manga';
+        const titre  = document.createElement('h3');             // titre du produit
+        titre.className   = 'item-title';                       // classe CSS
+        titre.textContent = item.titre || 'Manga';              // texte (sûr)
 
-        const editeur = document.createElement('p');
-        editeur.className   = 'item-publisher';
-        editeur.textContent = item.editeur || item.maison || 'Éditeur inconnu';
+        const editeur = document.createElement('p');             // éditeur
+        editeur.className   = 'item-publisher';                 // classe CSS
+        editeur.textContent = item.editeur || item.maison || 'Éditeur inconnu'; // texte
 
-        const qty = document.createElement('p');
-        qty.className   = 'item-qty';
-        qty.textContent = 'Qté\u00a0: ' + (item.quantite || 1);
+        const qty = document.createElement('p');                 // quantité
+        qty.className   = 'item-qty';                           // classe CSS
+        qty.textContent = 'Qté : ' + (item.quantite || 1); // texte "Qté : N"
 
-        const prix = document.createElement('div');
-        prix.className   = 'item-price';
-        prix.textContent = fmt(prixLigne);
+        const prix = document.createElement('div');              // prix de la ligne
+        prix.className   = 'item-price';                        // classe CSS
+        prix.textContent = fmt(prixLigne);                     // prix formaté
 
-        info.append(titre, editeur, qty);
-        ligne.append(info, prix);
-        summaryContainer.appendChild(ligne);
+        info.append(titre, editeur, qty);                       // assemble les infos
+        ligne.append(info, prix);                               // assemble la ligne
+        summaryContainer.appendChild(ligne);                    // insère dans le récapitulatif
     });
 
-    afficherTotaux(sousTotal);
+    afficherTotaux(sousTotal);                                   // affiche les totaux calculés
 
     // ── Code promo ────────────────────────────────────────────────
-    const promoBtn = document.querySelector('.promo-btn');
-    if (promoBtn) {
-        promoBtn.addEventListener('click', function() {
-            if (typeof showToast === 'function') showToast('Code promo non disponible pour le moment.', 'info');
+    const promoBtn = document.querySelector('.promo-btn');        // bouton code promo
+    if (promoBtn) {                                               // s'il existe
+        promoBtn.addEventListener('click', function() {          // au clic
+            if (typeof showToast === 'function') showToast('Code promo non disponible pour le moment.', 'info'); // message "indispo"
         });
     }
 
     // ── Sélection du mode de paiement (radio) ────────────────────
-    document.querySelectorAll('.payment-option').forEach(function(opt) {
-        opt.addEventListener('click', function() {
-            document.querySelectorAll('.payment-option').forEach(function(o) { o.classList.remove('selected'); });
-            opt.classList.add('selected');
-            const radio = opt.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
+    document.querySelectorAll('.payment-option').forEach(function(opt) { // pour chaque mode de paiement
+        opt.addEventListener('click', function() {               // au clic
+            document.querySelectorAll('.payment-option').forEach(function(o) { o.classList.remove('selected'); }); // désélectionne tout
+            opt.classList.add('selected');                       // sélectionne l'option cliquée
+            const radio = opt.querySelector('input[type="radio"]'); // bouton radio interne
+            if (radio) radio.checked = true;                     // le coche
         });
     });
 
     // ── Pré-remplir le formulaire avec les infos utilisateur ─────
-    (function prefillUserInfo() {
-        let user = null;
-        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch (_) {}
-        if (!user) return;
-        const setVal = (id, val) => {
-            const el = document.getElementById(id);
-            if (el && val && !el.value) el.value = val;
+    (function prefillUserInfo() {                                 // pré-remplissage des champs d'adresse
+        let user = null;                                         // infos utilisateur
+        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch (_) {} // lecture sûre
+        if (!user) return;                                       // pas d'utilisateur : rien
+        const setVal = (id, val) => {                            // helper : remplit un champ s'il est vide
+            const el = document.getElementById(id);              // champ ciblé
+            if (el && val && !el.value) el.value = val;          // remplit seulement si vide
         };
-        setVal('prenom',      user.prenom);
-        setVal('nom',         user.nom);
-        setVal('adresse',     user.adresse);
-        setVal('code-postal', user.code_postal);
-        setVal('ville',       user.ville);
-        setVal('telephone',   user.telephone);
+        setVal('prenom',      user.prenom);                     // prénom
+        setVal('nom',         user.nom);                        // nom
+        setVal('adresse',     user.adresse);                    // adresse
+        setVal('code-postal', user.code_postal);                // code postal
+        setVal('ville',       user.ville);                      // ville
+        setVal('telephone',   user.telephone);                  // téléphone
     })();
 
     // ── Bouton Payer → POST /api/commandes ───────────────────────
-    if (payButton) {
-        payButton.addEventListener('click', async function(e) {
-            e.preventDefault();
-            if (typeof KinkaAuth === 'undefined' || !KinkaAuth.isLoggedIn()) {
-                sessionStorage.setItem('kinka_redirect_after_login', window.location.href);
-                window.location.href = '/pageLogIn.html?redirect=1';
-                return;
+    if (payButton) {                                             // bouton payer présent
+        payButton.addEventListener('click', async function(e) { // au clic
+            e.preventDefault();                                 // empêche l'action par défaut
+            if (typeof KinkaAuth === 'undefined' || !KinkaAuth.isLoggedIn()) { // non connecté
+                sessionStorage.setItem('kinka_redirect_after_login', window.location.href); // mémorise la destination
+                window.location.href = '/pageLogIn.html?redirect=1'; // redirige vers login
+                return;                                         // terminé
             }
 
             // Construire l'adresse complète à partir du formulaire
-            const _v = id => (document.getElementById(id)?.value || '').trim();
-            const adresseParts = [
-                [_v('prenom'), _v('nom')].filter(Boolean).join(' '),
-                _v('adresse'),
-                [_v('code-postal'), _v('ville')].filter(Boolean).join(' '),
-                _v('telephone') ? 'Tél. ' + _v('telephone') : ''
-            ].filter(Boolean);
-            const adresseVal = adresseParts.join('\n');
+            const _v = id => (document.getElementById(id)?.value || '').trim(); // lit un champ nettoyé
+            const adresseParts = [                              // morceaux de l'adresse de livraison
+                [_v('prenom'), _v('nom')].filter(Boolean).join(' '), // "Prénom Nom"
+                _v('adresse'),                                  // rue
+                [_v('code-postal'), _v('ville')].filter(Boolean).join(' '), // "CP Ville"
+                _v('telephone') ? 'Tél. ' + _v('telephone') : '' // téléphone
+            ].filter(Boolean);                                  // retire les vides
+            const adresseVal = adresseParts.join('\n');         // adresse multiligne
 
-            if (!_v('adresse') || !_v('code-postal') || !_v('ville')) {
-                if (typeof showToast === 'function') showToast('Veuillez remplir l\'adresse de livraison.', 'error');
-                return;
+            if (!_v('adresse') || !_v('code-postal') || !_v('ville')) { // adresse incomplète
+                if (typeof showToast === 'function') showToast('Veuillez remplir l\'adresse de livraison.', 'error'); // message
+                return;                                         // bloque le paiement
             }
 
-            payButton.disabled = true;
-            payButton.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Traitement…';
-            try {
-                const commande = await KinkaAPI.commandes.create({ adresse_livraison: adresseVal });
-                localStorage.setItem('kinka_last_order', JSON.stringify(commande));
-                localStorage.removeItem('kinka_panier');
-                if (typeof updatePanierCount === 'function') updatePanierCount();
-                window.location.href = '/page_confirmationcommande.html?id=' + encodeURIComponent(commande.id);
-            } catch(err) {
-                if (typeof showToast === 'function') showToast(err.message || 'Erreur lors du paiement.', 'error');
-                payButton.disabled = false;
-                payButton.innerHTML = '<span class="material-symbols-outlined">lock</span> Réessayer';
+            payButton.disabled = true;                          // désactive le bouton
+            payButton.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Traitement…'; // état "en cours"
+            try {                                               // tentative de création de commande
+                const commande = await KinkaAPI.commandes.create({ adresse_livraison: adresseVal }); // POST /api/commandes
+                localStorage.setItem('kinka_last_order', JSON.stringify(commande)); // garde la dernière commande
+                localStorage.removeItem('kinka_panier');        // vide le panier local
+                if (typeof updatePanierCount === 'function') updatePanierCount(); // remet le badge à 0
+                window.location.href = '/page_confirmationcommande.html?id=' + encodeURIComponent(commande.id); // page de confirmation
+            } catch(err) {                                      // erreur
+                if (typeof showToast === 'function') showToast(err.message || 'Erreur lors du paiement.', 'error'); // message d'erreur
+                payButton.disabled = false;                     // réactive le bouton
+                payButton.innerHTML = '<span class="material-symbols-outlined">lock</span> Réessayer'; // libellé "réessayer"
             }
         });
     }
