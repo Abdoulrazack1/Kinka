@@ -23,7 +23,10 @@ module.exports = [
     rules: {
       'no-undef': 'off',
       'no-redeclare': 'off',
-      'no-unused-vars': 'warn',
+      // Les fonctions de niveau global forment l'API partagée entre fichiers
+      // (un fichier appelle les fonctions d'un autre). On ne vérifie donc que
+      // les variables VRAIMENT locales ; on ignore les globales et les arguments.
+      'no-unused-vars': ['warn', { vars: 'local', args: 'none', caughtErrors: 'none' }],
       'no-empty': ['warn', { allowEmptyCatch: true }],
     },
   },
