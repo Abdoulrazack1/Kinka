@@ -1,75 +1,75 @@
 // scripts/fix_covers.js
-require('dotenv').config();
-const db = require('../config/db');
+require('dotenv').config();                                        // charge le .env
+const db = require('../config/db');                               // pool MySQL
 
-function buildPlaceholder(serie, tome, categorie) {
-  const couleurs = {
-    'Shônen':  { bg: '1e40af', fg: 'ffffff' },
-    'Seinen':  { bg: '991b1b', fg: 'ffffff' },
-    'Shôjo':   { bg: 'be185d', fg: 'ffffff' },
-    'Josei':   { bg: '7c3aed', fg: 'ffffff' },
-    'Kodomo':  { bg: '15803d', fg: 'ffffff' },
-    'Coffret': { bg: '92400e', fg: 'ffffff' },
+function buildPlaceholder(serie, tome, categorie) {                // construit une URL de couverture générée (placehold.co)
+  const couleurs = {                                              // couleur de fond selon la catégorie
+    'Shônen':  { bg: '1e40af', fg: 'ffffff' },                    // bleu
+    'Seinen':  { bg: '991b1b', fg: 'ffffff' },                    // rouge
+    'Shôjo':   { bg: 'be185d', fg: 'ffffff' },                    // rose
+    'Josei':   { bg: '7c3aed', fg: 'ffffff' },                    // violet
+    'Kodomo':  { bg: '15803d', fg: 'ffffff' },                    // vert
+    'Coffret': { bg: '92400e', fg: 'ffffff' },                    // ambre
   };
-  const c = couleurs[categorie] || { bg: '374151', fg: 'ffffff' };
-  const nom   = serie.length > 18 ? serie.substring(0, 16) + '...' : serie;
-  const texte = encodeURIComponent(`${nom}\nT.${tome}`);
-  return `https://placehold.co/300x450/${c.bg}/${c.fg}/png?text=${texte}&font=roboto`;
+  const c = couleurs[categorie] || { bg: '374151', fg: 'ffffff' }; // couleur par défaut (gris)
+  const nom   = serie.length > 18 ? serie.substring(0, 16) + '...' : serie; // nom tronqué
+  const texte = encodeURIComponent(`${nom}\nT.${tome}`);          // texte de la vignette
+  return `https://placehold.co/300x450/${c.bg}/${c.fg}/png?text=${texte}&font=roboto`; // URL du placeholder
 }
 
-async function run() {
-  console.log('🖼️  Correction des covers par tome...');
+async function run() {                                            // routine principale
+  console.log('🖼️  Correction des covers par tome...');          // bannière
 
   const [produits] = await db.query(`
     SELECT id, serie, tome, categorie, image
     FROM produits
     ORDER BY serie, tome
-  `);
-  console.log(`   ${produits.length} produits à analyser`);
+  `);                                                             // tous les produits triés par série/tome
+  console.log(`   ${produits.length} produits à analyser`);       // total
 
-  const parSerie = {};
-  for (const p of produits) {
-    if (!parSerie[p.serie]) parSerie[p.serie] = [];
-    parSerie[p.serie].push(p);
+  const parSerie = {};                                            // regroupe les produits par série
+  for (const p of produits) {                                     // pour chaque produit
+    if (!parSerie[p.serie]) parSerie[p.serie] = [];               // initialise le groupe si besoin
+    parSerie[p.serie].push(p);                                    // ajoute au groupe
   }
 
-  let modifies = 0;
-  const conn = await db.getConnection();
-  try {
-    await conn.beginTransaction();
+  let modifies = 0;                                               // compteur de covers modifiées
+  const conn = await db.getConnection();                          // connexion dédiée
+  try {                                                           // transaction
+    await conn.beginTransaction();                                // ouvre la transaction
 
-    for (const serie of Object.keys(parSerie)) {
-      const tomes = parSerie[serie];
-      tomes.sort((a, b) => a.tome - b.tome);
+    for (const serie of Object.keys(parSerie)) {                  // pour chaque série
+      const tomes = parSerie[serie];                              // ses tomes
+      tomes.sort((a, b) => a.tome - b.tome);                      // triés par numéro de tome
 
-      for (let i = 0; i < tomes.length; i++) {
-        const t = tomes[i];
-        if (t.tome === 1) continue;
+      for (let i = 0; i < tomes.length; i++) {                    // pour chaque tome
+        const t = tomes[i];                                       // tome courant
+        if (t.tome === 1) continue;                               // le tome 1 garde sa vraie cover
 
-        const nouvelleImage = buildPlaceholder(t.serie, t.tome, t.categorie);
-        await conn.query(
+        const nouvelleImage = buildPlaceholder(t.serie, t.tome, t.categorie); // placeholder généré
+        await conn.query(                                         // met à jour l'image
           'UPDATE produits SET image = ? WHERE id = ?',
           [nouvelleImage, t.id]
         );
-        modifies++;
+        modifies++;                                               // compteur
       }
     }
 
-    await conn.commit();
-  } catch (e) {
-    await conn.rollback();
-    console.error('❌ Erreur :', e.message);
-    process.exit(1);
-  } finally {
-    conn.release();
+    await conn.commit();                                          // valide la transaction
+  } catch (e) {                                                   // erreur
+    await conn.rollback();                                        // annule tout
+    console.error('❌ Erreur :', e.message);                      // log
+    process.exit(1);                                              // sortie en échec
+  } finally {                                                     // dans tous les cas
+    conn.release();                                               // libère la connexion
   }
 
-  console.log(`\n✅ ${modifies} covers mises à jour.`);
-  console.log(`   (Les tomes 1 conservent leur cover d'origine)`);
-  process.exit(0);
+  console.log(`\n✅ ${modifies} covers mises à jour.`);            // bilan
+  console.log(`   (Les tomes 1 conservent leur cover d'origine)`); // rappel
+  process.exit(0);                                                // sortie en succès
 }
 
-run().catch(err => {
-  console.error('❌ Erreur fatale :', err);
-  process.exit(1);
+run().catch(err => {                                              // exécute et gère les erreurs fatales
+  console.error('❌ Erreur fatale :', err);                       // log
+  process.exit(1);                                                // sortie en échec
 });
