@@ -4,10 +4,10 @@
   "private": true,
   "description": "Kinka.fr — boutique manga (front vanilla + API Node/Express/MySQL)",
   "scripts": {
-    "dev": "npm --prefix kinka-api run dev",
-    "start": "npm --prefix kinka-api start",
-    "seed:big": "npm --prefix kinka-api run seed:big",
-    "sync": "npm --prefix kinka-api run sync",
+    "dev": "npm --prefix server run dev",
+    "start": "npm --prefix server start",
+    "seed:big": "npm --prefix server run seed:big",
+    "sync": "npm --prefix server run sync",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

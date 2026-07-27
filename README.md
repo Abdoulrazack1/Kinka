@@ -14,9 +14,9 @@
 
 **→ [https://abdoulrazack1.github.io/Kinka/page_accueil.html](https://abdoulrazack1.github.io/Kinka/page_accueil.html)**
 
-[![Kinka — Page d'accueil](asset/screenshots/home.png)](https://abdoulrazack1.github.io/Kinka/page_accueil.html)
+[![Kinka — Page d'accueil](docs/screenshots/home.png)](https://abdoulrazack1.github.io/Kinka/page_accueil.html)
 
-![Scroll through Kinka — Hero Chainsaw Man → Maisons d'édition → Catégories → Premium](asset/screenshots/scroll.gif)
+![Scroll through Kinka — Hero Chainsaw Man → Maisons d'édition → Catégories → Premium](docs/screenshots/scroll.gif)
 
 > ⚠️ La version live sur GitHub Pages affiche l'UI complète (CSS, navigation, mode sombre, i18n) mais **sans données dynamiques** — le backend Node/Express/MySQL n'est pas déployé. Pour la version complète avec catalogue, panier et auth, suis les instructions d'installation ci-dessous.
 
@@ -80,51 +80,48 @@ Kinka/
 ├── .gitignore                      ← exclut node_modules, .env, builds
 ├── .vscode/                        ← config Live Server (port 5503)
 │
-├── asset/
-│   ├── css/                        ← 38 feuilles de style (1 par page + partagées)
-│   ├── image/                      ← logos, bannières, covers locales
-│   └── js/                         ← 18 scripts frontend
-│       ├── kinka-api-client.js     ← client API + auth + cookies + toast
-│       ├── kinka-auth-guard.js     ← redirection si page protégée
-│       ├── kinka-cards.js          ← rendu cards produit + tilt 3D + badges
-│       ├── mangadb.js              ← données seed (80+ mangas)
-│       ├── panier.js               ← panier hybride API/localStorage
-│       ├── translate.js            ← traduction FR/EN
-│       └── …
+├── client/                         ← Front
+│   ├── pages/                      ← 42 pages HTML
+│   │   ├── page_accueil.html       ← homepage avec carrousel
+│   │   ├── page_catalogue.html     ← catalogue filtré
+│   │   ├── page_detail_produit.html← fiche produit (+ onglet avis)
+│   │   ├── page_annonces.html      ← annonces entre membres
+│   │   ├── page_admin.html         ← back-office
+│   │   └── …
+│   └── assets/
+│       ├── css/                    ← feuilles de style (1 par page + partagées)
+│       ├── images/                 ← logos, bannières, visuels
+│       └── js/                     ← scripts frontend
+│           ├── server-client.js ← client API + auth + cookies + toast
+│           ├── kinka-cards.js      ← rendu des cartes produit
+│           ├── admin.js            ← logique du back-office
+│           ├── avis.js             ← avis clients
+│           └── …
 │
-├── *.html                          ← 41 pages
-│   ├── page_accueil.html           ← homepage avec carrousel
-│   ├── page_catalogue.html         ← catalogue filtré
-│   ├── page_detail_produit.html    ← fiche produit
-│   ├── page_panier.html            ← panier
-│   ├── page_paiement.html          ← checkout
-│   ├── page_profil.html            ← compte utilisateur
-│   └── …
+├── server/                         ← Backend Node.js (MVC)
+│   ├── src/
+│   │   ├── server.js               ← point d'entrée : middlewares + montage des routes
+│   │   ├── routes/                 ← déclaration des URL (chemin + middlewares)
+│   │   ├── controllers/            ← logique applicative
+│   │   ├── models/                 ← accès aux données : tout le SQL vit ici
+│   │   ├── views/emails/           ← gabarits des emails envoyés par le serveur
+│   │   ├── services/               ← dépendances externes (SMTP, API Jikan)
+│   │   ├── middleware/             ← auth JWT, rôle admin, validation
+│   │   └── config/db.js            ← pool MySQL (mysql2/promise)
+│   ├── scripts/
+│   │   ├── seed_big.js             ← jeu de données de démonstration
+│   │   ├── sync_mangas_jikan.js    ← import depuis MyAnimeList
+│   │   ├── sync_covers_mangadex.js ← une couverture par tome
+│   │   └── make_admin.js           ← promotion d'un compte en administrateur
+│   └── .env.example                ← copier en .env
 │
-└── kinka-api/                      ← Backend Node.js
-    ├── server.js                   ← point d'entrée Express
-    ├── package.json
-    ├── .env.example                ← copier en .env
-    ├── kinka_db.sql                ← base complète (schéma + données) à importer
-    ├── config/db.js                ← pool MySQL (mysql2/promise)
-    ├── middleware/
-    │   ├── auth.js                 ← vérification JWT
-    │   ├── validate.js             ← validation des champs
-    │   └── asyncHandler.js         ← wrapper try/catch
-    ├── routes/
-    │   ├── auth.js                 ← /api/auth (register, login, me, password, forgot)
-    │   ├── produits.js             ← /api/produits
-    │   ├── panier.js               ← /api/panier
-    │   ├── favoris.js              ← /api/favoris
-    │   ├── commandes.js            ← /api/commandes (transaction)
-    │   ├── annonces.js             ← /api/annonces
-    │   ├── avis.js                 ← /api/avis
-    │   ├── mangas.js               ← /api/mangas (sync Jikan/MAL)
-    │   └── divers.js               ← /api/newsletter, /api/contact
-    └── scripts/
-        ├── import_mangas.js        ← seed depuis asset/js/mangadb.js
-        ├── sync_mangas_jikan.js    ← import depuis MyAnimeList
-        └── sync_covers_mangadex.js ← enrichissement des covers
+├── database/
+│   ├── schema.sql                  ← structure seule
+│   ├── seed.sql                    ← données de démonstration
+│   └── migrations/                 ← évolutions du schéma
+│
+├── docs/                           ← documentation, archives, captures
+└── tools/                          ← utilitaires de développement
 ```
 
 ## Démarrage rapide
@@ -145,7 +142,7 @@ cd Kinka
 ### 2. Installer le backend
 
 ```bash
-cd kinka-api
+npm install --prefix server
 npm install
 ```
 
@@ -188,7 +185,7 @@ CLIENT_URL=http://127.0.0.1:5503
 ### 5. Importer les données initiales
 
 ```bash
-npm run import          # Importe les 80+ mangas de asset/js/mangadb.js
+npm run import          # Importe les 80+ mangas de docs/archive/mangadb.js
 node create_demo_user.js   # Crée le compte démo : demo@kinka.fr / demo1234
 ```
 
@@ -212,7 +209,7 @@ GET http://localhost:3000/api/health
 Ouvrir le projet dans VS Code et clic-droit sur `page_accueil.html` → **Open with Live Server**.
 Le front sera servi sur `http://127.0.0.1:5503`.
 
-> **Important** : ouvrir les pages directement avec le protocole `file://` ne fonctionnera pas (CORS, chemins absolus `/asset/...`). Live Server est requis.
+> **Démarrage** : `npm run dev` sert à la fois l'API et le site sur http://localhost:3000 — front et API sur la même origine, sans configuration d'hôte virtuel. Le site reste servable par Apache : le `.htaccess` à la racine redirige vers `client/` et bloque l'accès web à `server/`, `database/`, `docs/` et `tools/`.
 
 ## Compte de démonstration
 
@@ -279,15 +276,15 @@ Authorization: Bearer <token_jwt>
 
 Toute page HTML inclut les scripts dans cet ordre (gérés par auth-guard et panier hybride) :
 ```html
-<script src="/asset/js/kinka-api-client.js"></script>
-<script src="/asset/js/kinka-auth-guard.js"></script>
-<script src="/asset/js/kinka-cards.js"></script>
-<script src="/asset/js/authentification.js"></script>
-<script src="/asset/js/panier.js"></script>
-<script src="/asset/js/favoris.js"></script>
-<script src="/asset/js/darkmode.js"></script>
-<script src="/asset/js/recherche.js"></script>
-<script src="/asset/js/translate.js"></script>
+<script src="../assets/js/server-client.js"></script>
+<script src="../assets/js/kinka-auth-guard.js"></script>
+<script src="../assets/js/kinka-cards.js"></script>
+<script src="../assets/js/authentification.js"></script>
+<script src="../assets/js/panier.js"></script>
+<script src="../assets/js/favoris.js"></script>
+<script src="../assets/js/darkmode.js"></script>
+<script src="../assets/js/recherche.js"></script>
+<script src="../assets/js/translate.js"></script>
 ```
 
 Exemples d'utilisation :
@@ -308,7 +305,7 @@ showToast('Ajouté au panier !', 'success');
 Pour pointer vers une autre URL d'API, définir avant le chargement du client :
 ```html
 <script>window.KINKA_API_URL = 'https://api.kinka.fr/api';</script>
-<script src="/asset/js/kinka-api-client.js"></script>
+<script src="../assets/js/server-client.js"></script>
 ```
 
 ## Sécurité

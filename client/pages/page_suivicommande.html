@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="KINKA.FR — Boutique manga en ligne : neufs, occasions, coffrets.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de commande - KINKA.FR</title>
+        <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="../assets/images/LogoProjetFilRouge.png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/kinka-shared.css">
+    <link rel="stylesheet" href="../assets/css/page_suivicommande.css">
+    <link rel="stylesheet" href="../assets/css/translate.css">
+    <link rel="stylesheet" href="../assets/css/darkmode.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="./page_accueil.html" class="logo">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+            </div>
+            
+                        <div class="nav-menu">
+                <a href="./page_accueil.html">Accueil</a>
+                <a href="./page_catalogue.html">Catalogue</a>
+                <a href="./page_promotion.html">Promotions</a>
+                <a href="./page_annonces.html">Annonces</a>
+            </div>
+            
+                                    <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="./page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">Suivi de commande</span>
+        </div>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <div class="order-title-section">
+                <h1>Commande <span class="order-number" id="cmd-numero">#FR-7890</span></h1>
+                <span class="status-badge" id="cmd-statut">En transit</span>
+            </div>
+            <a href="#" class="help-link">
+                <span class="material-symbols-outlined">help</span>
+                Besoin d'aide ?
+            </a>
+        </div>
+
+        <p class="order-date">Passée le <span id="cmd-date">21 Octobre 2025</span></p>
+
+        <div class="tracking-layout">
+            
+            <!-- LEFT COLUMN - TRACKING -->
+            <div class="tracking-column">
+                
+                <!-- PROGRESS SECTION -->
+                <section class="progress-section">
+                    <div class="progress-header">
+                        <h2>Avancement</h2>
+                        <p class="estimated-delivery">Livraison estimée : <span>24 Oct</span></p>
+                    </div>
+
+                    <!-- PROGRESS BAR -->
+                    <div class="progress-tracker">
+                        <div class="progress-step completed">
+                            <div class="step-circle">
+                                <span class="material-symbols-outlined">check</span>
+                            </div>
+                            <div class="step-line"></div>
+                            <p class="step-label">Validée</p>
+                        </div>
+
+                        <div class="progress-step completed">
+                            <div class="step-circle">
+                                <span class="material-symbols-outlined">package_2</span>
+                            </div>
+                            <div class="step-line"></div>
+                            <p class="step-label">Préparée</p>
+                        </div>
+
+                        <div class="progress-step active">
+                            <div class="step-circle">
+                                <span class="material-symbols-outlined">local_shipping</span>
+                            </div>
+                            <div class="step-line"></div>
+                            <p class="step-label">Expédiée</p>
+                        </div>
+
+                        <div class="progress-step">
+                            <div class="step-circle">
+                                <span class="material-symbols-outlined">home</span>
+                            </div>
+                            <p class="step-label">Livrée</p>
+                        </div>
+                    </div>
+
+                    <!-- LAST UPDATE -->
+                    <div class="last-update">
+                        <span class="material-symbols-outlined">location_on</span>
+                        <div class="update-text">
+                            <p class="update-title">Dernière mise à jour : 22 Oct - 09:42</p>
+                            <p class="update-detail">Votre colis est arrivé au centre de tri régional (Paris Sud).</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ARTICLES SECTION -->
+                <section class="articles-section">
+                    <h2>Articles</h2>
+
+                    <div id="cmd-articles">
+                        <div class="article-item">
+                            <div class="article-info">
+                                <p class="article-title">One Piece - Tome 100</p>
+                                <p class="article-meta">Qté: 1 • 6,90 €</p>
+                            </div>
+                        </div>
+
+                        <div class="article-item">
+                            <div class="article-info">
+                                <p class="article-title">Jujutsu Kaisen - Tome 18</p>
+                                <p class="article-meta">Qté: 2 • 13,80 €</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- RIGHT COLUMN - DETAILS -->
+            <aside class="details-column">
+                
+                <!-- DELIVERY ADDRESS
+                     Renseignée depuis commandes.adresse_livraison : le bloc
+                     affichait sinon une adresse d'exemple identique pour tous. -->
+                <div class="info-card">
+                    <h3>Adresse de livraison</h3>
+                    <div id="cmd-adresse">
+                        <p class="address-line" style="opacity:.6">Chargement…</p>
+                    </div>
+                </div>
+
+                <!-- CARRIER INFO
+                     Transporteur et numéro de suivi étaient écrits en dur :
+                     chaque client voyait le même « 9V77765432IFR », qu'un colis
+                     soit parti ou non. Ils sont désormais renseignés depuis la
+                     commande réelle, et le bloc reste masqué tant que la
+                     commande n'a pas été expédiée. -->
+                <div class="info-card" id="carrier-card" style="display:none">
+                    <h3>Info Transporteur</h3>
+                    <div class="carrier-info">
+                        <span class="material-symbols-outlined">local_shipping</span>
+                        <div>
+                            <p class="carrier-name" id="carrier-name">—</p>
+                            <p class="carrier-service" id="carrier-service">Livraison standard</p>
+                        </div>
+                    </div>
+
+                    <div class="tracking-number" id="tracking-block">
+                        <p class="tracking-label">NUMÉRO DE SUIVI</p>
+                        <div class="tracking-code">
+                            <span id="tracking-code">—</span>
+                            <button class="copy-btn" id="tracking-copy" title="Copier le numéro de suivi">
+                                <span class="material-symbols-outlined">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <a href="https://www.laposte.fr/outils/suivre-vos-envois" target="_blank" rel="noopener" class="carrier-link">Site du transporteur</a>
+                </div>
+
+                <!-- Affiché tant qu'aucune expédition n'a eu lieu -->
+                <div class="info-card" id="carrier-attente">
+                    <h3>Info Transporteur</h3>
+                    <p style="opacity:.7;font-size:.9rem;line-height:1.6">
+                        Votre commande est en cours de préparation. Le transporteur et le
+                        numéro de suivi s'afficheront ici dès son expédition.
+                    </p>
+                </div>
+
+                <!-- ORDER SUMMARY -->
+                <div class="info-card summary-card">
+                    <div class="summary-row">
+                        <span>Sous-total</span>
+                        <span>25,53 €</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Livraison</span>
+                        <span class="free-shipping">Gratuite</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total payé</span>
+                        <span>25,53 €</span>
+                    </div>
+
+                    <button class="download-invoice">
+                        <span class="material-symbols-outlined">description</span>
+                        Télécharger la facture
+                    </button>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="./page_accueil.html">Accueil</a></li>
+                    <li><a href="./page_catalogue.html">Catalogue</a></li>
+                    <li><a href="./page_promotion.html">Promotions</a></li>
+                    <li><a href="./page_coffret.html">Coffrets</a></li>
+                    <li><a href="./page_annonces.html">Annonces entre membres</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="./pageLogIn.html">Connexion</a></li>
+                    <li><a href="./pageSignUp.html">Inscription</a></li>
+                    <li><a href="./page_panier.html">Mon panier</a></li>
+                    <li><a href="./page_suivicommande.html">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="./page_faq.html">FAQ</a></li>
+                    <li><a href="./page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="./page_cgv.html">CGV</a></li>
+                    <li><a href="./page_cgu.html">CGU</a></li>
+                    <li><a href="./page_polretour.html">Politique de retour</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p><a href="mailto:contact@kinka.fr">contact@kinka.fr</a></p>
+                <div class="social-icons">
+                    <a href="#"><img src="../assets/images/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="../assets/images/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="../assets/images/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span class="annee-courante">2025</span> KINKA.FR &mdash; Tous droits réservés</p>
+        </div>
+    </footer>
+
+
+    <!-- Scripts -->
+    <script src="../assets/js/kinka-api-client.js"></script>
+    <script src="../assets/js/kinka-auth-guard.js"></script>
+    <script src="../assets/js/kinka-cards.js"></script>
+    <script src="../assets/js/authentification.js"></script>
+    <script src="../assets/js/panier.js"></script>
+    <script src="../assets/js/nav-user-menu.js"></script>
+    <script src="../assets/js/favoris.js"></script>
+    <script src="../assets/js/darkmode.js"></script>
+    <script src="../assets/js/recherche.js"></script>
+    <script src="../assets/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='./page_profil.html';};}}());
+    function _escTracking(s) {
+        return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    window.addEventListener('load', function() {
+        var params = new URLSearchParams(window.location.search);
+        var cmdId  = params.get('id') || null;
+        function render(order) {
+            if (!order) return;
+            var idEl = document.getElementById('cmd-numero');
+            var dateEl = document.getElementById('cmd-date');
+            var statEl = document.getElementById('cmd-statut');
+            var listEl = document.getElementById('cmd-articles');
+            if (idEl)   idEl.textContent   = '#' + order.id;
+            if (dateEl) dateEl.textContent  = new Date(order.date||order.created_at).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+            if (statEl) {
+                var SL = {livree:'Livrée',en_cours:'En cours',expediee:'Expédiée',annulee:'Annulée',preparee:'Préparée'};
+                statEl.textContent = SL[order.statut] || order.statut || 'En cours';
+            }
+            if (listEl && order.articles) {
+                listEl.innerHTML = order.articles.map(function(a) {
+                    var qty = a.quantite || 1;
+                    var prix = (parseFloat(a.prix)||0) * qty;
+                    return '<div class="article-item"><div class="article-info">'
+                        + '<p class="article-title">' + _escTracking(a.titre||'') + '</p>'
+                        + '<p class="article-meta">Qté: ' + qty + ' • ' + prix.toFixed(2).replace('.', ',') + ' €</p>'
+                        + '</div></div>';
+                }).join('');
+            }
+            renderTransporteur(order);
+            renderAdresse(order);
+        }
+
+        // L'adresse est stockée en une chaîne multiligne : « Prénom Nom »,
+        // rue, « CP Ville », puis éventuellement « Tél. … ».
+        function renderAdresse(order) {
+            var bloc = document.getElementById('cmd-adresse');
+            if (!bloc) return;
+            var lignes = String(order.adresse_livraison || '').split('\n')
+                .map(function(l) { return l.trim(); })
+                .filter(Boolean);
+            if (!lignes.length) {
+                bloc.innerHTML = '<p class="address-line" style="opacity:.6">Adresse non renseignée</p>';
+                return;
+            }
+            bloc.innerHTML = lignes.map(function(ligne, i) {
+                // Détection tolérante : « Tél. », « Tel », ou une ligne
+                // composée uniquement de chiffres et de séparateurs.
+                var estTelephone = /^t[ée]l/i.test(ligne) || /^[\d\s.+()-]{9,}$/.test(ligne);
+                var classe = i === 0 ? 'recipient-name' : (estTelephone ? 'phone' : 'address-line');
+                return '<p class="' + classe + '">' + _escTracking(ligne) + '</p>';
+            }).join('');
+        }
+
+        // Transporteur et numéro de suivi : renseignés par un administrateur
+        // depuis le back-office (PATCH /api/admin/commandes/:id). Tant qu'ils
+        // sont vides, on affiche un message d'attente plutôt qu'un faux numéro.
+        function renderTransporteur(order) {
+            var carte   = document.getElementById('carrier-card');
+            var attente = document.getElementById('carrier-attente');
+            if (!carte || !attente) return;
+
+            var suivi        = (order.numero_suivi || '').trim();
+            var transporteur = (order.transporteur || '').trim();
+            if (!suivi && !transporteur) {                       // rien à montrer encore
+                carte.style.display = 'none';
+                attente.style.display = '';
+                return;
+            }
+
+            carte.style.display = '';
+            attente.style.display = 'none';
+            document.getElementById('carrier-name').textContent = transporteur || 'Transporteur';
+            var blocSuivi = document.getElementById('tracking-block');
+            var codeEl    = document.getElementById('tracking-code');
+            if (suivi) {
+                blocSuivi.style.display = '';
+                codeEl.textContent = suivi;
+                var copier = document.getElementById('tracking-copy');
+                if (copier && !copier.dataset.branche) {         // bouton copier : inerte jusqu'ici
+                    copier.dataset.branche = '1';
+                    copier.addEventListener('click', function() {
+                        navigator.clipboard.writeText(suivi).then(function() {
+                            if (typeof showToast === 'function') showToast('Numéro de suivi copié', 'success');
+                        }).catch(function() {
+                            if (typeof showToast === 'function') showToast('Copie impossible', 'error');
+                        });
+                    });
+                }
+            } else {
+                blocSuivi.style.display = 'none';                // transporteur connu, suivi pas encore
+            }
+        }
+        if (typeof KinkaAuth !== 'undefined' && KinkaAuth.isLoggedIn() && cmdId) {
+            KinkaAPI.commandes.getOne(cmdId)
+                .then(function(order) { render(order); })
+                .catch(function() {
+                    var local = null;
+                    try { local = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e) {}
+                    if (local) render(local);
+                });
+        } else {
+            var local = null;
+            try { local = JSON.parse(localStorage.getItem('kinka_last_order')); } catch(e) {}
+            if (local) render(local);
+        }
+    });
+    </script>
+</body>
+</html>

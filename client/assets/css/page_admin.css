@@ -1,0 +1,247 @@
+/* ── BACK-OFFICE KINKA ───────────────────────────────────────────
+   Reprend les variables de kinka-shared.css (couleurs, rayons, ombres)
+   pour que l'administration reste visuellement cohérente avec le site,
+   tout en adoptant une mise en page dense adaptée à la gestion.
+   ---------------------------------------------------------------- */
+
+/* Repère « Administration » dans l'en-tête, pour distinguer d'un coup d'œil
+   le back-office du site public dont il reprend l'habillage. */
+.admin-repere {
+    display: inline-block; flex-shrink: 0;
+    padding: .2rem .6rem; border-radius: var(--radius-pill);
+    background: var(--pink-soft); color: var(--pink);
+    font-size: .7rem; font-weight: 800;
+    letter-spacing: .08em; text-transform: uppercase;
+}
+
+.admin-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: calc(100vh - 70px);
+    align-items: start;
+}
+
+/* ── Navigation latérale ─────────────────────────────────────── */
+.admin-nav {
+    position: sticky; top: 70px;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid var(--border);
+    background: var(--bg-muted);
+    min-height: calc(100vh - 70px);
+}
+.admin-nav-titre {
+    font-size: .7rem; font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text-light);
+    padding: 0 .75rem; margin-bottom: .75rem;
+}
+.admin-nav-lien {
+    display: flex; align-items: center; gap: .65rem;
+    padding: .6rem .75rem; margin-bottom: .15rem;
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    font-size: .9rem; font-weight: 600;
+    cursor: pointer; border: none; width: 100%;
+    background: transparent; text-align: left;
+    transition: var(--transition);
+}
+.admin-nav-lien:hover { background: var(--bg-subtle); color: var(--text); }
+.admin-nav-lien.actif { background: var(--pink-soft); color: var(--pink); }
+.admin-nav-lien .material-symbols-outlined { font-size: 1.15rem; }
+.admin-nav-badge {
+    margin-left: auto;
+    background: var(--pink); color: #fff;
+    font-size: .7rem; font-weight: 700;
+    padding: .1rem .45rem; border-radius: var(--radius-pill);
+}
+
+/* ── Zone de contenu ─────────────────────────────────────────── */
+.admin-contenu { padding: 2rem 2.5rem; min-width: 0; }
+.admin-entete {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+.admin-entete h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
+.admin-entete p { color: var(--text-muted); font-size: .9rem; margin-top: .2rem; }
+
+.admin-section { display: none; }
+.admin-section.actif { display: block; animation: fadeIn .25s ease; }
+
+/* ── Cartes de statistiques ──────────────────────────────────── */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+}
+.admin-stat {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.1rem 1.25rem;
+    box-shadow: var(--shadow-xs);
+}
+.admin-stat-valeur { font-size: 1.75rem; font-weight: 800; letter-spacing: -.03em; }
+.admin-stat-libelle { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+.admin-stat.alerte .admin-stat-valeur { color: #ef4444; }
+.admin-stat.attention .admin-stat-valeur { color: #f59e0b; }
+
+/* ── Barre d'outils (recherche + filtres) ────────────────────── */
+.admin-outils {
+    display: flex; gap: .6rem; flex-wrap: wrap;
+    align-items: center; margin-bottom: 1rem;
+}
+.admin-outils input[type="search"],
+.admin-outils input[type="text"],
+.admin-outils select {
+    padding: .5rem .75rem; font-size: .875rem;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); color: var(--text); font-family: inherit;
+}
+.admin-outils input[type="search"] { min-width: 260px; }
+.admin-outils input:focus, .admin-outils select:focus {
+    outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-soft);
+}
+
+/* ── Tableaux ────────────────────────────────────────────────── */
+.admin-tableau-conteneur {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow-x: auto;
+    box-shadow: var(--shadow-xs);
+}
+.admin-tableau { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.admin-tableau th {
+    text-align: left; padding: .75rem 1rem;
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--text-light); background: var(--bg-muted);
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.admin-tableau td {
+    padding: .7rem 1rem; border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+.admin-tableau tr:last-child td { border-bottom: none; }
+.admin-tableau tbody tr:hover { background: var(--bg-muted); }
+.admin-tableau .num { text-align: right; font-variant-numeric: tabular-nums; }
+.admin-tableau img.miniature {
+    width: 34px; height: 48px; object-fit: cover;
+    border-radius: 4px; background: var(--bg-subtle);
+}
+.admin-vide { padding: 3rem 1rem; text-align: center; color: var(--text-light); }
+
+/* ── Pastilles d'état ────────────────────────────────────────── */
+.badge {
+    display: inline-block; padding: .18rem .55rem;
+    border-radius: var(--radius-pill);
+    font-size: .72rem; font-weight: 700; white-space: nowrap;
+}
+.badge-gris   { background: var(--bg-subtle); color: var(--text-muted); }
+.badge-bleu   { background: #dbeafe; color: #1d4ed8; }
+.badge-vert   { background: #dcfce7; color: #15803d; }
+.badge-orange { background: #fef3c7; color: #b45309; }
+.badge-rouge  { background: #fee2e2; color: #b91c1c; }
+
+/* ── Boutons ─────────────────────────────────────────────────── */
+.btn-admin {
+    display: inline-flex; align-items: center; gap: .35rem;
+    padding: .45rem .8rem; font-size: .82rem; font-weight: 600;
+    border-radius: var(--radius); border: 1px solid var(--border);
+    background: var(--bg-card); color: var(--text);
+    cursor: pointer; font-family: inherit; transition: var(--transition);
+}
+.btn-admin:hover { background: var(--bg-subtle); border-color: var(--border-dk); }
+.btn-admin:disabled { opacity: .5; cursor: not-allowed; }
+.btn-admin .material-symbols-outlined { font-size: 1rem; }
+.btn-admin-principal {
+    background: var(--pink); border-color: var(--pink); color: #fff;
+}
+.btn-admin-principal:hover { background: var(--pink-dark); border-color: var(--pink-dark); }
+.btn-admin-danger { color: #b91c1c; }
+.btn-admin-danger:hover { background: #fee2e2; border-color: #fca5a5; }
+
+/* ── Pagination ──────────────────────────────────────────────── */
+.admin-pagination {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: .85rem .25rem; font-size: .85rem; color: var(--text-muted);
+}
+.admin-pagination-boutons { display: flex; gap: .4rem; }
+
+/* ── Fenêtre modale ──────────────────────────────────────────── */
+.admin-modale {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.55);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+}
+.admin-modale[hidden] { display: none; }
+.admin-modale-boite {
+    background: var(--bg-card); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: min(620px, 100%); max-height: 88vh; overflow-y: auto;
+}
+.admin-modale-entete {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg-card); z-index: 1;
+}
+.admin-modale-entete h2 { font-size: 1.1rem; font-weight: 800; }
+.admin-modale-corps { padding: 1.4rem; }
+.admin-modale-pied {
+    display: flex; justify-content: flex-end; gap: .6rem;
+    padding: 1rem 1.4rem; border-top: 1px solid var(--border);
+    position: sticky; bottom: 0; background: var(--bg-card);
+}
+
+/* ── Formulaires ─────────────────────────────────────────────── */
+.admin-grille-champs {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+.admin-champ { display: flex; flex-direction: column; gap: .3rem; }
+.admin-champ.pleine-largeur { grid-column: 1 / -1; }
+.admin-champ label {
+    font-size: .78rem; font-weight: 700; color: var(--text-muted);
+}
+.admin-champ input, .admin-champ select, .admin-champ textarea {
+    padding: .55rem .7rem; font-size: .875rem; font-family: inherit;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); color: var(--text); width: 100%;
+}
+.admin-champ input:focus, .admin-champ select:focus, .admin-champ textarea:focus {
+    outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-soft);
+}
+.admin-champ textarea { min-height: 90px; resize: vertical; }
+.admin-champ-aide { font-size: .72rem; color: var(--text-light); }
+.admin-cases { display: flex; flex-wrap: wrap; gap: 1rem; }
+.admin-case { display: flex; align-items: center; gap: .4rem; font-size: .85rem; }
+.admin-case input { width: auto; }
+
+/* ── Accès refusé ────────────────────────────────────────────── */
+.admin-refus {
+    max-width: 460px; margin: 5rem auto; text-align: center;
+}
+.admin-refus .material-symbols-outlined {
+    font-size: 3rem; color: var(--text-light); margin-bottom: .5rem;
+}
+.admin-refus h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: .5rem; }
+.admin-refus p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 560px) {
+    /* Sur petit écran, l'en-tête du back-office dépassait : l'adresse email
+       complète et le libellé du bouton de déconnexion sont trop larges. */
+    .admin-repere { display: none; }
+    #admin-identite { max-width: 38vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #admin-deconnexion { padding: .4rem .55rem; font-size: 0; }
+    #admin-deconnexion::after { content: 'Quitter'; font-size: .8rem; }
+}
+
+@media (max-width: 900px) {
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-nav {
+        position: static; min-height: 0;
+        border-right: none; border-bottom: 1px solid var(--border);
+        display: flex; gap: .3rem; overflow-x: auto; padding: .75rem 1rem;
+    }
+    .admin-nav-titre { display: none; }
+    .admin-nav-lien { width: auto; white-space: nowrap; }
+    .admin-contenu { padding: 1.25rem; }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Redirection — KINKA.FR</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../assets/images/LogoProjetFilRouge.png">
+<link rel="stylesheet" href="../assets/css/kinka-shared.css">
+</head>
+<body>
+<!--
+  Page conservée uniquement comme redirection : doublon de la fiche produit.
+  Son contenu dupliquait celui de la page de destination et divergeait au fil
+  des modifications. Les anciens liens et favoris restent valides.
+-->
+<main class="container" style="text-align:center;padding:4rem 1rem">
+  <p>Cette page a été remplacée. Redirection en cours…</p>
+  <p><a id="destination" href="./page_detail_produit.html">Continuer</a></p>
+</main>
+<script>
+(function () {
+  var destination = "./page_detail_produit.html";
+  
+  // Conserve le paramètre d'origine pour arriver sur le bon contenu.
+  var valeur = new URLSearchParams(location.search).get("id");
+  if (valeur) {
+    destination += (destination.indexOf('?') === -1 ? '?' : '&') +
+                   "id" + '=' + encodeURIComponent(valeur);
+  }
+  document.getElementById('destination').href = destination;
+  location.replace(destination);   // replace : la page morte ne pollue pas l'historique
+})();
+</script>
+</body>
+</html>

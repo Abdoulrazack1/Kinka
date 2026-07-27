@@ -1,0 +1,143 @@
+/* ── ANNONCES ENTRE MEMBRES ──────────────────────────────────────
+   Page de parcours des annonces publiques et de gestion des siennes.
+   Reprend les variables de kinka-shared.css.
+   ---------------------------------------------------------------- */
+
+.annonces-entete {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+.annonces-entete h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -.03em; }
+.annonces-sous-titre { color: var(--text-muted); font-size: .92rem; margin-top: .3rem; }
+.annonces-deposer {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .7rem 1.3rem; border-radius: var(--radius-pill);
+    font-size: .9rem; font-weight: 700; white-space: nowrap;
+}
+
+/* ── Onglets ─────────────────────────────────────────────────── */
+.annonces-onglets {
+    display: flex; gap: .4rem;
+    border-bottom: 1px solid var(--border); margin-bottom: 1.25rem;
+}
+.annonces-onglet {
+    padding: .7rem 1.1rem; border: none; background: none;
+    font-family: inherit; font-size: .92rem; font-weight: 700;
+    color: var(--text-muted); cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: var(--transition);
+}
+.annonces-onglet:hover { color: var(--text); }
+.annonces-onglet.actif { color: var(--pink); border-bottom-color: var(--pink); }
+
+.annonces-panneau { display: none; }
+.annonces-panneau.actif { display: block; animation: fadeIn .25s ease; }
+
+/* ── Filtres ─────────────────────────────────────────────────── */
+.annonces-outils {
+    display: flex; gap: .6rem; align-items: center;
+    flex-wrap: wrap; margin-bottom: 1.25rem;
+}
+.annonces-outils input[type="search"],
+.annonces-outils select {
+    padding: .55rem .8rem; font-family: inherit; font-size: .88rem;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); color: var(--text);
+}
+.annonces-outils input[type="search"] { min-width: 240px; }
+.annonces-outils input:focus, .annonces-outils select:focus {
+    outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-soft);
+}
+.annonces-total { font-size: .85rem; color: var(--text-muted); margin-left: auto; }
+
+/* ── Grille ──────────────────────────────────────────────────── */
+.annonces-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.25rem;
+}
+.annonces-info {
+    grid-column: 1 / -1; padding: 3rem 1rem;
+    text-align: center; color: var(--text-muted); font-size: .92rem;
+}
+
+.annonce-carte {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: var(--shadow-xs); transition: var(--transition);
+}
+.annonce-carte:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+.annonce-image { position: relative; aspect-ratio: 3 / 4; background: var(--bg-subtle); }
+.annonce-image img { width: 100%; height: 100%; object-fit: cover; }
+
+.annonce-statut {
+    position: absolute; top: .6rem; left: .6rem;
+    padding: .2rem .6rem; border-radius: var(--radius-pill);
+    font-size: .7rem; font-weight: 700; text-transform: uppercase;
+    background: rgba(0,0,0,.75); color: #fff;
+}
+.annonce-statut-vendue    { background: #15803d; }
+.annonce-statut-suspendue { background: #b91c1c; }
+
+.annonce-corps { padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .35rem; flex: 1; }
+.annonce-corps h3 { font-size: .95rem; font-weight: 700; line-height: 1.3; }
+.annonce-serie { font-size: .8rem; color: var(--text-muted); }
+.annonce-description { font-size: .82rem; color: var(--text-muted); line-height: 1.55; flex: 1; }
+
+.annonce-pied {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: .5rem; margin-top: .3rem;
+}
+.annonce-prix { font-size: 1.05rem; font-weight: 800; color: var(--pink); }
+.annonce-etat {
+    font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    padding: .15rem .5rem; border-radius: var(--radius-pill);
+    background: var(--bg-subtle); color: var(--text-muted);
+}
+.annonce-vendeur { font-size: .78rem; color: var(--text-muted); }
+.annonce-date { opacity: .75; }
+
+.annonce-actions { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
+.btn-annonce {
+    padding: .4rem .7rem; font-family: inherit; font-size: .78rem; font-weight: 600;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); color: var(--text); cursor: pointer;
+    transition: var(--transition);
+}
+.btn-annonce:hover { background: var(--bg-subtle); border-color: var(--border-dk); }
+.btn-annonce-danger { color: #b91c1c; }
+.btn-annonce-danger:hover { background: #fee2e2; border-color: #fca5a5; }
+
+/* ── Modale d'édition ────────────────────────────────────────── */
+.annonce-modale {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.55);
+    display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+}
+.annonce-modale[hidden] { display: none; }
+.annonce-modale-boite {
+    background: var(--bg-card); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg); padding: 1.6rem;
+    width: min(520px, 100%); max-height: 88vh; overflow-y: auto;
+    display: flex; flex-direction: column; gap: .9rem;
+}
+.annonce-modale-boite h2 { font-size: 1.15rem; font-weight: 800; }
+.annonce-champ { display: flex; flex-direction: column; gap: .3rem; }
+.annonce-champ label { font-size: .78rem; font-weight: 700; color: var(--text-muted); }
+.annonce-champ input, .annonce-champ select, .annonce-champ textarea {
+    padding: .55rem .7rem; font-family: inherit; font-size: .88rem;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); color: var(--text); width: 100%;
+}
+.annonce-champ input:focus, .annonce-champ select:focus, .annonce-champ textarea:focus {
+    outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-soft);
+}
+.annonce-champs-double { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.annonce-modale-pied { display: flex; justify-content: flex-end; gap: .6rem; margin-top: .3rem; }
+
+@media (max-width: 640px) {
+    .annonces-grille { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    .annonce-champs-double { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Annonces entre membres — achetez et vendez vos mangas d'occasion sur KINKA.FR">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annonces entre membres - KINKA.FR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="../assets/images/LogoProjetFilRouge.png">
+    <link rel="stylesheet" href="../assets/css/kinka-shared.css">
+    <link rel="stylesheet" href="../assets/css/page_annonces.css">
+    <link rel="stylesheet" href="../assets/css/translate.css">
+    <link rel="stylesheet" href="../assets/css/darkmode.css">
+</head>
+<body>
+<header>
+        <nav>
+            <a href="./page_accueil.html" class="logo">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+            </div>
+            <div class="nav-menu">
+                <a href="./page_accueil.html">Accueil</a>
+                <a href="./page_catalogue.html">Catalogue</a>
+                <a href="./page_promotion.html">Promotions</a>
+                <a href="./page_annonces.html">Annonces</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn fav-nav-active" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn">
+                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;color:var(--pink)">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <section class="annonces-entete">
+            <div>
+                <h1>Annonces entre membres</h1>
+                <p class="annonces-sous-titre">
+                    Achetez et vendez vos mangas d'occasion directement entre lecteurs.
+                </p>
+            </div>
+            <a href="./page_creation_annonce.html" class="btn-primary annonces-deposer">
+                <span class="material-symbols-outlined">add</span>
+                Déposer une annonce
+            </a>
+        </section>
+
+        <!-- Onglets : le catalogue public d'annonces et celles de l'utilisateur.
+             Aucune page n'existait pour l'un comme pour l'autre : une annonce
+             créée disparaissait aussitôt de la vue de tous, y compris de son
+             auteur. -->
+        <div class="annonces-onglets">
+            <button class="annonces-onglet actif" data-onglet="toutes">Toutes les annonces</button>
+            <button class="annonces-onglet" data-onglet="mes-annonces">Mes annonces</button>
+        </div>
+
+        <section class="annonces-panneau actif" id="panneau-toutes">
+            <div class="annonces-outils">
+                <input type="search" id="annonces-recherche" placeholder="Rechercher une série…">
+                <select id="annonces-etat">
+                    <option value="">Tous les états</option>
+                    <option value="neuf">Neuf</option>
+                    <option value="tres_bon">Très bon</option>
+                    <option value="bon">Bon</option>
+                    <option value="correct">Correct</option>
+                </select>
+                <span class="annonces-total" id="annonces-total"></span>
+            </div>
+            <div class="annonces-grille" id="annonces-grille"></div>
+        </section>
+
+        <section class="annonces-panneau" id="panneau-mes-annonces">
+            <div class="annonces-grille" id="mes-annonces-grille"></div>
+        </section>
+
+    </main>
+
+    <!-- Modification d'une annonce -->
+    <div class="annonce-modale" id="annonce-modale" hidden>
+        <div class="annonce-modale-boite">
+            <h2>Modifier mon annonce</h2>
+            <div class="annonce-champ">
+                <label for="edit-titre">Titre</label>
+                <input type="text" id="edit-titre" maxlength="255">
+            </div>
+            <div class="annonce-champs-double">
+                <div class="annonce-champ">
+                    <label for="edit-serie">Série</label>
+                    <input type="text" id="edit-serie">
+                </div>
+                <div class="annonce-champ">
+                    <label for="edit-tome">Tome</label>
+                    <input type="number" id="edit-tome" min="1">
+                </div>
+            </div>
+            <div class="annonce-champs-double">
+                <div class="annonce-champ">
+                    <label for="edit-prix">Prix (€)</label>
+                    <input type="number" id="edit-prix" step="0.01" min="0.01">
+                </div>
+                <div class="annonce-champ">
+                    <label for="edit-etat">État</label>
+                    <select id="edit-etat">
+                        <option value="neuf">Neuf</option>
+                        <option value="tres_bon">Très bon</option>
+                        <option value="bon">Bon</option>
+                        <option value="correct">Correct</option>
+                    </select>
+                </div>
+            </div>
+            <div class="annonce-champ">
+                <label for="edit-description">Description</label>
+                <textarea id="edit-description" rows="3" maxlength="1000"></textarea>
+            </div>
+            <div class="annonce-modale-pied">
+                <button class="btn-annonce" id="edit-annuler">Annuler</button>
+                <button class="btn-primary" id="edit-enregistrer">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+<footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="../assets/images/LogoProjetFilRouge.png" class="logo-image" alt="Logo">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique manga de confiance. Neufs, occasions, coffrets et exclusivités livrés chez vous.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Catalogue</h4>
+                <ul>
+                    <li><a href="./page_catalogue.html">Tous les mangas</a></li>
+                    <li><a href="./page_nouveaute.html">Nouveautés</a></li>
+                    <li><a href="./page_promotion.html">Promotions</a></li>
+                    <li><a href="./page_coffret.html">Coffrets</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Mon compte</h4>
+                <ul>
+                    <li><a href="./page_profil.html">Mon profil</a></li>
+                    <li><a href="./page_favoris.html">Mes favoris</a></li>
+                    <li><a href="./page_panier.html">Mon panier</a></li>
+                    <li><a href="./page_suivicommande.html">Mes commandes</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Aide</h4>
+                <ul>
+                    <li><a href="./page_faq.html">FAQ</a></li>
+                    <li><a href="./page_contact.html">Contact</a></li>
+                    <li><a href="./page_polretour.html">Retours</a></li>
+                    <li><a href="./page_cgv.html">CGV</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span class="annee-courante">2025</span> KINKA.FR &mdash; Tous droits réservés</p>
+            <div class="footer-legal">
+                <a href="./page_cgu.html">CGU</a>
+                <a href="./page_cgv.html">CGV</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/kinka-api-client.js"></script>
+    <script src="../assets/js/kinka-auth-guard.js"></script>
+    <script src="../assets/js/kinka-cards.js"></script>
+    <script src="../assets/js/authentification.js"></script>
+    <script src="../assets/js/panier.js"></script>
+    <script src="../assets/js/nav-user-menu.js"></script>
+    <script src="../assets/js/favoris.js"></script>
+    <script src="../assets/js/annonces.js"></script>
+    <script src="../assets/js/darkmode.js"></script>
+    <script src="../assets/js/recherche.js"></script>
+    <script src="../assets/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='./page_profil.html';};}}());
+    </script>
+</body>
+</html>

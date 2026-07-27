@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="KINKA.FR — Boutique manga en ligne : neufs, occasions, coffrets.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions Fréquentes - KINKA.FR</title>
+        <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="../assets/images/LogoProjetFilRouge.png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/kinka-shared.css">
+    <link rel="stylesheet" href="../assets/css/page_faq.css">
+    <link rel="stylesheet" href="../assets/css/translate.css">
+    <link rel="stylesheet" href="../assets/css/darkmode.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="./page_accueil.html" class="logo">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+            </div>
+            
+                        <div class="nav-menu">
+                <a href="./page_accueil.html">Accueil</a>
+                <a href="./page_catalogue.html">Catalogue</a>
+                <a href="./page_promotion.html">Promotions</a>
+                <a href="./page_annonces.html">Annonces</a>
+            </div>
+            
+                                    <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="./page_accueil.html">Accueil</a>
+            <span>&#8250;</span>
+            <span class="breadcrumb-current">FAQ</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-container">
+        
+        <div class="faq-header">
+            <h1>Questions Fréquentes</h1>
+            <p class="faq-subtitle">Tout ce que vous devez savoir sur nos mangas, nos livraisons et nos services.</p>
+        </div>
+
+        <div class="faq-container">
+            
+            <!-- SIDEBAR -->
+            <aside class="faq-sidebar">
+                <nav class="faq-nav">
+                    <a href="#commandes" class="faq-nav-link ">Commandes & Livraison</a>
+                    <a href="#retours" class="faq-nav-link">Retours & Remboursements</a>
+                    <a href="#paiement" class="faq-nav-link">Paiement</a>
+                    <a href="#compte" class="faq-nav-link">Compte & Premium</a>
+                    <a href="#occasion" class="faq-nav-link">Occasion / État des mangas</a>
+                </nav>
+            </aside>
+
+            <!-- CONTENT -->
+            <div class="faq-content">
+                
+                <!-- Section Commandes & Livraison -->
+                <section id="commandes" class="faq-section">
+                    <h2>Commandes & Livraison</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq1" class="faq-toggle">
+                        <label for="faq1" class="faq-question">
+                            <span>Quels sont les délais de livraison ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Nos livraisons suivent le délai standard en France métropolitaine sont de 48h à 72h ouvrés via Colissimo. Pour la livraison Express, comptez 24h. Nous expéditions généralement les commandes le jour même si elles sont finalisées avant 14h.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq2" class="faq-toggle">
+                        <label for="faq2" class="faq-question">
+                            <span>Comment suivre ma commande ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Dès l'expédition de votre commande, vous recevrez un e-mail avec un lien de suivi. Vous pouvez également retrouver ce lien depuis la section "Suivi de commande" de votre compte Kinka, accessible à tout moment.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq3" class="faq-toggle">
+                        <label for="faq3" class="faq-question">
+                            <span>Proposez-vous le retrait en point relais ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Oui, vous pouvez choisir la livraison en point relais partenaire lors du paiement. Les délais sont similaires à la livraison à domicile, et vous serez notifié par e-mail dès SMS dès que le colis sera disponible.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Retours & Remboursements -->
+                <section id="retours" class="faq-section">
+                    <h2>Retours & Remboursements</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq4" class="faq-toggle">
+                        <label for="faq4" class="faq-question">
+                            <span>Comment retourner un manga qui ne me convient pas ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Vous disposez de 14 jours après réception pour demander un retour depuis votre espace client, rubrique "Mes commandes". Une étiquette de retour vous sera fournie et le remboursement sera effectué après réception et contrôle de l'article.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq5" class="faq-toggle">
+                        <label for="faq5" class="faq-question">
+                            <span>Les frais de retour sont-ils à ma charge ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Les frais de retour sont offerts en cas d'erreur de notre part (erreur article, produit endommagé). Pour un changement d'avis, une participation forfaitaire peut être appliquée et sera indiquée lors de la demande de retour.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Paiement -->
+                <section id="paiement" class="faq-section">
+                    <h2>Paiement</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq6" class="faq-toggle">
+                        <label for="faq6" class="faq-question">
+                            <span>Quels moyens de paiement acceptez-vous ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Nous acceptons les cartes bancaires (Visa, Mastercard), les portefeuilles électroniques (Apple Pay, Google Pay) ainsi que Paypal. Tous les paiements sont sécurisés grâce à notre prestataire de paiement certifié.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq7" class="faq-toggle">
+                        <label for="faq7" class="faq-question">
+                            <span>Mon paiement a été refusé, que faire ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Vérifiez que vos informations bancaires sont correctes et que votre plafond n'est pas atteint. Si le problème persiste, contactez votre banque puis notre support en indiquant le message d'erreur pour que nous puissions vous aider.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Compte & Premium -->
+                <section id="compte" class="faq-section">
+                    <h2>Compte & Premium</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq8" class="faq-toggle">
+                        <label for="faq8" class="faq-question">
+                            <span>Quels sont les avantages de l'abonnement Premium ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>L'abonnement Premium vous donne accès à la livraison offerte dès un certain montant, des réductions exclusives, un accès anticipé aux coffrets limités et des bonus de fidélité sur chaque commande.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq9" class="faq-toggle">
+                        <label for="faq9" class="faq-question">
+                            <span>Comment modifier mes informations de compte ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Depuis votre espace Client, vous pourrez mettre à jour votre adresse, vos informations de paiement ainsi que vos préférences de communication dans la section "Mon profil".</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Occasion / État des mangas -->
+                <section id="occasion" class="faq-section">
+                    <h2>Occasion / État des mangas</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq10" class="faq-toggle">
+                        <label for="faq10" class="faq-question">
+                            <span>Comment évaluez-vous l'état des mangas d'occasion ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Chaque manga est contrôlé manuellement par notre équipe et classé selon plusieurs niveaux (Comme neuf, Très bon état, Bon état). Les éventuels défauts visibles sont précisés dans la fiche produit.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq11" class="faq-toggle">
+                        <label for="faq11" class="faq-question">
+                            <span>Puis-je revendre mes anciens mangas sur Kinka ?</span>
+                            <span class="faq-icon"></span>
+                        </label>
+                        <div class="faq-answer">
+                            <div>
+                                <p>Nous travaillons sur un service de reprise et de dépôt-vente, inscrivez-vous à la newsletter pour être informé dès son lancement et connaître les modalités de rachat.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CTA Box -->
+                <div class="faq-cta">
+                    <div class="cta-icon"><span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span></div>
+                    <h3>Vous ne trouvez pas votre réponse ?</h3>
+                    <p>Notre équipe support est disponible du lundi au vendredi de 9h à 18h pour vous aider.</p>
+                    <a href="./page_contact.html" class="cta-btn">Contactez-nous</a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="./page_accueil.html">Accueil</a></li>
+                    <li><a href="./page_catalogue.html">Catalogue</a></li>
+                    <li><a href="./page_promotion.html">Promotions</a></li>
+                    <li><a href="./page_coffret.html">Coffrets</a></li>
+                    <li><a href="./page_annonces.html">Annonces entre membres</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="./pageLogIn.html">Connexion</a></li>
+                    <li><a href="./pageSignUp.html">Inscription</a></li>
+                    <li><a href="./page_panier.html">Mon panier</a></li>
+                    <li><a href="./page_suivicommande.html">Suivi de commande</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="./page_faq.html">FAQ</a></li>
+                    <li><a href="./page_contact.html">Formulaire de contact</a></li>
+                    <li><a href="./page_cgv.html">CGV</a></li>
+                    <li><a href="./page_cgu.html">CGU</a></li>
+                    <li><a href="./page_polretour.html">Politique de retour</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p class="contact-info"><a href="mailto:contact@kinka.fr">contact@kinka.fr</a></p>
+                <div class="social-icons">
+                    <a href="#"><img src="../assets/images/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#"><img src="../assets/images/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#"><img src="../assets/images/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+
+       <div class="footer-bottom">
+            <p>&copy; 2024 KINKA.FR. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="../assets/js/kinka-api-client.js"></script>
+    <script src="../assets/js/kinka-auth-guard.js"></script>
+    <script src="../assets/js/kinka-cards.js"></script>
+    <script src="../assets/js/authentification.js"></script>
+    <script src="../assets/js/panier.js"></script>
+    <script src="../assets/js/nav-user-menu.js"></script>
+    <script src="../assets/js/favoris.js"></script>
+    <script src="../assets/js/darkmode.js"></script>
+    <script src="../assets/js/recherche.js"></script>
+    <script src="../assets/js/translate.js"></script>
+    <script>
+    (function(){ var h=document.querySelector('header'); if(!h) return; window.addEventListener('scroll',function(){ h.classList.toggle('scrolled',window.scrollY>10); },{passive:true}); })();
+    (function(){var user=null;try{user=JSON.parse(localStorage.getItem('kinka_current_user'));}catch(e){}var btn=document.querySelector('.connect-btn');if(btn&&user&&user.prenom){btn.textContent=user.prenom;btn.onclick=function(){window.location.href='./page_profil.html';};}}());
+    </script>
+</body>
+</html>

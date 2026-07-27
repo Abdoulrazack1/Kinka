@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="KINKA.FR — Votre boutique manga en ligne : neufs, occasions, coffrets, exclusivités.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KINKA.FR - Votre boutique manga de référence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="icon" type="image/png" href="../assets/images/LogoProjetFilRouge.png">
+    <link rel="stylesheet" href="../assets/css/kinka-shared.css">
+    <link rel="stylesheet" href="../assets/css/page_accueil.css">
+    <link rel="stylesheet" href="../assets/css/translate.css">
+    <link rel="stylesheet" href="../assets/css/darkmode.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="./page_accueil.html" class="logo">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+            </a>
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+            </div>
+            <div class="nav-menu">
+                <a href="./page_accueil.html" class="active">Accueil</a>
+                <a href="./page_catalogue.html">Catalogue</a>
+                <a href="./page_promotion.html">Promotions</a>
+                <a href="./page_annonces.html">Annonces</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="nav-badge" id="favoris-count" style="display:none">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+                <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="panier-count" id="panier-count" style="display:none">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- HERO CARROUSEL -->
+        <section class="hero-banner" id="hero-banner">
+            <div class="hero-slide slide-1 active">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">TENDANCE ACTUELLE</span>
+                    <h1>Chainsaw Man</h1>
+                    <p>Découvrez les derniers tomes de la série phénomène de Tatsuki Fujimoto.<br>Disponible dès maintenant.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=chainsaw-man-12'">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 12
+                        </button>
+                        <button class="btn-secondary" onclick="window.location.href='./page_catalogue.html'">Voir la collection</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide slide-2">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">PHÉNOMÈNE MONDIAL</span>
+                    <h1>Jujutsu Kaisen</h1>
+                    <p>Plongez dans l'univers des exorcistes et des malédictions.<br>Les derniers tomes disponibles immédiatement.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=jujutsu-kaisen-20'">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 20
+                        </button>
+                        <button class="btn-secondary" onclick="window.location.href='./page_catalogue.html'">Voir la collection</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide slide-3">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">SÉRIE CULTE</span>
+                    <h1>My Hero Academia</h1>
+                    <p>Rejoignez les élèves de U.A. dans leur quête pour devenir les plus grands héros.<br>Édition collector disponible.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=my-hero-academia-37'">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 37
+                        </button>
+                        <button class="btn-secondary" onclick="window.location.href='./page_catalogue.html'">Voir la collection</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide slide-4">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">CHEF-D'ŒUVRE</span>
+                    <h1>Berserk</h1>
+                    <p>Le monument du dark fantasy de Kentaro Miura.<br>Tome 41 — édition posthume disponible.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=berserk-41'">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 41
+                        </button>
+                        <button class="btn-secondary" onclick="window.location.href='./page_seinen.html'">Découvrir le Seinen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide slide-5">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="badge">COUP DE CŒUR</span>
+                    <h1>Spy × Family</h1>
+                    <p>La famille la plus déjantée du manga est de retour.<br>Espionnage, humour et tendresse au rendez-vous.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=spy-x-family-10'">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Acheter le Tome 10
+                        </button>
+                        <button class="btn-secondary" onclick="window.location.href='./page_coupdecoeur.html'">Coups de cœur</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Dots navigation -->
+            <div class="hero-indicators" id="hero-dots">
+                <span class="hero-dot active" data-slide="0"></span>
+                <span class="hero-dot" data-slide="1"></span>
+                <span class="hero-dot" data-slide="2"></span>
+                <span class="hero-dot" data-slide="3"></span>
+                <span class="hero-dot" data-slide="4"></span>
+            </div>
+            <!-- Arrows -->
+            <button class="hero-arrow hero-prev" id="hero-prev" aria-label="Précédent">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button class="hero-arrow hero-next" id="hero-next" aria-label="Suivant">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+        </section>
+
+        <!-- BANNIÈRE PROMO RAPIDE -->
+        <div class="trust-bar">
+            <div class="trust-item"><span class="material-symbols-outlined">local_shipping</span><span>Livraison gratuite dès 50€</span></div>
+            <div class="trust-item"><span class="material-symbols-outlined">autorenew</span><span>Retours sous 30 jours</span></div>
+            <div class="trust-item"><span class="material-symbols-outlined">verified</span><span>Paiement sécurisé</span></div>
+            <div class="trust-item"><span class="material-symbols-outlined">store</span><span>+3 000 titres en stock</span></div>
+        </div>
+
+        <!-- MAISONS D'ÉDITION -->
+        <section class="section-maisons-edition">
+            <div class="section-header">
+                <h2 class="section-title">Maisons d'édition</h2>
+                <a href="./page_maison_edition.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+            </div>
+            <div class="maisons-grid">
+                <a href="./page_maison_detail.html?id=glenat" class="maison-card">
+                    <img src="../assets/images/logo-glenat.png" alt="Logo Glénat" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Glénat</h3>
+                        <p class="maison-series">Dragon Ball, One Piece</p>
+                    </div>
+                </a>
+                <a href="./page_maison_detail.html?id=kioon" class="maison-card">
+                    <img src="../assets/images/logo_kioon.jpg" alt="Logo Ki-oon" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Ki-oon</h3>
+                        <p class="maison-series">My Hero Academia, JJK</p>
+                    </div>
+                </a>
+                <a href="./page_maison_detail.html?id=kurokawa" class="maison-card">
+                    <img src="../assets/images/logo_kurokawa.jpg" alt="Logo Kurokawa" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Kurokawa</h3>
+                        <p class="maison-series">Naruto, Bleach</p>
+                    </div>
+                </a>
+                <a href="./page_maison_detail.html?id=delcourt-tonkam" class="maison-card">
+                    <img src="../assets/images/logo-delcourt-tonkam.jpg" alt="Logo Delcourt-Tonkam" class="maison-logo">
+                    <div class="maison-info">
+                        <h3 class="maison-name">Delcourt-Tonkam</h3>
+                        <p class="maison-series">Vagabond, Berserk</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- DERNIÈRES NOUVEAUTÉS (dynamique) -->
+        <section class="section-nouveautes">
+            <div class="section-header">
+                <h2 class="section-title">Dernières Nouveautés</h2>
+                <a href="./page_nouveaute.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+            </div>
+            <div class="products-grid" id="grid-nouveautes">
+                <!-- Généré par JS -->
+            </div>
+        </section>
+
+        <!-- SECTIONS PROMO CARDS -->
+        <section class="promo-sections">
+
+            <!-- COFFRET -->
+            <a href="./page_coffret.html" class="promo-card promo-coffret">
+                <div class="promo-bg-pattern promo-pattern-coffret">
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pc" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse"><rect x="10" y="6" width="28" height="36" rx="3" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/><rect x="16" y="10" width="28" height="36" rx="3" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#pc)"/></svg>
+                </div>
+                <div class="promo-icon-bg">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                </div>
+                <div class="promo-content">
+                    <span class="promo-tag">Collection</span>
+                    <h3>Coffrets Intégrale</h3>
+                    <p>Offrez-vous l'intégrale de vos séries préférées à prix réduit.</p>
+                    <div class="promo-chips">
+                        <span class="promo-chip">+30 coffrets</span>
+                        <span class="promo-chip">Jusqu'à&nbsp;<strong>-25%</strong></span>
+                    </div>
+                    <div class="promo-cta">
+                        Voir les coffrets
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- OCCASION -->
+            <a href="./page_occasion.html" class="promo-card promo-occasion">
+                <div class="promo-bg-pattern promo-pattern-occasion">
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="po" x="0" y="0" width="56" height="56" patternUnits="userSpaceOnUse"><circle cx="28" cy="28" r="20" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/><circle cx="28" cy="28" r="10" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/><circle cx="0" cy="0" r="20" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#po)"/></svg>
+                </div>
+                <div class="promo-icon-bg">
+                    <span class="material-symbols-outlined">recycling</span>
+                </div>
+                <div class="promo-content">
+                    <span class="promo-tag">Bons plans</span>
+                    <h3>Mangas d'Occasion</h3>
+                    <p>Des titres en très bon état jusqu'à -40% du prix neuf.</p>
+                    <div class="promo-chips">
+                        <span class="promo-chip">État vérifié</span>
+                        <span class="promo-chip">Jusqu'à&nbsp;<strong>-40%</strong></span>
+                    </div>
+                    <div class="promo-cta">
+                        Voir les occasions
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </div>
+            </a>
+
+        </section>
+
+        <!-- CATÉGORIES -->
+        <section class="section-categories">
+            <div class="section-header">
+                <h2 class="section-title">Catégories de mangas</h2>
+            </div>
+            <p class="section-subtitle">Explorez les univers qui te correspondent</p>
+            <div class="categories-grid">
+                <div class="category-card" onclick="window.location.href='./page_shonen.html'">
+                    <img src="../assets/images/categorie_shonen.webp" alt="Shōnen">
+                    <div class="category-overlay">
+                        <span class="category-badge">SHŌNEN</span>
+                        <p class="category-description">Aventure, action, combat et amitié pour tous les âges.</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="window.location.href='./page_seinen.html'">
+                    <img src="../assets/images/categorie_seinen.jpg" alt="Seinen">
+                    <div class="category-overlay">
+                        <span class="category-badge">SEINEN</span>
+                        <p class="category-description">Histoires matures, psychologiques et réalistes.</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="window.location.href='./page_shojo.html'">
+                    <img src="../assets/images/categorie_shojo.jpg" alt="Shōjo">
+                    <div class="category-overlay">
+                        <span class="category-badge">SHŌJO</span>
+                        <p class="category-description">Romance, émotions et tranches de vie touchantes.</p>
+                    </div>
+                </div>
+                <div class="category-card" onclick="window.location.href='./page_josei.html'">
+                    <img src="../assets/images/categorie_josei.jpg" alt="Josei">
+                    <div class="category-overlay">
+                        <span class="category-badge">JOSEI</span>
+                        <p class="category-description">Histoires matures, émotions et tranches de vie pour adultes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEILLEURES VENTES (dynamique) -->
+        <section class="section-meilleures-ventes">
+            <div class="section-header">
+                <h2 class="section-title">Meilleures Ventes</h2>
+                <a href="./page_bestsellers.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+            </div>
+            <div class="products-grid" id="grid-bestsellers">
+                <!-- Généré par JS -->
+            </div>
+        </section>
+
+        <!-- KINKA PREMIUM -->
+        <section class="section-premium-accueil">
+            <div class="premium-accueil-card">
+                <div class="premium-accueil-content">
+                    <span class="premium-accueil-badge">
+                        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">star</span>
+                        Kinka Premium
+                    </span>
+                    <h2>Votre passeport pour le meilleur du manga</h2>
+                    <p>Livraison offerte, remises exclusives et accès anticipé aux coffrets collectors.</p>
+                    <div class="premium-accueil-perks">
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">local_shipping</span>
+                            <span>Livraison offerte</span>
+                        </div>
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">sell</span>
+                            <span>-10% sur tout</span>
+                        </div>
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">alarm</span>
+                            <span>Accès anticipé</span>
+                        </div>
+                        <div class="perk-item">
+                            <span class="material-symbols-outlined">support_agent</span>
+                            <span>Support prioritaire</span>
+                        </div>
+                    </div>
+                    <div class="premium-accueil-cta">
+                        <a href="./page_premium.html" class="btn-premium-rose">
+                            Découvrir Premium
+                        </a>
+                        <span class="premium-price-hint">Dès 4,99&nbsp;€/mois · Résiliable à tout moment</span>
+                    </div>
+                </div>
+                <div class="premium-accueil-visual">
+                    <div class="premium-visual-inner">
+                        <div class="pv-ring pv-ring-1"></div>
+                        <div class="pv-ring pv-ring-2"></div>
+                        <div class="pv-ring pv-ring-3"></div>
+                        <div class="pv-center">
+                            <span class="material-symbols-outlined" style="font-size:2.5rem;font-variation-settings:'FILL' 1;color:#fff">auto_awesome</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COUPS DE COEUR (dynamique) -->
+        <section class="section-coupdecoeur">
+            <div class="section-header">
+                <h2 class="section-title">Coups de Cœur</h2>
+                <a href="./page_coupdecoeur.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+            </div>
+            <div class="products-grid" id="grid-coupdecoeur">
+                <!-- Généré par JS -->
+            </div>
+        </section>
+
+        <!-- NEWSLETTER -->
+        <section class="section-newsletter">
+            <div class="newsletter-card">
+                <div class="newsletter-text">
+                    <h3>Restez informé des nouveautés</h3>
+                    <p>Recevez nos alertes sorties, promotions et exclusivités directement dans votre boîte mail.</p>
+                </div>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse e-mail" class="newsletter-input" id="newsletter-email">
+                    <button class="btn-primary newsletter-btn" onclick="handleNewsletter()">
+                        <span class="material-symbols-outlined">mail</span>
+                        S'inscrire
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <span class="logo-text">KINKA<span class="fr">.FR</span></span>
+                </div>
+                <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="./page_accueil.html">Accueil</a></li>
+                    <li><a href="./page_catalogue.html">Catalogue</a></li>
+                    <li><a href="./page_promotion.html">Promotions</a></li>
+                    <li><a href="./page_coffret.html">Coffrets</a></li>
+                    <li><a href="./page_annonces.html">Annonces entre membres</a></li>
+                    <li><a href="./page_occasion.html">Occasion</a></li>
+                    <li><a href="./page_bestsellers.html">Meilleures Ventes</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Compte</h4>
+                <ul>
+                    <li><a href="./pageLogIn.html">Connexion</a></li>
+                    <li><a href="./pageSignUp.html">Inscription</a></li>
+                    <li><a href="./page_panier.html">Mon panier</a></li>
+                    <li><a href="./page_favoris.html">Mes favoris</a></li>
+                    <li><a href="./page_suivicommande.html">Suivi de commande</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="./page_faq.html">FAQ</a></li>
+                    <li><a href="./page_contact.html">Contact</a></li>
+                    <li><a href="./page_cgv.html">CGV</a></li>
+                    <li><a href="./page_cgu.html">CGU</a></li>
+                    <li><a href="./page_polretour.html">Politique de retour</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Nous contacter</h4>
+                <p class="contact-info"><a href="mailto:contact@kinka.fr">contact@kinka.fr</a></p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><img src="../assets/images/icons8-twitter-24.png" alt="Twitter"></a>
+                    <a href="#" aria-label="Instagram"><img src="../assets/images/icons8-instagram-24.png" alt="Instagram"></a>
+                    <a href="#" aria-label="Facebook"><img src="../assets/images/icons8-facebook-nouveau-24.png" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span class="annee-courante">2025</span> KINKA.FR — Tous droits réservés</p>
+        </div>
+    </footer>
+    
+    <script src="../assets/js/kinka-api-client.js"></script>
+    <script src="../assets/js/kinka-auth-guard.js"></script>
+    <script src="../assets/js/kinka-cards.js"></script>
+    <script src="../assets/js/authentification.js"></script>
+    <script src="../assets/js/panier.js"></script>
+    <script src="../assets/js/nav-user-menu.js"></script>
+    <script src="../assets/js/favoris.js"></script>
+    <script src="../assets/js/darkmode.js"></script>
+    <script src="../assets/js/recherche.js"></script>
+    <script src="../assets/js/translate.js"></script>
+
+    <script>
+    // ── Grilles produits ─────────────────────────────────────
+    (function() {
+        window.addEventListener('load', function() {
+            function tryRender() {
+                if (typeof kinkaRenderGrid === 'function' && typeof KinkaAPI !== 'undefined') {
+                    kinkaRenderGrid('grid-nouveautes',  { sort: 'nouveaute', limit: 6 }, 6);
+                    kinkaRenderGrid('grid-bestsellers', { sort: 'note',      limit: 6 }, 6);
+                    kinkaRenderGrid('grid-coupdecoeur', { sort: 'titre',     limit: 6 }, 6);
+                } else {
+                    setTimeout(tryRender, 80);
+                }
+            }
+            tryRender();
+        });
+    })();
+
+    // ── Hero Carrousel JS (fluide, JS-only) ──────────────────
+    (function() {
+        var slides  = document.querySelectorAll('.hero-slide');
+        var dots    = document.querySelectorAll('.hero-dot');
+        var current = 0;
+        var total   = slides.length;
+        var timer;
+        var locked  = false;
+
+        if (!total) return; // sécurité
+
+        function goTo(n) {
+            if (locked) return;
+            locked = true;
+
+            var prev = current;
+            current  = ((n % total) + total) % total;
+
+            if (prev === current) { locked = false; return; }  // déjà sur cette slide
+
+            slides[prev].classList.remove('active');
+            slides[prev].classList.add('leaving');
+            dots[prev].classList.remove('active');
+
+            // Retirer 'leaving' est indispensable : une slide encore en cours de
+            // sortie qu'on réaffiche cumulerait les deux classes, et la règle
+            // .leaving (opacity 0, déclarée après .active) l'emporterait — le
+            // carrousel restait alors vide.
+            slides[current].classList.remove('leaving');
+            slides[current].classList.add('active');
+            dots[current].classList.add('active');
+
+            setTimeout(function(){
+                slides[prev].classList.remove('leaving');
+                locked = false;
+            }, 850);
+        }
+
+        function next()  { goTo(current + 1); }
+        function prev_s(){ goTo(current - 1); }
+        function start() { timer = setInterval(next, 5000); }
+        function stop()  { clearInterval(timer); }
+
+        slides.forEach(function(s) { s.classList.remove('active','leaving'); });
+        slides[0].classList.add('active');
+        dots[0].classList.add('active');
+
+        start();
+
+        dots.forEach(function(dot) {
+            dot.addEventListener('click', function() {
+                stop(); goTo(parseInt(this.dataset.slide)); start();
+            });
+        });
+
+        var prevBtn = document.getElementById('hero-prev');
+        var nextBtn = document.getElementById('hero-next');
+        if (prevBtn) prevBtn.addEventListener('click', function() { stop(); prev_s(); start(); });
+        if (nextBtn) nextBtn.addEventListener('click', function() { stop(); next();   start(); });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft')  { stop(); prev_s(); start(); }
+            if (e.key === 'ArrowRight') { stop(); next();   start(); }
+        });
+
+        var banner = document.getElementById('hero-banner');
+        if (banner) {
+            banner.addEventListener('mouseenter', stop);
+            banner.addEventListener('mouseleave', start);
+        }
+    })();
+
+    // ── Newsletter ────────────────────────────────────────────
+    async function handleNewsletter() {
+        var input = document.getElementById('newsletter-email');
+        if (!input) return;
+        var email = input.value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showToast('Veuillez saisir une adresse e-mail valide.', 'error');
+            return;
+        }
+        try {
+            if (typeof KinkaAPI !== 'undefined' && KinkaAPI.newsletter) {
+                await KinkaAPI.newsletter.subscribe(email);
+            }
+            showToast('Inscription confirmée ! Bienvenue dans la communauté KINKA.');
+            input.value = '';
+        } catch (err) {
+            // Fallback localStorage si API indisponible
+            var subs = JSON.parse(localStorage.getItem('kinka_newsletter') || '[]');
+            if (subs.includes(email)) {
+                showToast('Vous êtes déjà inscrit(e) à notre newsletter !');
+            } else {
+                subs.push(email);
+                localStorage.setItem('kinka_newsletter', JSON.stringify(subs));
+                showToast('Inscription enregistrée localement (API indisponible).', 'info');
+                input.value = '';
+            }
+        }
+    }
+
+    // ── Mise à jour header selon session ─────────────────────
+    (function mettreAJourNavAuth() {
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('kinka_current_user')); } catch(e) {}
+        var connectBtn = document.querySelector('.connect-btn');
+        if (!connectBtn) return;
+        if (user && user.prenom) {
+            connectBtn.textContent = user.prenom;
+            connectBtn.onclick = function() { window.location.href = './page_profil.html'; }; } }());
+    </script>
+</body>
+</html>

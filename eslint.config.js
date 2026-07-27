@@ -4,17 +4,17 @@ const js = require('@eslint/js');
 const globals = require('globals');
 
 module.exports = [
-  { ignores: ['**/node_modules/**', '_archive/**', 'asset/js/translate.js'] },
+  { ignores: ['**/node_modules/**', 'docs/archive/**', 'client/assets/js/translate.js', 'tools/**'] },
 
   js.configs.recommended,
 
-  // ─── Front-end (asset/js) — navigateur, scripts globaux ─────────
+  // ─── Front-end (client/assets/js) — navigateur, scripts globaux ─────────
   // Le front est composé de scripts classiques partageant un même scope global
   // (les fonctions d'un fichier sont visibles dans les autres). On désactive donc
   // no-undef / no-redeclare, inadaptés à cette architecture, et on garde les
   // règles utiles (variables inutilisées, catch vide toléré).
   {
-    files: ['asset/js/**/*.js'],
+    files: ['client/assets/js/**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'script',
@@ -31,9 +31,9 @@ module.exports = [
     },
   },
 
-  // ─── Back-end (kinka-api) — Node / CommonJS ─────────────────────
+  // ─── Back-end (server) — Node / CommonJS ─────────────────────
   {
-    files: ['kinka-api/**/*.js'],
+    files: ['server/**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'commonjs',

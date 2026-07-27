@@ -1,0 +1,45 @@
+# Kinka — configuration Apache locale (Laragon)
+#
+# Après la réorganisation du dépôt, le site vit dans client/ : les pages dans
+# client/pages/ et les ressources dans client/assets/. Ce fichier permet à un
+# hôte virtuel pointant sur la racine du projet (kinka.test) de continuer à
+# fonctionner sans reconfiguration.
+#
+# Le site peut aussi être servi directement par le serveur Node
+# (http://localhost:3000), qui expose les mêmes chemins.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Racine du site → page d'accueil
+    RewriteRule ^$ client/pages/page_accueil.html [L]
+
+    # /assets/... → client/assets/...   (chemins utilisés par les pages)
+    RewriteRule ^assets/(.*)$ client/assets/$1 [L]
+
+    # /pages/... → client/pages/...
+    RewriteRule ^pages/(.*)$ client/pages/$1 [L]
+
+    # Ancienne forme /page_accueil.html (favoris, liens externes) → nouvelle place
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(page[A-Za-z_].*\.html)$ client/pages/$1 [L]
+</IfModule>
+
+# En développement, le navigateur conservait les anciens .js/.css : une
+# modification de kinka-api-client.js pouvait rester invisible pendant des
+# heures et faire croire à un bug applicatif. On désactive donc la mise en
+# cache des fichiers de code (les images gardent le comportement par défaut).
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+# Le code serveur, la base et la documentation ne doivent pas être accessibles
+# par le web, même si l'hôte virtuel pointe sur la racine du dépôt.
+RedirectMatch 404 ^/(server|database|docs|tools|node_modules)/
+
+# Page d'erreur du site pour les URL inconnues
+ErrorDocument 404 /client/pages/page_404.html
