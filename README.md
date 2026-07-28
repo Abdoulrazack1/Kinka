@@ -225,6 +225,7 @@ Après `node server/scripts/create_demo_user.js` :
 | POST    | /api/auth/register           | —    | Inscription                       |
 | POST    | /api/auth/login              | —    | Connexion                         |
 | POST    | /api/auth/forgot             | —    | Demande de réinitialisation       |
+| POST    | /api/auth/reset              | —    | Enregistrer le nouveau mot de passe |
 | GET     | /api/auth/me                 | ✓    | Profil courant                    |
 | PUT     | /api/auth/me                 | ✓    | Modifier le profil                |
 | PUT     | /api/auth/password           | ✓    | Changer le mot de passe           |
@@ -232,6 +233,8 @@ Après `node server/scripts/create_demo_user.js` :
 | GET     | /api/produits                | —    | Liste filtrée + paginée           |
 | GET     | /api/produits/search?q=      | —    | Recherche (titre, série, auteur…) |
 | GET     | /api/produits/:id            | —    | Détail d'un produit               |
+| GET     | /api/editeurs                | —    | Maisons d'édition + nb de titres  |
+| GET     | /api/editeurs/:slug          | —    | Fiche d'une maison d'édition      |
 | GET     | /api/panier                  | ✓    | Mon panier                        |
 | POST    | /api/panier                  | ✓    | Ajouter un article                |
 | PUT     | /api/panier/:id              | ✓    | Modifier la quantité              |
@@ -246,6 +249,7 @@ Après `node server/scripts/create_demo_user.js` :
 | POST    | /api/commandes               | ✓    | Passer une commande (transaction) |
 | GET     | /api/annonces                | —    | Liste des annonces (occasion)     |
 | GET     | /api/annonces/mes-annonces   | ✓    | Mes annonces publiées             |
+| GET     | /api/annonces/:id            | —    | Détail d'une annonce              |
 | POST    | /api/annonces                | ✓    | Publier une annonce               |
 | PUT     | /api/annonces/:id            | ✓    | Modifier une annonce              |
 | DELETE  | /api/annonces/:id            | ✓    | Supprimer une annonce             |
@@ -253,10 +257,41 @@ Après `node server/scripts/create_demo_user.js` :
 | POST    | /api/avis                    | ✓    | Publier ou modifier un avis       |
 | DELETE  | /api/avis/:produit_id        | ✓    | Supprimer mon avis                |
 | GET     | /api/mangas/search?q=        | —    | Recherche Jikan (sans BDD)        |
-| POST    | /api/mangas/sync             | —    | Sync mangas populaires            |
-| POST    | /api/mangas/sync-one         | —    | Importer un manga par mal_id      |
+| GET     | /api/mangas/:mal_id          | —    | Fiche Jikan par identifiant MAL   |
+| POST    | /api/mangas/sync             | 🔒   | Sync mangas populaires            |
+| POST    | /api/mangas/sync-one         | 🔒   | Importer un manga par mal_id      |
 | POST    | /api/newsletter              | —    | Inscription newsletter            |
 | POST    | /api/contact                 | —    | Envoyer un message de contact     |
+
+Légende : — public · ✓ connecté · 🔒 administrateur
+
+### Back-office
+
+Toutes ces routes exigent un compte administrateur.
+
+| Méthode | Route                        | Description                          |
+|---------|------------------------------|--------------------------------------|
+| GET     | /api/admin/stats             | Chiffres du tableau de bord          |
+| GET     | /api/admin/produits          | Catalogue (recherche, filtres)       |
+| POST    | /api/admin/produits          | Créer une fiche produit              |
+| PUT     | /api/admin/produits/:id      | Modifier une fiche produit           |
+| DELETE  | /api/admin/produits/:id      | Supprimer une fiche produit          |
+| GET     | /api/admin/commandes         | Toutes les commandes                 |
+| GET     | /api/admin/commandes/:id     | Détail + historique des statuts      |
+| PATCH   | /api/admin/commandes/:id     | Statut, transporteur, numéro de suivi |
+| GET     | /api/admin/avis              | File de modération des avis          |
+| PATCH   | /api/admin/avis/:id          | Publier ou retirer un avis           |
+| DELETE  | /api/admin/avis/:id          | Supprimer un avis                    |
+| GET     | /api/admin/annonces          | Annonces entre membres               |
+| PATCH   | /api/admin/annonces/:id      | Changer le statut d'une annonce      |
+| DELETE  | /api/admin/annonces/:id      | Supprimer une annonce                |
+| GET     | /api/admin/contact           | Messages reçus                       |
+| PATCH   | /api/admin/contact/:id       | Marquer traité / rouvrir             |
+| GET     | /api/admin/newsletter        | Inscrits à la newsletter             |
+| GET     | /api/admin/newsletter/export | Export CSV des inscrits              |
+| GET     | /api/admin/utilisateurs      | Comptes clients                      |
+| PATCH   | /api/admin/utilisateurs/:id  | Changer le rôle d'un compte          |
+| GET     | /api/admin/logs              | Journal des actions d'administration |
 
 Toutes les réponses suivent le format :
 ```json
