@@ -53,7 +53,11 @@ header{
   transition:box-shadow .3s ease
 }
 header.scrolled{box-shadow:var(--shadow-md)}
-nav{
+/* Sélecteur restreint à l'en-tête : appliqué à l'élément `nav` nu, ce bloc
+   touchait tous les <nav> du site. La navigation latérale du profil, par
+   exemple, devenait un conteneur flex horizontal de 100% de hauteur : ses
+   entrées se tassaient côte à côte et leurs libellés étaient rognés. */
+header nav{
   display:flex;align-items:center;height:100%;
   max-width:1440px;margin:0 auto;padding:0 2.5rem;gap:1.25rem
 }
@@ -541,7 +545,7 @@ footer::before {
 @media(min-width:769px) and (max-width:1199px){
   .products-grid{grid-template-columns:repeat(3,1fr)}
   .footer-content{grid-template-columns:repeat(3,1fr);gap:2rem}
-  nav{padding:0 1.5rem}.nav-menu{gap:1.4rem}.search-bar{flex:0 1 260px;min-width:0}
+  header nav{padding:0 1.5rem}.nav-menu{gap:1.4rem}.search-bar{flex:0 1 260px;min-width:0}
 }
 
 /* Entre 769 px et ~1000 px, logo + recherche + menu + actions (jusqu'à cinq
@@ -554,7 +558,7 @@ footer::before {
   .search-bar{flex:1 1 0;min-width:0}
 }
 @media(max-width:768px){
-  header{height:56px}nav{padding:0 1rem;gap:.6rem}.nav-menu{display:none}
+  header{height:56px}header nav{padding:0 1rem;gap:.6rem}.nav-menu{display:none}
   .search-bar{flex:1 1 0;min-width:0}.search-bar input{font-size:.8rem}
   .icon-btn{width:34px;height:34px}.icon-btn .material-symbols-outlined{font-size:1rem}
   .connect-btn{padding:.42rem .85rem;font-size:.78rem}
@@ -568,7 +572,7 @@ footer::before {
 }
 @media(max-width:480px){
   .products-grid{gap:.6rem}.product-image{height:160px}
-  .footer-content{grid-template-columns:1fr}nav{gap:.4rem}
+  .footer-content{grid-template-columns:1fr}header nav{gap:.4rem}
 
   /* Sur mobile, l'en-tête débordait de la fenêtre : le bouton du menu
      utilisateur affiche le prénom en toutes lettres et s'ajoute aux quatre
@@ -579,7 +583,7 @@ footer::before {
   .nav-user-btn{padding:.3rem .4rem}
   .nav-user-chevron{display:none}
   .icon-btn{width:32px;height:32px}
-  nav{padding:0 .75rem}
+  header nav{padding:0 .75rem}
   /* Le menu déroulant ne doit pas non plus élargir la page */
   .nav-user-dropdown{max-width:calc(100vw - 1.5rem);right:0}
 }
@@ -990,4 +994,21 @@ a:focus-visible,
 button:focus:not(:focus-visible),
 a:focus:not(:focus-visible) {
   outline: none;
+}
+
+/* ── Bouton « Ajouter au panier » en rupture de stock ──────────────
+   Ces règles vivaient dans un fichier patch-rupture-stock.css jamais
+   chargé par aucune page, portant la note « à ajouter dans
+   kinka-shared.css ». Le bouton restait donc cliquable sur un produit
+   indisponible, et l'utilisateur ne découvrait le problème qu'au
+   message d'erreur renvoyé par l'API. */
+.add-to-cart:disabled,
+.add-to-cart.disabled{
+  opacity:.35;cursor:not-allowed;pointer-events:none;
+  background:rgba(255,255,255,.05)!important;
+  box-shadow:none!important;transform:none!important
+}
+.add-to-cart:disabled .material-symbols-outlined,
+.add-to-cart.disabled .material-symbols-outlined{
+  color:var(--text-muted,rgba(255,255,255,.4))!important;transform:none!important
 }

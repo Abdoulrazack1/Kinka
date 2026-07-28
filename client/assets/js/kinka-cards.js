@@ -21,7 +21,8 @@ function buildProductCard(m) {                                          // const
                      : m.bestseller ? 'BEST-SELLER' : m.etat === 'occasion' ? 'OCCASION' : '';
     const badgeClass = m.nouveaute ? 'nouveaute' : m.promo ? 'promo'    // classe CSS correspondante
                      : m.bestseller ? 'bestseller' : m.etat === 'occasion' ? 'occasion' : '';
-    const stockLabel = m.stock <= 0 ? '<span class="stock-badge rupture">Rupture</span>' // badge stock
+    const enRupture  = Number(m.stock) <= 0;                            // produit indisponible
+    const stockLabel = enRupture ? '<span class="stock-badge rupture">Rupture</span>' // badge stock
                      : m.stock <= 3 ? `<span class="stock-badge last">Plus que ${m.stock}</span>` : '';
     const noteStars  = note > 0 ? construireEtoiles(note) : '';         // étoiles si note > 0
 
@@ -55,9 +56,9 @@ function buildProductCard(m) {                                          // const
                     <span class="product-price">${prix.toFixed(2)} €</span>
                     ${prixOrig ? `<span class="product-price-old">${prixOrig.toFixed(2)} €</span>` : ''}
                 </div>
-                <button class="add-to-cart"
-                    onclick="kinkaAddToCart('${escapeHtml(m.id)}', event)"
-                    title="Ajouter au panier">
+                <button class="add-to-cart${enRupture ? ' disabled' : ''}"
+                    ${enRupture ? 'disabled' : `onclick="kinkaAddToCart('${escapeHtml(m.id)}', event)"`}
+                    title="${enRupture ? 'Produit en rupture de stock' : 'Ajouter au panier'}">
                     <span class="material-symbols-outlined">add_shopping_cart</span>
                 </button>
             </div>
