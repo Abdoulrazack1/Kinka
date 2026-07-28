@@ -4,7 +4,7 @@ const js = require('@eslint/js');
 const globals = require('globals');
 
 module.exports = [
-  { ignores: ['**/node_modules/**', 'docs/archive/**', 'client/assets/js/translate.js', 'tools/**'] },
+  { ignores: ['**/node_modules/**', 'client/assets/js/translate.js'] },
 
   js.configs.recommended,
 

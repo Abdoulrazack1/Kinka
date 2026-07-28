@@ -1,6 +1,6 @@
 // scripts/sync_covers_mangadex.js v3.0
 // Sync covers par tome depuis MangaDex (gratuit, sans clé)
-// Usage: node scripts/sync_covers_mangadex.js [--limit 200] [--serie "One Piece"]
+// Usage: node server/scripts/sync_covers_mangadex.js [--limit 200] [--serie "One Piece"]
 require('dotenv').config();                                        // charge le .env
 
 const db = require('../src/config/db');                               // pool MySQL

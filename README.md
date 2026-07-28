@@ -92,7 +92,7 @@ Kinka/
 │       ├── css/                    ← feuilles de style (1 par page + partagées)
 │       ├── images/                 ← logos, bannières, visuels
 │       └── js/                     ← scripts frontend
-│           ├── server-client.js ← client API + auth + cookies + toast
+│           ├── kinka-api-client.js ← client API + auth + cookies + toast
 │           ├── kinka-cards.js      ← rendu des cartes produit
 │           ├── admin.js            ← logique du back-office
 │           ├── avis.js             ← avis clients
@@ -113,15 +113,14 @@ Kinka/
 │   │   ├── sync_mangas_jikan.js    ← import depuis MyAnimeList
 │   │   ├── sync_covers_mangadex.js ← une couverture par tome
 │   │   └── make_admin.js           ← promotion d'un compte en administrateur
-│   └── .env.example                ← copier en .env
 │
 ├── database/
 │   ├── schema.sql                  ← structure seule
 │   ├── seed.sql                    ← données de démonstration
 │   └── migrations/                 ← évolutions du schéma
 │
-├── docs/                           ← documentation, archives, captures
-└── tools/                          ← utilitaires de développement
+├── docs/                           ← documentation et captures d'écran
+└── .env.example                    ← copier en .env
 ```
 
 ## Démarrage rapide
@@ -142,7 +141,6 @@ cd Kinka
 ### 2. Installer le backend
 
 ```bash
-npm install --prefix server
 npm install
 ```
 
@@ -185,8 +183,8 @@ CLIENT_URL=http://127.0.0.1:5503
 ### 5. Importer les données initiales
 
 ```bash
-npm run import          # Importe les 80+ mangas de docs/archive/mangadb.js
-node create_demo_user.js   # Crée le compte démo : demo@kinka.fr / demo1234
+npm run seed:big                       # Jeu de données de démonstration
+node server/scripts/create_demo_user.js  # Compte démo : demo@kinka.fr / demo1234
 ```
 
 (Optionnel : `npm run sync` pour ajouter ~100 mangas depuis MyAnimeList via Jikan)
@@ -209,11 +207,11 @@ GET http://localhost:3000/api/health
 Ouvrir le projet dans VS Code et clic-droit sur `page_accueil.html` → **Open with Live Server**.
 Le front sera servi sur `http://127.0.0.1:5503`.
 
-> **Démarrage** : `npm run dev` sert à la fois l'API et le site sur http://localhost:3000 — front et API sur la même origine, sans configuration d'hôte virtuel. Le site reste servable par Apache : le `.htaccess` à la racine redirige vers `client/` et bloque l'accès web à `server/`, `database/`, `docs/` et `tools/`.
+> **Démarrage** : `npm run dev` sert à la fois l'API et le site sur http://localhost:3000 — front et API sur la même origine, sans configuration d'hôte virtuel. Le site reste servable par Apache : le `.htaccess` à la racine redirige vers `client/` et bloque l'accès web à `server/`, `database/` et `docs/`.
 
 ## Compte de démonstration
 
-Après `node create_demo_user.js` :
+Après `node server/scripts/create_demo_user.js` :
 
 | Email           | Mot de passe | Plan    |
 |-----------------|--------------|---------|
@@ -276,7 +274,7 @@ Authorization: Bearer <token_jwt>
 
 Toute page HTML inclut les scripts dans cet ordre (gérés par auth-guard et panier hybride) :
 ```html
-<script src="../assets/js/server-client.js"></script>
+<script src="../assets/js/kinka-api-client.js"></script>
 <script src="../assets/js/kinka-auth-guard.js"></script>
 <script src="../assets/js/kinka-cards.js"></script>
 <script src="../assets/js/authentification.js"></script>
@@ -305,7 +303,7 @@ showToast('Ajouté au panier !', 'success');
 Pour pointer vers une autre URL d'API, définir avant le chargement du client :
 ```html
 <script>window.KINKA_API_URL = 'https://api.kinka.fr/api';</script>
-<script src="../assets/js/server-client.js"></script>
+<script src="../assets/js/kinka-api-client.js"></script>
 ```
 
 ## Sécurité

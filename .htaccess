@@ -39,7 +39,7 @@
 
 # Le code serveur, la base et la documentation ne doivent pas être accessibles
 # par le web, même si l'hôte virtuel pointe sur la racine du dépôt.
-RedirectMatch 404 ^/(server|database|docs|tools|node_modules)/
+RedirectMatch 404 ^/(server|database|docs|node_modules)/
 
 # Page d'erreur du site pour les URL inconnues
 ErrorDocument 404 /client/pages/page_404.html

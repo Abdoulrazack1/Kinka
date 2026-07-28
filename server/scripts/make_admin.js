@@ -1,8 +1,8 @@
 // scripts/make_admin.js
 // Promeut un utilisateur au rôle 'admin' (ou le rétrograde en 'user').
 // Usage :
-//   node scripts/make_admin.js email@exemple.fr            → promeut admin
-//   node scripts/make_admin.js email@exemple.fr user       → rétrograde
+//   node server/scripts/make_admin.js email@exemple.fr            → promeut admin
+//   node server/scripts/make_admin.js email@exemple.fr user       → rétrograde
 require('dotenv').config();                                        // charge le .env
 const db = require('../src/config/db');                               // pool MySQL
 
@@ -11,7 +11,7 @@ const db = require('../src/config/db');                               // pool My
   const role  = (process.argv[3] || 'admin').trim();              // 2e argument : rôle (admin par défaut)
 
   if (!email) {                                                  // email manquant
-    console.error('Usage : node scripts/make_admin.js <email> [admin|user]'); // aide
+    console.error('Usage : node server/scripts/make_admin.js <email> [admin|user]'); // aide
     process.exit(1);                                             // sortie en échec
   }
   if (!['admin', 'user'].includes(role)) {                       // rôle non reconnu
