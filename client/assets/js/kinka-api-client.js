@@ -321,6 +321,26 @@ window.showToast = function(message, type = 'success', duration = 3000) { // aff
 };
 
 // ════════════════════════════════════════════════════════════════
+// COUVERTURES — passage par le proxy du serveur
+// ════════════════════════════════════════════════════════════════
+// Les couvertures stockées en base pointent vers des CDN externes. Les
+// afficher directement rend la boutique tributaire d'un tiers : lors d'une
+// synchronisation intensive, MangaDex a limité le débit et renvoyé une image
+// « You can read this at mangadex.org » à la place des couvertures, que les
+// navigateurs ont ensuite conservée en cache pendant des heures.
+//
+// On passe donc par /api/couvertures, qui récupère l'image une fois, la garde
+// sur disque et la sert depuis notre domaine.
+const CDN_EXTERNES = /^https?:\/\/(uploads\.mangadex\.org|mangadex\.org|cdn\.myanimelist\.net|myanimelist\.net)\//i;
+
+function kinkaImage(url) {                                          // URL d'affichage d'une couverture
+  const brute = String(url || '');
+  if (!brute) return '';                                            // pas d'image : l'appelant gère son repli
+  if (!CDN_EXTERNES.test(brute)) return brute;                      // image locale : inchangée
+  return API + '/couvertures?u=' + encodeURIComponent(brute);        // sinon, via le proxy
+}
+
+// ════════════════════════════════════════════════════════════════
 // ANNÉE DE COPYRIGHT
 // ════════════════════════════════════════════════════════════════
 // Les pieds de page affichaient « © 2025 » en dur : la mention devenait fausse
@@ -398,6 +418,7 @@ KinkaAPI._fetch      = kinkaFetch;                               // renvoie data
 KinkaAPI._fetchBrut  = kinkaFetchEnveloppe;                      // renvoie { data, total, … }
 KinkaAPI.baseUrl     = API;                                      // base URL de l'API
 
+window.kinkaImage   = kinkaImage;                                 // URL d'affichage d'une couverture
 window.KinkaAPI     = KinkaAPI;                                  // expose la façade API
 window.KinkaAuth    = KinkaAuth;                                 // expose la gestion d'auth
 window.KinkaCookies = KinkaCookies;                             // expose le helper cookies

@@ -43,3 +43,9 @@ backup_*.sql
 # ─── Couverture de tests ───────────────────────────
 coverage/
 .nyc_output/
+
+# ─── Identifiants et notes locales (JAMAIS versionnés) ───
+*.local.md
+*.local.txt
+*.local.json
+.cache/

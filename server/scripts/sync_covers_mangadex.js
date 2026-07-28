@@ -42,6 +42,11 @@ async function safeFetch(url, retries = 3) {                       // fetch tol�
 // séries du catalogue portent leur titre d'édition française, introuvable tel
 // quel : on les traduit ici avant la recherche.
 const TITRES_MANGADEX = {
+    'Maid Sama!':                   'Kaichou wa Maid-sama!',
+    'Reborn!':                      'Katekyo Hitman Reborn!',
+    'Bonne Nuit Punpun':            'Oyasumi Punpun',
+    'Sanctuary':                    'Sanctuary',
+
     'Kenshin le Vagabond':          'Rurouni Kenshin',
     'Princesse Sarah':              'Shoukoujo Sarah',
     'Vinland Saga - Édition Deluxe': 'Vinland Saga',

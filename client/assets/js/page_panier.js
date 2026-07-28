@@ -61,7 +61,7 @@ function genererItemPanier(produit) {                                 // HTML d'
 
     return `
         <div class="panier-item" data-id="${id}">
-            <img src="${escapeHtml(produit.image || FALLBACK_IMG)}"
+            <img src="${escapeHtml((typeof kinkaImage === 'function' ? kinkaImage(produit.image) : produit.image) || FALLBACK_IMG)}"
                  alt="${escapeHtml(produit.titre)}"
                  class="panier-item-image"
                  onerror="this.src='${FALLBACK_IMG}'">

@@ -40,6 +40,18 @@ app.use(cors({                                                     // configurat
 }));
 app.use(express.json());                                          // parse le corps JSON des requêtes
 
+// Les couvertures sont servies avant le limiteur global : une page de
+// catalogue en demande plusieurs dizaines d'un coup, ce qui épuiserait à lui
+// seul le quota de 100 requêtes par minute. Elles ont leur propre plafond,
+// large, et sont de toute façon servies depuis le cache disque.
+app.use('/api/couvertures', rateLimit({
+  windowMs: 60_000,
+  max: 600,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Trop d\x27images demandées, patientez un instant' }
+}), require('./routes/couvertures'));
+
 // Rate limit global : 100 req/min par IP
 app.use(rateLimit({                                              // limite globale
   windowMs: 60_000,                                             // fenêtre d'1 minute

@@ -43,7 +43,7 @@ function getById(id) { return document.getElementById(id); }         // raccourc
 // ─── Sections ────────────────────────────────────────────────────
 function afficherImage(produit) {                                    // remplit l'image principale
     var img = getById('produit-image'); if (!img) return;           // élément absent : rien
-    img.src = produit.image || '../assets/images/One-Piece-Edition-originale-Tome-105.jpg'; // image ou fallback
+    img.src = (typeof kinkaImage === 'function' ? kinkaImage(produit.image) : produit.image) || '../assets/images/One-Piece-Edition-originale-Tome-105.jpg'; // image ou fallback
     img.alt = produit.titre;                                        // texte alternatif
     img.onerror = function() { this.src = '../assets/images/One-Piece-Edition-originale-Tome-105.jpg'; }; // fallback si erreur de chargement
 }

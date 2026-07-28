@@ -11,7 +11,7 @@ function buildProductCard(m) {                                          // const
     const prixPromo = parseFloat(m.prix_promo || m.prixPromo || 0);      // prix promo éventuel
     const prix      = m.promo && prixPromo ? prixPromo : parseFloat(m.prix || 0); // prix affiché (promo si active)
     const prixOrig  = m.promo && prixPromo ? parseFloat(m.prix) : null;  // prix barré (si promo)
-    const img       = m.image || '../assets/images/One-Piece-Edition-originale-Tome-105.jpg'; // image ou fallback
+    const img       = (typeof kinkaImage === 'function' ? kinkaImage(m.image) : m.image) || '../assets/images/One-Piece-Edition-originale-Tome-105.jpg'; // image ou fallback
     const desc      = String(m.synopsis || m.description || '').substring(0, 150); // description tronquée à 150 car.
     const note      = parseFloat(m.note || 0);                          // note numérique
     const favs      = JSON.parse(localStorage.getItem('kinka_favoris') || '[]'); // favoris locaux

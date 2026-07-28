@@ -181,7 +181,7 @@
 
         $('#tbody-produits').innerHTML = r.data.length ? r.data.map(p =>
             '<tr>' +
-            '<td>' + (p.image ? '<img class="miniature" src="' + echapper(p.image) + '" alt="" loading="lazy">' : '') + '</td>' +
+            '<td>' + (p.image ? '<img class="miniature" src="' + echapper(kinkaImage(p.image)) + '" alt="" loading="lazy">' : '') + '</td>' +
             '<td><strong>' + echapper(p.titre) + '</strong><br><span style="opacity:.6;font-size:.78rem">' + echapper(p.id) + '</span></td>' +
             '<td>' + echapper(p.editeur_nom || p.editeur || '—') + '</td>' +
             '<td class="num">' + euros(p.prix_promo || p.prix) + '</td>' +

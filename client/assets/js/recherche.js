@@ -36,7 +36,7 @@
             dropdown.innerHTML = results.slice(0, 7).map(function(m) { // 7 premiers résultats
                 var prix = m.promo && m.prix_promo ? parseFloat(m.prix_promo) : parseFloat(m.prix || 0); // prix (promo si active)
                 return '<div class="search-result-item" onclick="window.location.href=\'./page_detail_produit.html?id=' + encodeURIComponent(m.id) + '\'">' // ligne cliquable → page détail
-                    + '<img class="search-result-img" src="' + esc(m.image || '../assets/images/One-Piece-Edition-originale-Tome-105.jpg') + '"' // image
+                    + '<img class="search-result-img" src="' + esc((typeof kinkaImage === 'function' ? kinkaImage(m.image) : m.image) || '../assets/images/One-Piece-Edition-originale-Tome-105.jpg') + '"' // image
                     + ' alt="' + esc(m.titre) + '" onerror="this.src=\'../assets/images/One-Piece-Edition-originale-Tome-105.jpg\'">' // fallback image
                     + '<div class="search-result-info">'         // bloc infos
                     + '<div class="title">' + esc(m.titre) + '</div>' // titre
