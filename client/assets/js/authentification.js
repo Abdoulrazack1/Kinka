@@ -15,6 +15,25 @@ async function fusionnerPanierInvite() {                             // fusionne
   localStorage.removeItem('kinka_panier');                          // vide le panier local (désormais sur le compte)
 }
 
+// Destination demandée par le paramètre « ?redirect= » de l'URL de login.
+// Plusieurs pages protégées l'envoyaient déjà (page_admin, page_paiement,
+// page_creation_annonce) mais personne ne le lisait : la connexion réussissait
+// et renvoyait vers l'accueil, laissant l'utilisateur refaire son chemin.
+// Seules des valeurs connues sont acceptées — un paramètre libre permettrait de
+// faire rebondir la victime vers un site tiers après authentification.
+const DESTINATIONS = {
+  admin:    './page_admin.html',
+  panier:   './page_panier.html',
+  paiement: './page_paiement.html',
+  annonce:  './page_creation_annonce.html',
+  profil:   './page_profil.html'
+};
+
+function destinationDemandee() {
+  const cle = new URLSearchParams(window.location.search).get('redirect');
+  return (cle && DESTINATIONS[cle]) || null;                        // valeur inconnue ou « 1 » : ignorée
+}
+
 (function initForms() {                                             // IIFE : branche les formulaires d'auth
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initForms); return; } // attend le DOM
 
@@ -42,14 +61,27 @@ async function fusionnerPanierInvite() {                             // fusionne
       if (btn) { btn.disabled = true; btn.textContent = 'Connexion…'; } // état "en cours"
 
       try {                                                        // tentative de connexion
-        await KinkaAPI.auth.login(email, password, remember);      // appel API login
+        const utilisateur = await KinkaAPI.auth.login(email, password, remember); // appel API login
         await fusionnerPanierInvite();                             // fusionne le panier invité
-        showToast('Connexion réussie !', 'success');               // notification succès
-        // Redirect vers la page d'origine si protégée
-        const redirect = sessionStorage.getItem('kinka_redirect_after_login'); // destination mémorisée
+
+        // Destination après connexion, par ordre de priorité :
+        //   1. la page protégée d'où l'utilisateur a été renvoyé ici
+        //   2. celle demandée par « ?redirect= »
+        //   3. le back-office s'il est administrateur — sans quoi rien ne l'y
+        //      menait : il arrivait sur l'accueil et devait connaître l'URL
+        //   4. l'accueil
+        const memorisee = sessionStorage.getItem('kinka_redirect_after_login')
+                       || destinationDemandee();
+        const estAdmin  = utilisateur?.role === 'admin';
+        const destination = memorisee || (estAdmin ? './page_admin.html' : './page_accueil.html');
+
+        showToast(estAdmin && !memorisee
+          ? 'Connexion réussie — accès à l\'administration'
+          : 'Connexion réussie !', 'success');
+
         setTimeout(() => {                                         // petite pause pour laisser voir le toast
           sessionStorage.removeItem('kinka_redirect_after_login'); // nettoie la destination
-          window.location.href = redirect || './page_accueil.html'; // redirige (origine ou accueil)
+          window.location.href = destination;
         }, 600);
       } catch(err) {                                               // échec de connexion
         showToast(err.message || 'Email ou mot de passe incorrect.', 'error'); // message d'erreur
@@ -80,7 +112,15 @@ async function fusionnerPanierInvite() {                             // fusionne
         await KinkaAPI.auth.register(email, pwd, prenom, nom || ''); // appel API register
         await fusionnerPanierInvite();                             // fusionne le panier invité
         showToast('Compte créé ! Bienvenue ' + prenom + ' !', 'success'); // notification succès
-        setTimeout(() => { window.location.href = './page_accueil.html'; }, 800); // redirige vers l'accueil
+        // Un visiteur envoyé ici depuis une page protégée (il a cliqué « créer
+        // un compte » plutôt que de se connecter) doit retrouver sa destination.
+        const suite = sessionStorage.getItem('kinka_redirect_after_login')
+                   || destinationDemandee()
+                   || './page_accueil.html';
+        setTimeout(() => {
+          sessionStorage.removeItem('kinka_redirect_after_login');
+          window.location.href = suite;
+        }, 800);
       } catch(err) {                                               // échec d'inscription
         showToast(err.message || "Erreur lors de l'inscription.", 'error'); // message d'erreur
         if (btn) { btn.disabled = false; btn.textContent = 'Créer mon compte'; } // réactive le bouton

@@ -334,6 +334,11 @@
     </div>
 
     <script src="../assets/js/kinka-api-client.js"></script>
+    <!-- La garde renvoie vers la connexion un visiteur non connecté, en
+         mémorisant cette page comme destination. Le cas « connecté mais sans
+         les droits » reste traité par admin.js, qui affiche l'écran de refus :
+         rediriger un client vers le login n'aurait aucun sens. -->
+    <script src="../assets/js/kinka-auth-guard.js"></script>
     <script src="../assets/js/darkmode.js"></script>
     <script src="../assets/js/admin.js"></script>
     <script>

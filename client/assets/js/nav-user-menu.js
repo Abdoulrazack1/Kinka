@@ -61,6 +61,20 @@ function construireBoutonCompte(user) {                                // crée 
     return btn;                                                      // renvoie le bouton
 }
 
+// Seule porte d'entrée visible vers le back-office : sans ce lien, un
+// administrateur devait connaître l'URL de page_admin.html par cœur. Le lien
+// n'est rendu que pour un compte admin, et le serveur revérifie le rôle sur
+// chaque route /api/admin/* — l'absence du lien n'est pas la protection.
+function lienAdministration(user) {
+    if (user?.role !== 'admin') return '';                            // client ordinaire : rien
+    return `
+        <div class="nav-user-dropdown-sep"></div>
+        <a href="./page_admin.html" class="nav-user-dropdown-item">
+            <span class="material-symbols-outlined">admin_panel_settings</span>
+            <span data-i18n="Administration">Administration</span>
+        </a>`;
+}
+
 // ─── Construction du menu déroulant ──────────────────────────────
 function construireDropdown(user, opts) {                              // crée le contenu du menu déroulant
     const { isPremium, isCollector, planLabel } = opts;               // déstructure les options de plan
@@ -96,6 +110,7 @@ function construireDropdown(user, opts) {                              // crée 
             <span class="material-symbols-outlined">favorite</span>
             <span data-i18n="Mes favoris">Mes favoris</span>
         </a>
+        ${lienAdministration(user)}
         <div class="nav-user-dropdown-sep"></div>
         <button class="nav-user-dropdown-item nav-user-dropdown-logout" id="nav-logout-btn">
             <span class="material-symbols-outlined">logout</span>

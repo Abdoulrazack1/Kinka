@@ -52,8 +52,14 @@ app.use('/api/couvertures', rateLimit({
   message: { success: false, error: 'Trop d\x27images demandées, patientez un instant' }
 }), require('./routes/couvertures'));
 
-// Rate limit global : 100 req/min par IP
-app.use(rateLimit({                                              // limite globale
+// Rate limit : 100 req/min par IP, sur l'API uniquement.
+//
+// Ce limiteur était monté globalement, donc il comptait aussi les pages HTML et
+// les fichiers statiques. Or un seul affichage demande une trentaine d'assets :
+// trois pages visitées dans la minute épuisaient le quota et le visiteur
+// recevait « Trop de requêtes » en JSON à la place du site — le serveur rendait
+// sa propre boutique inaccessible à un utilisateur qui naviguait normalement.
+app.use('/api', rateLimit({                                      // limite sur l'API
   windowMs: 60_000,                                             // fenêtre d'1 minute
   max: 100,                                                     // 100 requêtes max
   standardHeaders: true,                                       // en-têtes RateLimit standard

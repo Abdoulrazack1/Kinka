@@ -592,10 +592,18 @@
             if (moi.role !== 'admin') throw new Error('role');
             $('#admin-identite').textContent = moi.email;
         } catch (err) {
+            // Session absente ou expirée : plutôt qu'un cul-de-sac, on renvoie
+            // vers la connexion en mémorisant cette page comme destination —
+            // l'administrateur y revient automatiquement après s'être connecté.
+            if (!err || err.message !== 'role') {
+                sessionStorage.setItem('kinka_redirect_after_login', window.location.href);
+                window.location.replace('./pageLogIn.html?redirect=admin');
+                return;
+            }
+            // Connecté, mais compte client : l'écran de refus est la bonne
+            // réponse — le renvoyer vers le login ne changerait rien.
             $('#admin-refus').hidden = false;
-            $('#admin-refus-message').textContent = (err && err.message === 'role')
-                ? 'Votre compte n’a pas les droits d’administration.'
-                : 'Connectez-vous avec un compte administrateur pour accéder à cette page.';
+            $('#admin-refus-message').textContent = 'Votre compte n’a pas les droits d’administration.';
             return;
         }
 
