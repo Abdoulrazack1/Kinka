@@ -536,6 +536,37 @@ footer::before {
 .footer-legal a{font-size:.74rem;color:rgba(255,255,255,.22);transition:var(--transition)}
 .footer-legal a:hover{color:rgba(255,255,255,.6)}
 
+/* ── Pied de page en thème clair ────────────────────────────────────────
+   Les règles ci-dessus posent un bloc sombre (dégradé #14121a) avec du texte
+   blanc, et le thème sombre le reprend à son compte. Le thème clair, lui,
+   héritait de ce même bloc : le pied de page restait noir au milieu d'une page
+   blanche, et ses textes en rgba(255,255,255,…) devenaient illisibles dès que
+   le fond passait au clair. Il suit désormais le thème comme le reste du site.
+   Toutes les valeurs ci-dessous tiennent le seuil WCAG AA de 4,5:1. */
+body:not(.dark-mode) footer{
+  background:#f4f5f7;
+  color:#5b6472;
+  border-top:1px solid #e5e7eb;
+}
+body:not(.dark-mode) .footer-content{border-bottom-color:rgba(0,0,0,.09)}
+body:not(.dark-mode) .footer-logo .logo-text{color:#1a1a1a}
+body:not(.dark-mode) .footer-description{color:#5b6472}
+body:not(.dark-mode) .footer-section h4{color:#1a1a1a}
+body:not(.dark-mode) .footer-section ul a,
+body:not(.dark-mode) .contact-info a{color:#5b6472}
+body:not(.dark-mode) .footer-section ul a:hover,
+body:not(.dark-mode) .contact-info a:hover{color:#c62372}
+body:not(.dark-mode) .footer-bottom{border-top-color:rgba(0,0,0,.09)}
+body:not(.dark-mode) .footer-bottom p,
+body:not(.dark-mode) .footer-legal a{color:#5b6472}
+body:not(.dark-mode) .footer-legal a:hover{color:#1a1a1a}
+/* Pastilles des réseaux sociaux : les icônes sont des PNG forcés en blanc par
+   un filtre. Sur fond clair il faut l'inverse — noir — sinon elles disparaissent. */
+body:not(.dark-mode) .social-icons a{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.10)}
+body:not(.dark-mode) .social-icons img{filter:brightness(0)}
+body:not(.dark-mode) .social-icons a:hover{background:#d12d7d;border-color:#d12d7d}
+body:not(.dark-mode) .social-icons a:hover img{filter:brightness(0) invert(1)}
+
 /* ── SKELETON ─────────────────────────────────────────────────── */
 .skeleton{background:linear-gradient(90deg,var(--bg-muted) 25%,var(--border) 50%,var(--bg-muted) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius)}
 
