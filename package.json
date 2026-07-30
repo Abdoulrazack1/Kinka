@@ -11,9 +11,10 @@
     "sync:full": "node server/scripts/sync_mangas_jikan.js --pages 10",
     "sync:covers": "node server/scripts/sync_covers_mangadex.js",
     "admin": "node server/scripts/make_admin.js",
-    "lint": "eslint .",
+    "lint": "eslint . && node server/scripts/check_inline_scripts.js",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "lint:inline": "node server/scripts/check_inline_scripts.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

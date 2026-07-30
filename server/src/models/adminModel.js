@@ -267,6 +267,13 @@ async function marquerMessage(id, traite) {
   return res.affectedRows > 0;
 }
 
+// Les avis, annonces et produits pouvaient être supprimés, les messages non :
+// un spam passé à travers le filtre restait indéfiniment dans la boîte.
+async function supprimerMessage(id) {
+  const [res] = await db.query('DELETE FROM contact_messages WHERE id = ?', [id]);
+  return res.affectedRows > 0;
+}
+
 // ─── Newsletter ─────────────────────────────────────────────────
 async function listerInscrits(limit, offset) {
   const [[{ total }]] = await db.query('SELECT COUNT(*) AS total FROM newsletter');
@@ -315,7 +322,7 @@ module.exports = {
   listerCommandes, commandeDetaillee, statutCommande, majCommande, tracerChangementStatut,
   listerAvis, modererAvis, supprimerAvis,
   listerAnnonces, majStatutAnnonce, supprimerAnnonce,
-  listerMessages, marquerMessage,
+  listerMessages, marquerMessage, supprimerMessage,
   listerInscrits, inscritsPourExport,
   listerUtilisateurs, majRole
 };

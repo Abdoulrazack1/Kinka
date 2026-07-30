@@ -489,7 +489,8 @@
             '<td style="white-space:nowrap">' +
               '<a class="btn-admin" href="mailto:' + encodeURIComponent(m.email) + '">Répondre</a> ' +
               '<button class="btn-admin" data-contact="' + m.id + '" data-traite="' + (m.traite ? '0' : '1') + '">' +
-              (m.traite ? 'Rouvrir' : 'Marquer traité') + '</button>' +
+              (m.traite ? 'Rouvrir' : 'Marquer traité') + '</button> ' +
+              '<button class="btn-admin btn-admin-danger" data-suppr-contact="' + m.id + '">Supprimer</button>' +
             '</td></tr>').join('') : ligneVide(5, 'Aucun message');
 
         $$('#tbody-contact [data-contact]').forEach(b => b.addEventListener('click', async () => {
@@ -497,6 +498,29 @@
                 await api.patch('/admin/contact/' + b.dataset.contact, { traite: b.dataset.traite === '1' });
                 chargerContact(); chargerTableauBord();
             } catch (err) { notifier(err.message, 'error'); }
+        }));
+
+        // Un spam qui franchit le champ leurre doit pouvoir être retiré : les
+        // avis et les annonces avaient déjà leur suppression, pas les messages.
+        $$('#tbody-contact [data-suppr-contact]').forEach(b => b.addEventListener('click', () => {
+            const id = b.dataset.supprContact;
+            modale.ouvrir('Supprimer le message',
+                '<p>Ce message sera définitivement supprimé. Cette action est irréversible.</p>',
+                [
+                    { libelle: 'Annuler', action: () => modale.fermer() },
+                    { libelle: 'Supprimer', classe: 'btn-admin-danger', action: async (btn) => {
+                        btn.disabled = true;
+                        try {
+                            await api.delete('/admin/contact/' + encodeURIComponent(id));
+                            modale.fermer();
+                            notifier('Message supprimé', 'success');
+                            chargerContact(); chargerTableauBord();
+                        } catch (err) {
+                            btn.disabled = false;
+                            notifier(err.message || 'Suppression impossible', 'error');
+                        }
+                    } }
+                ]);
         }));
 
         rendrePagination('contact', 'pagination-contact', r.total, LIMITE, chargerContact);

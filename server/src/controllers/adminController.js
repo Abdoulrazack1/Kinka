@@ -160,6 +160,14 @@ exports.marquerMessage = async (req, res) => {
   res.json({ success: true, data: { message: traite ? 'Message marqué comme traité' : 'Message rouvert' } });
 };
 
+exports.supprimerMessage = async (req, res) => {
+  if (!(await Admin.supprimerMessage(req.params.id))) {
+    return res.status(404).json({ success: false, error: 'Message introuvable' });
+  }
+  await tracer(req, 'contact.delete', 'contact', req.params.id, null);
+  res.json({ success: true, data: { message: 'Message supprimé' } });
+};
+
 // ─── Newsletter ─────────────────────────────────────────────────
 exports.listerInscrits = async (req, res) => {
   const { limit, offset } = pagination(req, 100);

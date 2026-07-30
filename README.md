@@ -287,6 +287,7 @@ Toutes ces routes exigent un compte administrateur.
 | DELETE  | /api/admin/annonces/:id      | Supprimer une annonce                |
 | GET     | /api/admin/contact           | Messages reçus                       |
 | PATCH   | /api/admin/contact/:id       | Marquer traité / rouvrir             |
+| DELETE  | /api/admin/contact/:id       | Supprimer un message (spam)          |
 | GET     | /api/admin/newsletter        | Inscrits à la newsletter             |
 | GET     | /api/admin/newsletter/export | Export CSV des inscrits              |
 | GET     | /api/admin/utilisateurs      | Comptes clients                      |
@@ -345,13 +346,41 @@ Pour pointer vers une autre URL d'API, définir avant le chargement du client :
 
 - Mots de passe hachés avec **bcrypt** (12 rounds)
 - Authentification par **JWT** (HS256, 7 jours par défaut)
-- **Rate limiting** : 100 req/min global, 10 req/15 min sur `/api/auth`
+- **Rate limiting** : 100 req/min sur `/api`, 10 req/15 min sur `/api/auth`,
+  600/min sur les couvertures. Le limiteur ne couvre volontairement pas les pages
+  et les assets : un affichage demande une trentaine de fichiers, et un plafond
+  global rendait le site inaccessible au bout de trois pages visitées.
+- **Politique de mot de passe** : 8 à 72 caractères, au moins deux familles de
+  caractères, pas de répétition d'un seul caractère. Appliquée à l'inscription,
+  au changement depuis le profil et à la réinitialisation — le contrôle côté
+  client (`kinkaFaiblesseMotDePasse`) n'est qu'un confort, le serveur tranche.
+- **Champ leurre anti-robot** (`site_web`) sur l'inscription et le contact :
+  invisible et hors du parcours clavier, il fait refuser toute requête qui le
+  remplit. Le message de contact suspect reçoit une réponse de succès ordinaire
+  mais n'est pas enregistré.
 - Validation systématique des entrées (`middleware/validate.js`)
 - Requêtes paramétrées (mysql2) → pas d'injection SQL
 - XSS : échappement HTML dans toutes les fonctions de rendu (`_esc`, `_e`)
 - CORS configurable via `CLIENT_URL`
 - Bannière de consentement RGPD (cookies)
-- Auth-guard côté client pour les pages sensibles
+- Auth-guard côté client pour les pages sensibles (`kinka-auth-guard.js`) :
+  redirige vers la connexion en mémorisant la destination. Le panier et la page
+  Premium restent ouverts aux visiteurs ; la connexion n'est exigée qu'au paiement.
+
+## Qualité du code
+
+```bash
+npm run lint          # ESLint + contrôle des scripts inline
+npm run lint:inline   # uniquement le JS écrit dans les pages HTML
+npm run format        # Prettier
+```
+
+`lint:inline` existe parce qu'ESLint ne lit que les fichiers `.js` : les ~1600
+lignes de JavaScript écrites directement dans les `<script>` des pages
+n'étaient vérifiées par rien. C'est précisément là que se trouvaient les deux
+pannes les plus visibles de l'audit (une IIFE et un `setTimeout` non refermés,
+qui rendaient muet tout le script de la page Contact et de la page Paiement).
+Le script échoue avec un code de sortie non nul, il est donc utilisable en CI.
 
 ## Bonnes pratiques de production
 

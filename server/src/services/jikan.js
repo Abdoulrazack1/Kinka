@@ -25,7 +25,7 @@ async function appeler(chemin, essais = 3) {
     let res;
     try {
       res = await fetch(BASE + chemin);
-    } catch (err) {                                                // réseau injoignable
+    } catch {                                                      // réseau injoignable
       if (i === essais - 1) throw new ErreurServiceExterne('Service manga externe injoignable', null);
       await pause(1000);
       continue;

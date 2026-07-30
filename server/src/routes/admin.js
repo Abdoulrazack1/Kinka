@@ -36,6 +36,7 @@ router.delete('/annonces/:id', asyncHandler(ctrl.supprimerAnnonce));  // suppres
 // ─── Relation client ────────────────────────────────────────────
 router.get('/contact',       asyncHandler(ctrl.listerMessages));      // messages reçus
 router.patch('/contact/:id', asyncHandler(ctrl.marquerMessage));      // traité / rouvert
+router.delete('/contact/:id', asyncHandler(ctrl.supprimerMessage));   // suppression (spam)
 
 // « /newsletter/export » avant « /newsletter » : sinon Express ne l'atteindrait
 // jamais si une route paramétrée était ajoutée plus tard.

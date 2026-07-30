@@ -12,7 +12,10 @@ const CHAMPS_PROFIL = [
 ];
 
 // Retire le hash du mot de passe avant toute sortie vers le client.
-const sansMotDePasse = ({ mot_de_passe, ...reste }) => reste;
+// Le nom de propriété « mot_de_passe » doit rester tel quel — c'est lui qui est
+// exclu du reste ; seule la variable liée est renommée, pour dire explicitement
+// qu'on ne s'en sert pas.
+const sansMotDePasse = ({ mot_de_passe: _hash, ...reste }) => reste;
 
 async function parId(id) {                                         // un utilisateur par son id
   const [rows] = await db.query('SELECT * FROM utilisateurs WHERE id = ?', [id]);

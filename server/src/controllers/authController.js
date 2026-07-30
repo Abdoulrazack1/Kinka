@@ -9,6 +9,7 @@ const Utilisateur   = require('../models/utilisateurModel');       // modèle co
 const PasswordReset = require('../models/passwordResetModel');     // modèle jetons de réinitialisation
 const mail          = require('../services/mail');                 // service d'envoi
 const vues          = require('../views');                         // gabarits d'email
+const { rules }     = require('../middleware/validate');           // règles de validation partagées
 
 const COUT_BCRYPT = 12;                                            // coût de hachage
 
@@ -148,6 +149,12 @@ exports.reinitialiserMotDePasse = async (req, res) => {
   }
   if (password.length < 8 || password.length > 72) {               // même règle qu'à l'inscription
     return res.status(400).json({ success: false, errors: { password: 'Le mot de passe doit contenir entre 8 et 72 caractères' } });
+  }
+  // Même exigence de robustesse qu'à l'inscription : sans cela, « mot de passe
+  // oublié » servirait de porte de sortie pour se fixer un mot de passe trivial.
+  const robustesse = rules.motDePasseRobuste(password);
+  if (robustesse !== true) {
+    return res.status(400).json({ success: false, errors: { password: robustesse } });
   }
 
   const demande = await PasswordReset.trouverValide(jeton);

@@ -124,10 +124,10 @@ const KinkaAPI = {                                                // façade reg
       return data.user;                                        // renvoie l'utilisateur
     },
 
-    async register(email, password, prenom, nom) {             // inscription
+    async register(email, password, prenom, nom, site_web = '') { // inscription (site_web = champ leurre anti-robot)
       const data = await kinkaFetch('/auth/register', {        // POST /auth/register
         method: 'POST',
-        body: JSON.stringify({ email, password, prenom, nom })
+        body: JSON.stringify({ email, password, prenom, nom, site_web })
       });
       KinkaAuth.setToken(data.token, false);                   // stocke le token (sans cookie longue durée)
       localStorage.setItem('kinka_current_user', JSON.stringify(data.user)); // stocke l'utilisateur

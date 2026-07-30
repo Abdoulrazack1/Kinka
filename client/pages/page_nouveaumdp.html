@@ -322,6 +322,14 @@
                 if (champ) champ.focus();
                 return;
             }
+            // Même exigence de robustesse qu'à l'inscription (le serveur la
+            // reverifie de toute façon lors de la réinitialisation).
+            var faiblesse = typeof kinkaFaiblesseMotDePasse === 'function' ? kinkaFaiblesseMotDePasse(mdp) : '';
+            if (faiblesse) {
+                if (typeof showToast === 'function') showToast(faiblesse, 'error');
+                if (champ) champ.focus();
+                return;
+            }
             if (!confirm || confirm.value !== mdp) {
                 if (typeof showToast === 'function') showToast('Les deux mots de passe ne correspondent pas.', 'error');
                 if (confirm) confirm.focus();

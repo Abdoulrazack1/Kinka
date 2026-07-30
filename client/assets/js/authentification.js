@@ -15,6 +15,20 @@ async function fusionnerPanierInvite() {                             // fusionne
   localStorage.removeItem('kinka_panier');                          // vide le panier local (désormais sur le compte)
 }
 
+// Reflet côté client de la règle de robustesse appliquée par le serveur
+// (rules.motDePasseRobuste dans server/src/middleware/validate.js). Renvoie un
+// message si le mot de passe est trop faible, sinon une chaîne vide. Ce contrôle
+// n'est qu'un confort : il évite une requête vouée à l'échec, qui consommerait
+// une des 10 tentatives autorisées par quart d'heure. Le serveur reste seul juge.
+function kinkaFaiblesseMotDePasse(mdp) {
+  const valeur = String(mdp || '');
+  const familles = [/[a-zA-Z]/, /[0-9]/, /[^a-zA-Z0-9]/].filter(re => re.test(valeur)).length;
+  if (familles < 2) return 'Le mot de passe doit mêler au moins deux types de caractères (lettres, chiffres ou symboles)';
+  if (/^(.)\1+$/.test(valeur)) return 'Le mot de passe ne peut pas être une répétition d’un seul caractère';
+  return '';
+}
+window.kinkaFaiblesseMotDePasse = kinkaFaiblesseMotDePasse;
+
 // Destination demandée par le paramètre « ?redirect= » de l'URL de login.
 // Plusieurs pages protégées l'envoyaient déjà (page_admin, page_paiement,
 // page_creation_annonce) mais personne ne le lisait : la connexion réussissait
@@ -104,12 +118,15 @@ function destinationDemandee() {
 
       if (!prenom || !email || !pwd) { showToast('Veuillez remplir tous les champs obligatoires.', 'error'); return; } // champs requis
       if (pwd.length < 8) { showToast('Le mot de passe doit faire au moins 8 caractères.', 'error'); return; } // longueur mdp
+      const faiblesse = kinkaFaiblesseMotDePasse(pwd);              // même règle que le serveur
+      if (faiblesse) { showToast(faiblesse, 'error'); return; }      // évite un aller-retour inutile
       if (pwd !== confirm) { showToast('Les mots de passe ne correspondent pas.', 'error'); return; } // confirmation
 
       if (btn) { btn.disabled = true; btn.textContent = 'Création…'; } // état "en cours"
 
       try {                                                        // tentative d'inscription
-        await KinkaAPI.auth.register(email, pwd, prenom, nom || ''); // appel API register
+        const leurre = document.getElementById('site_web')?.value || ''; // champ leurre anti-robot
+        await KinkaAPI.auth.register(email, pwd, prenom, nom || '', leurre); // appel API register
         await fusionnerPanierInvite();                             // fusionne le panier invité
         showToast('Compte créé ! Bienvenue ' + prenom + ' !', 'success'); // notification succès
         // Un visiteur envoyé ici depuis une page protégée (il a cliqué « créer

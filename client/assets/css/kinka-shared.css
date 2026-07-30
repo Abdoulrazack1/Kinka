@@ -1012,3 +1012,19 @@ a:focus:not(:focus-visible) {
 .add-to-cart.disabled .material-symbols-outlined{
   color:var(--text-muted,rgba(255,255,255,.4))!important;transform:none!important
 }
+
+/* ── Champ leurre anti-robot ────────────────────────────────────────────
+   Le champ doit rester présent dans le DOM et « remplissable » par un robot,
+   donc on ne le retire pas avec display:none — beaucoup d'automates ignorent
+   justement ces champs. On le sort de l'écran : invisible pour un visiteur,
+   sans influence sur la mise en page, et exclu du parcours clavier via
+   tabindex="-1" dans le HTML. */
+.champ-leurre{
+  position:absolute!important;
+  left:-9999px!important;
+  top:auto!important;
+  width:1px!important;height:1px!important;
+  overflow:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}

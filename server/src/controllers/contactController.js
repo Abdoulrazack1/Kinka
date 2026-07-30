@@ -19,6 +19,14 @@ exports.envoyerMessage = async (req, res) => {                     // POST /api/
   const sujet   = String(req.body?.sujet   || '').trim();
   const message = String(req.body?.message || '').trim();
 
+  // Champ leurre : masqué à l'écran, donc jamais rempli par un visiteur. Un
+  // robot qui remplit aveuglément tous les champs se signale de lui-même. On
+  // renvoie la réponse de succès habituelle pour ne pas lui indiquer ce qui l'a
+  // trahi, mais rien n'est enregistré.
+  if (String(req.body?.site_web || '') !== '') {
+    return res.json({ success: true, data: { message: 'Message envoyé. Nous vous répondons sous 48h.' } });
+  }
+
   const errors = {};
   if (!nom)                       errors.nom     = 'Nom requis';
   if (!EMAIL_VALIDE.test(email))  errors.email   = 'Email invalide';

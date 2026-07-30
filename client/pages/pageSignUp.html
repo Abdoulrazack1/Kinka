@@ -96,6 +96,13 @@
                 <p class="signup-form-desc">Quelques secondes suffisent pour rejoindre KINKA.FR</p>
 
                 <form class="signup-form">
+                    <!-- Champ leurre anti-robot : invisible et exclu du parcours
+                         clavier, un visiteur ne peut donc pas le remplir. Un
+                         robot qui remplit tous les champs voit sa requête
+                         refusée par le serveur. -->
+                    <input type="text" id="site_web" name="site_web" class="champ-leurre"
+                           tabindex="-1" autocomplete="off" aria-hidden="true">
+
                     <div class="name-row">
                         <div class="form-group">
                             <label for="prenom" class="form-label">Prénom</label>

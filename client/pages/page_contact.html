@@ -74,6 +74,10 @@
                 <p class="contact-subtitle">Une question sur une commande ou un produit ? Notre équipe est là pour vous aider.</p>
                 
                 <form class="contact-form">
+                    <!-- Champ leurre anti-robot : voir pageSignUp.html. -->
+                    <input type="text" id="site_web" name="site_web" class="champ-leurre"
+                           tabindex="-1" autocomplete="off" aria-hidden="true">
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="prenom">Prénom</label>
@@ -233,7 +237,8 @@
                         nom: (prenom + ' ' + nom).trim() || 'Anonyme',
                         email: email.value.trim(),
                         sujet: sujet || 'Contact',
-                        message: msg.value.trim()
+                        message: msg.value.trim(),
+                        site_web: (document.getElementById('site_web') || {}).value || '' // champ leurre
                     });
                 }
                 if (typeof showToast === 'function') showToast('Message envoyé ! Nous vous répondrons sous 48h.', 'success');

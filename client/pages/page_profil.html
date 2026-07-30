@@ -936,6 +936,9 @@
         var conf = document.getElementById('pwd-confirm').value;
         if (!actuel) { showToast('Entrez votre mot de passe actuel', 'error'); return; }
         if (!n || n.length < 8) { showToast('Minimum 8 caractères', 'error'); return; }
+        // Même exigence de robustesse qu'à l'inscription et à la réinitialisation.
+        var faiblesse = typeof kinkaFaiblesseMotDePasse === 'function' ? kinkaFaiblesseMotDePasse(n) : '';
+        if (faiblesse) { showToast(faiblesse, 'error'); return; }
         if (n !== conf) { showToast('Les mots de passe ne correspondent pas', 'error'); return; }
         try {
             var btn = document.querySelector('[onclick="changePassword()"]');

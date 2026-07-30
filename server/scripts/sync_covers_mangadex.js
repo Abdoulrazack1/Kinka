@@ -30,7 +30,7 @@ async function safeFetch(url, retries = 3) {                       // fetch tol�
             if (res.status === 404) return null;               // introuvable
             if (!res.ok) { await sleep(800); continue; }       // autre erreur : petite pause + retry
             return res.json();                                 // succès : JSON
-        } catch (e) {                                          // erreur réseau
+        } catch {                                              // erreur réseau (détail inutile ici)
             if (i === retries - 1) return null;                // dernière tentative : abandon
             await sleep(600);                                  // sinon pause + retry
         }
