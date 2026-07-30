@@ -4,6 +4,10 @@
 ================================================================ */
 
 /* ── LAYOUT ──────────────────────────────────────────────────── */
+/* Éléments de grille : sans « min-width:0 » ils imposent leur largeur minimale
+   de contenu à la piste et la page déborde sous 360 px. */
+.tracking-layout > * { min-width: 0; }
+
 .tracking-layout {
   display: grid;
   grid-template-columns: 1fr 340px;

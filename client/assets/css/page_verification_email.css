@@ -1,0 +1,156 @@
+/* ============================================================
+   page_verification_email.css — Confirmation de l'adresse email
+
+   La page réutilisait la feuille de la confirmation de mot de passe. C'était
+   commode mais trompeur : ce gabarit annonce une réussite (carte verte, titre
+   en dégradé animé), alors que cette page-ci a trois issues, dont deux ne sont
+   pas des succès — lien incomplet et lien expiré. D'où une feuille propre, où
+   l'état pilote la couleur.
+
+   Le conteneur, le fil d'Ariane et .btn-primary viennent de kinka-shared.css ;
+   seuls la carte, ses états et le formulaire de renvoi sont définis ici.
+   ============================================================ */
+
+/* ── Carte centrale ─────────────────────────────────────────── */
+.success-card {
+    max-width: 560px;
+    margin: 3rem auto;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg, 16px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ── Pastille d'état ────────────────────────────────────────── */
+/* Trois couleurs, une par issue : la teinte doit dire la même chose que le
+   texte. Un lien expiré affiché sur fond vert se lisait comme une réussite. */
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #4caf50;                       /* succès : adresse confirmée */
+    color: #fff;
+}
+.success-icon.etat-attente { background: #6366f1; }   /* action encore à faire */
+.success-icon.etat-erreur  { background: #dc2626; }   /* lien invalide ou expiré */
+
+.success-icon .material-symbols-outlined {
+    font-size: 2.5rem;
+    font-variation-settings: 'FILL' 1;
+}
+
+/* ── Textes ─────────────────────────────────────────────────── */
+.success-card h1 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0 0 1rem;
+    color: var(--text);
+}
+
+.success-message {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0 0 2rem;
+}
+
+/* ── Actions ────────────────────────────────────────────────── */
+/* Empilées sur petit écran, côte à côte dès qu'il y a la place. Le formulaire
+   de renvoi (champ + bouton) partage ce conteneur : « wrap » évite que le champ
+   et son bouton se serrent au point de devenir inutilisables. */
+.success-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.success-actions .btn-secondary {
+    padding: 0.7rem 1.5rem;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid var(--border-dk);
+    color: var(--text);
+    transition: var(--transition);
+}
+.success-actions .btn-secondary:hover {
+    border-color: var(--pink);
+    color: var(--pink);
+    background: transparent;
+}
+
+/* ── Champ de renvoi ────────────────────────────────────────── */
+/* « min-width:0 » et « flex » : sans cela le champ garde sa largeur naturelle
+   et pousse le bouton hors de la carte sur un écran étroit. */
+.ve-champ-email {
+    flex: 1 1 220px;
+    min-width: 0;
+    max-width: 280px;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--bg-subtle, var(--bg-muted));
+    border: 1px solid var(--border);
+    border-radius: 999px;
+}
+.ve-champ-email::placeholder { color: var(--text-light); }
+.ve-champ-email:focus {
+    outline: none;
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(224, 59, 139, 0.18);
+}
+
+/* ── Encart de développement ────────────────────────────────── */
+/* Visible uniquement quand aucun serveur d'envoi n'est configuré. Volontairement
+   austère et en pointillés : il ne doit jamais passer pour un élément normal
+   de l'interface. */
+.ve-encart-dev {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    text-align: left;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    border: 1px dashed var(--border-dk);
+    border-radius: 8px;
+    opacity: 0.9;
+}
+.ve-encart-dev-titre {
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    color: var(--text);
+}
+.ve-encart-dev a {
+    color: var(--pink);
+    word-break: break-all;
+}
+
+/* ── Petits écrans ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .success-card {
+        margin: 1.5rem auto;
+        padding: 2rem 1.25rem;
+        border-radius: 12px;
+    }
+    .success-icon { width: 64px; height: 64px; margin-bottom: 1.5rem; }
+    .success-icon .material-symbols-outlined { font-size: 2rem; }
+    .success-card h1 { font-size: 1.35rem; }
+    .success-message { font-size: 0.88rem; margin-bottom: 1.5rem; }
+    /* Sous 600 px, deux boutons côte à côte deviennent trop étroits pour être
+       visés confortablement : on les empile sur toute la largeur. */
+    .success-actions { flex-direction: column; align-items: stretch; }
+    /* En colonne, l'axe principal devient vertical : « flex-grow:1 » étirait le
+       champ email sur toute la hauteur disponible et le transformait en ovale.
+       On le fige à sa hauteur naturelle. */
+    .ve-champ-email { flex: 0 0 auto; max-width: none; }
+}

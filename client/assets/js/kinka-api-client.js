@@ -166,6 +166,25 @@ const KinkaAPI = {                                                // façade reg
       });
     },
 
+    async verifyEmail(token) {                                 // confirmation d'adresse email
+      const data = await kinkaFetch('/auth/verify-email', {    // POST /auth/verify-email
+        method: 'POST',
+        body: JSON.stringify({ token })
+      });
+      // Le compte vient de changer d'état : on rafraîchit la session locale
+      // pour que le bandeau d'invitation disparaisse sans reconnexion.
+      if (data.token) KinkaAuth.setToken(data.token, false);
+      if (data.user)  localStorage.setItem('kinka_current_user', JSON.stringify(data.user));
+      return data;
+    },
+
+    async resendVerification(email) {                          // redemande un lien de confirmation
+      return kinkaFetch('/auth/resend-verification', {         // POST /auth/resend-verification
+        method: 'POST',
+        body: JSON.stringify({ email })
+      });
+    },
+
     async reset(token, password) {                             // enregistrement du nouveau mot de passe
       return kinkaFetch('/auth/reset', {                       // POST /auth/reset
         method: 'POST',

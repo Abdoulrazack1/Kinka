@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../assets/css/kinka-shared.css">
     <link rel="stylesheet" href="../assets/css/page_oda.css">
     <link rel="stylesheet" href="../assets/css/translate.css">
+    <link rel="stylesheet" href="../assets/css/contraste-clair.css">
     <link rel="stylesheet" href="../assets/css/darkmode.css">
     <style>
         /* ── Styles spécifiques page auteur dynamique ── */
@@ -218,6 +219,20 @@
             .author-banner-stat { gap: 1.2rem; }
         }
     </style>
+    <!-- Thème appliqué avant le premier rendu. darkmode.js est chargé en fin de
+         page : la classe n'arrivait qu'au DOMContentLoaded, après un premier
+         affichage en clair — soit un flash blanc à chaque navigation pour qui
+         utilise le thème sombre. Ce bloc doit rester synchrone et dans <head>.
+         La préférence n'est pas écrite ici : seul un clic la fixe. -->
+    <script>
+    (function(){try{
+        var choix = localStorage.getItem('kinka_darkmode');
+        var sombre = choix !== null
+            ? choix === '1'
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (sombre) document.documentElement.classList.add('pre-dark-mode');
+    }catch(e){}})();
+    </script>
 </head>
 <body>
     <header>
@@ -410,6 +425,7 @@
         <div class="footer-bottom"><p>© <span class="annee-courante">2025</span> KINKA.FR — Tous droits réservés</p></div>
     </footer>
     <script src="../assets/js/kinka-api-client.js"></script>
+    <script src="../assets/js/bandeau-verification.js"></script>
     <script src="../assets/js/kinka-auth-guard.js"></script>
     <script src="../assets/js/kinka-cards.js"></script>
     <script src="../assets/js/authentification.js"></script>

@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" href="../assets/images/LogoProjetFilRouge.png">
     <link rel="stylesheet" href="../assets/css/kinka-shared.css">
     <link rel="stylesheet" href="../assets/css/translate.css">
+    <link rel="stylesheet" href="../assets/css/contraste-clair.css">
     <link rel="stylesheet" href="../assets/css/darkmode.css">
     <style>
     .error-page { min-height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 3rem 1.5rem; }
@@ -27,6 +28,20 @@
     .btn-outline { display: inline-flex; align-items: center; gap: .4rem; padding: .72rem 1.5rem; border-radius: 999px; border: 1.5px solid var(--border); font-size: .88rem; font-weight: 600; color: var(--text); cursor: pointer; background: white; transition: all .2s ease; font-family: inherit; }
     .btn-outline:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-soft); }
     </style>
+    <!-- Thème appliqué avant le premier rendu. darkmode.js est chargé en fin de
+         page : la classe n'arrivait qu'au DOMContentLoaded, après un premier
+         affichage en clair — soit un flash blanc à chaque navigation pour qui
+         utilise le thème sombre. Ce bloc doit rester synchrone et dans <head>.
+         La préférence n'est pas écrite ici : seul un clic la fixe. -->
+    <script>
+    (function(){try{
+        var choix = localStorage.getItem('kinka_darkmode');
+        var sombre = choix !== null
+            ? choix === '1'
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (sombre) document.documentElement.classList.add('pre-dark-mode');
+    }catch(e){}})();
+    </script>
 </head>
 <body>
     <header>
@@ -95,6 +110,7 @@
     </footer>
 
     <script src="../assets/js/kinka-api-client.js"></script>
+    <script src="../assets/js/bandeau-verification.js"></script>
     <script src="../assets/js/kinka-auth-guard.js"></script>
     <script src="../assets/js/kinka-cards.js"></script>
     <script src="../assets/js/authentification.js"></script>

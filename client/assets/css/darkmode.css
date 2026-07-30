@@ -1,3 +1,16 @@
+/* ── Fond sombre appliqué avant le premier rendu ────────────────────────
+   Le thème complet est porté par « body.dark-mode », posée par darkmode.js —
+   chargé en fin de page, donc après un premier affichage en clair. Le résultat
+   était un flash blanc à chaque navigation pour qui utilise le thème sombre.
+   Le petit script placé dans <head> de chaque page pose « pre-dark-mode » sur
+   <html> avant tout rendu ; ces deux règles suffisent à supprimer le flash, le
+   reste du thème arrivant ensuite sans transition visible. */
+html.pre-dark-mode,
+html.pre-dark-mode body {
+  background: #0f1117;
+  color: #f0f0f0;
+}
+
 /* ================================================================
    KINKA.FR — darkmode.css  v6.0  EXHAUSTIF
    Couvre TOUS les sélecteurs avec couleurs hardcodées de chaque
@@ -11,7 +24,11 @@
 body.dark-mode {
   --text:         #f0f0f0;
   --text-muted:   #a0a8b4;
-  --text-light:   #6b7280;
+  /* #6b7280 tombait à 3,30:1 sur les cartes sombres, sous le minimum WCAG AA
+     de 4,5:1 pour du texte courant : fil d'Ariane, mention de copyright et
+     libellé de consentement étaient concernés. #8a92a1 tient 5,10:1 au pire
+     des fonds sombres, en restant le même gris neutre. */
+  --text-light:   #8a92a1;
   --bg:           #0f1117;
   --bg-card:      #1a1d27;
   --bg-muted:     #151820;
@@ -23,6 +40,10 @@ body.dark-mode {
   --shadow-md:    0 6px 24px rgba(0,0,0,.6);
   --shadow-lg:    0 16px 48px rgba(0,0,0,.7);
   --shadow-pink:  0 6px 24px rgba(224,59,139,.35);
+  /* Le rose de marque (#e03b8b) plafonne à 3,93:1 en texte sur fond sombre.
+     On garde la teinte pour les aplats et les bordures, et on éclaircit
+     seulement le texte : #ef5a9f donne 5,04:1 au pire cas. */
+  --pink-texte:   #ef5a9f;
   --pink-soft:    rgba(224,59,139,0.14);
   --pink-glow:    rgba(224,59,139,0.35);
   color-scheme: dark;
@@ -1386,3 +1407,321 @@ body.dark-mode .kinka-toast--default {
   color: var(--text);
   border-color: var(--border);
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   CONTRASTE AA DES COULEURS D'ACCENT — thème sombre
+   
+   Le rose de marque #e03b8b n'atteint le minimum WCAG AA (4,5:1) dans aucun
+   de ses deux rôles : 4,14:1 en texte sur carte sombre, 4,06:1 en aplat sous
+   du texte blanc. Aucune valeur unique ne satisfait les deux — assombrir
+   améliore l'aplat et dégrade le texte, éclaircir fait l'inverse. Il faut donc
+   deux déclinaisons, ce que ce bloc met en place :
+
+     --pink-texte  #ef5a9f   quand le rose EST le texte      → 5,31:1
+     #d12d7d                 quand le rose porte du texte blanc → 4,79:1
+
+   Les sélecteurs ci-dessous sont générés depuis les feuilles du projet (tout
+   « color: var(--pink) » et tout « background: var(--pink) »), pour que la
+   correction soit exhaustive plutôt qu'appliquée au cas par cas. Le rose de
+   marque lui-même n'est pas modifié : le thème clair et les usages décoratifs
+   le conservent tel quel.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Le rose est le texte : on l'éclaircit ─────────────────────────── */
+body.dark-mode .abo-avantage-item .material-symbols-outlined,
+body.dark-mode .abo-plan-btn:hover:not(:disabled),
+body.dark-mode .add-more .material-symbols-outlined,
+body.dark-mode .admin-nav-lien.actif,
+body.dark-mode .admin-repere,
+body.dark-mode .annonce-prix,
+body.dark-mode .annonces-onglet.actif,
+body.dark-mode .author-link,
+body.dark-mode .back-link,
+body.dark-mode .breadcrumb .current,
+body.dark-mode .breadcrumb a:hover,
+body.dark-mode .btn-augmenter:hover,
+body.dark-mode .btn-coffret:hover,
+body.dark-mode .btn-diminuer:hover,
+body.dark-mode .btn-follow,
+body.dark-mode .btn-load-more:hover,
+body.dark-mode .btn-loyalty,
+body.dark-mode .btn-outline,
+body.dark-mode .btn-secondary-large:hover,
+body.dark-mode .btn-secondary:hover,
+body.dark-mode .captcha-info,
+body.dark-mode .carrier-link,
+body.dark-mode .cat-nav-link.active,
+body.dark-mode .category-tag,
+body.dark-mode .cdc-article-reasons li .material-symbols-outlined,
+body.dark-mode .cdc-article-tagline,
+body.dark-mode .cdc-hero-badge,
+body.dark-mode .cdc-meta-item .material-symbols-outlined,
+body.dark-mode .cdc-price,
+body.dark-mode .cdc-stat-num,
+body.dark-mode .cdc-tag:hover,
+body.dark-mode .cgu-section:hover .section-title,
+body.dark-mode .cgv-notice a,
+body.dark-mode .cgv-section:hover h2,
+body.dark-mode .collection-card .price-main,
+body.dark-mode .collection-status .material-symbols-outlined,
+body.dark-mode .commande-id .material-symbols-outlined,
+body.dark-mode .contact-box a,
+body.dark-mode .contact-icon,
+body.dark-mode .contact-info a:hover,
+body.dark-mode .contact-info:hover,
+body.dark-mode .contact-item .material-symbols-outlined,
+body.dark-mode .continuer-achats,
+body.dark-mode .copy-btn:hover,
+body.dark-mode .create-account-btn,
+body.dark-mode .current-price,
+body.dark-mode .demo-cred-header,
+body.dark-mode .download-invoice:hover,
+body.dark-mode .faq-nav-link.active,
+body.dark-mode .faq-nav-link:hover,
+body.dark-mode .faq-question:hover,
+body.dark-mode .faq-section:hover h2,
+body.dark-mode .faq-toggle:checked + .faq-question,
+body.dark-mode .fav-nav-active .material-symbols-outlined,
+body.dark-mode .fav-stat-chip .material-symbols-outlined,
+body.dark-mode .filter-btn:hover,
+body.dark-mode .filter-option:has(:checked) .filter-label,
+body.dark-mode .filter-option:hover,
+body.dark-mode .filter-pill:hover,
+body.dark-mode .filter-tag:hover,
+body.dark-mode .footer-section p a,
+body.dark-mode .footer-section ul a:hover,
+body.dark-mode .footer-section ul li a:hover,
+body.dark-mode .footer-section:hover h4,
+body.dark-mode .forgot-password,
+body.dark-mode .form-checkbox:hover label,
+body.dark-mode .form-group:hover label,
+body.dark-mode .form-section:hover .section-header h2,
+body.dark-mode .free-shipping,
+body.dark-mode .gate-btn-secondary:hover,
+body.dark-mode .gate-cred-value,
+body.dark-mode .gate-demo-title .material-symbols-outlined,
+body.dark-mode .gate-headline em,
+body.dark-mode .gate-logo span em,
+body.dark-mode .gate-perk-icon,
+body.dark-mode .help-link,
+body.dark-mode .help-link a,
+body.dark-mode .icon-btn:hover .material-symbols-outlined,
+body.dark-mode .info-badge,
+body.dark-mode .info-card:hover .info-text,
+body.dark-mode .info-icon .material-symbols-outlined,
+body.dark-mode .info-value.age-rating .material-symbols-outlined,
+body.dark-mode .input-icon-right:hover,
+body.dark-mode .language-toggle:hover .language-text,
+body.dark-mode .login-link,
+body.dark-mode .login-link-btn,
+body.dark-mode .logo-text .fr,
+body.dark-mode .logo:hover .logo-text,
+body.dark-mode .md-nav-link.md-nav-active,
+body.dark-mode .md-serie-link.active,
+body.dark-mode .md-serie-link.active span,
+body.dark-mode .me-cta-content .btn-primary,
+body.dark-mode .meta-item .material-symbols-outlined,
+body.dark-mode .nav-menu a.active,
+body.dark-mode .nav-menu a:hover,
+body.dark-mode .nav-user-btn:hover,
+body.dark-mode .nav-user-btn:hover .nav-user-chevron,
+body.dark-mode .nav-user-dropdown-avatar,
+body.dark-mode .nav-user-dropdown-item:hover .material-symbols-outlined,
+body.dark-mode .no-reply,
+body.dark-mode .occ-empty-state .material-symbols-outlined,
+body.dark-mode .page-btn:hover,
+body.dark-mode .panier-item-prix,
+body.dark-mode .panier-item-prix strong,
+body.dark-mode .panier-item:hover .panier-item-info h3,
+body.dark-mode .panier-vide-icon,
+body.dark-mode .password-input-wrapper:hover .toggle-icon,
+body.dark-mode .payment-option.selected .payment-icon .material-symbols-outlined,
+body.dark-mode .popularity-badge,
+body.dark-mode .prem-avantage-icon,
+body.dark-mode .prem-btn-secondary:hover,
+body.dark-mode .prem-faq-a p,
+body.dark-mode .prem-feature-check,
+body.dark-mode .prem-hero-badge,
+body.dark-mode .preview-box:hover .material-symbols-outlined,
+body.dark-mode .price-main,
+body.dark-mode .product-card-coffret:hover .product-description,
+body.dark-mode .product-card-coffret:hover .product-title-coffret,
+body.dark-mode .product-card:hover .product-author,
+body.dark-mode .product-card:hover .product-price,
+body.dark-mode .product-card:hover .product-title,
+body.dark-mode .product-category,
+body.dark-mode .product-price,
+body.dark-mode .profil-card-title .material-symbols-outlined,
+body.dark-mode .profil-form-card h3 .material-symbols-outlined,
+body.dark-mode .profil-hero-avatar,
+body.dark-mode .profil-mobile-tab.active,
+body.dark-mode .profil-nav-item.active,
+body.dark-mode .profil-nav-item.active .material-symbols-outlined,
+body.dark-mode .profil-nav-item:hover .material-symbols-outlined,
+body.dark-mode .profil-sidebar-avatar-img .material-symbols-outlined,
+body.dark-mode .profil-sidebar-plan,
+body.dark-mode .profile-bio strong,
+body.dark-mode .promo-btn,
+body.dark-mode .promo-hero-badge,
+body.dark-mode .pwd-eye:hover,
+body.dark-mode .qty-btn:hover,
+body.dark-mode .quantite-controls button:hover,
+body.dark-mode .rating-score,
+body.dark-mode .recommendation-price,
+body.dark-mode .required,
+body.dark-mode .reset-filters,
+body.dark-mode .results-count,
+body.dark-mode .resume-ligne.total span:last-child,
+body.dark-mode .search-bar input:focus ~ .search-icon,
+body.dark-mode .search-bar:focus-within .search-icon,
+body.dark-mode .search-bar:hover .search-icon,
+body.dark-mode .search-btn:hover,
+body.dark-mode .search-result-info .price,
+body.dark-mode .serie-pill:hover,
+body.dark-mode .sidebar-card h4,
+body.dark-mode .signup-terms a,
+body.dark-mode .similar-header .view-all,
+body.dark-mode .sort-btn:hover,
+body.dark-mode .stat-item .material-symbols-outlined,
+body.dark-mode .stat-number,
+body.dark-mode .stat-value,
+body.dark-mode .state-card input:checked ~ .state-content .state-icon,
+body.dark-mode .state-card:hover .state-icon,
+body.dark-mode .styled-list a,
+body.dark-mode .styled-list li::before,
+body.dark-mode .subsection h3,
+body.dark-mode .success-actions .btn-secondary:hover,
+body.dark-mode .summary-card > h2::before,
+body.dark-mode .tab-btn.active,
+body.dark-mode .tab-btn.active .tab-count,
+body.dark-mode .tag-shonen,
+body.dark-mode .tag:hover,
+body.dark-mode .terms-link,
+body.dark-mode .timer-info .material-symbols-outlined,
+body.dark-mode .tip-icon,
+body.dark-mode .tips-icon,
+body.dark-mode .tips-list li::before,
+body.dark-mode .toc a:hover,
+body.dark-mode .tome-card:hover .tome-title,
+body.dark-mode .tome-status.available,
+body.dark-mode .total-amount,
+body.dark-mode .trust-item .material-symbols-outlined,
+body.dark-mode .upload-icon,
+body.dark-mode .ve-encart-dev a,
+body.dark-mode .view-all,
+body.dark-mode .volumes-tabs .tab-btn.active,
+body.dark-mode .welcome-badge,
+body.dark-mode body.dark-mode .gate-cred-value,
+body.dark-mode body.dark-mode .language-toggle:hover .language-text { color: var(--pink-texte) !important; }
+
+/* ── Le rose est l'aplat : on l'assombrit ──────────────────────────── */
+body.dark-mode .abo-plan-badge,
+body.dark-mode .abo-plan-btn-featured,
+body.dark-mode .add-to-cart,
+body.dark-mode .add-to-cart-coffret,
+body.dark-mode .add-to-cart-small,
+body.dark-mode .admin-nav-badge,
+body.dark-mode .badge-hero,
+body.dark-mode .breadcrumb a::after,
+body.dark-mode .btn-add-collection,
+body.dark-mode .btn-admin-principal,
+body.dark-mode .btn-coffret,
+body.dark-mode .btn-commander,
+body.dark-mode .btn-discover,
+body.dark-mode .btn-follow:hover,
+body.dark-mode .btn-outline:hover,
+body.dark-mode .btn-pay,
+body.dark-mode .btn-primary,
+body.dark-mode .btn-primary-large,
+body.dark-mode .btn-submit,
+body.dark-mode .cdc-fav-btn.active,
+body.dark-mode .cdc-fav-btn:hover,
+body.dark-mode .cgv-section h2::before,
+body.dark-mode .connect-btn,
+body.dark-mode .create-account-btn:hover,
+body.dark-mode .demo-copy-btn,
+body.dark-mode .faq-nav-link::before,
+body.dark-mode .faq-toggle:checked + .faq-question .faq-icon,
+body.dark-mode .filter-btn.active,
+body.dark-mode .filter-option input:checked ~ .checkbox-custom,
+body.dark-mode .filter-option.pill.active,
+body.dark-mode .filter-pill.active,
+body.dark-mode .filter-tag.active,
+body.dark-mode .gate-btn-primary,
+body.dark-mode .gate-demo-btn,
+body.dark-mode .hero-actions .btn-primary,
+body.dark-mode .hero-content .badge,
+body.dark-mode .info-badge,
+body.dark-mode .info-badge:hover,
+body.dark-mode .language-toggle.colored,
+body.dark-mode .login-link-btn:hover,
+body.dark-mode .nav-badge,
+body.dark-mode .nav-menu a::after,
+body.dark-mode .page-btn.active,
+body.dark-mode .panier-count,
+body.dark-mode .panier-notification,
+body.dark-mode .panier-resume h3::after,
+body.dark-mode .panier-titre::after,
+body.dark-mode .panier-vide .btn-primary,
+body.dark-mode .prem-btn-card,
+body.dark-mode .prem-btn-primary,
+body.dark-mode .prem-card-annuelle .prem-card-label,
+body.dark-mode .product-badge,
+body.dark-mode .product-badge.coffret,
+body.dark-mode .product-badge.nouveau,
+body.dark-mode .product-badge.nouveaute,
+body.dark-mode .profil-mobile-tab.active::after,
+body.dark-mode .profil-nav-badge,
+body.dark-mode .profil-nav-item.active::before,
+body.dark-mode .progress-step.completed .step-circle,
+body.dark-mode .progress-step.completed .step-line,
+body.dark-mode .promo-btn:hover,
+body.dark-mode .quantite-controls button:active,
+body.dark-mode .rank-badge,
+body.dark-mode .section-number,
+body.dark-mode .section-title-main::after,
+body.dark-mode .section-title::after,
+body.dark-mode .section-title::before,
+body.dark-mode .serie-pill.active,
+body.dark-mode .signup-submit,
+body.dark-mode .social-icons a:hover,
+body.dark-mode .submit-btn,
+body.dark-mode .tab-btn::after,
+body.dark-mode .tag.active,
+body.dark-mode html[lang="en"]::before { background-color: #d12d7d !important; }
+
+/* Exception : « Découvrir Premium » est du rose sur fond BLANC, dans les deux
+   thèmes. L'éclaircir aggraverait le contraste (4,06 → 3,17) ; il lui faut au
+   contraire un rose plus sombre — #c62372 donne 5,41:1 sur blanc. */
+a.btn-premium-rose,
+body.dark-mode a.btn-premium-rose { color: #c62372 !important; }
+
+/* Textes gris écrits en dur, hors du jeton --text-light, restés sous le seuil. */
+body.dark-mode .form-checkbox label,
+body.dark-mode .faq-answer,
+body.dark-mode .faq-answer p { color: var(--text-muted) !important; }
+
+/* « Se déconnecter » : #ef4444 donnait 4,47:1, à 0,03 du seuil. */
+body.dark-mode .nav-user-dropdown-logout,
+body.dark-mode .nav-user-dropdown-logout .material-symbols-outlined { color: #f45f5f !important; }
+body.dark-mode .nav-user-dropdown-logout:hover { background: rgba(244,95,95,.12) !important; color: #f87171 !important; }
+
+/* Bouton « Utiliser » de la carte de démonstration : gris clair sur aplat rose,
+   1,69:1 — le plus mauvais écart relevé. */
+body.dark-mode .demo-copy-btn { color: #ffffff !important; }
+
+/* Aplats roses portant du texte : il doit être blanc, pas gris. Le badge
+   « TENDANCE ACTUELLE » héritait de --text-muted et tombait à 2,00:1 une fois
+   l'aplat assombri. */
+body.dark-mode .hero-content .badge,
+body.dark-mode .badge-hero,
+body.dark-mode .product-badge,
+body.dark-mode .nav-badge,
+body.dark-mode .panier-count,
+body.dark-mode .rank-badge,
+body.dark-mode .section-number,
+body.dark-mode .admin-nav-badge { color: #ffffff !important; }
+
+/* « Réinitialiser » porte sa couleur dans un attribut style= du HTML : aucune
+   règle de feuille ne peut l'atteindre sans !important sur son identifiant. */
+body.dark-mode #reset-filters { color: var(--pink-texte) !important; }

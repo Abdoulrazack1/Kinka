@@ -22,6 +22,10 @@ router.delete('/me', authRequired, asyncHandler(ctrl.supprimerCompte));   // sup
 router.put('/password', authRequired, validate(schemas.password), asyncHandler(ctrl.changerMotDePasse)); // changement de mot de passe
 
 // ─── Mot de passe oublié ────────────────────────────────────────
+// Confirmation d'adresse email (§5.1 de l'audit)
+router.post('/verify-email',        asyncHandler(ctrl.verifierEmail));       // consomme le lien reçu
+router.post('/resend-verification', asyncHandler(ctrl.renvoyerVerification)); // redemande un lien
+
 router.post('/forgot', asyncHandler(ctrl.motDePasseOublie));        // demande d'un lien
 router.post('/reset',  asyncHandler(ctrl.reinitialiserMotDePasse)); // enregistrement du nouveau mot de passe
 

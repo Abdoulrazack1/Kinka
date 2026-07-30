@@ -17,7 +17,22 @@
     <link rel="stylesheet" href="../assets/css/kinka-shared.css">
     <link rel="stylesheet" href="../assets/css/page_cgv.css">
     <link rel="stylesheet" href="../assets/css/translate.css">
+    <link rel="stylesheet" href="../assets/css/contraste-clair.css">
     <link rel="stylesheet" href="../assets/css/darkmode.css">
+    <!-- Thème appliqué avant le premier rendu. darkmode.js est chargé en fin de
+         page : la classe n'arrivait qu'au DOMContentLoaded, après un premier
+         affichage en clair — soit un flash blanc à chaque navigation pour qui
+         utilise le thème sombre. Ce bloc doit rester synchrone et dans <head>.
+         La préférence n'est pas écrite ici : seul un clic la fixe. -->
+    <script>
+    (function(){try{
+        var choix = localStorage.getItem('kinka_darkmode');
+        var sombre = choix !== null
+            ? choix === '1'
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (sombre) document.documentElement.classList.add('pre-dark-mode');
+    }catch(e){}})();
+    </script>
 </head>
 <body>
     <!-- HEADER -->
@@ -160,6 +175,7 @@
     </footer>
 
     <script src="../assets/js/kinka-api-client.js"></script>
+    <script src="../assets/js/bandeau-verification.js"></script>
     <script src="../assets/js/kinka-auth-guard.js"></script>
     <script src="../assets/js/kinka-cards.js"></script>
     <script src="../assets/js/authentification.js"></script>

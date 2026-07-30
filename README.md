@@ -367,6 +367,29 @@ Pour pointer vers une autre URL d'API, définir avant le chargement du client :
   redirige vers la connexion en mémorisant la destination. Le panier et la page
   Premium restent ouverts aux visiteurs ; la connexion n'est exigée qu'au paiement.
 
+## Accessibilité
+
+Les deux thèmes respectent le niveau **WCAG AA** (contraste 4,5:1 pour le texte
+courant, 3:1 pour les grands titres), vérifié par mesure sur 16 pages × 2 thèmes.
+
+Le rose de marque `#e03b8b` ne satisfait ce seuil dans aucun de ses deux rôles :
+4,14:1 en texte sur fond sombre, 4,06:1 en aplat sous du texte blanc. Aucune
+valeur unique ne convient — assombrir améliore l'aplat et dégrade le texte.
+Deux déclinaisons sont donc appliquées, générées depuis les feuilles du projet :
+
+| Rôle | Couleur | Ratio |
+|---|---|---|
+| le rose **est** le texte | `#ef5a9f` (sombre) / `#c62372` (clair) | 5,31:1 / 4,90:1 |
+| le rose **porte** du texte blanc | `#d12d7d` | 4,79:1 |
+
+Le jeton `--pink` lui-même est inchangé : bordures, icônes et usages décoratifs
+gardent la teinte d'origine. Les surcharges vivent dans `darkmode.css` et
+`contraste-clair.css`.
+
+La mise en page ne déborde plus horizontalement de 320 à 1280 px (18 pages
+vérifiées). La cause était presque toujours la même : un élément de grille garde
+`min-width: auto` et impose la largeur minimale de son contenu à sa piste.
+
 ## Qualité du code
 
 ```bash

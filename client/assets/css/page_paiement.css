@@ -4,6 +4,12 @@
 ================================================================ */
 
 /* ── LAYOUT PAGE ────────────────────────────────────────────── */
+/* Les deux colonnes du tunnel sont des éléments de grille : sans « min-width:0 »
+   elles imposent leur largeur minimale de contenu à la piste, et la page déborde
+   sur les petits écrans. Posé sur les enfants directs plutôt qu'au cas par cas. */
+.checkout-layout > * { min-width: 0; }
+.checkout-section { min-width: 0; }
+
 .checkout-layout {
     display: grid;
     grid-template-columns: 1fr 370px;
@@ -181,6 +187,10 @@
 .order-summary {
     position: sticky;
     top: 82px;
+    /* Élément de grille : « min-width:auto » par défaut, il imposait sa largeur
+       minimale de contenu (350 px) à la piste, et la page débordait sous 360 px
+       de large. Même cause que les cartes éditeurs de l'accueil. */
+    min-width: 0;
 }
 
 .summary-card {
@@ -249,13 +259,18 @@
 /* ── CODE PROMO ─────────────────────────────────────────────── */
 .promo-section {
     display: flex;
+    flex-wrap: wrap;
     gap: .5rem;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid var(--border);
 }
 
 .promo-input {
-    flex: 1;
+    /* « flex:1 » seul laisse min-width:auto : le champ refusait de descendre
+       sous la largeur de son texte de substitution et poussait le bouton
+       « Appliquer » hors de l'écran sous 360 px. */
+    flex: 1 1 0;
+    min-width: 0;
     padding: .6rem .9rem;
     border: 1.5px solid var(--border);
     border-radius: var(--radius);

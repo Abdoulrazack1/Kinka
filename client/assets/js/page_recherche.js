@@ -41,11 +41,34 @@
         var n = results.length;                                   // nombre de résultats
         if (resultsCountEl) resultsCountEl.textContent = n + ' manga' + (n!==1?'s':'') + ' trouvé' + (n!==1?'s':''); // compteur accordé
         if (!n) {                                                 // aucun résultat
-            productsGrid.innerHTML = '<div class="no-results" style="grid-column:1/-1;text-align:center;padding:3rem">' // bloc "aucun résultat"
-                + '<span class="material-symbols-outlined" style="font-size:4rem;color:#ccc">search</span>' // icône loupe
-                + '<h3>Aucun résultat pour "' + query + '"</h3>'  // titre
-                + '<p>Essayez avec d\'autres mots-clés ou parcourez notre <a href="./page_catalogue.html">catalogue</a>.</p>' // suggestion
-                + '</div>';                                       // fin du bloc
+            // `query` vient du paramètre ?q= de l'URL. Concaténé dans une chaîne
+            // HTML, il permettait d'injecter des balises exécutables :
+            // ?q=<img src=x onerror=…> déclenchait bien le script. Le terme est
+            // donc posé avec textContent, qui ne peut pas produire de balise —
+            // XSS structurellement impossible plutôt que simplement échappée.
+            productsGrid.innerHTML = '';                          // vide la grille
+
+            var bloc = document.createElement('div');
+            bloc.className = 'no-results';
+            bloc.style.cssText = 'grid-column:1/-1;text-align:center;padding:3rem';
+
+            var icone = document.createElement('span');
+            icone.className = 'material-symbols-outlined';
+            icone.style.cssText = 'font-size:4rem;color:#ccc';
+            icone.textContent = 'search';
+
+            var titre = document.createElement('h3');
+            titre.textContent = 'Aucun résultat pour "' + query + '"';
+
+            var suggestion = document.createElement('p');
+            suggestion.append('Essayez avec d\'autres mots-clés ou parcourez notre ');
+            var lienCatalogue = document.createElement('a');
+            lienCatalogue.href = './page_catalogue.html';
+            lienCatalogue.textContent = 'catalogue';
+            suggestion.append(lienCatalogue, '.');
+
+            bloc.append(icone, titre, suggestion);
+            productsGrid.appendChild(bloc);
             return;                                              // terminé
         }
         productsGrid.innerHTML = results.map(function(m) { return buildProductCard(m); }).join(''); // construit les cartes

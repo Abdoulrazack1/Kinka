@@ -105,6 +105,14 @@
   color: var(--text); cursor: pointer;
 }
 .maison-card:hover { border-color: var(--pink); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+/* Un élément de grille a « min-width:auto » : il refuse de descendre sous la
+   largeur minimale de son contenu. Le nom de l'éditeur et sa liste de séries
+   forçaient donc la carte au-delà de la piste « 1fr », et la page d'accueil
+   débordait horizontalement de 21 px à 360 px de large. « min-width:0 » sur la
+   carte et sur son bloc de texte laisse la grille reprendre la main. */
+.maison-card { min-width: 0; }
+.maison-info { min-width: 0; }
+.maison-name, .maison-series { overflow-wrap: anywhere; }
 .maison-logo { width: 52px; height: 52px; object-fit: contain; border-radius: 8px; flex-shrink: 0; }
 .maison-name { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
 .maison-series { font-size: 0.74rem; color: var(--text-muted); line-height: 1.4; }
@@ -288,6 +296,13 @@
   .hero-banner { height: 230px; }
   .hero-content p { display: none; }
   .maisons-grid { grid-template-columns: 1fr 1fr; }
+  /* Deux colonnes sur un écran de 360 px ne laissent que ~165 px par carte :
+     le logo de 52 px et le rembourrage latéral de 2,5 rem y prennent trop de
+     place pour que le texte reste lisible. */
+  .maison-card { padding: 0.75rem 0.85rem; gap: 0.6rem; }
+  .maison-logo { width: 40px; height: 40px; }
+  .maison-name { font-size: 0.82rem; }
+  .maison-series { font-size: 0.7rem; }
 }
 
 /* ── FONT RESET INTER ─────────────────────────────────────────── */

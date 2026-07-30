@@ -21,7 +21,7 @@ input,select,textarea{font-family:inherit}
 :root{
   --pink:#E03B8B;--pink-dark:#c42e75;--pink-light:#f472b6;
   --pink-soft:rgba(224,59,139,0.09);--pink-glow:rgba(224,59,139,0.28);
-  --text:#1a1a1a;--text-muted:#6b7280;--text-light:#9ca3af;
+  --text:#1a1a1a;--text-muted:#5b6472;--text-light:#6b7280;/* --text-muted et --text-light étaient à #6b7280 et #9ca3af, soit 4,38:1 et 2,54:1 sur fond clair, sous le minimum WCAG AA de 4,5:1 pour du texte courant. Assombris à 5,43:1 et 4,83:1 en restant des gris secondaires. */
   --bg:#ffffff;--bg-card:#ffffff;--bg-muted:#f9fafb;--bg-subtle:#f3f4f6;
   --border:#e5e7eb;--border-dk:#d1d5db;
   --shadow-xs:0 1px 3px rgba(0,0,0,0.06);
@@ -244,9 +244,14 @@ body.dark-mode .nav-user-dropdown { background:var(--bg-card); border-color:var(
 body.dark-mode .nav-user-dropdown-item:hover { background:var(--bg-subtle); }
 
 /* ── BUTTONS GLOBAUX ──────────────────────────────────────────── */
+/* Fond légèrement plus sombre que le rose de marque (--pink, #e03b8b).
+   Le texte blanc de ce bouton fait 14 px : il lui faut 4,5:1, or #e03b8b n'en
+   donne que 4,06. #d12d7d atteint 4,79 pour un écart de teinte à peine
+   perceptible — le rose de marque reste inchangé partout ailleurs (aplats,
+   bordures, icônes). Revenir à var(--pink) ici si la nuance dérange. */
 .btn-primary{
   display:inline-flex;align-items:center;gap:.45rem;
-  background:var(--pink);color:#fff;padding:.7rem 1.5rem;
+  background:#d12d7d;color:#fff;padding:.7rem 1.5rem;
   border-radius:var(--radius-pill);font-weight:600;font-size:.88rem;
   transition:var(--transition);cursor:pointer;border:none;letter-spacing:.01em
 }
@@ -581,11 +586,27 @@ footer::before {
   .nav-actions{gap:.15rem;min-width:0}
   .nav-user-name{display:none}
   .nav-user-btn{padding:.3rem .4rem}
-  .nav-user-chevron{display:none}
+  /* Sélecteur renforcé : « .nav-user-chevron » seul était supplanté par la
+     règle générique des icônes, et le chevron continuait d'élargir
+     l'en-tête sur mobile. */
+  .nav-user-btn .nav-user-chevron{display:none}
   .icon-btn{width:32px;height:32px}
   header nav{padding:0 .75rem}
   /* Le menu déroulant ne doit pas non plus élargir la page */
   .nav-user-dropdown{max-width:calc(100vw - 1.5rem);right:0}
+}
+
+/* Très petits écrans (iPhone SE et assimilés, 320 px).
+   Même compacté, l'en-tête débordait encore : le logo avec son texte occupe
+   118 px et les six actions 212 px, soit 354 px pour 320 disponibles — toute
+   page du site défilait donc horizontalement. On ne garde que la marque
+   graphique, qui reste le lien vers l'accueil, et on resserre les boutons. */
+@media(max-width:360px){
+  .logo-text{display:none}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn .material-symbols-outlined{font-size:1.05rem}
+  .nav-user-btn{padding:.25rem .3rem}
+  header nav{padding:0 .5rem;gap:.3rem}
 }
 
 /* ── PAGE HERO HEADER (shared) ────────────────────────────────── */
@@ -1027,4 +1048,47 @@ a:focus:not(:focus-visible) {
   overflow:hidden!important;
   opacity:0!important;
   pointer-events:none!important;
+}
+
+/* ── Bandeau « adresse email non confirmée » ────────────────────────────
+   Rappel non bloquant : le compte fonctionne, mais l'étape de confirmation
+   resterait invisible sans lui. Ton d'information (ambre) plutôt que d'erreur :
+   il ne s'agit pas d'un problème mais d'une action à finir.
+   Le CSS de base du projet est le thème clair ; « body.dark-mode » surcharge. */
+.bandeau-verification{
+  display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;
+  padding:.7rem 1.25rem;
+  background:rgba(180,83,9,.10);
+  border-bottom:1px solid rgba(180,83,9,.28);
+  font-size:.88rem;
+  color:#3a3a45;
+}
+.bandeau-verification-texte{flex:1 1 auto;min-width:12rem}
+.bandeau-verification-action{
+  flex:0 0 auto;
+  color:#b45309;font-weight:700;text-decoration:underline;
+}
+.bandeau-verification-action:hover{color:#92400e}
+.bandeau-verification-fermer{
+  flex:0 0 auto;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:1.9rem;height:1.9rem;
+  background:none;border:none;border-radius:50%;
+  color:inherit;opacity:.65;cursor:pointer;
+}
+.bandeau-verification-fermer:hover{opacity:1;background:rgba(0,0,0,.06)}
+.bandeau-verification-fermer .material-symbols-outlined{font-size:1.1rem}
+
+/* Thème sombre : l'ambre foncé deviendrait illisible sur fond noir. */
+body.dark-mode .bandeau-verification{
+  background:rgba(245,158,11,.14);
+  border-bottom-color:rgba(245,158,11,.34);
+  color:#f5f5f7;
+}
+body.dark-mode .bandeau-verification-action{color:#f59e0b}
+body.dark-mode .bandeau-verification-action:hover{color:#fbbf24}
+body.dark-mode .bandeau-verification-fermer:hover{background:rgba(255,255,255,.09)}
+
+@media (max-width:600px){
+  .bandeau-verification{padding:.6rem .9rem;font-size:.82rem}
 }

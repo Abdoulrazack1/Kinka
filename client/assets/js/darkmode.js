@@ -49,41 +49,46 @@
     const isDark = stored !== null ? stored === '1' : prefersDark;  // choix final : stockée sinon système
 
     // ── 3. Appliquer sans transition au chargement ────────────
-    if (isDark) _applyDark(false);                                 // applique le thème sombre (sans animation)
-    else _applyLight(false);                                       // ou clair (sans animation)
+    // Sans mémoriser : appliquer le thème n'est pas un choix de l'utilisateur.
+    // Les deux fonctions écrivaient dans localStorage, y compris à ce moment-là,
+    // si bien qu'une préférence était enregistrée dès le premier affichage. La
+    // clé n'était donc plus jamais nulle et le suivi du thème système (point 5)
+    // ne se déclenchait jamais — la fonctionnalité annoncée en tête de fichier
+    // ne marchait que le temps d'une seule page.
+    _appliquer(isDark, false);
 
     // ── 4. Écouter le clic ───────────────────────────────────
     toggle.addEventListener('click', function () {                 // au clic sur le bouton
-        if (document.body.classList.contains('dark-mode')) {       // actuellement sombre
-            _applyLight(true);                                    // → passe en clair (avec animation)
-        } else {                                                  // actuellement clair
-            _applyDark(true);                                    // → passe en sombre (avec animation)
-        }
+        var versSombre = !document.body.classList.contains('dark-mode');
+        _appliquer(versSombre, true);                              // bascule avec animation
+        _memoriser(versSombre);                                    // ici seulement : choix explicite
     });
 
     // ── 5. Écouter changement système (si pas de préf stockée) ─
     if (window.matchMedia) {                                       // API matchMedia disponible
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) { // changement système
             if (localStorage.getItem('kinka_darkmode') === null) { // seulement si l'utilisateur n'a pas choisi
-                if (e.matches) _applyDark(true);                  // système passe en sombre
-                else _applyLight(true);                           // système passe en clair
+                _appliquer(e.matches, true);                      // suit le système, sans mémoriser
             }
         });
     }
 
     // ── Fonctions ─────────────────────────────────────────────
-    function _applyDark(animate) {                                 // active le thème sombre
-        if (animate) _addTransition();                           // ajoute la transition si demandé
-        document.body.classList.add('dark-mode');                // classe sombre sur le body
-        localStorage.setItem('kinka_darkmode', '1');             // mémorise la préférence
-        _updateBtn(true);                                        // met à jour le bouton
+    // Appliquer et mémoriser sont séparés : le thème système s'applique sans
+    // devenir un choix de l'utilisateur, seul un clic fixe la préférence.
+    function _appliquer(sombre, animer) {
+        if (animer) _addTransition();                            // transition si demandé
+        document.body.classList.toggle('dark-mode', sombre);     // classe sombre sur le body
+        // « pre-dark-mode » est posée sur <html> par le script d'en-tête pour
+        // éviter le flash blanc au chargement. Elle doit suivre le thème réel :
+        // laissée en place après un passage en clair, elle maintiendrait un fond
+        // sombre derrière une interface claire.
+        document.documentElement.classList.toggle('pre-dark-mode', sombre);
+        _updateBtn(sombre);                                      // met à jour le bouton
     }
 
-    function _applyLight(animate) {                               // active le thème clair
-        if (animate) _addTransition();                           // ajoute la transition si demandé
-        document.body.classList.remove('dark-mode');             // retire la classe sombre
-        localStorage.setItem('kinka_darkmode', '0');             // mémorise la préférence
-        _updateBtn(false);                                       // met à jour le bouton
+    function _memoriser(sombre) {
+        localStorage.setItem('kinka_darkmode', sombre ? '1' : '0');
     }
 
     function _updateBtn(dark) {                                   // met à jour l'icône et l'accessibilité du bouton
