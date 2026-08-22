@@ -1,4 +1,4 @@
-// server.js
+  // server.js
 require('dotenv').config();                                        // charge les variables d'environnement (.env)
 
 const REQUIRED_ENV = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS', 'JWT_SECRET']; // variables obligatoires

@@ -1,0 +1,132 @@
+DOSSIER FIGMA — KINKA.FR
+=========================
+
+Tout le travail de conception du site, prêt à être importé dans Figma.
+Chaque fichier .svg devient un CADRE modifiable ; les .png ne sont que des
+aperçus pour relire hors Figma.
+
+
+CE QUE COUVRE CE DOSSIER
+------------------------
+Le site compte 43 pages HTML. Trois d'entre elles ne sont que des redirections
+sans interface (page_categorie, page_produit, page_oda) : elles conservent la
+validité des anciens liens et renvoient vers la page qui les remplace.
+
+Restent 40 pages avec une interface. Deux d'entre elles ont plusieurs états à
+dessiner (le compte et les favoris, chacun avec sa version vide ou refusée) et
+la page d'administration porte neuf sections derrière des onglets, chacune
+étant un écran à part entière.
+
+   43 pages HTML − 3 redirections − 1 page admin + 9 sections + 2 états
+   = 50 écrans
+
+Chaque écran existe en QUATRE cadres :
+
+   wireframe bureau (1440 px)   ·   wireframe mobile (390 px)
+   maquette bureau (1440 px)    ·   maquette mobile (390 px)
+
+soit 200 cadres, plus quatre maquettes en thème sombre, 14 planches de cahier
+des charges, 3 planches de design system et la table de correspondance.
+
+
+COMMENT IMPORTER
+----------------
+1. Dans ton fichier Figma, crée quatre pages (panneau de gauche, clic droit >
+   New page) : « Design system », « Cahier des charges », « Wireframes »,
+   « Maquettes ».
+2. Ouvre une page, puis fais glisser sur le canevas les .svg du sous-dossier
+   correspondant. Tu peux tout sélectionner d'un coup.
+3. Chaque SVG arrive en groupe de calques vectoriels : textes, rectangles et
+   traits sont modifiables un à un.
+
+Astuce : après import, sélectionne un groupe et fais Ctrl+Alt+G
+(« Frame selection ») pour le convertir en cadre aux bonnes dimensions.
+
+N'importe PAS les .png : ce sont des images plates.
+
+
+CE QUE CONTIENT CHAQUE SOUS-DOSSIER
+-----------------------------------
+
+01_design_system/  — 3 planches
+   01_couleurs        Palette claire et sombre, nom de chaque variable CSS,
+                      valeur hexadécimale, usage, contrastes WCAG vérifiés.
+   02_typographie     Police Inter, échelle des tailles, graisses, rayons,
+                      ombres et transitions.
+   03_composants      Boutons, badges, carte produit et ses états, champs de
+                      formulaire, notifications, règles de grille.
+
+02_cahier_des_charges/  — 14 planches
+   01_contexte_objectifs   Le marché, le problème, six objectifs mesurables,
+                           et ce qui est hors périmètre.
+   02_personas             Quatre profils types et ce que chacun impose.
+   03_user_stories         24 besoins hiérarchisés par la méthode MoSCoW.
+   04_intention            L'effet recherché, ce que le site n'est pas,
+                           les trois profils, les exigences non négociables.
+   05_mise_en_page         Points de rupture, grille, règles écran par écran.
+   06_parcours_etats       Parcours d'achat, quatre états, micro-décisions.
+   07_contenu_ton          Ton éditorial et formulations figées des erreurs.
+   08_qualite              Accessibilité, performance, éco-conception,
+                           référencement, données personnelles.
+   09_planning_recette     Cinq jalons, définition de « terminé », jeu d'essai.
+   10_arborescence         Les 43 pages réparties en cinq zones d'accès.
+   11_enchainement         Le schéma d'enchaînement des écrans : chemin
+                           nominal, bifurcations et conditions.
+   12_roles_droits         Matrice des droits visiteur / membre / administrateur
+                           et manière dont chaque droit est vérifié.
+   13_regles_gestion       Règles métier : stock, prix, panier, commande,
+                           compte, annonces.
+   14_contraintes_techniques   Pile technique, cibles à couvrir, hors périmètre.
+
+03_wireframes/
+   00_correspondance  Une ligne par page du site : quel écran la couvre.
+   bureau/            50 gabarits en 1440 × auto.
+   mobile/            50 gabarits en 390 × auto.
+   Les wireframes portent des zones annotées et des notes de conception
+   (encadrés « NOTE ») qui expliquent les décisions prises.
+
+04_maquettes/
+   bureau/            50 maquettes en 1440 × auto, plus 4 en thème sombre.
+   mobile/            50 maquettes en 390 × auto.
+
+Chaque cadre porte en pied le nom du fichier HTML auquel il correspond : le
+lien entre la conception et le site livré est vérifiable écran par écran.
+
+
+LES VALEURS SONT CELLES DU SITE
+-------------------------------
+Toutes les couleurs et mesures proviennent des variables CSS réelles
+(client/assets/css/kinka-shared.css et darkmode.css) :
+
+   --pink        #E03B8B    couleur de marque
+   --pink-btn    #d12d7d    fond du bouton principal (assombri pour le contraste)
+   --text        #1a1a1a    texte courant
+   --bg-card     #ffffff    fond des cartes
+   --border      #e5e7eb    bordure par défaut
+   Police        Inter
+   Rayons        8 / 12 / 20 / 999 px
+
+Si tu modifies le CSS du site, reporte la valeur ici — l'intérêt d'un design
+system est justement que les deux ne divergent pas.
+
+
+POUR REGÉNÉRER
+--------------
+Depuis la racine du projet :
+
+   python figma/_scripts_source/gen_tout.py           SVG seuls
+   python figma/_scripts_source/gen_tout.py --png     SVG + aperçus PNG
+
+Les écrans ne sont pas dessinés un par un : ils sont DÉCRITS une seule fois
+dans figma/_scripts_source/kinka_pages.py, et kinka_blocs.py en tire les
+quatre rendus. Ajouter une page au site se fait donc en ajoutant une entrée
+dans kinka_pages.py — et l'écran ne peut pas exister en wireframe sans exister
+aussi en maquette, bureau et mobile.
+
+   kinka_pages.py     description des 50 écrans (blocs, textes, notes)
+   kinka_blocs.py     moteur de rendu : 25 types de blocs, 4 variantes
+   figma_lib.py       primitives SVG et jetons de style repris du CSS
+   gen_ecrans.py      produit les écrans et la table de correspondance
+   gen_designsystem.py / gen_cdc.py / gen_cdc2.py / gen_cdc3.py
+                      produisent les planches
+   gen_tout.py        régénère l'intégralité du dossier

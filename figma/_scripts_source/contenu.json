@@ -1,0 +1,1435 @@
+[
+ {
+  "at": 1,
+  "atTitre": "Développer la partie front-end d'une application web ou web mobile sécurisée",
+  "ex": 1,
+  "titre": "Installer et configurer son environnement de travail en fonction du projet web ou web mobile",
+  "cps": [
+   "CP 1 : Installer et configurer son environnement de travail en fonction du projet web ou web mobile"
+  ],
+  "taches": [
+   {
+    "t": "h",
+    "v": "Contexte du projet"
+   },
+   {
+    "t": "p",
+    "v": "Kinka.fr est une boutique en ligne de vente de mangas neufs et d'occasion, développée comme projet fil rouge de ma formation de développeur web et web mobile. J'ai démarré ce projet en janvier 2026, après la phase de fondamentaux, et je l'ai mené jusqu'à mon départ en stage, en juin."
+   },
+   {
+    "t": "p",
+    "v": "La première étape a consisté à installer et à configurer de zéro l'environnement de travail que j'ai ensuite utilisé pendant toute la durée du développement."
+   },
+   {
+    "t": "h",
+    "v": "1) Serveur local, exécution et éditeur"
+   },
+   {
+    "t": "p",
+    "v": "J'ai installé Laragon, qui fournit un serveur Apache et un serveur de données MySQL 8 en local, puis Node.js pour exécuter le serveur applicatif. J'ai retenu Visual Studio Code comme environnement de développement intégré, complété des extensions utiles au projet : coloration de la syntaxe SQL, client HTTP pour appeler l'API sans quitter l'éditeur, et Live Server pour servir les pages statiques."
+   },
+   {
+    "t": "p",
+    "v": "J'ai vérifié chaque installation par sa commande de version avant de passer à la suivante, ce qui m'a évité de chercher plus tard l'origine d'une incompatibilité."
+   },
+   {
+    "t": "h",
+    "v": "2) Gestion des versions et protection des identifiants"
+   },
+   {
+    "t": "p",
+    "v": "Pour la gestion des versions et la collaboration, j'ai créé un dépôt Git local que j'ai relié à un dépôt distant sur GitHub. J'ai écrit le fichier .gitignore de manière à ce que les dépendances (node_modules) et surtout les fichiers de configuration contenant des identifiants (.env) ne soient jamais versionnés. J'ai versionné à la place un fichier .env.example documentant chaque variable attendue, sans valeur réelle."
+   },
+   {
+    "t": "p",
+    "v": "Cette précaution s'est révélée insuffisante en fin de projet : un secret s'était glissé dans l'historique avant que le .gitignore ne soit complet. J'ai dû réécrire l'historique pour le purger et renouveler la valeur exposée. J'en ai retenu qu'un fichier ignoré protège les commits à venir, pas ceux déjà faits."
+   },
+   {
+    "t": "h",
+    "v": "3) Outils de contrôle de la qualité du code"
+   },
+   {
+    "t": "p",
+    "v": "J'ai mis en place ESLint 9 pour l'analyse statique et Prettier pour le formatage. La configuration ESLint distingue deux contextes, parce que le projet en contient deux : le front-end s'exécute dans le navigateur sous forme de scripts classiques partageant un même contexte global, tandis que l'API s'exécute sous Node en modules CommonJS. Une configuration unique aurait produit des centaines de faux positifs."
+   },
+   {
+    "t": "code",
+    "caption": "eslint.config.js : deux contextes dans une même configuration « flat »",
+    "lines": [
+     "const js = require('@eslint/js');",
+     "const globals = require('globals');",
+     "",
+     "module.exports = [",
+     "  { ignores: ['**/node_modules/**'] },",
+     "  js.configs.recommended,",
+     "",
+     "  // Front-end (navigateur, scripts globaux)",
+     "  {",
+     "    files: ['client/assets/js/**/*.js'],",
+     "    languageOptions: { ecmaVersion: 2022, sourceType: 'script',",
+     "                       globals: { ...globals.browser } },",
+     "    rules: {",
+     "      'no-undef': 'off',",
+     "      'no-unused-vars': ['warn', { vars: 'local', args: 'none' }],",
+     "    },",
+     "  },",
+     "",
+     "  // Back-end (Node / CommonJS)",
+     "  {",
+     "    files: ['server/**/*.js'],",
+     "    languageOptions: { ecmaVersion: 2022, sourceType: 'commonjs',",
+     "                       globals: { ...globals.node } },",
+     "  },",
+     "];"
+    ]
+   },
+   {
+    "t": "p",
+    "v": "J'ai regroupé ces contrôles dans des commandes npm afin de pouvoir les lancer d'un seul appel, et j'ai ajouté un script de vérification que j'ai écrit moi-même : il parcourt les pages HTML et échoue si un script JavaScript est écrit directement dans la page. Ce contrôle m'obligeait à sortir tout le code dans des fichiers séparés, ce qui rend l'application compatible avec une politique de sécurité de contenu (CSP) stricte et évite de dupliquer du code de page en page."
+   },
+   {
+    "t": "code",
+    "caption": "package.json : commandes de qualité et d'exploitation",
+    "lines": [
+     "\"scripts\": {",
+     "  \"dev\":          \"nodemon server/src/server.js\",",
+     "  \"start\":        \"node server/src/server.js\",",
+     "  \"lint\":         \"eslint . && node server/scripts/check_inline_scripts.js\",",
+     "  \"format\":       \"prettier --write .\",",
+     "  \"format:check\": \"prettier --check .\",",
+     "  \"seed:big\":     \"node server/scripts/seed_big.js\",",
+     "  \"sync\":         \"node server/scripts/sync_mangas_jikan.js --pages 4\"",
+     "}"
+    ]
+   },
+   {
+    "t": "h",
+    "v": "4) Documentation technique et veille"
+   },
+   {
+    "t": "p",
+    "v": "Toute la documentation technique des outils que j'ai installés a été consultée dans sa version d'origine : en anglais pour Node.js, Express, ESLint et le pilote mysql2, en français lorsqu'une traduction officielle existait, comme sur MDN."
+   },
+   {
+    "t": "p",
+    "v": "J'ai mis en place une veille technologique reposant sur la documentation MDN, le blog de Node.js, le Top 10 de l'OWASP et les bulletins de l'ANSSI, afin de suivre les évolutions techniques et les problématiques de sécurité des technologies que j'utilise. C'est cette veille qui m'a fait découvrir la recommandation NIST sur les mots de passe, appliquée plus tard dans les composants métier."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "Matériel : ordinateur portable personnel sous Windows 11.",
+     "Environnements : Laragon (Apache, MySQL 8), Node.js 18, npm 9.",
+     "Éditeur : Visual Studio Code et ses extensions SQL, client HTTP et Live Server.",
+     "Versions : Git, dépôt distant GitHub, fichiers .gitignore et .env.example.",
+     "Qualité du code : ESLint 9, Prettier 3, script de vérification écrit pour le projet.",
+     "Documentation : sites officiels de Node.js, Express, ESLint et mysql2, consultés en anglais (niveau B1) ; MDN Web Docs en français.",
+     "Veille : Top 10 de l'OWASP, bulletins de l'ANSSI, blog de Node.js."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "J'ai réalisé ce travail seul."
+   },
+   {
+    "t": "p",
+    "v": "J'ai comparé mes choix d'outils avec ceux des autres stagiaires de ma promotion, ce qui m'a conduit à ajouter Prettier, que je n'avais pas prévu. Mon formateur a validé la configuration ESLint à deux contextes, qu'il a jugée plus lisible qu'une désactivation globale des règles gênantes."
+   }
+  ],
+  "periode": "Du 05/01/2026 au 16/01/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "Le script de vérification des scripts en ligne est le seul outil que j'ai écrit moi-même. Il tient en une trentaine de lignes, mais il a tenu la règle pendant dix mois là où ma seule discipline aurait fini par céder."
+   },
+   {
+    "t": "p",
+    "v": "Sur le point de la conteneurisation : mon environnement repose sur une pile locale et non sur des conteneurs. J'ai étudié Docker pendant la formation et j'en connais l'intérêt pour reconstituer sur son poste un environnement conforme à celui de production. Ce projet, mono-poste et sans environnement partagé, ne le justifiait pas."
+   }
+  ]
+ },
+ {
+  "at": 1,
+  "atTitre": "Développer la partie front-end d'une application web ou web mobile sécurisée",
+  "ex": 2,
+  "titre": "Maquetter des interfaces utilisateur web ou web mobile",
+  "cps": [
+   "CP 2 : Maquetter des interfaces utilisateur web ou web mobile"
+  ],
+  "taches": [
+   {
+    "t": "p",
+    "v": "Le maquettage s'est appuyé sur un cahier des charges que j'ai rédigé au préalable, puis sur l'arborescence du site et le schéma d'enchaînement des écrans. J'ai ensuite construit un design system, dessiné les wireframes de toutes les pages, et décliné chaque écran en maquette haute fidélité."
+   },
+   {
+    "t": "h",
+    "v": "1) Le cahier des charges"
+   },
+   {
+    "t": "p",
+    "v": "Le marché du manga en France est le deuxième au monde après le Japon, mais l'offre en ligne est dominée par des enseignes généralistes où le manga n'est qu'un rayon parmi d'autres. Deux manques reviennent chez les lecteurs : la difficulté à retrouver un tome précis dans une série longue, dont certaines dépassent cent volumes, et l'absence de circuit fiable pour revendre les tomes déjà lus."
+   },
+   {
+    "t": "p",
+    "v": "J'ai traduit ce constat en trois problèmes à résoudre, qui ont ensuite gouverné toutes mes décisions de conception. Un lecteur qui suit une série veut acheter « le tome 47 », pas « un manga » : la navigation doit donc partir de la série et pas seulement du catalogue global. Sur l'occasion, l'acheteur ne peut pas manipuler le livre, il doit donc voir son état, une photo réelle et le vendeur. Enfin, un catalogue de plus de 3 000 références devient inutilisable sans filtres efficaces et sans recherche rapide."
+   },
+   {
+    "t": "p",
+    "v": "J'ai ensuite fixé six objectifs, chacun associé à une mesure. Sans mesure, on ne sait pas si l'objectif est atteint ; ces mesures m'ont servi de critères de recette en fin de projet."
+   },
+   {
+    "t": "tab",
+    "entetes": [
+     "Objectif",
+     "Ce qu'il impose",
+     "Mesure retenue"
+    ],
+    "largeurs": [
+     2100,
+     4560,
+     2700
+    ],
+    "premiereGras": true,
+    "lignes": [
+     [
+      "Trouver vite",
+      "Atteindre une fiche produit en trois clics au maximum depuis l'accueil",
+      "Profondeur de navigation inférieure ou égale à 3"
+     ],
+     [
+      "Ne pas perdre le panier",
+      "Un panier constitué hors connexion doit survivre à la connexion",
+      "Taux de perte de panier : 0 %"
+     ],
+     [
+      "Ne jamais survendre",
+      "Aucune commande ne doit dépasser le stock disponible",
+      "Stock négatif : 0 occurrence"
+     ],
+     [
+      "Rester utilisable sur mobile",
+      "Tous les parcours doivent aboutir à 390 pixels de large",
+      "100 % des parcours testés"
+     ],
+     [
+      "Rester accessible",
+      "Contrastes conformes au niveau AA sur les deux thèmes",
+      "Rapport supérieur ou égal à 4,5:1 sur le texte"
+     ],
+     [
+      "Rester autonome",
+      "La boutique se gère sans intervention sur le code",
+      "0 modification de code pour une tâche courante"
+     ]
+    ],
+    "legende": "Cahier des charges : objectifs et indicateurs associés."
+   },
+   {
+    "t": "p",
+    "v": "J'ai également écrit ce qui était hors périmètre, et pourquoi : une limite écrite est une décision, une limite tue est un oubli. Le paiement bancaire réel en fait partie, la conformité PCI-DSS dépassant le cadre du projet ; l'étape existe et crée la commande, mais aucune donnée bancaire ne circule. Sont aussi exclus la gestion effective des retours et remboursements, la facturation comptable, et le prélèvement de l'abonnement dont l'interface existe sans le débit."
+   },
+   {
+    "t": "pic",
+    "file": "02_cahier_des_charges/01_contexte_objectifs.png",
+    "w": 600,
+    "caption": "Cahier des charges : contexte, problème à résoudre, objectifs mesurables et hors-périmètre assumé."
+   },
+   {
+    "t": "p",
+    "v": "J'ai construit quatre personas à partir des usages réels que le site devait servir, plutôt que des profils décoratifs : chacun a tranché au moins une décision de conception. Léa, collectionneuse qui suit six séries et navigue à 80 % sur mobile, a imposé la fiche série et l'affichage du stock réel. Thomas, néophyte qui veut offrir un manga sans rien y connaître, a imposé les sélections éditoriales de l'accueil. Karim, revendeur, a imposé un formulaire d'annonce court, car il abandonne au-delà de deux minutes. Camille, gérante de la boutique et non développeuse, a imposé l'existence du back-office."
+   },
+   {
+    "t": "pic",
+    "file": "02_cahier_des_charges/02_personas.png",
+    "w": 580,
+    "caption": "Cahier des charges : les quatre personas, ce qu'ils cherchent, ce qui les bloque, et ce que chacun a tranché."
+   },
+   {
+    "t": "p",
+    "v": "J'ai formalisé les besoins en vingt-quatre user stories réparties en cinq épopées, hiérarchisées par la méthode MoSCoW. Cette hiérarchisation m'a servi à arbitrer quand le temps a manqué : les « Must » ont tous été livrés, deux « Could » ont été abandonnés en cours de route sans que le site en pâtisse."
+   },
+   {
+    "t": "tab",
+    "entetes": [
+     "Priorité",
+     "Épopée",
+     "Exemples de besoins exprimés"
+    ],
+    "largeurs": [
+     1500,
+     2400,
+     5460
+    ],
+    "premiereGras": true,
+    "lignes": [
+     [
+      "Must",
+      "Parcourir le catalogue",
+      "Parcourir par catégorie, éditeur et série ; filtrer par état, prix et disponibilité ; rechercher avec des suggestions au fil de la frappe"
+     ],
+     [
+      "Must",
+      "Acheter",
+      "Ajouter au panier sans créer de compte ; retrouver son panier après connexion ; être empêché de commander plus que le stock ; recevoir un numéro de commande lisible"
+     ],
+     [
+      "Must",
+      "Gérer mon compte",
+      "Créer un compte avec un mot de passe robuste ; confirmer son adresse par un lien reçu par email ; réinitialiser son mot de passe"
+     ],
+     [
+      "Must",
+      "Administrer",
+      "Modifier prix et stock depuis une interface ; changer le statut d'une commande et saisir le suivi"
+     ],
+     [
+      "Should",
+      "Revendre et participer",
+      "Déposer une annonce d'occasion en quelques champs ; ne modifier que ses propres annonces ; supprimer son compte et toutes ses données"
+     ],
+     [
+      "Could",
+      "Confort",
+      "Consulter la fiche d'une série et l'ordre de ses tomes ; noter et commenter un produit ; enregistrer des favoris"
+     ],
+     [
+      "Won't",
+      "Hors périmètre",
+      "Payer réellement par carte bancaire, la conformité PCI-DSS dépassant le cadre du projet"
+     ]
+    ],
+    "legende": "Cahier des charges : les 24 user stories hiérarchisées par la méthode MoSCoW, extrait par priorité."
+   },
+   {
+    "t": "p",
+    "v": "J'ai enfin posé quatre exigences non négociables, qui s'appliquent à tous les écrans sans exception. Chaque écran doit rester utilisable à 390 pixels de large. Les contrastes doivent être vérifiés au seuil WCAG AA et la navigation possible au clavier. Le thème sombre est obligatoire et respecte par défaut la préférence du système. Aucune bibliothèque d'interface externe n'est admise, pour que le poids des pages reste maîtrisé."
+   },
+   {
+    "t": "saut"
+   },
+   {
+    "t": "h",
+    "v": "2) Arborescence du site et enchaînement des écrans"
+   },
+   {
+    "t": "p",
+    "v": "J'ai formalisé l'arborescence du site afin de définir les pages à produire et les chemins de navigation. Je l'ai organisée en cinq zones, parce que c'est la zone qui conditionne l'accès : public, achat, espace membre, service et légal, back-office. Le site compte 43 pages, dont trois ne sont que des redirections conservées pour ne pas casser les liens et favoris existants."
+   },
+   {
+    "t": "pic",
+    "file": "02_cahier_des_charges/10_arborescence.png",
+    "w": 620,
+    "caption": "Arborescence du site : les 43 pages réparties en cinq zones d'accès."
+   },
+   {
+    "t": "p",
+    "v": "J'ai ensuite formalisé l'enchaînement des écrans par un schéma. Il montre le parcours d'achat nominal en sept écrans, mais surtout les bifurcations, c'est-à-dire les écrans atteints depuis une condition et non depuis un lien de navigation. Ce sont ces bifurcations qui font les défauts d'un site, et les écrire avant de coder m'a évité d'en découvrir en production."
+   },
+   {
+    "t": "p",
+    "v": "Le schéma fixe aussi les quatre états à dessiner sur chaque écran : chargement, vide, erreur, succès. Un état oublié en maquette devient un écran blanc en production. C'est la raison pour laquelle j'ai maquetté séparément l'état vide des favoris et l'état « accès refusé » de l'espace membre."
+   },
+   {
+    "t": "pic",
+    "file": "02_cahier_des_charges/11_enchainement.png",
+    "w": 620,
+    "caption": "Enchaînement des écrans : parcours nominal, huit bifurcations avec leur condition, et les quatre états à dessiner."
+   },
+   {
+    "t": "saut"
+   },
+   {
+    "t": "h",
+    "v": "3) Le design system"
+   },
+   {
+    "t": "p",
+    "v": "Avant de dessiner les écrans, j'ai construit un design system : palette de couleurs, typographie, échelle de tailles, rayons de bordure, ombres, et composants réutilisables avec leurs états. Chaque couleur y est documentée par son nom de variable CSS, sa valeur hexadécimale, son usage et son contraste mesuré."
+   },
+   {
+    "t": "p",
+    "v": "C'est à cette occasion que j'ai découvert que le rose de la charte ne tenait pas le seuil d'accessibilité, ce qui m'a conduit à en décliner deux variantes selon l'usage ; le détail figure à l'exemple suivant. Le fait d'avoir mesuré les contrastes au moment du design system, et non après l'intégration, m'a évité de reprendre quarante écrans."
+   },
+   {
+    "t": "duo",
+    "caption": "Design system : palette documentée avec contrastes mesurés, et bibliothèque de composants avec leurs états.",
+    "files": [
+     {
+      "file": "01_design_system/01_couleurs.png",
+      "w": 300
+     },
+     {
+      "file": "01_design_system/03_composants.png",
+      "w": 300
+     }
+    ]
+   },
+   {
+    "t": "saut"
+   },
+   {
+    "t": "h",
+    "v": "4) Les wireframes, page par page"
+   },
+   {
+    "t": "p",
+    "v": "J'ai réalisé les wireframes en basse fidélité, sous forme de schémas en nuances de gris qui décrivent la structure sans traiter l'apparence. Cette étape m'a obligé à trancher les questions de hiérarchie de l'information avant de me préoccuper de l'esthétique."
+   },
+   {
+    "t": "p",
+    "v": "J'ai couvert la totalité du site, et non les seuls écrans principaux. Trois des 43 pages sont de simples redirections sans interface. Parmi les 40 restantes, la page d'administration porte neuf sections derrière des onglets, chacune étant un écran à part entière, et deux pages ont un second état à dessiner : les favoris quand la liste est vide, et l'espace membre quand l'accès est refusé. Le décompte s'établit donc ainsi :"
+   },
+   {
+    "t": "tab",
+    "entetes": [
+     "Décompte",
+     "Nombre"
+    ],
+    "largeurs": [
+     7000,
+     2360
+    ],
+    "premiereGras": true,
+    "lignes": [
+     [
+      "Pages HTML du site",
+      "43"
+     ],
+     [
+      "dont redirections sans interface (page_categorie, page_produit, page_oda)",
+      "− 3"
+     ],
+     [
+      "page_admin.html éclatée en ses neuf sections",
+      "− 1 + 9"
+     ],
+     [
+      "états supplémentaires (favoris vide, compte sans accès)",
+      "+ 2"
+     ],
+     [
+      "Écrans à maquetter",
+      "50"
+     ],
+     [
+      "Cadres produits : chaque écran en wireframe et en maquette, bureau et mobile",
+      "200"
+     ]
+    ],
+    "legende": "Du fichier HTML à l'écran : le décompte est vérifiable page par page dans la table de correspondance."
+   },
+   {
+    "t": "p",
+    "v": "Chaque écran existe en deux formats, bureau à 1440 pixels et mobile à 390 pixels. Chaque cadre porte en pied le nom du fichier HTML auquel il correspond, ce qui rend le lien entre la conception et le site livré vérifiable écran par écran. Les wireframes portent en outre des zones annotées et des encadrés « NOTE » qui consignent les décisions prises et leur raison."
+   },
+   {
+    "t": "duo",
+    "caption": "Wireframes du catalogue, versions bureau (1440 px) et mobile (390 px). Les zones annotées et l'encadré « NOTE » consignent les décisions de conception.",
+    "files": [
+     {
+      "file": "03_wireframes/bureau/02_catalogue.png",
+      "w": 430
+     },
+     {
+      "file": "03_wireframes/mobile/02_catalogue.png",
+      "w": 122
+     }
+    ]
+   },
+   {
+    "t": "pic",
+    "file": "03_wireframes/00_correspondance.png",
+    "w": 470,
+    "caption": "Table de correspondance : une ligne par page du site, avec l'écran qui la couvre. Les redirections y figurent pour que le décompte des 43 pages reste vérifiable."
+   },
+   {
+    "t": "saut"
+   },
+   {
+    "t": "h",
+    "v": "5) Les maquettes haute fidélité"
+   },
+   {
+    "t": "p",
+    "v": "J'ai décliné chacun des 50 écrans en maquette haute fidélité, en bureau et en mobile, en reprenant les couleurs, rayons, graisses et espacements réels du design system. Les écrans les plus structurants ont en outre été maquettés en thème sombre, pour vérifier que le basculement ne cassait ni la lisibilité ni la hiérarchie visuelle."
+   },
+   {
+    "t": "duo",
+    "caption": "Maquette de l'accueil en thème clair et en thème sombre. Seules les valeurs des variables changent : aucune règle de style n'est dupliquée.",
+    "files": [
+     {
+      "file": "04_maquettes/bureau/01_accueil.png",
+      "w": 296
+     },
+     {
+      "file": "04_maquettes/bureau/01_accueil_sombre.png",
+      "w": 296
+     }
+    ]
+   },
+   {
+    "t": "duo",
+    "caption": "Maquette de la fiche produit en bureau, et de l'accueil en mobile : la grille passe de cinq à deux colonnes, les filtres se replient, l'action principale occupe toute la largeur.",
+    "files": [
+     {
+      "file": "04_maquettes/bureau/03_fiche_produit.png",
+      "w": 430
+     },
+     {
+      "file": "04_maquettes/mobile/01_accueil.png",
+      "w": 118
+     }
+    ]
+   },
+   {
+    "t": "p",
+    "v": "Les écrans ne sont pas dessinés un par un : ils sont décrits une seule fois dans un fichier de description, dont un moteur de rendu tire les quatre déclinaisons. Cette organisation garantit qu'un écran ne peut pas exister en wireframe sans exister aussi en maquette, en bureau comme en mobile, et rend la reprise d'une décision de charte immédiate sur les 200 cadres."
+   },
+   {
+    "t": "h",
+    "v": "6) Accessibilité et éco-conception, prises en compte dès la maquette"
+   },
+   {
+    "t": "p",
+    "v": "Dès le maquettage, j'ai pris en compte l'expérience de l'utilisateur en situation de handicap, en me référant au référentiel général d'amélioration de l'accessibilité (RGAA) : contraste suffisant entre le texte et le fond, taille minimale des zones cliquables, information jamais portée par la seule couleur, ordre de lecture cohérent, et libellés explicites sur les champs de formulaire plutôt que de simples textes d'aide placés à l'intérieur des champs."
+   },
+   {
+    "t": "p",
+    "v": "J'ai également identifié les besoins d'éco-conception à ce stade, car ce sont des choix de maquette autant que de code : renoncer aux polices décoratives lourdes et aux animations permanentes, limiter le nombre d'images par écran, prévoir un chargement progressif du catalogue plutôt qu'un défilement infini qui télécharge des données que l'utilisateur ne consultera pas."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "Outil de maquettage : Figma, formats bureau 1440 px et mobile 390 px.",
+     "Méthode : cahier des charges (contexte, objectifs mesurables, personas, user stories MoSCoW), arborescence, schéma d'enchaînement, wireframes puis maquettes.",
+     "Référentiels : RGAA et WCAG 2.1 niveau AA, référentiel général d'éco-conception des services numériques (RGESN).",
+     "Vérification : outil de mesure de contraste appliqué à chaque couple de couleurs de la palette.",
+     "Livrables : 200 cadres d'écran, 17 planches de cahier des charges et de conception des données, 3 planches de design system."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "J'ai réalisé ce travail seul."
+   },
+   {
+    "t": "p",
+    "v": "J'ai présenté le cahier des charges, l'arborescence, le schéma d'enchaînement et les maquettes à mon formateur, qui m'a fait des retours sur la hiérarchie de l'information et la cohérence des parcours. C'est à sa demande que j'ai associé une mesure à chacun des six objectifs : ma première version les énonçait sans moyen de les vérifier. J'ai également fait relire les maquettes par deux stagiaires de ma promotion."
+   }
+  ],
+  "periode": "Du 19/01/2026 au 13/02/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "Le fait de passer par des wireframes avant les maquettes m'a évité de refaire trois fois la page catalogue : les questions de structure, où placer les filtres et combien de colonnes afficher, étaient déjà tranchées quand j'ai abordé la couleur."
+   },
+   {
+    "t": "p",
+    "v": "Ma première version des wireframes mutualisait des pages que je croyais identiques : les promotions, les coups de cœur, l'occasion et les quatre catégories partageaient un seul gabarit. En reprenant le site page par page, j'ai constaté que chacune portait en réalité son propre en-tête, ses propres chiffres et sa propre couleur d'accent. Je les ai donc maquettées séparément. C'est ce qui m'a appris à inventorier avant de mutualiser, et non l'inverse."
+   }
+  ]
+ },
+ {
+  "at": 1,
+  "atTitre": "Développer la partie front-end d'une application web ou web mobile sécurisée",
+  "ex": 3,
+  "titre": "Réaliser des interfaces utilisateur statiques web ou web mobile",
+  "cps": [
+   "CP 3 : Réaliser des interfaces utilisateur statiques web ou web mobile"
+  ],
+  "taches": [
+   {
+    "t": "p",
+    "v": "Après validation des maquettes, j'ai intégré les interfaces en HTML et CSS, sans utiliser de framework, afin de garder la maîtrise complète du rendu et de limiter le poids des pages."
+   },
+   {
+    "t": "h",
+    "v": "1) Structure sémantique et référencement"
+   },
+   {
+    "t": "p",
+    "v": "J'ai structuré chaque page avec des balises sémantiques, header, nav, main, section, article et footer, plutôt qu'avec des divisions génériques, afin que la page reste compréhensible par un lecteur d'écran comme par un moteur de recherche. J'ai produit 43 pages : accueil, catalogue, fiche produit, panier, tunnel de commande, espace client, pages de catégories, pages d'éditeurs, pages légales et back-office."
+   },
+   {
+    "t": "p",
+    "v": "Pour le référencement, chaque page porte un titre et une méta-description qui lui sont propres et décrivent son contenu réel, ainsi qu'une hiérarchie de titres à un seul h1. Les images de couverture portent un texte alternatif construit à partir du titre de l'ouvrage."
+   },
+   {
+    "t": "code",
+    "caption": "client/pages/page_accueil.html : en-tête de page",
+    "lines": [
+     "<meta charset=\"UTF-8\">",
+     "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+     "<meta name=\"description\" content=\"KINKA.FR, votre boutique manga en ligne :",
+     "      neufs, occasions, coffrets, exclusivités.\">",
+     "<title>KINKA.FR - Votre boutique manga de référence</title>"
+    ]
+   },
+   {
+    "t": "h",
+    "v": "2) Mise en page adaptable (responsive)"
+   },
+   {
+    "t": "p",
+    "v": "Pour la mise en page, j'ai utilisé Flexbox et CSS Grid, en travaillant d'abord la version mobile puis en élargissant. J'ai retenu trois points de rupture, correspondant aux usages réels et non à des modèles d'appareils. En dessous de 768 pixels, la grille de produits passe à deux colonnes et les filtres se replient derrière un bouton. Entre 768 et 1200 pixels, elle passe à trois ou quatre colonnes. Au-delà, cinq colonnes avec les filtres affichés en permanence."
+   },
+   {
+    "t": "duo",
+    "caption": "Le catalogue en bureau et en mobile : la grille passe de cinq à deux colonnes et le panneau de filtres devient un bouton « Filtrer et trier ».",
+    "files": [
+     {
+      "file": "04_maquettes/bureau/02_catalogue.png",
+      "w": 430
+     },
+     {
+      "file": "04_maquettes/mobile/02_catalogue.png",
+      "w": 118
+     }
+    ]
+   },
+   {
+    "t": "h",
+    "v": "3) Thème sombre par variables CSS"
+   },
+   {
+    "t": "p",
+    "v": "J'ai centralisé toutes les couleurs, les rayons et les ombres dans des variables CSS. Cela m'a permis d'ajouter un thème sombre complet sans dupliquer une seule règle de style : seules les valeurs des variables changent. Le thème respecte par défaut la préférence exprimée par le système d'exploitation, puis mémorise le choix explicite de l'utilisateur."
+   },
+   {
+    "t": "p",
+    "v": "La première version présentait un défaut visible. La feuille du thème sombre étant appliquée par un script chargé en fin de page, chaque navigation produisait un éclair blanc avant le basculement. Je l'ai corrigé par un très court script placé dans l'en-tête, qui pose une classe sur l'élément racine avant le premier rendu."
+   },
+   {
+    "t": "code",
+    "caption": "client/assets/css/darkmode.css : variables du thème et suppression du flash",
+    "lines": [
+     "/* Fond sombre appliqué avant le premier rendu, pour supprimer",
+     "   l'éclair blanc à chaque navigation. */",
+     "html.pre-dark-mode,",
+     "html.pre-dark-mode body { background: #0f1117; color: #f0f0f0; }",
+     "",
+     "body.dark-mode {",
+     "  --text:       #f0f0f0;",
+     "  --text-muted: #a0a8b4;",
+     "  /* #6b7280 tombait à 3,30:1 sur les cartes sombres, sous le",
+     "     minimum WCAG AA de 4,5:1. #8a92a1 tient 5,10:1 au pire des",
+     "     fonds sombres, en restant le même gris neutre. */",
+     "  --text-light: #8a92a1;",
+     "  --bg:         #0f1117;",
+     "  --bg-card:    #1a1d27;",
+     "}"
+    ]
+   },
+   {
+    "t": "h",
+    "v": "4) Accessibilité"
+   },
+   {
+    "t": "p",
+    "v": "J'ai traité l'accessibilité tout au long de l'intégration, en suivant le RGAA : attributs ARIA sur les éléments interactifs, textes alternatifs sur les images, navigation complète au clavier avec un ordre de tabulation cohérent et un indicateur de focus visible, libellés associés à chaque champ de formulaire."
+   },
+   {
+    "t": "p",
+    "v": "J'ai vérifié les contrastes avec un outil de mesure plutôt qu'à l'œil, et le résultat m'a surpris. Le rose de la charte, #e03b8b, ne tient que 3,69:1 lorsqu'il sert de couleur de texte et 4,06:1 en aplat sous du texte blanc, là où le niveau AA exige 4,5:1. J'ai donc décliné deux variantes selon l'usage : #c62372 quand le rose est le texte, à 4,90:1, et #d12d7d quand il porte du texte blanc, à 4,79:1. J'ai corrigé de la même façon trois gris secondaires, dont l'un ne mesurait que 2,54:1."
+   },
+   {
+    "t": "p",
+    "v": "Plutôt que de reprendre à la main les seules couleurs repérées à l'écran, j'ai extrait les sélecteurs concernés depuis l'ensemble des feuilles du projet et rassemblé les corrections dans deux fichiers dédiés, l'un pour le thème clair et l'autre pour le thème sombre, chargés après les autres feuilles. La correction couvre ainsi tous les usages, et pas seulement ceux que j'avais vus."
+   },
+   {
+    "t": "h",
+    "v": "5) Éco-conception et vérification"
+   },
+   {
+    "t": "p",
+    "v": "Le site n'embarque aucun framework CSS ni aucune bibliothèque JavaScript tierce : le poids transféré se limite aux feuilles du projet et aux images du catalogue, elles-mêmes chargées à la demande. J'ai vérifié le résultat sur les deux thèmes, aux trois points de rupture, au clavier seul, et j'ai fait tester la navigation sur des téléphones réels."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "Langages : HTML5, CSS3 (Flexbox, Grid, variables personnalisées, requêtes média).",
+     "Outils : Visual Studio Code, outils de développement de Chrome et Firefox, Figma comme référence des maquettes, Git pour le versionnement.",
+     "Vérification : outil de mesure de contraste, test manuel de la navigation au clavier, mode appareil mobile du navigateur, tests sur téléphones réels.",
+     "Documentation : MDN Web Docs en anglais, référentiel RGAA, WCAG 2.1 niveau AA."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "Travail réalisé seul."
+   },
+   {
+    "t": "p",
+    "v": "Mon formateur a relu l'intégration et m'a alerté sur des contrastes insuffisants, ce qui m'a conduit à reprendre la palette. J'ai également fait tester la navigation par deux stagiaires de ma promotion sur leurs propres téléphones."
+   }
+  ],
+  "periode": "Du 03/03/2026 au 27/03/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "L'intégration représente environ 20 000 lignes de CSS pour 43 pages. La difficulté principale a été de garder la cohérence visuelle sur autant d'écrans : je l'ai résolue en extrayant les composants récurrents, carte produit, badge, bouton et champ de formulaire, et en les documentant dans le design system."
+   },
+   {
+    "t": "p",
+    "v": "Ce travail sur les contrastes m'a appris que l'accessibilité se mesure avec un outil et ne s'estime pas à l'œil : la couleur de marque du site, que personne n'avait remise en question, faisait partie des non-conformités."
+   }
+  ]
+ },
+ {
+  "at": 1,
+  "atTitre": "Développer la partie front-end d'une application web ou web mobile sécurisée",
+  "ex": 4,
+  "titre": "Développer la partie dynamique des interfaces utilisateur web ou web mobile",
+  "cps": [
+   "CP 4 : Développer la partie dynamique des interfaces utilisateur web ou web mobile"
+  ],
+  "taches": [
+   {
+    "t": "p",
+    "v": "J'ai rendu les interfaces dynamiques en JavaScript natif, en les connectant à l'API que j'avais développée."
+   },
+   {
+    "t": "h",
+    "v": "1) Un client API centralisé"
+   },
+   {
+    "t": "p",
+    "v": "J'ai d'abord écrit un client API centralisé : un module unique qui préfixe l'adresse de l'API, ajoute automatiquement le jeton d'authentification dans l'en-tête des requêtes protégées, et normalise le traitement des erreurs, y compris l'indisponibilité du réseau. Aucune page n'appelle le réseau directement."
+   },
+   {
+    "t": "p",
+    "v": "Ce choix m'a permis, plus tard, de traiter en un seul endroit le cas du jeton expiré : lorsque l'API répond 401 alors qu'un jeton était présent, la session locale est purgée et l'utilisateur est renvoyé vers la page de connexion. Sans ce point unique, il aurait fallu répéter ce traitement dans chaque page."
+   },
+   {
+    "t": "code",
+    "caption": "client/assets/js/kinka-api-client.js : appel réseau centralisé",
+    "lines": [
+     "async function kinkaFetchEnveloppe(path, options = {}) {",
+     "  const token = KinkaAuth.getToken();",
+     "  let res;",
+     "  try {",
+     "    res = await fetch(API + path, {",
+     "      headers: {",
+     "        'Content-Type': 'application/json',",
+     "        ...(token ? { Authorization: `Bearer ${token}` } : {}),",
+     "        ...options.headers",
+     "      },",
+     "      ...options",
+     "    });",
+     "  } catch (e) {",
+     "    // Erreur réseau : API injoignable, CORS, etc.",
+     "    throw new Error('Impossible de joindre le serveur.');",
+     "  }",
+     "  // Jeton rejeté : purge de la session en un seul point du code.",
+     "  if (res.status === 401 && token) { KinkaAuth.removeToken(); ... }",
+     "}"
+    ]
+   },
+   {
+    "t": "h",
+    "v": "2) Catalogue dynamique et prévention des injections"
+   },
+   {
+    "t": "p",
+    "v": "J'ai développé l'affichage dynamique du catalogue : les fiches sont demandées à l'API avec les filtres actifs, puis les cartes produit sont construites par le code. Je n'insère jamais une donnée venant de la base avec innerHTML : j'utilise createElement et textContent, qui n'interprètent pas le HTML, afin qu'un titre contenant des balises ne puisse pas injecter de code dans la page. Cette règle est rendue systématique par le script de vérification décrit à l'exemple n° 1, qui interdit par ailleurs le JavaScript écrit directement dans les pages."
+   },
+   {
+    "t": "p",
+    "v": "J'ai implémenté les filtres, le tri et la pagination en laissant la base de données faire le travail. Transmettre plus de 3 000 fiches au navigateur pour n'en afficher que vingt aurait été inefficace, en bande passante comme en mémoire, et contraire aux principes d'éco-conception."
+   },
+   {
+    "t": "h",
+    "v": "3) Recherche avec autocomplétion"
+   },
+   {
+    "t": "p",
+    "v": "J'ai développé la recherche avec autocomplétion. Les suggestions apparaissent au fil de la frappe à partir de deux caractères, avec une temporisation de 220 millisecondes qui évite de déclencher une requête à chaque touche : sur une recherche de dix caractères, cela ramène une dizaine d'appels à un ou deux. La liste est navigable au clavier et les résultats sont classés, les correspondances sur le titre passant avant celles sur la série."
+   },
+   {
+    "t": "code",
+    "caption": "client/assets/js/recherche.js : temporisation de la saisie",
+    "lines": [
+     "var timer = null;",
+     "",
+     "input.addEventListener('input', function () {",
+     "  clearTimeout(timer);",
+     "  timer = setTimeout(function () {",
+     "    show(input.value.trim());",
+     "  }, 220);                    // temporisation : 220 ms",
+     "});"
+    ]
+   },
+   {
+    "t": "pic",
+    "file": "04_maquettes/bureau/04_recherche.png",
+    "w": 560,
+    "caption": "Page de résultats de recherche : filtres à gauche, classement par pertinence, pagination, le tout exécuté côté base."
+   },
+   {
+    "t": "h",
+    "v": "4) Panier hybride et fusion à la connexion"
+   },
+   {
+    "t": "p",
+    "v": "J'ai développé le panier en mode hybride : conservé dans le navigateur pour un visiteur, enregistré en base pour un client connecté. En déroulant le parcours complet, j'ai découvert qu'un visiteur qui remplissait son panier puis se connectait le perdait entièrement. J'ai ajouté une fonction de fusion appelée juste après une connexion ou une inscription réussie : chaque article du panier local est poussé vers l'API, puis le panier local est vidé."
+   },
+   {
+    "t": "code",
+    "caption": "client/assets/js/authentification.js : fusion du panier invité",
+    "lines": [
+     "// À appeler juste après une connexion/inscription réussie : pousse",
+     "// chaque article du panier invité vers l'API puis vide le localStorage,",
+     "// pour qu'un visiteur ne perde pas son panier en se connectant.",
+     "async function fusionnerPanierInvite() {",
+     "  let local = [];",
+     "  try { local = JSON.parse(localStorage.getItem('kinka_panier') || '[]'); }",
+     "  catch (_) { local = []; }",
+     "  if (!Array.isArray(local) || !local.length) return;",
+     "  for (const item of local) {",
+     "    if (!item || !item.id) continue;",
+     "    try { await KinkaAPI.panier.add(item.id, item.quantite || 1); }",
+     "    catch (_) { /* stock ou plafond atteint : on ignore */ }",
+     "  }",
+     "  localStorage.removeItem('kinka_panier');",
+     "}"
+    ]
+   },
+   {
+    "t": "pic",
+    "file": "04_maquettes/bureau/22_panier.png",
+    "w": 560,
+    "caption": "Le panier, quatrième étape du parcours. L'objectif « taux de perte de panier : 0 % » fixé au cahier des charges est ce qui a imposé la fusion à la connexion."
+   },
+   {
+    "t": "h",
+    "v": "5) Qualité du code et jeu d'essai"
+   },
+   {
+    "t": "p",
+    "v": "L'ensemble du code est commenté en français, ligne à ligne pour les parties délicates, et vérifié par ESLint avant chaque livraison. J'ai construit un jeu d'essai fonctionnel de douze cas couvrant le parcours d'achat, dont huit cas d'erreur provoqués volontairement, avec pour chacun le résultat attendu et le résultat obtenu, exécuté sur les deux thèmes et aux trois points de rupture."
+   },
+   {
+    "t": "tab",
+    "titre": "Jeu d'essai du parcours d'achat (extrait)",
+    "entetes": [
+     "Cas provoqué",
+     "Résultat attendu"
+    ],
+    "largeurs": [
+     4680,
+     4680
+    ],
+    "lignes": [
+     [
+      "Quantité supérieure au stock disponible",
+      "Refus, quantité disponible indiquée"
+     ],
+     [
+      "Produit en rupture ajouté au panier",
+      "Refus explicite, article signalé"
+     ],
+     [
+      "Validation avec un panier vide",
+      "Refus, code 400"
+     ],
+     [
+      "Commande lancée sans être connecté",
+      "Redirection vers la connexion, panier conservé"
+     ],
+     [
+      "Consultation de la commande d'un autre client",
+      "Introuvable, code 404"
+     ],
+     [
+      "Deux commandes simultanées sur le dernier exemplaire",
+      "Une seule aboutit, stock jamais négatif"
+     ]
+    ],
+    "legende": "Six des douze cas du jeu d'essai. Les huit cas d'erreur ont été provoqués volontairement."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "Langage : JavaScript ES2020 (fetch, async/await, localStorage, manipulation du DOM).",
+     "Outils : Visual Studio Code, outils de développement du navigateur (console et onglet réseau), ESLint, Git.",
+     "Environnement : API REST Node.js/Express en local, base MySQL peuplée de plus de 3 000 produits réels importés depuis une source publique.",
+     "Documentation : MDN Web Docs et documentation de l'API Fetch en anglais, fiches OWASP sur les failles de type XSS."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "Travail réalisé seul."
+   },
+   {
+    "t": "p",
+    "v": "J'ai sollicité mon formateur sur la gestion de l'état du panier entre le stockage local et le compte : il m'a orienté vers une fusion à la connexion plutôt que vers une synchronisation permanente, plus simple et plus prévisible."
+   }
+  ],
+  "periode": "Du 04/05/2026 au 29/05/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "Le catalogue de démonstration compte plus de 3 000 références, ce qui m'a permis de constater des lenteurs qu'un jeu de dix produits n'aurait jamais révélées. C'est ce volume qui m'a conduit à faire filtrer et paginer par la base."
+   },
+   {
+    "t": "p",
+    "v": "La perte du panier à la connexion est un défaut que je n'avais pas anticipé. Je l'ai découvert en déroulant le parcours complet de bout en bout, et non en testant les fonctions isolément. Depuis, je teste les parcours autant que les fonctions."
+   }
+  ]
+ },
+ {
+  "at": 2,
+  "atTitre": "Développer la partie back-end d'une application web ou web mobile sécurisée",
+  "ex": 1,
+  "titre": "Mettre en place une base de données relationnelle",
+  "cps": [
+   "CP 5 : Mettre en place une base de données relationnelle"
+  ],
+  "taches": [
+   {
+    "t": "h",
+    "v": "1) Du modèle conceptuel au schéma physique"
+   },
+   {
+    "t": "p",
+    "v": "J'ai conçu et mis en place la base de données de la boutique en suivant la méthode Merise. J'ai commencé par un modèle conceptuel, en identifiant les entités principales, Utilisateur, Produit, Commande, Éditeur, Série et Annonce, et les associations qui les relient, avec leurs cardinalités."
+   },
+   {
+    "t": "p",
+    "v": "Certaines associations portent leurs propres données, ce qui a orienté la traduction : le panier relie un utilisateur et un produit mais porte une quantité ; l'avis relie un utilisateur et un produit mais porte une note et un commentaire. À l'inverse, l'association entre un produit et son éditeur est un simple un-à-plusieurs."
+   },
+   {
+    "t": "pic",
+    "file": "02_cahier_des_charges/15_mcd.png",
+    "w": 620,
+    "caption": "Modèle conceptuel de données (méthode Merise) : six entités, leurs associations et leurs cardinalités. Les trois associations porteuses, panier, avis et ligne de commande, deviendront des tables à part entière."
+   },
+   {
+    "t": "p",
+    "v": "J'ai traduit ce modèle en schéma physique : chaque entité devient une table, chaque association plusieurs-à-plusieurs devient une table de liaison, chaque association un-à-plusieurs devient une clé étrangère. La base compte dix-sept tables, douze dans le schéma initial et cinq ajoutées ensuite par migrations. J'ai adopté des règles de nommage homogènes, appliquées sans exception : tables au pluriel, colonnes en minuscules avec séparateur bas, clés étrangères suffixées par « _id », index préfixés par « idx_ » et contraintes d'unicité par « uq_ »."
+   },
+   {
+    "t": "pic",
+    "file": "02_cahier_des_charges/16_mpd.png",
+    "w": 620,
+    "caption": "Schéma relationnel : les dix-sept tables, leurs clés primaires et leurs clés étrangères. Ce schéma est lu dans database/schema.sql et les migrations, il ne peut donc pas diverger de la base installée."
+   },
+   {
+    "t": "h",
+    "v": "2) Intégrité, sécurité et confidentialité des données"
+   },
+   {
+    "t": "p",
+    "v": "J'ai retenu le moteur InnoDB, seul à assurer à la fois le respect des clés étrangères et la gestion des transactions dont j'avais besoin pour le passage de commande."
+   },
+   {
+    "t": "p",
+    "v": "J'ai déclaré les contraintes d'intégrité : clés primaires sur toutes les tables, unicité sur l'adresse email et sur le nom d'utilisateur, clés primaires composées sur le panier et les favoris pour interdire structurellement les doublons, et suppressions en cascade sur tout ce qui dépend d'un compte, afin qu'une suppression de compte n'abandonne aucune donnée orpheline. Cette dernière règle répond aussi à l'obligation d'effacement prévue par le RGPD. J'ai ajouté des index sur les colonnes les plus filtrées : catégorie, état, indicateurs commerciaux et statut de commande."
+   },
+   {
+    "t": "p",
+    "v": "Aucune donnée sensible n'est stockée en clair. Les mots de passe sont hachés, et les jetons de vérification d'adresse ou de réinitialisation ne sont conservés que sous forme d'empreinte. Le compte applicatif utilisé par l'API dispose des seuls droits de lecture et d'écriture sur la base du projet, à l'exclusion de tout droit d'administration du serveur ; ses identifiants sont lus dans des variables d'environnement et ne sont jamais versionnés."
+   },
+   {
+    "t": "h",
+    "v": "3) Migrations versionnées et idempotentes"
+   },
+   {
+    "t": "p",
+    "v": "J'ai fait évoluer le schéma en cours de projet à l'aide de scripts de migration versionnés et idempotents : chacun vérifie l'état du schéma dans information_schema avant d'agir, ce qui permet de le rejouer sans erreur sur une base déjà à jour. Cette précaution m'a servi à chaque réinstallation du projet et à chaque reprise d'une sauvegarde antérieure."
+   },
+   {
+    "t": "code",
+    "caption": "database/migrations/002_verification_email.sql : ajout de colonne rejouable",
+    "lines": [
+     "-- Idempotente : chaque ajout est gardé par une vérification dans",
+     "-- information_schema, la migration peut être rejouée sans erreur.",
+     "SET @sql := IF(",
+     "  (SELECT COUNT(*) FROM information_schema.COLUMNS",
+     "     WHERE TABLE_SCHEMA = DATABASE()",
+     "       AND TABLE_NAME  = 'utilisateurs'",
+     "       AND COLUMN_NAME = 'email_verifie') = 0,",
+     "  'ALTER TABLE `utilisateurs` ADD COLUMN `email_verifie` TINYINT(1)",
+     "     NOT NULL DEFAULT 0 AFTER `email`',",
+     "  'DO 0');",
+     "PREPARE st FROM @sql; EXECUTE st; DEALLOCATE PREPARE st;"
+    ]
+   },
+   {
+    "t": "h",
+    "v": "4) Jeu d'essai et sauvegarde"
+   },
+   {
+    "t": "p",
+    "v": "J'ai constitué un jeu d'essai réaliste plutôt qu'un jeu minimal : plus de 3 000 produits importés depuis une source publique et enrichis de leurs couvertures, des comptes de test couvrant chaque rôle (visiteur, client vérifié, client non vérifié, administrateur) et des commandes à différents statuts. Ce volume a révélé des lenteurs qu'une dizaine de lignes n'aurait jamais montrées, et c'est lui qui a motivé les index et la pagination côté base."
+   },
+   {
+    "t": "p",
+    "v": "La base est sauvegardée avec mysqldump sous forme d'un fichier SQL complet, structure et données, restaurable en une seule commande. J'ai vérifié cette restauration en la rejouant sur une base vide."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "SGBD : MySQL 8, moteur de stockage InnoDB.",
+     "Outils : phpMyAdmin et client MySQL en ligne de commande, Visual Studio Code pour l'écriture des scripts SQL, mysqldump pour les sauvegardes, Git pour le versionnement des migrations.",
+     "Méthode : Merise, modèle conceptuel puis modèle physique de données.",
+     "Documentation : documentation officielle MySQL en anglais, supports de formation sur la modélisation relationnelle."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "Travail réalisé seul."
+   },
+   {
+    "t": "p",
+    "v": "J'ai soumis mon modèle conceptuel à mon formateur avant de passer au modèle physique. Sa remarque sur la conservation du prix dans les lignes de commande a modifié ma conception : je me contentais initialement de pointer vers le produit."
+   }
+  ],
+  "periode": "Du 30/03/2026 au 17/04/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "Le fait de dupliquer le titre et le prix dans les lignes de commande est une dénormalisation volontaire. Si le prix change six mois plus tard, ou si l'article sort du catalogue, la commande passée doit rester fidèle à ce que le client a réellement payé. C'est le point de conception qui m'a le plus fait réfléchir, parce qu'il va à l'encontre de la règle de normalisation apprise en cours."
+   }
+  ]
+ },
+ {
+  "at": 2,
+  "atTitre": "Développer la partie back-end d'une application web ou web mobile sécurisée",
+  "ex": 2,
+  "titre": "Développer des composants d'accès aux données SQL et NoSQL",
+  "cps": [
+   "CP 6 : Développer des composants d'accès aux données SQL et NoSQL"
+  ],
+  "taches": [
+   {
+    "t": "h",
+    "v": "1) Organisation de la couche d'accès aux données"
+   },
+   {
+    "t": "p",
+    "v": "J'ai développé la couche d'accès aux données du serveur dans une architecture MVC : middlewares, routes, contrôleurs et modèles, chacun dans son répertoire. Les modèles sont les seuls fichiers du projet à contenir du SQL ; un contrôleur qui écrirait une requête serait immédiatement repérable en relecture."
+   },
+   {
+    "t": "p",
+    "v": "J'ai centralisé la connexion dans un pool de dix connexions réutilisables plutôt que d'ouvrir une connexion par requête, et j'ai fait échouer le démarrage du serveur si la base est injoignable, plutôt que de laisser l'application accepter des requêtes qu'elle ne pourra pas servir."
+   },
+   {
+    "t": "code",
+    "caption": "server/src/config/db.js : pool de connexions",
+    "lines": [
+     "const mysql = require('mysql2/promise');",
+     "",
+     "const pool = mysql.createPool({",
+     "  host: process.env.DB_HOST || 'localhost',",
+     "  database: process.env.DB_NAME || 'kinka_db',",
+     "  user: process.env.DB_USER,",
+     "  password: process.env.DB_PASS,",
+     "  waitForConnections: true,   // met en file d'attente si le pool est saturé",
+     "  connectionLimit: 10,        // 10 connexions simultanées au maximum",
+     "  charset: 'utf8mb4'",
+     "});"
+    ]
+   },
+   {
+    "t": "h",
+    "v": "2) Requêtes préparées et liste blanche"
+   },
+   {
+    "t": "p",
+    "v": "J'ai écrit tous les accès aux données, en consultation, création, modification et suppression, en utilisant systématiquement des requêtes préparées : les valeurs sont transmises séparément du texte SQL et ne peuvent donc jamais être interprétées comme du code."
+   },
+   {
+    "t": "p",
+    "v": "Pour les requêtes filtrées du catalogue, j'ai construit la clause WHERE en assemblant des fragments écrits dans le code et en accumulant les valeurs dans un tableau de paramètres. Pour le tri, où un paramètre préparé est techniquement impossible puisqu'il s'agit d'un fragment de requête et non d'une valeur, j'ai utilisé une liste blanche : la clé publique reçue est traduite en clause SQL, et une valeur inconnue retombe silencieusement sur le tri par défaut. J'ai également borné la pagination, pour qu'une requête ne puisse pas réclamer la totalité de la table."
+   },
+   {
+    "t": "code",
+    "caption": "server/src/models/produitModel.js : liste blanche des tris et bornage",
+    "lines": [
+     "// Tris autorisés : la clé publique est traduite en clause SQL, ce qui",
+     "// interdit d'injecter une expression arbitraire dans l'ORDER BY.",
+     "const TRIS = {",
+     "  titre:     'titre ASC',",
+     "  prix_asc:  'prix ASC',",
+     "  prix_desc: 'prix DESC',",
+     "  note:      'note DESC',",
+     "  nouveaute: 'created_at DESC'",
+     "};",
+     "",
+     "async function lister(filtres = {}) {",
+     "  const { where, params } = construireFiltres(filtres);",
+     "  const order  = TRIS[filtres.sort] || TRIS.titre;",
+     "  const limit  = Math.min(Math.max(Number(filtres.limit) || 50, 1), 500);",
+     "  const offset = Math.max(Number(filtres.offset) || 0, 0);",
+     "  const [rows] = await db.query(",
+     "    `SELECT * FROM produits WHERE ${where} ORDER BY ${order}",
+     "       LIMIT ? OFFSET ?`, [...params, limit, offset]);",
+     "  ...",
+     "}"
+    ]
+   },
+   {
+    "t": "h",
+    "v": "3) Conflits d'accès : le stock négatif"
+   },
+   {
+    "t": "p",
+    "v": "Le point le plus délicat du projet a été le passage de commande. Deux clients qui valident au même instant alors qu'il reste un seul exemplaire peuvent tous deux passer le contrôle de stock avant qu'aucun ne l'ait décrémenté : le stock devient négatif et une commande ne peut plus être honorée. Ce défaut est invisible en test manuel, puisqu'on est toujours seul quand on clique soi-même."
+   },
+   {
+    "t": "p",
+    "v": "J'ai donc enfermé toute l'opération dans une transaction unique et verrouillé les lignes produit avec SELECT … FOR UPDATE jusqu'à la validation. J'ai ajouté une clause ORDER BY pour fixer l'ordre de verrouillage et éviter les interblocages lorsque deux commandes portent sur les mêmes articles dans un ordre différent. J'ai complété par un décrément conditionnel du stock en guise de garde-fou. En cas d'échec à n'importe quelle étape, un ROLLBACK annule l'ensemble : la base ne conserve jamais une commande à moitié créée."
+   },
+   {
+    "t": "code",
+    "caption": "server/src/models/commandeModel.js : création de commande transactionnelle",
+    "lines": [
+     "async function creerDepuisPanier(userId, adresseLivraison) {",
+     "  const conn = await db.getConnection();   // connexion dédiée",
+     "  try {",
+     "    await conn.beginTransaction();",
+     "",
+     "    // Les lignes produits sont verrouillées (FOR UPDATE) jusqu'au commit :",
+     "    // sans ce verrou, deux acheteurs simultanés passaient tous deux la",
+     "    // vérification de stock avant qu'aucun ne l'ait décrémenté.",
+     "    // ORDER BY fixe l'ordre de verrouillage (anti-interblocage).",
+     "    const [items] = await conn.query(",
+     "      `SELECT p.id, p.titre, p.stock, pa.quantite",
+     "         FROM panier pa JOIN produits p ON p.id = pa.produit_id",
+     "        WHERE pa.user_id = ? ORDER BY p.id FOR UPDATE`, [userId]);",
+     "",
+     "    if (!items.length) { await conn.rollback();",
+     "      return { ok: false, statut: 400, erreur: 'Le panier est vide' }; }",
+     "",
+     "    const rupture = items.find(i => i.stock < i.quantite);",
+     "    if (rupture) { await conn.rollback();",
+     "      return { ok: false, statut: 400,",
+     "               erreur: `Stock insuffisant pour \"${rupture.titre}\"` }; }",
+     "",
+     "    for (const item of items) {",
+     "      // Décrément conditionnel : garde-fou si le stock a bougé.",
+     "      const [dec] = await conn.query(",
+     "        'UPDATE produits SET stock = stock - ? WHERE id = ? AND stock >= ?',",
+     "        [item.quantite, item.id, item.quantite]);",
+     "      if (dec.affectedRows === 0) { await conn.rollback();",
+     "        return { ok: false, statut: 409, erreur: 'Stock insuffisant' }; }",
+     "    }",
+     "",
+     "    await conn.query('DELETE FROM panier WHERE user_id = ?', [userId]);",
+     "    await conn.commit();",
+     "    return { ok: true, commande: { id, total, articles: items } };",
+     "  } catch (err) { await conn.rollback(); throw err; }",
+     "  finally { conn.release(); }",
+     "}"
+    ]
+   },
+   {
+    "t": "pic",
+    "file": "02_cahier_des_charges/17_sequence_commande.png",
+    "w": 620,
+    "caption": "Diagramme de séquence du test d'accès concurrent : le verrou pris par la transaction A fait attendre la B, qui lit ensuite un stock à zéro et reçoit un refus. C'est ce comportement que le jeu d'essai vérifie."
+   },
+   {
+    "t": "p",
+    "v": "Le numéro de commande lisible, de la forme CMD-2026-0042, est produit par un compteur incrémenté de façon atomique dans la même transaction : la ligne du compteur est verrouillée le temps de l'incrément, si bien que deux commandes simultanées ne peuvent pas obtenir le même numéro. Un rollback laisse au pire un trou dans la numérotation, jamais un doublon."
+   },
+   {
+    "t": "h",
+    "v": "4) Cas d'exception, validation des entrées et performance"
+   },
+   {
+    "t": "p",
+    "v": "Chaque accès aux données traite explicitement ses cas d'exception et renvoie un code HTTP adapté plutôt qu'une erreur générique : 400 pour un panier vide ou un stock insuffisant constaté à la lecture, 409 pour un conflit détecté à l'écriture, 404 pour une ressource absente, 403 pour une ressource qui n'appartient pas à l'appelant. Une commande n'est lisible que par son propriétaire, la condition portant sur l'identifiant du client dans la requête SQL elle-même et non sur un contrôle applicatif que l'on pourrait oublier."
+   },
+   {
+    "t": "p",
+    "v": "Les entrées sont validées avant tout accès à la base par un middleware dédié, qui contrôle la présence, le type et le format de chaque champ attendu ; les entiers issus de l'URL sont convertis et bornés."
+   },
+   {
+    "t": "p",
+    "v": "J'ai enfin corrigé un problème de requêtes en cascade : l'affichage de l'historique déclenchait une requête par commande pour en charger les articles. J'ai remplacé cette boucle par une requête unique utilisant IN, puis un regroupement en mémoire. Dix commandes passent ainsi de onze requêtes à deux."
+   },
+   {
+    "t": "h",
+    "v": "5) Tests"
+   },
+   {
+    "t": "p",
+    "v": "J'ai vérifié le comportement concurrent en lançant deux requêtes de commande simultanées sur un produit dont j'avais forcé le stock à un exemplaire : une seule aboutit, l'autre reçoit un refus explicite, le stock finit à zéro et jamais en négatif. J'ai également testé les injections SQL classiques dans les champs de recherche et dans les paramètres de tri, et vérifié qu'une valeur inconnue retombait bien sur le tri par défaut."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "Langage et bibliothèques : Node.js, Express 4, pilote mysql2 avec interface à promesses.",
+     "Notions mobilisées : transactions et propriétés ACID, verrous d'écriture, niveaux d'isolation, requêtes préparées, architecture MVC.",
+     "Outils : Visual Studio Code, client HTTP pour appeler l'API, console MySQL pour observer les verrous en cours, ESLint, Git.",
+     "Documentation : documentation MySQL sur le verrouillage et les niveaux d'isolation, documentation mysql2 en anglais, fiche OWASP sur l'injection SQL."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "Travail réalisé seul."
+   },
+   {
+    "t": "p",
+    "v": "J'ai exposé le problème du stock négatif à mon formateur, qui m'a confirmé la piste des transactions et m'a alerté sur le risque d'interblocage, un point auquel je n'avais pas pensé et qui m'a conduit à ajouter la clause ORDER BY."
+   }
+  ],
+  "periode": "Du 20/04/2026 au 07/05/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "C'est le sujet qui m'a le plus appris pendant le projet : la théorie des transactions est devenue concrète le jour où j'ai rencontré le problème qu'elle résout. J'ai aussi retenu qu'un défaut de concurrence ne se trouve pas en cliquant, mais en reproduisant délibérément la simultanéité."
+   }
+  ]
+ },
+ {
+  "at": 2,
+  "atTitre": "Développer la partie back-end d'une application web ou web mobile sécurisée",
+  "ex": 3,
+  "titre": "Développer des composants métier coté serveur",
+  "cps": [
+   "CP 7 : Développer des composants métier coté serveur"
+  ],
+  "taches": [
+   {
+    "t": "h",
+    "v": "1) Style défensif et traitement des erreurs"
+   },
+   {
+    "t": "p",
+    "v": "J'ai développé les traitements côté serveur dans un style défensif. Chaque contrôleur est enveloppé dans un gestionnaire d'asynchrone qui relaie toute erreur au traitement global, de sorte qu'aucune exception ne peut laisser une requête sans réponse ni faire tomber le serveur. Le détail technique des erreurs est journalisé côté serveur mais n'est jamais renvoyé au client."
+   },
+   {
+    "t": "h",
+    "v": "2) Composants métier de gestion des comptes"
+   },
+   {
+    "t": "p",
+    "v": "J'ai haché les mots de passe avec bcrypt au coût 12 : ils ne sont jamais stockés en clair et je suis moi-même incapable de les retrouver. J'ai mis en place l'authentification par jeton JWT signé, transmis dans l'en-tête de chaque requête protégée et vérifié par un middleware."
+   },
+   {
+    "t": "p",
+    "v": "J'ai ajouté la confirmation de l'adresse email par un lien à usage unique, ainsi que la réinitialisation du mot de passe. Dans les deux cas, le jeton envoyé n'est jamais stocké en base : seule son empreinte SHA-256 l'est, exactement comme un mot de passe. Une fuite de la base ne permettrait donc pas de prendre la main sur un compte."
+   },
+   {
+    "t": "p",
+    "v": "J'ai veillé à ne rien divulguer. La réponse est strictement identique que l'adresse soit inconnue ou le mot de passe erroné, faute de quoi le formulaire de connexion deviendrait un moyen de découvrir quels comptes existent. Le même principe s'applique à la fonction « mot de passe oublié », qui répond toujours de la même manière."
+   },
+   {
+    "t": "p",
+    "v": "J'ai limité les tentatives à dix par quart d'heure sur l'authentification et à cent requêtes par minute sur l'API, ajouté un champ leurre invisible que seuls les robots remplissent, et refusé les mots de passe connus des attaquants. Ce dernier contrôle repose d'abord sur une liste locale des mots de passe les plus utilisés, sans dépendance ni latence, et en option sur le service Have I Been Pwned interrogé par k-anonymat : seuls les cinq premiers caractères de l'empreinte SHA-1 sont transmis, le service ne peut donc pas savoir quel mot de passe était testé. En cas d'indisponibilité de ce service, l'inscription reste possible, car un tiers en panne ne doit pas bloquer le métier."
+   },
+   {
+    "t": "h",
+    "v": "3) Back-office et contrôle d'accès"
+   },
+   {
+    "t": "p",
+    "v": "J'ai développé le back-office d'administration, qui couvre la gestion du catalogue, des commandes, des utilisateurs et des messages de contact. Il est protégé par une double vérification, authentification puis rôle, appliquée en un seul point au montage du routeur, de sorte qu'aucune route d'administration ne puisse être oubliée. Le rôle est relu en base à chaque appel et non lu dans le jeton, afin qu'un retrait de droits prenne effet immédiatement sans attendre l'expiration du jeton."
+   },
+   {
+    "t": "code",
+    "caption": "server/src/middleware/admin.js : contrôle du rôle relu en base",
+    "lines": [
+     "// À utiliser APRÈS authRequired : vérifie que l'utilisateur connecté a le",
+     "// rôle 'admin'. Le rôle est relu en base à chaque appel (source de vérité),",
+     "// donc un retrait de droits prend effet immédiatement.",
+     "async function adminRequired(req, res, next) {",
+     "  try {",
+     "    if (!req.user || !req.user.id) {",
+     "      return res.status(401).json({ success: false, error: 'Connexion requise' });",
+     "    }",
+     "    const [rows] = await db.query(",
+     "      'SELECT role FROM utilisateurs WHERE id = ?', [req.user.id]);",
+     "    if (!rows[0] || rows[0].role !== 'admin') {",
+     "      return res.status(403).json({ success: false,",
+     "        error: 'Accès réservé aux administrateurs' });",
+     "    }",
+     "    next();",
+     "  } catch (err) { next(err); }",
+     "}"
+    ]
+   },
+   {
+    "t": "p",
+    "v": "Chaque action sensible est tracée dans un journal d'audit : auteur, action, cible et adresse IP. La journalisation ne peut jamais faire échouer l'action métier ; si l'écriture du journal échoue, l'erreur est consignée côté serveur et l'opération se poursuit."
+   },
+   {
+    "t": "pic",
+    "file": "04_maquettes/bureau/42_admin_tableau_de_bord.png",
+    "w": 580,
+    "caption": "Back-office, tableau de bord. Les neuf sections (catalogue, commandes, avis, annonces, messages, newsletter, utilisateurs, journal d'audit) sont protégées en un seul point, au montage du routeur."
+   },
+   {
+    "t": "h",
+    "v": "4) Conformité et qualité du code"
+   },
+   {
+    "t": "p",
+    "v": "J'ai mis en place les pages légales exigées par le RGPD, à savoir les conditions générales d'utilisation, les conditions générales de vente, la politique de retour et les mentions légales, et rendu le consentement explicite à l'inscription. Le nommage des fichiers, des fonctions et des tables suit une convention unique en français, documentée dans le README, et chaque fichier porte un en-tête expliquant son rôle. La qualité du code est contrôlée par ESLint et Prettier avant chaque livraison."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "Bibliothèques : bcryptjs, jsonwebtoken, express-rate-limit, nodemailer, module crypto de Node.js.",
+     "Notions mobilisées : hachage et salage, jetons signés, contrôle d'accès par rôle, journalisation, programmation défensive, gestion des secrets par variables d'environnement.",
+     "Outils : Visual Studio Code, client HTTP, boîte de réception de test Ethereal pour vérifier le rendu des emails sans serveur SMTP, ESLint, Git.",
+     "Documentation : OWASP Top 10, recommandations de l'ANSSI, recommandation NIST SP 800-63B sur les mots de passe en anglais, service Have I Been Pwned."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "Travail réalisé seul."
+   },
+   {
+    "t": "p",
+    "v": "Mon formateur a relu la partie authentification et m'a fait remarquer que mon message d'erreur de connexion distinguait l'adresse inconnue du mot de passe faux, ce qui permettait d'énumérer les comptes. J'ai corrigé ce point ainsi que la fonction de mot de passe oublié."
+   }
+  ],
+  "periode": "Du 11/05/2026 au 29/05/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "J'ai mené une reprise de sécurité en fin de projet : j'ai relu l'ensemble du code en dressant la liste écrite de ce qui n'allait pas, puis traité les points un par un, du plus grave au plus anodin. Cette reprise m'a appris à traiter la sécurité comme une revue méthodique et documentée plutôt que comme une série de réflexes."
+   }
+  ]
+ },
+ {
+  "at": 2,
+  "atTitre": "Développer la partie back-end d'une application web ou web mobile sécurisée",
+  "ex": 4,
+  "titre": "Documenter le déploiement d'une application dynamique web ou web mobile",
+  "cps": [
+   "CP 8 : Documenter le déploiement d'une application dynamique web ou web mobile"
+  ],
+  "taches": [
+   {
+    "t": "h",
+    "v": "1) La procédure de déploiement"
+   },
+   {
+    "t": "p",
+    "v": "J'ai rédigé la procédure de déploiement de l'application sous la forme d'un guide numéroté, pensé pour quelqu'un qui découvre le projet. Il énumère les prérequis avec les versions minimales de Node, npm, MySQL et Git et la commande permettant de vérifier chacune, puis l'installation des dépendances, la création et l'import de la base, la configuration des variables d'environnement à partir du fichier d'exemple versionné, le peuplement du catalogue, la création du compte administrateur, le lancement du serveur et du front, le parcours de recette à dérouler pour valider l'installation, et une section de résolution des problèmes fréquents."
+   },
+   {
+    "t": "code",
+    "caption": "docs/INSTALL.md : prérequis vérifiables et étapes numérotées (extrait)",
+    "lines": [
+     "# GUIDE D'INSTALLATION, Kinka",
+     "",
+     "## 1. Prerequis",
+     "",
+     "| Outil   | Version min.         | Verifier avec     |",
+     "|---------|----------------------|-------------------|",
+     "| Node.js | 18 ou +              | `node -v`         |",
+     "| npm     | 9 ou +               | `npm -v`          |",
+     "| MySQL   | 8 (ou MariaDB 10.5+) | `mysql --version` |",
+     "| Git     | n'importe quelle     | `git --version`   |",
+     "",
+     "## 6. Creer la base de donnees",
+     "",
+     "    mysql -u root -p -e \"CREATE DATABASE kinka_db\"",
+     "    mysql -u root -p kinka_db < database/schema.sql",
+     "    mysql -u root -p kinka_db < database/migrations/001_admin_support.sql",
+     "    mysql -u root -p kinka_db < database/migrations/002_verification_email.sql",
+     "",
+     "## 7. Configurer .env",
+     "",
+     "    cp .env.example .env      # puis renseigner DB_PASS et JWT_SECRET",
+     "",
+     "## 12. Tester le parcours complet",
+     "    Derouler les 12 cas du jeu d'essai avant de considerer",
+     "    l'installation comme valide."
+    ]
+   },
+   {
+    "t": "h",
+    "v": "2) Les scripts qui accompagnent le déploiement"
+   },
+   {
+    "t": "p",
+    "v": "J'ai documenté les scripts qui accompagnent ce déploiement : import du catalogue depuis une source publique, récupération des couvertures, promotion d'un compte au rôle administrateur, et migrations SQL. Pour chacun, le guide précise ce qu'il fait, comment le lancer et ce qu'il faut observer en sortie. Les migrations étant idempotentes, la procédure peut être rejouée sur une installation existante sans risque."
+   },
+   {
+    "t": "p",
+    "v": "J'ai également documenté les dépendances externes et leurs versions, ainsi que les variables d'environnement attendues, dans un fichier .env.example versionné. Une variable manquante fait échouer le démarrage avec un message explicite plutôt que de laisser l'application démarrer dans un état incohérent."
+   },
+   {
+    "t": "h",
+    "v": "3) Vérification de la procédure"
+   },
+   {
+    "t": "p",
+    "v": "J'ai vérifié cette documentation en réinstallant l'application de zéro sur une machine vierge, à partir du seul dépôt et du seul guide, afin de m'assurer qu'aucune étape implicite ne manquait. Deux oublis sont apparus à cette occasion : une variable d'environnement non documentée et l'ordre d'exécution des migrations. J'ai ensuite fait dérouler la procédure par un autre stagiaire, dont les blocages m'ont servi à la compléter une seconde fois."
+   },
+   {
+    "t": "h",
+    "v": "4) Veille et perspective de déploiement continu"
+   },
+   {
+    "t": "p",
+    "v": "Ma veille sur le déploiement porte sur la démarche DevOps et les chaînes d'intégration continue. J'ai identifié les étapes de ma procédure qui seraient automatisables dans une telle chaîne, à savoir l'installation des dépendances, le contrôle ESLint et l'application des migrations, et celles qui resteraient manuelles, comme la création du compte administrateur et la recette fonctionnelle. C'est la suite logique de ce travail si l'application devait être mise en production."
+   }
+  ],
+  "moyens": [
+   {
+    "t": "ul",
+    "v": [
+     "Format : guide Markdown versionné dans le dépôt (docs/INSTALL.md), lisible directement sur GitHub.",
+     "Scripts documentés : import du catalogue, récupération des couvertures, promotion administrateur, migrations SQL idempotentes.",
+     "Configuration : fichier .env.example versionné, décrivant chaque variable d'environnement attendue.",
+     "Vérification : réinstallation complète sur machine vierge, puis relecture par un autre stagiaire.",
+     "Veille : documentation GitHub Actions, articles sur l'intégration et le déploiement continus."
+    ]
+   }
+  ],
+  "avecQui": [
+   {
+    "t": "p",
+    "v": "Travail réalisé seul."
+   },
+   {
+    "t": "p",
+    "v": "J'ai fait dérouler la procédure d'installation par un autre stagiaire de ma promotion, sans l'aider. Les trois endroits où il a hésité sont ceux que j'ai réécrits : c'est la seule manière que j'aie trouvée de vérifier qu'une documentation est complète, puisque son auteur connaît déjà les étapes implicites."
+   }
+  ],
+  "periode": "Du 01/06/2026 au 05/06/2026",
+  "infos": [
+   {
+    "t": "p",
+    "v": "Écrire la procédure a révélé des choix que je n'avais jamais formalisés, comme l'ordre dans lequel les migrations doivent être appliquées. Documenter le déploiement n'a donc pas seulement produit un guide : cela a aussi corrigé le projet lui-même."
+   },
+   {
+    "t": "p",
+    "v": "J'ai découvert à cette occasion qu'un secret s'était retrouvé dans l'historique Git. Je l'ai purgé en réécrivant l'historique, j'ai renouvelé la valeur compromise et renforcé le fichier .gitignore. Un secret exposé une fois doit être remplacé, même s'il a été retiré du code."
+   }
+  ]
+ }
+]
