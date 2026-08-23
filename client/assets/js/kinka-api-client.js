@@ -313,6 +313,10 @@ window.showToast = function(message, type = 'success', duration = 3000) { // aff
   toast.innerHTML = `<span class="material-symbols-outlined" style="font-size:1.1rem;flex-shrink:0">${icons[type]||'info'}</span><span></span>`; // icône + emplacement texte
   // Texte injecté avec textContent pour éviter XSS
   toast.querySelector('span:last-child').textContent = String(message || ''); // texte sûr (pas d'injection HTML)
+  // Les couleurs ne sont plus posées ici : elles appartiennent aux classes
+  // .kinka-toast--* de kinka-shared.css, que darkmode.css redéfinit en sombre.
+  // Un style inline battait ces règles, si bien que le #dc2626 de la feuille
+  // n'était jamais appliqué et que la même couleur existait en trois versions.
   toast.style.cssText = `
     position:fixed;bottom:1.5rem;right:1.5rem;z-index:99999;
     display:flex;align-items:center;gap:.6rem;
@@ -320,9 +324,8 @@ window.showToast = function(message, type = 'success', duration = 3000) { // aff
     font-size:.88rem;font-weight:600;
     box-shadow:0 8px 32px rgba(0,0,0,.18);
     animation:kinkaToastIn .25s ease;
-    background:${type==='error'?'#ef4444':type==='warning'?'#f59e0b':type==='info'?'#3b82f6':'#22c55e'};
-    color:#fff;max-width:320px;
-  `;                                                            // style inline (couleur selon le type)
+    max-width:320px;
+  `;                                                            // position et animation seulement
 
   if (!document.getElementById('kinka-toast-style')) {          // injecte les keyframes une seule fois
     const s = document.createElement('style');                 // balise style
