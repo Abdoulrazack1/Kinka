@@ -1373,6 +1373,43 @@ const translations = {
     'Yuji Itadori, lycéen aux capacités physiques hors du commun, ingère involontairement un doigt de Ryomen Sukuna, le roi des fléaux. Sa vie bascule dans le monde des sorciers.': 'Yuji Itadori, a high school student with extraordinary physical abilities, involuntarily swallows a finger of Ryomen Sukuna, the king of curses. His life plunges into the world of sorcerers.',
     'Yukari, lycéenne studieuse, est recrutée par un groupe d\'étudiants en mode pour être leur mannequin. Sa rencontre avec George va bouleverser sa vision du monde.': 'Yukari, a studious high school girl, is recruited by a group of fashion students to be their model. Her encounter with George will completely change her world view.',
     'À Tokyo, des goules — créatures se nourrissant de chair humaine — vivent secrètement parmi les humains. Kaneki Ken, étudiant ordinaire, va être entraîné dans leur monde.': 'In Tokyo, ghouls — creatures that feed on human flesh — live secretly among humans. Kaneki Ken, an ordinary student, will be drawn into their world.',
+
+    // ── Intitules d'accessibilite (passe RGAA) ──────────────────
+    // aria-label et etiquettes de champs. Sans eux, une personne qui
+    // navigue au lecteur d'ecran en anglais entend une interface a
+    // moitie francaise — le public meme que ces intitules servent.
+    'Afficher ou masquer le mot de passe': 'Show or hide password',
+    'Auteur (Mangaka)': 'Author (Mangaka)',
+    'Copier le numéro de suivi': 'Copy tracking number',
+    'Filtrer les annonces': 'Filter listings',
+    'Filtrer les annonces par état': 'Filter listings by condition',
+    'Filtrer les avis': 'Filter reviews',
+    'Filtrer les commandes par statut': 'Filter orders by status',
+    'Filtrer les messages de contact': 'Filter contact messages',
+    'Filtrer les produits par éditeur': 'Filter products by publisher',
+    'Filtrer les utilisateurs par rôle': 'Filter users by role',
+    'ISBN / Code barre (Optionnel)': 'ISBN / Barcode (Optional)',
+    'Mode sombre': 'Dark mode',
+    'Navigation principale': 'Main navigation',
+    'Prix d\'achat original (Optionnel)': 'Original purchase price (Optional)',
+    'Prix maximum en euros': 'Maximum price in euros',
+    'Prix minimum en euros': 'Minimum price in euros',
+    'Rechercher un manga ou un auteur': 'Search for a manga or an author',
+    'Rechercher un produit': 'Search for a product',
+    'Rechercher un utilisateur': 'Search for a user',
+    'Rechercher une annonce': 'Search for a listing',
+    'Rechercher une commande': 'Search for an order',
+    'Saisir un code promo': 'Enter a promo code',
+    'Sections du profil': 'Profile sections',
+    'Séries de la maison d’édition': 'Publisher’s series',
+    'Thèmes de la foire aux questions': 'Frequently asked questions topics',
+    'Trier les coffrets': 'Sort box sets',
+    'Trier les résultats': 'Sort results',
+    'Trier les séries': 'Sort series',
+    'Trier les œuvres de l’auteur': 'Sort the author’s works',
+    'Votre adresse e-mail pour la newsletter': 'Your email address for the newsletter',
+    'Produit en rupture de stock': 'Out of stock',
+    'Lancer la recherche': 'Run the search',
 };
 
 
@@ -1424,6 +1461,62 @@ function getNormIndex() {
     return _normIndex;
 }
 
+// ============================================================
+// MÉMOIRE DU FRANÇAIS
+// ============================================================
+// Traduire écrase le texte d'origine. Sans trace de ce qui était là avant,
+// repasser en français est impossible : on ne peut pas retraduire en sens
+// inverse sans que le texte dérive à chaque aller-retour.
+//
+// Un nœud texte ne peut pas porter d'attribut : on stocke donc son original
+// dans une propriété du nœud, et on marque son élément parent d'un attribut
+// pour pouvoir le retrouver d'un seul querySelectorAll.
+let _titreFR = null;                                               // titre de la page, avant traduction
+let _metaFR  = null;                                               // meta description, avant traduction
+
+function memoriserTexte(node, original) {
+    if (node.__kinkaFR === undefined) node.__kinkaFR = original;   // seule la PREMIÈRE valeur compte
+    const parent = node.parentElement;
+    if (parent) parent.setAttribute('data-i18n-fr', '1');          // marqueur de retrouvaille
+}
+
+// Les attributs traduits (placeholder, title, alt, aria-label) sont regroupés
+// dans un seul attribut JSON plutôt qu'un data-* par attribut : un seul
+// aller-retour de lecture, et le balisage reste lisible dans l'inspecteur.
+function memoriserAttr(el, attr, valeur) {
+    let d = {};
+    if (el.hasAttribute('data-i18n-attrs')) {
+        try { d = JSON.parse(el.getAttribute('data-i18n-attrs')); } catch (_) { d = {}; }
+    }
+    if (d[attr] === undefined) {                                   // ne jamais écraser l'original
+        d[attr] = valeur;
+        el.setAttribute('data-i18n-attrs', JSON.stringify(d));
+    }
+}
+
+function restaurerFrancais() {
+    // 1 · les textes, nœud par nœud
+    document.querySelectorAll('[data-i18n-fr]').forEach(function (el) {
+        el.childNodes.forEach(function (n) {
+            if (n.nodeType === Node.TEXT_NODE && n.__kinkaFR !== undefined) {
+                n.textContent = n.__kinkaFR;                       // remet exactement ce qui était là
+            }
+        });
+    });
+    // 2 · les attributs
+    document.querySelectorAll('[data-i18n-attrs]').forEach(function (el) {
+        let d;
+        try { d = JSON.parse(el.getAttribute('data-i18n-attrs')); } catch (_) { return; }
+        Object.keys(d).forEach(function (a) { el.setAttribute(a, d[a]); });
+    });
+    // 3 · le titre et la description
+    if (_titreFR !== null) document.title = _titreFR;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta && _metaFR !== null) meta.content = _metaFR;
+    // Le contenu injecté APRÈS la bascule en anglais n'a pas d'original
+    // mémorisé : ses scripts le regénèrent en français au prochain rendu.
+}
+
 // Trois tentatives, de la moins chère à la plus chère.
 function translateText(txt) {
     if (!txt) return null;
@@ -1441,16 +1534,10 @@ function translateText(txt) {
 // MOTEUR DE TRADUCTION v9 — couverture maximale
 // ============================================================
 function applyTranslations(lang) {
-    // Retour au français : l'intention est de restaurer le texte d'origine
-    // mémorisé dans data-i18n-original, plutôt que de traduire en sens inverse
-    // (ce qui ferait dériver le texte à chaque aller-retour).
-    //
-    // DÉFAUT CONNU : cet attribut n'est écrit nulle part dans le projet. Le
-    // sélecteur ne trouve donc aucun élément et cette ligne ne restaure rien —
-    // repasser en français laisse la page en anglais jusqu'au rechargement.
-    // Le correctif tient en une ligne dans walkNode() : mémoriser
-    // node.textContent sur l'élément parent avant de le remplacer.
-    if (lang === 'fr') { document.querySelectorAll('[data-i18n-original]').forEach(function(el){el.textContent=el.getAttribute('data-i18n-original');}); return; }
+    // Retour au français : on restaure le texte d'origine mémorisé au moment
+    // de la traduction, plutôt que de traduire en sens inverse — ce qui ferait
+    // dériver le texte à chaque aller-retour.
+    if (lang === 'fr') { restaurerFrancais(); return; }
 
     // 1. Attributs data-i18n (priorité absolue)
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
@@ -1475,7 +1562,7 @@ function applyTranslations(lang) {
                 const val = el.getAttribute(attr);
                 if (!val) return;                                 // attribut vide : rien à traduire
                 const tr = translateText(val);
-                if (tr) el.setAttribute(attr, tr);                // remplacé seulement si une traduction existe
+                if (tr) { memoriserAttr(el, attr, val); el.setAttribute(attr, tr); } // original gardé
             }
         });
     });
@@ -1487,22 +1574,38 @@ function applyTranslations(lang) {
         const raw = opt.textContent;
         if (!raw || !raw.trim()) return;                          // option vide (« — choisir — »)
         const tr = translateText(raw.trim());
-        if (tr) opt.textContent = tr;
+        // On écrit dans le nœud texte plutôt que dans opt.textContent : ce
+        // dernier REMPLACE les enfants, donc détruirait le nœud dont on vient
+        // de mémoriser l'original — et le retour au français ne trouverait rien.
+        if (tr && opt.firstChild) {
+            memoriserTexte(opt.firstChild, raw);
+            opt.firstChild.textContent = tr;
+        }
     });
 
     // 4. Walker sur tous les nœuds texte du DOM
     walkNode(document.body);                                      // le gros du travail, voir ci-dessous
 
     // 5. Titre de la page
-    // Le format est « Catalogue - KINKA.FR » : on tente le titre entier, puis
-    // sa première partie seule, pour ne pas avoir à lister toutes les
-    // combinaisons « page - marque » dans le dictionnaire.
-    const titleParts = document.title.split(' - ');
-    const titleTr = translateText(document.title) || translateText(titleParts[0]);
-    if (titleTr) {
-        document.title = titleParts.length > 1
-            ? titleTr + ' - ' + (translateText(titleParts.slice(1).join(' - ')) || titleParts.slice(1).join(' - '))
-            : titleTr;                                            // un seul morceau : rien à recoller
+    // Le format est « Catalogue - KINKA.FR » : on tente d'abord le titre
+    // entier, et sa traduction est alors définitive. Ce n'est qu'à défaut
+    // qu'on découpe, pour ne pas avoir à lister toutes les combinaisons
+    // « page - marque » dans le dictionnaire.
+    if (_titreFR === null) _titreFR = document.title;             // mémorisé une seule fois
+    const titreEntier = translateText(_titreFR);
+    if (titreEntier) {
+        // Le titre complet est connu : on le pose tel quel. Le recombiner avec
+        // sa seconde moitié produisait « KINKA.FR - Your ultimate manga store
+        // - Votre boutique manga de référence », les deux langues à la suite.
+        document.title = titreEntier;
+    } else {
+        const titleParts = _titreFR.split(' - ');
+        const tete = translateText(titleParts[0]);
+        if (tete) {
+            document.title = titleParts.length > 1
+                ? tete + ' - ' + (translateText(titleParts.slice(1).join(' - ')) || titleParts.slice(1).join(' - '))
+                : tete;                                           // un seul morceau : rien à recoller
+        }
     }
 
     // 6. Meta description
@@ -1510,7 +1613,8 @@ function applyTranslations(lang) {
     // aperçus de partage : la laisser en français serait incohérent.
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc && metaDesc.content) {
-        const tr = translateText(metaDesc.content);
+        if (_metaFR === null) _metaFR = metaDesc.content;         // mémorisée avant écrasement
+        const tr = translateText(_metaFR);
         if (tr) metaDesc.content = tr;
     }
 }
@@ -1528,6 +1632,7 @@ function walkNode(node) {
             // « tout » collés donneraient « Voirtout ». On la remet telle quelle.
             const lead  = raw.match(/^\s*/)[0];                   // espaces avant
             const trail = raw.match(/\s*$/)[0];                   // espaces après
+            memoriserTexte(node, raw);                            // le français, avant écrasement
             node.textContent = lead + tr + trail;                 // traduction réinsérée entre les deux
             return;
         }
@@ -1544,6 +1649,7 @@ function walkNode(node) {
                     const punct = trimmed.slice(stripped.length); // le signe retiré, à recoller
                     const lead  = raw.match(/^\s*/)[0];
                     const trail = raw.match(/\s*$/)[0];
+                    memoriserTexte(node, raw);                    // même mémorisation que ci-dessus
                     node.textContent = lead + trS + punct + trail;
                 }
             }
@@ -1562,7 +1668,7 @@ function walkNode(node) {
                 const val = node.getAttribute(attr);
                 if (val) {
                     const tr = translateText(val.trim());
-                    if (tr) node.setAttribute(attr, tr);
+                    if (tr) { memoriserAttr(node, attr, val); node.setAttribute(attr, tr); }
                 }
             }
         });
@@ -1646,7 +1752,10 @@ function startMutationObserver() {
                                 const raw = opt.textContent;      // walkNode ne descend pas dans les <option>
                                 if (!raw || !raw.trim()) return;
                                 const tr = translateText(raw.trim());
-                                if (tr) opt.textContent = tr;
+                                if (tr && opt.firstChild) {       // même précaution qu'à l'étape 3
+                                    memoriserTexte(opt.firstChild, raw);
+                                    opt.firstChild.textContent = tr;
+                                }
                             });
                             // Attributs sur les nœuds racines injectés
                             // walkNode traite les attributs des enfants, mais le
@@ -1654,7 +1763,8 @@ function startMutationObserver() {
                             ['placeholder','title','alt','aria-label'].forEach(function(attr) {
                                 if (n.hasAttribute && n.hasAttribute(attr)) {
                                     const val = n.getAttribute(attr);
-                                    if (val) { const tr = translateText(val.trim()); if (tr) n.setAttribute(attr, tr); }
+                                    if (val) { const tr = translateText(val.trim());
+                                               if (tr) { memoriserAttr(n, attr, val); n.setAttribute(attr, tr); } }
                                 }
                             });
                         }
