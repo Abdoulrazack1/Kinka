@@ -520,7 +520,7 @@ footer::before {
 .footer-logo{display:flex;align-items:center;gap:.55rem;margin-bottom:.9rem}
 .footer-logo .logo-text{color:#fff;font-size:1.05rem;font-weight:800}
 .footer-description{font-size:.81rem;line-height:1.75;color:rgba(255,255,255,.38)}
-.footer-section h4{color:rgba(255,255,255,.9);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.1rem}
+.footer-section h2{color:rgba(255,255,255,.9);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.1rem}
 .footer-section ul li{margin-bottom:.6rem}
 .footer-section ul a{font-size:.82rem;color:rgba(255,255,255,.42);transition:var(--transition);display:inline-flex;align-items:center;gap:.25rem}
 .footer-section ul a:hover{color:var(--pink);padding-left:5px}
@@ -551,7 +551,7 @@ body:not(.dark-mode) footer{
 body:not(.dark-mode) .footer-content{border-bottom-color:rgba(0,0,0,.09)}
 body:not(.dark-mode) .footer-logo .logo-text{color:#1a1a1a}
 body:not(.dark-mode) .footer-description{color:#5b6472}
-body:not(.dark-mode) .footer-section h4{color:#1a1a1a}
+body:not(.dark-mode) .footer-section h2{color:#1a1a1a}
 body:not(.dark-mode) .footer-section ul a,
 body:not(.dark-mode) .contact-info a{color:#5b6472}
 body:not(.dark-mode) .footer-section ul a:hover,

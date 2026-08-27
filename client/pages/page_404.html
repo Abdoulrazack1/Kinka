@@ -22,7 +22,7 @@
     .error-number span:nth-child(2) { animation-delay: .15s; }
     .error-number span:nth-child(3) { animation-delay: .3s; }
     @keyframes wobble { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-    .error-card h2 { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: .75rem; }
+    .error-card h1 { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: .75rem; }
     .error-card p  { font-size: .9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 2rem; }
     .error-actions { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
     .btn-outline { display: inline-flex; align-items: center; gap: .4rem; padding: .72rem 1.5rem; border-radius: 999px; border: 1.5px solid var(--border); font-size: .88rem; font-weight: 600; color: var(--text); cursor: pointer; background: white; transition: all .2s ease; font-family: inherit; }
@@ -45,9 +45,9 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav aria-label="Navigation principale">
             <a href="./page_accueil.html" class="logo">
-                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                 <span class="logo-text">KINKA<span class="fr">.FR</span></span>
             </a>
             <div class="nav-menu">
@@ -57,13 +57,13 @@
                 <a href="./page_annonces.html">Annonces</a>
             </div>
             <div class="nav-actions">
-                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn">
-                    <span class="material-symbols-outlined">favorite</span>
+                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn" aria-label="Mes favoris">
+                    <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
                     <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
                 <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
-                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier">
-                    <span class="material-symbols-outlined">shopping_cart</span>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier" aria-label="Mon panier">
+                    <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                     <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
             </div>
@@ -76,15 +76,15 @@
                 <div class="error-number">
                     <span>4</span><span>0</span><span>4</span>
                 </div>
-                <h2>Oops, cette page s'est évadée !</h2>
+                <h1>Oops, cette page s'est évadée !</h1>
                 <p>La page que vous cherchez n'existe pas, a été déplacée ou a peut-être décidé de partir en aventure vers un autre arc narratif… <span class="kinka-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span></p>
                 <div class="error-actions">
                     <a href="./page_accueil.html" class="btn-primary">
-                        <span class="material-symbols-outlined">home</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">home</span>
                         Retour à l'accueil
                     </a>
                     <a href="./page_catalogue.html" class="btn-outline">
-                        <span class="material-symbols-outlined">explore</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">explore</span>
                         Voir le catalogue
                     </a>
                 </div>
@@ -96,15 +96,15 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
                 <p class="contact-info"><a href="mailto:contact@kinka.fr">contact@kinka.fr</a></p>
             </div>
-            <div class="footer-section"><h4>Navigation</h4><ul><li><a href="./page_accueil.html">Accueil</a></li><li><a href="./page_catalogue.html">Catalogue</a></li><li><a href="./page_promotion.html">Promotions</a></li></ul></div>
-            <div class="footer-section"><h4>Compte</h4><ul><li><a href="./pageLogIn.html">Connexion</a></li><li><a href="./pageSignUp.html">Inscription</a></li><li><a href="./page_panier.html">Mon panier</a></li></ul></div>
-            <div class="footer-section"><h4>Support</h4><ul><li><a href="./page_faq.html">FAQ</a></li><li><a href="./page_contact.html">Contact</a></li><li><a href="./page_cgv.html">CGV</a></li></ul></div>
+            <div class="footer-section"><h2>Navigation</h2><ul><li><a href="./page_accueil.html">Accueil</a></li><li><a href="./page_catalogue.html">Catalogue</a></li><li><a href="./page_promotion.html">Promotions</a></li></ul></div>
+            <div class="footer-section"><h2>Compte</h2><ul><li><a href="./pageLogIn.html">Connexion</a></li><li><a href="./pageSignUp.html">Inscription</a></li><li><a href="./page_panier.html">Mon panier</a></li></ul></div>
+            <div class="footer-section"><h2>Support</h2><ul><li><a href="./page_faq.html">FAQ</a></li><li><a href="./page_contact.html">Contact</a></li><li><a href="./page_cgv.html">CGV</a></li></ul></div>
         </div>
         <div class="footer-bottom"><p>© <span class="annee-courante">2025</span> KINKA.FR — Tous droits réservés</p></div>
     </footer>

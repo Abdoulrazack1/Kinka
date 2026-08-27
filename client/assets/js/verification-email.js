@@ -27,7 +27,7 @@
   // sur un lien expiré.
   function afficher(symbole, texteTitre, texteMessage, etat) {
     if (icone) {
-      icone.innerHTML = '<span class="material-symbols-outlined">' + symbole + '</span>';
+      icone.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">' + symbole + '</span>';
       icone.classList.remove('etat-attente', 'etat-erreur');
       if (etat === 'attente') icone.classList.add('etat-attente');
       if (etat === 'erreur')  icone.classList.add('etat-erreur');

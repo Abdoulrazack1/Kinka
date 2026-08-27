@@ -354,14 +354,14 @@ footer {
     margin-bottom: 2.5rem;
 }
 
-.footer-section h4 {
+.footer-section h2 {
     font-size: 1rem;
     margin-bottom: 1.2rem;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
-.footer-section:hover h4 {
+.footer-section:hover h2 {
     color: #E03B8B;
 }
 

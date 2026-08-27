@@ -54,10 +54,10 @@ function construireBoutonCompte(user) {                                // crée 
     btn.setAttribute('aria-expanded', 'false');                      // accessibilité : fermé par défaut
     btn.innerHTML = `
         <div class="nav-user-avatar">
-            <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">person</span>
+            <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1" aria-hidden="true">person</span>
         </div>
         <span class="nav-user-name">${escapeNav(user.prenom || 'Mon compte')}</span>
-        <span class="material-symbols-outlined nav-user-chevron">expand_more</span>`; // gabarit HTML du bouton
+        <span class="material-symbols-outlined nav-user-chevron" aria-hidden="true">expand_more</span>`; // gabarit HTML du bouton
     return btn;                                                      // renvoie le bouton
 }
 
@@ -70,7 +70,7 @@ function lienAdministration(user) {
     return `
         <div class="nav-user-dropdown-sep"></div>
         <a href="./page_admin.html" class="nav-user-dropdown-item">
-            <span class="material-symbols-outlined">admin_panel_settings</span>
+            <span class="material-symbols-outlined" aria-hidden="true">admin_panel_settings</span>
             <span data-i18n="Administration">Administration</span>
         </a>`;
 }
@@ -80,7 +80,7 @@ function construireDropdown(user, opts) {                              // crée 
     const { isPremium, isCollector, planLabel } = opts;               // déstructure les options de plan
     const planClass = isPremium ? 'plan-premium' : isCollector ? 'plan-collector' : 'plan-free'; // classe du badge plan
     const etoilePremium = isPremium                                   // étoile affichée seulement pour premium
-        ? '<span class="material-symbols-outlined" style="font-size:.7rem;font-variation-settings:\'FILL\' 1">star</span>'
+        ? '<span class="material-symbols-outlined" style="font-size:.7rem;font-variation-settings:\'FILL\' 1" aria-hidden="true">star</span>'
         : '';                                                        // sinon rien
 
     const dropdown = document.createElement('div');                   // conteneur du dropdown
@@ -89,7 +89,7 @@ function construireDropdown(user, opts) {                              // crée 
     dropdown.innerHTML = `
         <div class="nav-user-dropdown-head">
             <div class="nav-user-dropdown-avatar">
-                <span class="material-symbols-outlined" style="font-size:1.5rem;font-variation-settings:'FILL' 1">person</span>
+                <span class="material-symbols-outlined" style="font-size:1.5rem;font-variation-settings:'FILL' 1" aria-hidden="true">person</span>
             </div>
             <div class="nav-user-dropdown-info">
                 <div class="nav-user-dropdown-name">${escapeNav((user.prenom || '') + ' ' + (user.nom || ''))}</div>
@@ -99,21 +99,21 @@ function construireDropdown(user, opts) {                              // crée 
         </div>
         <div class="nav-user-dropdown-sep"></div>
         <a href="./page_profil.html?section=info" class="nav-user-dropdown-item">
-            <span class="material-symbols-outlined">manage_accounts</span>
+            <span class="material-symbols-outlined" aria-hidden="true">manage_accounts</span>
             <span data-i18n="Mes informations">Mes informations</span>
         </a>
         <a href="./page_profil.html?section=commandes" class="nav-user-dropdown-item">
-            <span class="material-symbols-outlined">receipt_long</span>
+            <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
             <span data-i18n="Mes commandes">Mes commandes</span>
         </a>
         <a href="./page_favoris.html" class="nav-user-dropdown-item">
-            <span class="material-symbols-outlined">favorite</span>
+            <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
             <span data-i18n="Mes favoris">Mes favoris</span>
         </a>
         ${lienAdministration(user)}
         <div class="nav-user-dropdown-sep"></div>
         <button class="nav-user-dropdown-item nav-user-dropdown-logout" id="nav-logout-btn">
-            <span class="material-symbols-outlined">logout</span>
+            <span class="material-symbols-outlined" aria-hidden="true">logout</span>
             <span data-i18n="Se déconnecter">Se déconnecter</span>
         </button>`;                                                  // gabarit HTML du menu (liens profil/commandes/favoris/déconnexion)
     return dropdown;                                                 // renvoie le dropdown

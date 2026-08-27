@@ -36,9 +36,9 @@
          darkmode.js l'injecte lui-même dans .nav-actions, et le déclarer en
          double affichait deux bascules côte à côte. -->
     <header>
-        <nav>
+        <nav aria-label="Navigation principale">
             <a href="./page_accueil.html" class="logo">
-                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                 <span class="logo-text">KINKA<span class="fr">.FR</span></span>
             </a>
             <span class="admin-repere">Administration</span>
@@ -49,14 +49,14 @@
             </div>
             <div class="nav-actions">
                 <span id="admin-identite" class="badge badge-bleu" title="Compte connecté"></span>
-                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil">
-                    <span class="material-symbols-outlined">person</span>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil" aria-label="Mon profil">
+                    <span class="material-symbols-outlined" aria-hidden="true">person</span>
                 </button>
                 <!-- darkmode.js réutilise ce bouton s'il existe déjà (il le
                      cherche par cet identifiant), ce qui permet de le placer
                      ici plutôt qu'ajouté en fin de barre. -->
-                <button class="icon-btn" id="dark-mode-toggle" title="Mode sombre">
-                    <span class="material-symbols-outlined">dark_mode</span>
+                <button class="icon-btn" id="dark-mode-toggle" title="Mode sombre" aria-label="Mode sombre">
+                    <span class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
                 </button>
                 <button class="btn-admin" id="admin-deconnexion">Se déconnecter</button>
             </div>
@@ -67,8 +67,8 @@
          La vérification qui fait autorité reste celle du serveur : chaque appel
          /api/admin/* repasse par authRequired + adminRequired. -->
     <div id="admin-refus" class="admin-refus" hidden>
-        <span class="material-symbols-outlined">lock</span>
-        <h1>Accès réservé</h1>
+        <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+        <h2>Accès réservé</h2>
         <p id="admin-refus-message">Cette page est réservée aux administrateurs.</p>
         <a href="./pageLogIn.html?redirect=admin" class="btn-admin btn-admin-principal">Se connecter</a>
     </div>
@@ -79,57 +79,58 @@
         <aside class="admin-nav">
             <p class="admin-nav-titre">Pilotage</p>
             <button class="admin-nav-lien actif" data-section="tableau-bord">
-                <span class="material-symbols-outlined">dashboard</span> Tableau de bord
+                <span class="material-symbols-outlined" aria-hidden="true">dashboard</span> Tableau de bord
             </button>
 
             <p class="admin-nav-titre" style="margin-top:1.25rem">Catalogue</p>
             <button class="admin-nav-lien" data-section="produits">
-                <span class="material-symbols-outlined">inventory_2</span> Produits
+                <span class="material-symbols-outlined" aria-hidden="true">inventory_2</span> Produits
             </button>
             <button class="admin-nav-lien" data-section="commandes">
-                <span class="material-symbols-outlined">local_shipping</span> Commandes
+                <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span> Commandes
                 <span class="admin-nav-badge" id="badge-commandes" hidden>0</span>
             </button>
 
             <p class="admin-nav-titre" style="margin-top:1.25rem">Modération</p>
             <button class="admin-nav-lien" data-section="avis">
-                <span class="material-symbols-outlined">reviews</span> Avis
+                <span class="material-symbols-outlined" aria-hidden="true">reviews</span> Avis
                 <span class="admin-nav-badge" id="badge-avis" hidden>0</span>
             </button>
             <button class="admin-nav-lien" data-section="annonces">
-                <span class="material-symbols-outlined">sell</span> Annonces
+                <span class="material-symbols-outlined" aria-hidden="true">sell</span> Annonces
             </button>
 
             <p class="admin-nav-titre" style="margin-top:1.25rem">Relation client</p>
             <button class="admin-nav-lien" data-section="contact">
-                <span class="material-symbols-outlined">mail</span> Messages
+                <span class="material-symbols-outlined" aria-hidden="true">mail</span> Messages
                 <span class="admin-nav-badge" id="badge-contact" hidden>0</span>
             </button>
             <button class="admin-nav-lien" data-section="newsletter">
-                <span class="material-symbols-outlined">campaign</span> Newsletter
+                <span class="material-symbols-outlined" aria-hidden="true">campaign</span> Newsletter
             </button>
             <button class="admin-nav-lien" data-section="utilisateurs">
-                <span class="material-symbols-outlined">group</span> Utilisateurs
+                <span class="material-symbols-outlined" aria-hidden="true">group</span> Utilisateurs
             </button>
 
             <p class="admin-nav-titre" style="margin-top:1.25rem">Système</p>
             <button class="admin-nav-lien" data-section="journal">
-                <span class="material-symbols-outlined">history</span> Journal
+                <span class="material-symbols-outlined" aria-hidden="true">history</span> Journal
             </button>
         </aside>
 
         <!-- CONTENU -->
         <main class="admin-contenu">
+        <h1 class="titre-invisible">Administration du site</h1>
 
             <!-- ── TABLEAU DE BORD ── -->
             <section class="admin-section actif" id="section-tableau-bord">
                 <div class="admin-entete">
                     <div>
-                        <h1>Tableau de bord</h1>
+                        <h2>Tableau de bord</h2>
                         <p>Vue d'ensemble de la boutique</p>
                     </div>
                     <button class="btn-admin" id="btn-sync-jikan">
-                        <span class="material-symbols-outlined">sync</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">sync</span>
                         Synchroniser le catalogue
                     </button>
                 </div>
@@ -147,17 +148,17 @@
             <section class="admin-section" id="section-produits">
                 <div class="admin-entete">
                     <div>
-                        <h1>Produits</h1>
+                        <h2>Produits</h2>
                         <p id="produits-resume">—</p>
                     </div>
                     <button class="btn-admin btn-admin-principal" id="btn-nouveau-produit">
-                        <span class="material-symbols-outlined">add</span> Nouveau produit
+                        <span class="material-symbols-outlined" aria-hidden="true">add</span> Nouveau produit
                     </button>
                 </div>
                 <div class="admin-outils">
-                    <input type="search" id="produits-recherche" placeholder="Titre, série, auteur ou identifiant…">
-                    <select id="produits-editeur"><option value="">Tous les éditeurs</option></select>
-                    <label class="admin-case"><input type="checkbox" id="produits-rupture"> En rupture uniquement</label>
+                    <input type="search" id="produits-recherche" placeholder="Titre, série, auteur ou identifiant…" aria-label="Rechercher un produit">
+                    <select id="produits-editeur" aria-label="Filtrer les produits par éditeur"><option value="">Tous les éditeurs</option></select>
+                    <label class="admin-case" for="commandes-recherche"><input type="checkbox" id="produits-rupture"> En rupture uniquement</label>
                 </div>
                 <div class="admin-tableau-conteneur">
                     <table class="admin-tableau">
@@ -172,13 +173,13 @@
             <section class="admin-section" id="section-commandes">
                 <div class="admin-entete">
                     <div>
-                        <h1>Commandes</h1>
+                        <h2>Commandes</h2>
                         <p id="commandes-resume">—</p>
                     </div>
                 </div>
                 <div class="admin-outils">
-                    <input type="search" id="commandes-recherche" placeholder="Numéro de commande ou email client…">
-                    <select id="commandes-statut">
+                    <input type="search" id="commandes-recherche" placeholder="Numéro de commande ou email client…" aria-label="Rechercher une commande">
+                    <select id="commandes-statut" aria-label="Filtrer les commandes par statut">
                         <option value="">Tous les statuts</option>
                         <option value="en_cours">En cours</option>
                         <option value="validee">Validée</option>
@@ -200,12 +201,12 @@
             <section class="admin-section" id="section-avis">
                 <div class="admin-entete">
                     <div>
-                        <h1>Avis clients</h1>
+                        <h2>Avis clients</h2>
                         <p id="avis-resume">—</p>
                     </div>
                 </div>
                 <div class="admin-outils">
-                    <select id="avis-filtre">
+                    <select id="avis-filtre" aria-label="Filtrer les avis">
                         <option value="0">À modérer</option>
                         <option value="1">Publiés</option>
                         <option value="">Tous</option>
@@ -224,12 +225,12 @@
             <section class="admin-section" id="section-annonces">
                 <div class="admin-entete">
                     <div>
-                        <h1>Annonces entre membres</h1>
+                        <h2>Annonces entre membres</h2>
                         <p id="annonces-resume">—</p>
                     </div>
                 </div>
                 <div class="admin-outils">
-                    <select id="annonces-filtre">
+                    <select id="annonces-filtre" aria-label="Filtrer les annonces">
                         <option value="">Toutes</option>
                         <option value="active">Actives</option>
                         <option value="suspendue">Suspendues</option>
@@ -249,12 +250,12 @@
             <section class="admin-section" id="section-contact">
                 <div class="admin-entete">
                     <div>
-                        <h1>Messages de contact</h1>
+                        <h2>Messages de contact</h2>
                         <p id="contact-resume">—</p>
                     </div>
                 </div>
                 <div class="admin-outils">
-                    <select id="contact-filtre">
+                    <select id="contact-filtre" aria-label="Filtrer les messages de contact">
                         <option value="0">Non traités</option>
                         <option value="1">Traités</option>
                         <option value="">Tous</option>
@@ -273,11 +274,11 @@
             <section class="admin-section" id="section-newsletter">
                 <div class="admin-entete">
                     <div>
-                        <h1>Newsletter</h1>
+                        <h2>Newsletter</h2>
                         <p id="newsletter-resume">—</p>
                     </div>
                     <button class="btn-admin" id="btn-export-newsletter">
-                        <span class="material-symbols-outlined">download</span> Exporter en CSV
+                        <span class="material-symbols-outlined" aria-hidden="true">download</span> Exporter en CSV
                     </button>
                 </div>
                 <div class="admin-tableau-conteneur">
@@ -293,13 +294,13 @@
             <section class="admin-section" id="section-utilisateurs">
                 <div class="admin-entete">
                     <div>
-                        <h1>Utilisateurs</h1>
+                        <h2>Utilisateurs</h2>
                         <p id="utilisateurs-resume">—</p>
                     </div>
                 </div>
                 <div class="admin-outils">
-                    <input type="search" id="utilisateurs-recherche" placeholder="Email, prénom ou nom…">
-                    <select id="utilisateurs-role">
+                    <input type="search" id="utilisateurs-recherche" placeholder="Email, prénom ou nom…" aria-label="Rechercher un utilisateur">
+                    <select id="utilisateurs-role" aria-label="Filtrer les utilisateurs par rôle">
                         <option value="">Tous les rôles</option>
                         <option value="user">Utilisateurs</option>
                         <option value="admin">Administrateurs</option>
@@ -318,7 +319,7 @@
             <section class="admin-section" id="section-journal">
                 <div class="admin-entete">
                     <div>
-                        <h1>Journal d'administration</h1>
+                        <h2>Journal d'administration</h2>
                         <p>Trace des actions effectuées depuis le back-office</p>
                     </div>
                 </div>
@@ -340,7 +341,7 @@
             <div class="admin-modale-entete">
                 <h2 id="modale-titre">Titre</h2>
                 <button class="btn-admin" id="modale-fermer" aria-label="Fermer">
-                    <span class="material-symbols-outlined">close</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
                 </button>
             </div>
             <div class="admin-modale-corps" id="modale-corps"></div>

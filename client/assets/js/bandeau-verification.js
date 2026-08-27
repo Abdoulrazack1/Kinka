@@ -45,7 +45,7 @@
   fermer.type = 'button';
   fermer.className = 'bandeau-verification-fermer';
   fermer.setAttribute('aria-label', 'Masquer ce rappel');
-  fermer.innerHTML = '<span class="material-symbols-outlined">close</span>';
+  fermer.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">close</span>';
   fermer.addEventListener('click', function () {
     bandeau.remove();
     // Masqué pour la session seulement : la fermeture ne doit pas faire

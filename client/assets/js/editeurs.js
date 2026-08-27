@@ -67,7 +67,7 @@
                    '<p>' + echapper(e.description || '') + '</p>' +
                    '<div class="me-partner-tags">' + tags + '</div>' +
                    '<div class="me-partner-cta">' + echapper(titres) +
-                       '<span class="material-symbols-outlined">arrow_forward</span>' +
+                       '<span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>' +
                    '</div>' +
                '</div>' +
                '</a>';

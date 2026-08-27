@@ -38,8 +38,9 @@ function buildProductCard(m) {                                          // const
             <div class="card-actions">
                 <button class="card-fav-btn${isFav ? ' active' : ''}"
                     onclick="kinkaToggleFav('${escapeHtml(m.id)}', event)"
-                    title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">
-                    <span class="material-symbols-outlined">favorite</span>
+                    title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}"
+                    aria-label="Ajouter aux favoris" aria-pressed="${isFav ? 'true' : 'false'}">
+                    <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
                 </button>
             </div>
         </div>
@@ -58,8 +59,9 @@ function buildProductCard(m) {                                          // const
                 </div>
                 <button class="add-to-cart${enRupture ? ' disabled' : ''}"
                     ${enRupture ? 'disabled' : `onclick="kinkaAddToCart('${escapeHtml(m.id)}', event)"`}
-                    title="${enRupture ? 'Produit en rupture de stock' : 'Ajouter au panier'}">
-                    <span class="material-symbols-outlined">add_shopping_cart</span>
+                    title="${enRupture ? 'Produit en rupture de stock' : 'Ajouter au panier'}"
+                    aria-label="${enRupture ? 'Produit en rupture de stock' : 'Ajouter au panier'}">
+                    <span class="material-symbols-outlined" aria-hidden="true">add_shopping_cart</span>
                 </button>
             </div>
         </div>
@@ -73,7 +75,9 @@ function construireEtoiles(note) {                                       // rend
     for (let i = 0; i < full; i++) s += '<span class="star full">★</span>'; // étoiles pleines
     if (half) s += '<span class="star half">★</span>';                 // demi-étoile éventuelle
     for (let i = full + half; i < 5; i++) s += '<span class="star empty">☆</span>'; // étoiles vides jusqu'à 5
-    return `<div class="card-note"><span class="stars">${s}</span><span class="note-val">${note.toFixed(1)}</span></div>`; // bloc note
+    return `<div class="card-note" role="img" aria-label="Note : ${note.toFixed(1)} sur 5">`
+         + `<span class="stars" aria-hidden="true">${s}</span>`
+         + `<span class="note-val" aria-hidden="true">${note.toFixed(1)}</span></div>`; // bloc note
 }
 
 // ─── TILT 3D + SHINE ───────────
@@ -167,12 +171,14 @@ window.kinkaToggleFav = async function(id, e) {                        // ajoute
 
     if (favs.includes(id)) {                                          // déjà en favori → on retire
         favs = favs.filter(f => f !== id);                           // enlève l'id de la liste
-        if (btn) btn.classList.remove('active');                     // met à jour l'état visuel
+        if (btn) { btn.classList.remove('active');                   // met à jour l'état visuel
+                   btn.setAttribute('aria-pressed', 'false'); }      // et l'état annoncé
         if (useApi) KinkaAPI.favoris.remove(id).catch(err => console.warn('[fav]', err)); // suppression API
         if (typeof showToast === 'function') showToast('Retiré des favoris'); // notification
     } else {                                                         // pas en favori → on ajoute
         favs.push(id);                                              // ajoute l'id
-        if (btn) btn.classList.add('active');                       // met à jour l'état visuel
+        if (btn) { btn.classList.add('active');                     // met à jour l'état visuel
+                   btn.setAttribute('aria-pressed', 'true'); }       // et l'état annoncé
         if (useApi) KinkaAPI.favoris.add(id).catch(err => console.warn('[fav]', err)); // ajout API
         if (typeof showToast === 'function') showToast('Ajouté aux favoris !'); // notification
     }

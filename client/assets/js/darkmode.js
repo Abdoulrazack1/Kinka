@@ -20,6 +20,7 @@
         toggle.setAttribute('title', 'Mode sombre');              // infobulle
         const icone = document.createElement('span');             // icône interne
         icone.className = 'material-symbols-outlined';            // police d'icônes
+        icone.setAttribute('aria-hidden', 'true');               // décorative : le bouton porte l'intitulé
         icone.textContent = 'dark_mode';                         // icône lune
         toggle.appendChild(icone);                               // insère l'icône
 

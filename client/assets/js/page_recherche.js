@@ -54,6 +54,7 @@
 
             var icone = document.createElement('span');
             icone.className = 'material-symbols-outlined';
+            icone.setAttribute('aria-hidden', 'true');   // décorative : le titre qui suit dit déjà tout
             icone.style.cssText = 'font-size:4rem;color:#ccc';
             icone.textContent = 'search';
 

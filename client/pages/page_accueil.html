@@ -32,14 +32,14 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav aria-label="Navigation principale">
             <a href="./page_accueil.html" class="logo">
-                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                 <span class="logo-text">KINKA<span class="fr">.FR</span></span>
             </a>
             <div class="search-bar">
-                <span class="material-symbols-outlined search-icon">search</span>
-                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+                <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off" aria-label="Rechercher un manga ou un auteur">
             </div>
             <div class="nav-menu">
                 <a href="./page_accueil.html" class="active">Accueil</a>
@@ -48,16 +48,16 @@
                 <a href="./page_annonces.html">Annonces</a>
             </div>
             <div class="nav-actions">
-                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn">
-                    <span class="material-symbols-outlined">favorite</span>
+                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn" aria-label="Mes favoris">
+                    <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
                     <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
-                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil">
-                    <span class="material-symbols-outlined">person</span>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil" aria-label="Mon profil">
+                    <span class="material-symbols-outlined" aria-hidden="true">person</span>
                 </button>
                 <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
-                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier">
-                    <span class="material-symbols-outlined">shopping_cart</span>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier" aria-label="Mon panier">
+                    <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                     <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
             </div>
@@ -65,6 +65,7 @@
     </header>
 
     <main class="container">
+        <h1 class="titre-invisible">KINKA.FR, boutique de mangas en ligne</h1>
 
         <!-- HERO CARROUSEL -->
         <section class="hero-banner" id="hero-banner">
@@ -72,11 +73,11 @@
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <span class="badge">TENDANCE ACTUELLE</span>
-                    <h1>Chainsaw Man</h1>
+                    <h2>Chainsaw Man</h2>
                     <p>Découvrez les derniers tomes de la série phénomène de Tatsuki Fujimoto.<br>Disponible dès maintenant.</p>
                     <div class="hero-buttons">
                         <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=chainsaw-man-12'">
-                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                             Acheter le Tome 12
                         </button>
                         <button class="btn-secondary" onclick="window.location.href='./page_catalogue.html'">Voir la collection</button>
@@ -87,11 +88,11 @@
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <span class="badge">PHÉNOMÈNE MONDIAL</span>
-                    <h1>Jujutsu Kaisen</h1>
+                    <h2>Jujutsu Kaisen</h2>
                     <p>Plongez dans l'univers des exorcistes et des malédictions.<br>Les derniers tomes disponibles immédiatement.</p>
                     <div class="hero-buttons">
                         <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=jujutsu-kaisen-20'">
-                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                             Acheter le Tome 20
                         </button>
                         <button class="btn-secondary" onclick="window.location.href='./page_catalogue.html'">Voir la collection</button>
@@ -102,11 +103,11 @@
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <span class="badge">SÉRIE CULTE</span>
-                    <h1>My Hero Academia</h1>
+                    <h2>My Hero Academia</h2>
                     <p>Rejoignez les élèves de U.A. dans leur quête pour devenir les plus grands héros.<br>Édition collector disponible.</p>
                     <div class="hero-buttons">
                         <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=my-hero-academia-37'">
-                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                             Acheter le Tome 37
                         </button>
                         <button class="btn-secondary" onclick="window.location.href='./page_catalogue.html'">Voir la collection</button>
@@ -117,11 +118,11 @@
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <span class="badge">CHEF-D'ŒUVRE</span>
-                    <h1>Berserk</h1>
+                    <h2>Berserk</h2>
                     <p>Le monument du dark fantasy de Kentaro Miura.<br>Tome 41 — édition posthume disponible.</p>
                     <div class="hero-buttons">
                         <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=berserk-41'">
-                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                             Acheter le Tome 41
                         </button>
                         <button class="btn-secondary" onclick="window.location.href='./page_seinen.html'">Découvrir le Seinen</button>
@@ -132,11 +133,11 @@
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <span class="badge">COUP DE CŒUR</span>
-                    <h1>Spy × Family</h1>
+                    <h2>Spy × Family</h2>
                     <p>La famille la plus déjantée du manga est de retour.<br>Espionnage, humour et tendresse au rendez-vous.</p>
                     <div class="hero-buttons">
                         <button class="btn-primary" onclick="window.location.href='./page_detail_produit.html?id=spy-x-family-10'">
-                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                             Acheter le Tome 10
                         </button>
                         <button class="btn-secondary" onclick="window.location.href='./page_coupdecoeur.html'">Coups de cœur</button>
@@ -153,53 +154,53 @@
             </div>
             <!-- Arrows -->
             <button class="hero-arrow hero-prev" id="hero-prev" aria-label="Précédent">
-                <span class="material-symbols-outlined">chevron_left</span>
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
             </button>
             <button class="hero-arrow hero-next" id="hero-next" aria-label="Suivant">
-                <span class="material-symbols-outlined">chevron_right</span>
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
             </button>
         </section>
 
         <!-- BANNIÈRE PROMO RAPIDE -->
         <div class="trust-bar">
-            <div class="trust-item"><span class="material-symbols-outlined">local_shipping</span><span>Livraison gratuite dès 50€</span></div>
-            <div class="trust-item"><span class="material-symbols-outlined">autorenew</span><span>Retours sous 30 jours</span></div>
-            <div class="trust-item"><span class="material-symbols-outlined">verified</span><span>Paiement sécurisé</span></div>
-            <div class="trust-item"><span class="material-symbols-outlined">store</span><span>+3 000 titres en stock</span></div>
+            <div class="trust-item"><span class="material-symbols-outlined" aria-hidden="true">local_shipping</span><span>Livraison gratuite dès 50€</span></div>
+            <div class="trust-item"><span class="material-symbols-outlined" aria-hidden="true">autorenew</span><span>Retours sous 30 jours</span></div>
+            <div class="trust-item"><span class="material-symbols-outlined" aria-hidden="true">verified</span><span>Paiement sécurisé</span></div>
+            <div class="trust-item"><span class="material-symbols-outlined" aria-hidden="true">store</span><span>+3 000 titres en stock</span></div>
         </div>
 
         <!-- MAISONS D'ÉDITION -->
         <section class="section-maisons-edition">
             <div class="section-header">
                 <h2 class="section-title">Maisons d'édition</h2>
-                <a href="./page_maison_edition.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+                <a href="./page_maison_edition.html" class="view-all">Voir tout <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
             </div>
             <div class="maisons-grid">
                 <a href="./page_maison_detail.html?id=glenat" class="maison-card">
                     <img src="../assets/images/logo-glenat.png" alt="Logo Glénat" class="maison-logo">
                     <div class="maison-info">
-                        <h3 class="maison-name">Glénat</h3>
+                        <h2 class="maison-name">Glénat</h2>
                         <p class="maison-series">Dragon Ball, One Piece</p>
                     </div>
                 </a>
                 <a href="./page_maison_detail.html?id=kioon" class="maison-card">
                     <img src="../assets/images/logo_kioon.jpg" alt="Logo Ki-oon" class="maison-logo">
                     <div class="maison-info">
-                        <h3 class="maison-name">Ki-oon</h3>
+                        <h2 class="maison-name">Ki-oon</h2>
                         <p class="maison-series">My Hero Academia, JJK</p>
                     </div>
                 </a>
                 <a href="./page_maison_detail.html?id=kurokawa" class="maison-card">
                     <img src="../assets/images/logo_kurokawa.jpg" alt="Logo Kurokawa" class="maison-logo">
                     <div class="maison-info">
-                        <h3 class="maison-name">Kurokawa</h3>
+                        <h2 class="maison-name">Kurokawa</h2>
                         <p class="maison-series">Naruto, Bleach</p>
                     </div>
                 </a>
                 <a href="./page_maison_detail.html?id=delcourt-tonkam" class="maison-card">
                     <img src="../assets/images/logo-delcourt-tonkam.jpg" alt="Logo Delcourt-Tonkam" class="maison-logo">
                     <div class="maison-info">
-                        <h3 class="maison-name">Delcourt-Tonkam</h3>
+                        <h2 class="maison-name">Delcourt-Tonkam</h2>
                         <p class="maison-series">Vagabond, Berserk</p>
                     </div>
                 </a>
@@ -210,7 +211,7 @@
         <section class="section-nouveautes">
             <div class="section-header">
                 <h2 class="section-title">Dernières Nouveautés</h2>
-                <a href="./page_nouveaute.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+                <a href="./page_nouveaute.html" class="view-all">Voir tout <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
             </div>
             <div class="products-grid" id="grid-nouveautes">
                 <!-- Généré par JS -->
@@ -226,11 +227,11 @@
                     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pc" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse"><rect x="10" y="6" width="28" height="36" rx="3" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/><rect x="16" y="10" width="28" height="36" rx="3" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#pc)"/></svg>
                 </div>
                 <div class="promo-icon-bg">
-                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">inventory_2</span>
                 </div>
                 <div class="promo-content">
                     <span class="promo-tag">Collection</span>
-                    <h3>Coffrets Intégrale</h3>
+                    <h2>Coffrets Intégrale</h2>
                     <p>Offrez-vous l'intégrale de vos séries préférées à prix réduit.</p>
                     <div class="promo-chips">
                         <span class="promo-chip">+30 coffrets</span>
@@ -238,7 +239,7 @@
                     </div>
                     <div class="promo-cta">
                         Voir les coffrets
-                        <span class="material-symbols-outlined">arrow_forward</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
                     </div>
                 </div>
             </a>
@@ -249,11 +250,11 @@
                     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="po" x="0" y="0" width="56" height="56" patternUnits="userSpaceOnUse"><circle cx="28" cy="28" r="20" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/><circle cx="28" cy="28" r="10" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/><circle cx="0" cy="0" r="20" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#po)"/></svg>
                 </div>
                 <div class="promo-icon-bg">
-                    <span class="material-symbols-outlined">recycling</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">recycling</span>
                 </div>
                 <div class="promo-content">
                     <span class="promo-tag">Bons plans</span>
-                    <h3>Mangas d'Occasion</h3>
+                    <h2>Mangas d'Occasion</h2>
                     <p>Des titres en très bon état jusqu'à -40% du prix neuf.</p>
                     <div class="promo-chips">
                         <span class="promo-chip">État vérifié</span>
@@ -261,7 +262,7 @@
                     </div>
                     <div class="promo-cta">
                         Voir les occasions
-                        <span class="material-symbols-outlined">arrow_forward</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
                     </div>
                 </div>
             </a>
@@ -275,34 +276,34 @@
             </div>
             <p class="section-subtitle">Explorez les univers qui te correspondent</p>
             <div class="categories-grid">
-                <div class="category-card" onclick="window.location.href='./page_shonen.html'">
+                <a class="category-card" href="./page_shonen.html">
                     <img src="../assets/images/categorie_shonen.webp" alt="Shōnen">
                     <div class="category-overlay">
                         <span class="category-badge">SHŌNEN</span>
                         <p class="category-description">Aventure, action, combat et amitié pour tous les âges.</p>
                     </div>
-                </div>
-                <div class="category-card" onclick="window.location.href='./page_seinen.html'">
+                </a>
+                <a class="category-card" href="./page_seinen.html">
                     <img src="../assets/images/categorie_seinen.jpg" alt="Seinen">
                     <div class="category-overlay">
                         <span class="category-badge">SEINEN</span>
                         <p class="category-description">Histoires matures, psychologiques et réalistes.</p>
                     </div>
-                </div>
-                <div class="category-card" onclick="window.location.href='./page_shojo.html'">
+                </a>
+                <a class="category-card" href="./page_shojo.html">
                     <img src="../assets/images/categorie_shojo.jpg" alt="Shōjo">
                     <div class="category-overlay">
                         <span class="category-badge">SHŌJO</span>
                         <p class="category-description">Romance, émotions et tranches de vie touchantes.</p>
                     </div>
-                </div>
-                <div class="category-card" onclick="window.location.href='./page_josei.html'">
+                </a>
+                <a class="category-card" href="./page_josei.html">
                     <img src="../assets/images/categorie_josei.jpg" alt="Josei">
                     <div class="category-overlay">
                         <span class="category-badge">JOSEI</span>
                         <p class="category-description">Histoires matures, émotions et tranches de vie pour adultes.</p>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
@@ -310,7 +311,7 @@
         <section class="section-meilleures-ventes">
             <div class="section-header">
                 <h2 class="section-title">Meilleures Ventes</h2>
-                <a href="./page_bestsellers.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+                <a href="./page_bestsellers.html" class="view-all">Voir tout <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
             </div>
             <div class="products-grid" id="grid-bestsellers">
                 <!-- Généré par JS -->
@@ -322,26 +323,26 @@
             <div class="premium-accueil-card">
                 <div class="premium-accueil-content">
                     <span class="premium-accueil-badge">
-                        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1">star</span>
+                        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 1" aria-hidden="true">star</span>
                         Kinka Premium
                     </span>
                     <h2>Votre passeport pour le meilleur du manga</h2>
                     <p>Livraison offerte, remises exclusives et accès anticipé aux coffrets collectors.</p>
                     <div class="premium-accueil-perks">
                         <div class="perk-item">
-                            <span class="material-symbols-outlined">local_shipping</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
                             <span>Livraison offerte</span>
                         </div>
                         <div class="perk-item">
-                            <span class="material-symbols-outlined">sell</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">sell</span>
                             <span>-10% sur tout</span>
                         </div>
                         <div class="perk-item">
-                            <span class="material-symbols-outlined">alarm</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">alarm</span>
                             <span>Accès anticipé</span>
                         </div>
                         <div class="perk-item">
-                            <span class="material-symbols-outlined">support_agent</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
                             <span>Support prioritaire</span>
                         </div>
                     </div>
@@ -358,7 +359,7 @@
                         <div class="pv-ring pv-ring-2"></div>
                         <div class="pv-ring pv-ring-3"></div>
                         <div class="pv-center">
-                            <span class="material-symbols-outlined" style="font-size:2.5rem;font-variation-settings:'FILL' 1;color:#fff">auto_awesome</span>
+                            <span class="material-symbols-outlined" style="font-size:2.5rem;font-variation-settings:'FILL' 1;color:#fff" aria-hidden="true">auto_awesome</span>
                         </div>
                     </div>
                 </div>
@@ -369,7 +370,7 @@
         <section class="section-coupdecoeur">
             <div class="section-header">
                 <h2 class="section-title">Coups de Cœur</h2>
-                <a href="./page_coupdecoeur.html" class="view-all">Voir tout <span class="material-symbols-outlined">arrow_forward</span></a>
+                <a href="./page_coupdecoeur.html" class="view-all">Voir tout <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
             </div>
             <div class="products-grid" id="grid-coupdecoeur">
                 <!-- Généré par JS -->
@@ -380,13 +381,13 @@
         <section class="section-newsletter">
             <div class="newsletter-card">
                 <div class="newsletter-text">
-                    <h3>Restez informé des nouveautés</h3>
+                    <h2>Restez informé des nouveautés</h2>
                     <p>Recevez nos alertes sorties, promotions et exclusivités directement dans votre boîte mail.</p>
                 </div>
                 <div class="newsletter-form">
-                    <input type="email" placeholder="Votre adresse e-mail" class="newsletter-input" id="newsletter-email">
+                    <input type="email" placeholder="Votre adresse e-mail" class="newsletter-input" id="newsletter-email" aria-label="Votre adresse e-mail pour la newsletter">
                     <button class="btn-primary newsletter-btn" onclick="handleNewsletter()">
-                        <span class="material-symbols-outlined">mail</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">mail</span>
                         S'inscrire
                     </button>
                 </div>
@@ -399,13 +400,13 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
             </div>
             <div class="footer-section">
-                <h4>Navigation</h4>
+                <h2>Navigation</h2>
                 <ul>
                     <li><a href="./page_accueil.html">Accueil</a></li>
                     <li><a href="./page_catalogue.html">Catalogue</a></li>
@@ -417,7 +418,7 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Compte</h4>
+                <h2>Compte</h2>
                 <ul>
                     <li><a href="./pageLogIn.html">Connexion</a></li>
                     <li><a href="./pageSignUp.html">Inscription</a></li>
@@ -427,7 +428,7 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Support</h4>
+                <h2>Support</h2>
                 <ul>
                     <li><a href="./page_faq.html">FAQ</a></li>
                     <li><a href="./page_contact.html">Contact</a></li>
@@ -437,7 +438,7 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Nous contacter</h4>
+                <h2>Nous contacter</h2>
                 <p class="contact-info"><a href="mailto:contact@kinka.fr">contact@kinka.fr</a></p>
                 <div class="social-icons">
                     <a href="#" aria-label="Twitter"><img src="../assets/images/icons8-twitter-24.png" alt="Twitter"></a>

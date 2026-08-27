@@ -827,14 +827,14 @@ footer {
     margin-bottom: 3rem;
 }
 
-.footer-section h4 {
+.footer-section h2 {
     font-size: 1.05rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
     transition: all 0.3s ease;
 }
 
-.footer-section:hover h4 {
+.footer-section:hover h2 {
     color: #E03B8B;
     transform: translateX(5px);
 }

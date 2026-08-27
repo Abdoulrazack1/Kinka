@@ -39,7 +39,9 @@ function syncFavButtons() {                                          // met les 
     document.querySelectorAll('.card-fav-btn, .add-to-fav').forEach(function(btn) { // pour chaque bouton favori
         var card = btn.closest('[data-id]');                       // carte parente porteuse de l'id
         if (!card) return;                                         // pas d'id : rien
-        btn.classList.toggle('active', favs.includes(card.dataset.id)); // actif si l'id est dans les favoris
+        var estFav = favs.includes(card.dataset.id);           // l'id est-il dans les favoris ?
+        btn.classList.toggle('active', estFav);                // état visuel
+        btn.setAttribute('aria-pressed', estFav ? 'true' : 'false'); // état annoncé au lecteur d'écran
     });
 }
 

@@ -177,7 +177,7 @@ function destinationDemandee() {
         // Même destination pour ne pas révéler l'existence d'un email
         window.location.href = './page_confirmationmdp.html?etat=envoye&email=' + encodeURIComponent(email); // anti-énumération
       } finally {                                                  // dans tous les cas
-        if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined">send</span> Envoyer le lien de réinitialisation'; } // restaure le bouton
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">send</span> Envoyer le lien de réinitialisation'; } // restaure le bouton
       }
     });
   }

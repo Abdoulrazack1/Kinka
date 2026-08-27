@@ -446,7 +446,7 @@
 .securite-dot.ok   { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.2); }
 .securite-dot.warn { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,.2); }
 .securite-danger-zone { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid #fecaca; }
-.securite-danger-zone h5 { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #ef4444; margin: 0 0 .75rem; }
+.securite-danger-zone h4 { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #ef4444; margin: 0 0 .75rem; }
 .btn-danger { display: inline-flex; align-items: center; gap: .45rem; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 999px; padding: .55rem 1.1rem; font-size: .8rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
 .btn-danger:hover { background: #fee2e2; border-color: #f87171; }
 .btn-danger .material-symbols-outlined { font-size: 1rem; }
@@ -459,7 +459,7 @@
   border-radius: 16px; color: var(--text-muted); gap: .6rem;
 }
 .profil-empty-state .material-symbols-outlined { font-size: 2.5rem; color: var(--text-light); }
-.profil-empty-state h4 { font-size: .95rem; font-weight: 700; color: var(--text); margin: 0; }
+.profil-empty-state h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin: 0; }
 .profil-empty-state p  { font-size: .82rem; max-width: 300px; margin: 0; }
 .profil-empty-state .btn-primary { margin-top: .5rem; }
 
@@ -634,7 +634,7 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
 .profil-empty-state .material-symbols-outlined {
   font-size: 3rem; color: var(--border);
 }
-.profil-empty-state h4 {
+.profil-empty-state h3 {
   font-size: 1rem; font-weight: 700; color: var(--text); margin: 0;
 }
 .profil-empty-state p {
@@ -660,7 +660,7 @@ body.dark-mode .profil-empty-state { background: var(--bg-subtle); }
   margin-top: 1.5rem; padding-top: 1.25rem;
   border-top: 1px dashed rgba(239,68,68,.3);
 }
-.securite-danger-zone h5 {
+.securite-danger-zone h4 {
   font-size: .78rem; font-weight: 700;
   color: #ef4444; text-transform: uppercase; letter-spacing: .05em;
   margin: 0 0 .75rem;

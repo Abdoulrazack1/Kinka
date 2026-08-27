@@ -265,7 +265,7 @@
 .me-other-logo img {
     max-width: 100%; max-height: 100%; object-fit: contain;
 }
-.me-other-info h4 {
+.me-other-info h3 {
     font-size: .82rem; font-weight: 700;
     color: var(--text); margin-bottom: .1rem;
 }

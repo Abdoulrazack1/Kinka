@@ -111,7 +111,7 @@ body.dark-mode .breadcrumb-separator { color: var(--text-light) !important; }
    4. FOOTER — commun
 ══════════════════════════════════════════════════════════════ */
 body.dark-mode footer { background: #0a0c12 !important; border-top-color: var(--border) !important; }
-body.dark-mode .footer-section h4 { color: var(--text) !important; }
+body.dark-mode .footer-section h2 { color: var(--text) !important; }
 body.dark-mode .footer-description { color: var(--text-muted) !important; }
 body.dark-mode .footer-section ul li a { color: var(--text-muted) !important; }
 body.dark-mode .footer-section ul li a:hover { color: var(--pink) !important; }
@@ -330,7 +330,7 @@ body.dark-mode .md-serie-link span { background: var(--bg-subtle) !important; co
 body.dark-mode .me-other-card { background: var(--bg-card) !important; border-color: var(--border) !important; }
 body.dark-mode .me-other-card:hover { border-color: var(--pink-light) !important; }
 body.dark-mode .me-other-logo { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
-body.dark-mode .me-other-info h4 { color: var(--text) !important; }
+body.dark-mode .me-other-info h3 { color: var(--text) !important; }
 body.dark-mode .me-other-info p { color: var(--text-muted) !important; }
 
 /* ══════════════════════════════════════════════════════════════
@@ -715,9 +715,9 @@ body.dark-mode .form-card { background: var(--bg-card) !important; border-color:
 body.dark-mode .reset-form-container h2,
 body.dark-mode .form-header { color: var(--text) !important; border-bottom-color: var(--border) !important; }
 body.dark-mode .stat-box { background: var(--bg-card) !important; border-color: var(--border) !important; }
-body.dark-mode .stat-box h3 { color: var(--text-muted) !important; }
+body.dark-mode .stat-box h2 { color: var(--text-muted) !important; }
 body.dark-mode .security-tip { background: var(--bg-subtle) !important; border-color: var(--border) !important; }
-body.dark-mode .tip-content h4 { color: var(--text) !important; }
+body.dark-mode .tip-content h3 { color: var(--text) !important; }
 body.dark-mode .tip-content p { color: var(--text-muted) !important; }
 body.dark-mode .timer-info { color: var(--text-muted) !important; }
 
@@ -834,7 +834,7 @@ body.dark-mode .abo-tag-collector {
   color: #a78bfa !important;
   border-color: rgba(139,92,246,.3) !important;
 }
-body.dark-mode .securite-danger-zone h5 { color: #f87171 !important; }
+body.dark-mode .securite-danger-zone h4 { color: #f87171 !important; }
 body.dark-mode .btn-danger:hover { background: rgba(239,68,68,.2) !important; border-color: rgba(239,68,68,.5) !important; }
 body.dark-mode .profil-section-title,
 body.dark-mode .profil-section-title small { color: var(--text-muted) !important; }
@@ -1491,7 +1491,7 @@ body.dark-mode .filter-tag:hover,
 body.dark-mode .footer-section p a,
 body.dark-mode .footer-section ul a:hover,
 body.dark-mode .footer-section ul li a:hover,
-body.dark-mode .footer-section:hover h4,
+body.dark-mode .footer-section:hover h2,
 body.dark-mode .forgot-password,
 body.dark-mode .form-checkbox:hover label,
 body.dark-mode .form-group:hover label,

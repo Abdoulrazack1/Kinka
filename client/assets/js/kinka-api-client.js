@@ -310,7 +310,7 @@ window.showToast = function(message, type = 'success', duration = 3000) { // aff
   toast.setAttribute('role', type === 'error' ? 'alert' : 'status'); // rôle ARIA
   toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite'); // priorité d'annonce
   const icons = { success: 'check_circle', error: 'error', info: 'info', warning: 'warning' }; // icône par type
-  toast.innerHTML = `<span class="material-symbols-outlined" style="font-size:1.1rem;flex-shrink:0">${icons[type]||'info'}</span><span></span>`; // icône + emplacement texte
+  toast.innerHTML = `<span class="material-symbols-outlined" style="font-size:1.1rem;flex-shrink:0" aria-hidden="true">${icons[type]||'info'}</span><span></span>`; // icône + emplacement texte
   // Texte injecté avec textContent pour éviter XSS
   toast.querySelector('span:last-child').textContent = String(message || ''); // texte sûr (pas d'injection HTML)
   // Les couleurs ne sont plus posées ici : elles appartiennent aux classes
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function initCookieBanner() { // b
     font-size:.84rem;
   `;                                                            // style de la bannière (fixée en bas)
   banner.innerHTML = `
-    <span class="material-symbols-outlined" style="color:var(--pink,#e03b8b);flex-shrink:0">cookie</span>
+    <span class="material-symbols-outlined" style="color:var(--pink,#e03b8b);flex-shrink:0" aria-hidden="true">cookie</span>
     <p style="margin:0;flex:1;color:var(--text-muted,rgba(255,255,255,.7))">
       Nous utilisons des cookies pour mémoriser votre connexion, vos préférences et votre panier.
       <a href="./page_cgu.html" style="color:var(--pink,#e03b8b);text-decoration:none">En savoir plus</a>

@@ -37,15 +37,15 @@
 <body>
     <!-- HEADER -->
     <header>
-        <nav>
+        <nav aria-label="Navigation principale">
             <a href="./page_accueil.html" class="logo">
-                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                 <span class="logo-text">KINKA<span class="fr">.FR</span></span>
             </a>
             
             <div class="search-bar">
-                <span class="material-symbols-outlined search-icon">search</span>
-                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+                <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off" aria-label="Rechercher un manga ou un auteur">
             </div>
             
                         <div class="nav-menu">
@@ -56,16 +56,16 @@
             </div>
             
                                     <div class="nav-actions">
-                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn">
-                    <span class="material-symbols-outlined">favorite</span>
+                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" title="Mes favoris" id="favoris-btn" aria-label="Mes favoris">
+                    <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
                     <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
-                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil">
-                    <span class="material-symbols-outlined">person</span>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" title="Mon profil" aria-label="Mon profil">
+                    <span class="material-symbols-outlined" aria-hidden="true">person</span>
                 </button>
                 <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
-                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier">
-                    <span class="material-symbols-outlined">shopping_cart</span>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" title="Mon panier" aria-label="Mon panier">
+                    <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                     <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
             </div>
@@ -85,7 +85,7 @@
         <div class="success-card">
             
             <div class="success-icon">
-                <span class="material-symbols-outlined">check</span>
+                <span class="material-symbols-outlined" aria-hidden="true">check</span>
             </div>
 
             <h1 id="cmdp-titre">Mot de passe mis à jour</h1>
@@ -108,14 +108,14 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                    <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique de référence<br>pour l'achat de mangas neufs<br>et d'occasion en France.</p>
             </div>
 
             <div class="footer-section">
-                <h4>Navigation</h4>
+                <h2>Navigation</h2>
                 <ul>
                     <li><a href="./page_accueil.html">Accueil</a></li>
                     <li><a href="./page_catalogue.html">Catalogue</a></li>
@@ -126,7 +126,7 @@
             </div>
 
             <div class="footer-section">
-                <h4>Compte</h4>
+                <h2>Compte</h2>
                 <ul>
                     <li><a href="./pageLogIn.html">Connexion</a></li>
                     <li><a href="./pageSignUp.html">Inscription</a></li>
@@ -136,7 +136,7 @@
             </div>
 
             <div class="footer-section">
-                <h4>Support</h4>
+                <h2>Support</h2>
                 <ul>
                     <li><a href="./page_faq.html">FAQ</a></li>
                     <li><a href="./page_contact.html">Formulaire de contact</a></li>
@@ -147,7 +147,7 @@
             </div>
 
             <div class="footer-section">
-                <h4>Nous contacter</h4>
+                <h2>Nous contacter</h2>
                 <p class="contact-info"><a href="mailto:contact@kinka.fr">contact@kinka.fr</a></p>
                 <div class="social-icons">
                     <a href="#"><img src="../assets/images/icons8-twitter-24.png" alt="Twitter"></a>

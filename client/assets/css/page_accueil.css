@@ -70,7 +70,7 @@
   padding: 0.3rem 0.8rem; border-radius: var(--radius-pill);
   margin-bottom: 0.85rem;
 }
-.hero-content h1 {
+.hero-content h2 {
   font-family: var(--font-display); font-size: clamp(1.6rem,3.5vw,2.4rem);
   font-weight: 800; line-height: 1.15; color: white; margin-bottom: 0.85rem;
   text-shadow: 0 2px 20px rgba(0,0,0,0.3);
@@ -202,7 +202,7 @@
   width: fit-content;
 }
 
-.promo-content h3 {
+.promo-content h2 {
   font-size: 1.45rem; font-weight: 900; color: #fff;
   letter-spacing: -.04em; line-height: 1.1;
   margin-bottom: .45rem;
@@ -283,7 +283,7 @@
 @media (max-width: 768px) {
   .hero-banner { height: 280px; border-radius: 12px; margin-bottom: 2rem; }
   .hero-content { padding: 1.5rem; }
-  .hero-content h1 { font-size: 1.4rem; }
+  .hero-content h2 { font-size: 1.4rem; }
   .promo-sections { grid-template-columns: 1fr; }
   .promo-card { min-height: 180px; }
   .promo-content { min-height: 180px; padding: 1.5rem 1.75rem; }
@@ -347,7 +347,7 @@
   display: flex; align-items: center; justify-content: space-between; gap: 2rem;
   flex-wrap: wrap;
 }
-.newsletter-text h3 { color: white; font-size: 1.3rem; font-weight: 800; margin-bottom: .35rem; }
+.newsletter-text h2 { color: white; font-size: 1.3rem; font-weight: 800; margin-bottom: .35rem; }
 .newsletter-text p  { color: rgba(255,255,255,.75); font-size: .85rem; max-width: 400px; }
 .newsletter-form { display: flex; gap: .6rem; flex-shrink: 0; }
 .newsletter-input {

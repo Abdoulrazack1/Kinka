@@ -32,14 +32,14 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav aria-label="Navigation principale">
             <a href="./page_accueil.html" class="logo">
-                <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo Kinka" class="logo-image">
+                <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                 <span class="logo-text">KINKA<span class="fr">.FR</span></span>
             </a>
             <div class="search-bar">
-                <span class="material-symbols-outlined search-icon">search</span>
-                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off">
+                <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+                <input type="text" placeholder="Rechercher un manga, un auteur..." id="search-input" autocomplete="off" aria-label="Rechercher un manga ou un auteur">
             </div>
             <div class="nav-menu">
                 <a href="./page_accueil.html">Accueil</a>
@@ -48,16 +48,16 @@
                 <a href="./page_annonces.html">Annonces</a>
             </div>
             <div class="nav-actions">
-                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" id="favoris-btn">
-                    <span class="material-symbols-outlined">favorite</span>
+                <button class="icon-btn" onclick="window.location.href='./page_favoris.html'" id="favoris-btn" aria-label="Mes favoris">
+                    <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
                     <span class="nav-badge" id="favoris-count" style="display:none">0</span>
                 </button>
-                <button class="icon-btn" onclick="window.location.href='./page_profil.html'">
-                    <span class="material-symbols-outlined">person</span>
+                <button class="icon-btn" onclick="window.location.href='./page_profil.html'" aria-label="Mon profil">
+                    <span class="material-symbols-outlined" aria-hidden="true">person</span>
                 </button>
                 <button class="connect-btn" onclick="window.location.href='./pageLogIn.html'">Se connecter</button>
-                <button class="icon-btn" onclick="window.location.href='./page_panier.html'">
-                    <span class="material-symbols-outlined">shopping_cart</span>
+                <button class="icon-btn" onclick="window.location.href='./page_panier.html'" aria-label="Mon panier">
+                    <span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
                     <span class="panier-count" id="panier-count" style="display:none">0</span>
                 </button>
             </div>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="md-hero-actions">
                     <a id="md-site" href="#" target="_blank" rel="noopener" class="btn-secondary">
-                        <span class="material-symbols-outlined">open_in_new</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
                         Site officiel
                     </a>
                 </div>
@@ -117,13 +117,13 @@
             <!-- SIDEBAR -->
             <aside class="md-sidebar">
                 <div class="md-sidebar-card">
-                    <h3 class="md-sidebar-title">Séries phares</h3>
-                    <nav class="md-series-nav" id="md-series-nav"></nav>
+                    <h2 class="md-sidebar-title">Séries phares</h2>
+                    <nav class="md-series-nav" id="md-series-nav" aria-label="Séries de la maison d’édition"></nav>
                 </div>
                 <div class="md-sidebar-card md-newsletter">
-                    <h3 class="md-sidebar-title">Alertes sorties</h3>
+                    <h2 class="md-sidebar-title">Alertes sorties</h2>
                     <p>Recevez les nouvelles parutions de cette maison en avant-première.</p>
-                    <input type="email" class="form-input" placeholder="votre@email.fr" style="font-size:.8rem;margin-bottom:.6rem">
+                    <input type="email" class="form-input" placeholder="votre@email.fr" style="font-size:.8rem;margin-bottom:.6rem" aria-label="Votre adresse e-mail">
                     <button class="btn-primary" style="width:100%;font-size:.8rem" onclick="if(typeof showToast==='function')showToast('Inscription confirmée !')">S'abonner</button>
                 </div>
             </aside>
@@ -133,8 +133,8 @@
                 <div class="md-content-header">
                     <span class="md-count" id="md-count">— titres</span>
                     <div class="md-sort">
-                        <label style="font-size:.78rem;color:var(--text-muted)">Trier</label>
-                        <select id="md-sort" class="form-input" style="width:auto;padding:.4rem .75rem;font-size:.8rem">
+                        <label style="font-size:.78rem;color:var(--text-muted)" for="md-sort">Trier</label>
+                        <select id="md-sort" class="form-input" style="width:auto;padding:.4rem .75rem;font-size:.8rem" aria-label="Trier les séries">
                             <option value="">Pertinence</option>
                             <option value="prix_asc">Prix croissant</option>
                             <option value="prix_desc">Prix décroissant</option>
@@ -146,7 +146,7 @@
 
                 <div class="products-grid" id="md-grid"></div>
                 <div class="cat-empty" id="md-empty" style="display:none">
-                    <span class="material-symbols-outlined">search_off</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
                     <p>Aucun titre disponible pour cette sélection.</p>
                 </div>
             </div>
@@ -157,19 +157,19 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="../assets/images/LogoProjetFilRouge.png" alt="Logo" class="logo-image">
+                    <img src="../assets/images/LogoProjetFilRouge.png" alt="" class="logo-image">
                     <span class="logo-text">KINKA<span class="fr">.FR</span></span>
                 </div>
                 <p class="footer-description">Votre boutique manga de référence.</p>
                 <p class="contact-info"><a href="mailto:contact@kinka.fr">contact@kinka.fr</a></p>
             </div>
-            <div class="footer-section"><h4>Maisons</h4><ul>
+            <div class="footer-section"><h2>Maisons</h2><ul>
                 <li><a href="./page_maison_detail.html?id=glenat">Glénat</a></li>
                 <li><a href="./page_maison_detail.html?id=kioon">Ki-oon</a></li>
                 <li><a href="./page_maison_detail.html?id=kurokawa">Kurokawa</a></li>
                 <li><a href="./page_maison_detail.html?id=delcourt-tonkam">Delcourt-Tonkam</a></li>
             </ul></div>
-            <div class="footer-section"><h4>Support</h4><ul>
+            <div class="footer-section"><h2>Support</h2><ul>
                 <li><a href="./page_faq.html">FAQ</a></li>
                 <li><a href="./page_contact.html">Contact</a></li>
                 <li><a href="./page_cgv.html">CGV</a></li>

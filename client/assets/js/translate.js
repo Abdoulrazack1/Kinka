@@ -1655,12 +1655,12 @@ function _patchDynamicFunctions() {
             return `
         <div class="panier-vide">
             <div class="panier-vide-icon">
-                <span class="material-symbols-outlined" style="font-size:5rem">shopping_cart</span>
+                <span class="material-symbols-outlined" style="font-size:5rem" aria-hidden="true">shopping_cart</span>
             </div>
             <h2>Your cart is empty</h2>
             <p>Explore our catalog and add your favorite manga</p>
             <a href="./page_catalogue.html" class="btn-primary">
-                <span class="material-symbols-outlined">explore</span>
+                <span class="material-symbols-outlined" aria-hidden="true">explore</span>
                 Explore the catalog
             </a>
         </div>`;
@@ -1695,13 +1695,13 @@ function _patchDynamicFunctions() {
                 <div class="livraison-bar-wrap">
                     <div class="livraison-bar" style="width:${Math.min(100,(total/50)*100).toFixed(0)}%"></div>
                 </div>
-            </div>` : `<p class="livraison-gratuite"><span class="material-symbols-outlined">local_shipping</span> Free shipping!</p>`}
+            </div>` : `<p class="livraison-gratuite"><span class="material-symbols-outlined" aria-hidden="true">local_shipping</span> Free shipping!</p>`}
             <div class="resume-ligne total">
                 <span>Total (incl. tax)</span>
                 <span><strong>${totalFinal} €</strong></span>
             </div>
             <button class="btn-primary btn-commander">
-                <span class="material-symbols-outlined">lock</span>
+                <span class="material-symbols-outlined" aria-hidden="true">lock</span>
                 Place order
             </button>
             <a href="./page_catalogue.html" class="continuer-achats">← Continue shopping</a>
@@ -1717,12 +1717,12 @@ function _patchDynamicFunctions() {
             if (!el) return;
             if (p.stock > 0) {
                 el.innerHTML = p.stock <= 3
-                    ? `<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Only ${p.stock} copy${p.stock > 1 ? 'ies' : ''} left</strong> — order now!`
-                    : `<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>${p.stock} copies</strong> available — ships within 48h`;
+                    ? `<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle" aria-hidden="true">warning</span> <strong>Only ${p.stock} copy${p.stock > 1 ? 'ies' : ''} left</strong> — order now!`
+                    : `<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle" aria-hidden="true">check_circle</span> <strong>${p.stock} copies</strong> available — ships within 48h`;
                 el.style.borderColor = p.stock <= 3 ? 'rgba(245,158,11,.3)' : 'rgba(34,197,94,.3)';
                 el.style.background  = p.stock <= 3 ? 'rgba(245,158,11,.05)' : 'rgba(34,197,94,.05)';
             } else {
-                el.innerHTML = `<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle">cancel</span> <strong>Out of stock</strong> — check back soon!`;
+                el.innerHTML = `<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle" aria-hidden="true">cancel</span> <strong>Out of stock</strong> — check back soon!`;
                 el.style.borderColor = 'rgba(239,68,68,.3)';
                 el.style.background  = 'rgba(239,68,68,.05)';
             }
@@ -1796,11 +1796,11 @@ function _patchDynamicFunctions() {
             const c = document.getElementById('produit-container') || document.querySelector('main');
             if (!c) return;
             c.innerHTML = `<div style="text-align:center;padding:5rem 2rem">
-                <span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem">error</span>
+                <span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem" aria-hidden="true">error</span>
                 <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:.5rem">${translateText(msg) || msg}</h2>
                 <p style="color:var(--text-muted);margin-bottom:1.5rem">The product you're looking for doesn't exist or has been removed.</p>
                 <a href="./page_catalogue.html" class="btn-primary" style="display:inline-flex">
-                    <span class="material-symbols-outlined">arrow_back</span> Back to catalog
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Back to catalog
                 </a>
             </div>`;
         };

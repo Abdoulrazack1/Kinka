@@ -292,7 +292,7 @@ header:hover {
     border-color: #E03B8B;
 }
 
-.stat-box h3 {
+.stat-box h2 {
     font-size: 0.85rem;
     color: #666;
     margin-bottom: 0.5rem;
@@ -331,7 +331,7 @@ header:hover {
     transform: rotate(360deg);
 }
 
-.tip-content h4 {
+.tip-content h3 {
     font-size: 0.95rem;
     font-weight: 600;
     color: #1a1a1a;
@@ -581,14 +581,14 @@ footer {
     margin-bottom: 2.5rem;
 }
 
-.footer-section h4 {
+.footer-section h2 {
     font-size: 1rem;
     margin-bottom: 1.2rem;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
-.footer-section:hover h4 {
+.footer-section:hover h2 {
     color: #E03B8B;
 }
 

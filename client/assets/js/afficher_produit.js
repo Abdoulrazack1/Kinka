@@ -75,9 +75,9 @@ function genererEtoiles(note) {                                      // rend une
     var pleines = Math.floor(n);                                   // nombre d'étoiles pleines
     var demie = n % 1 >= 0.5 ? 1 : 0;                              // demi-étoile éventuelle
     var html = '<div class="product-rating"><span class="stars">'; // début du bloc
-    for (var i = 0; i < pleines; i++) html += '<span class="material-symbols-outlined filled">star</span>'; // étoiles pleines
-    if (demie) html += '<span class="material-symbols-outlined filled">star_half</span>'; // demi-étoile
-    for (var j = pleines + demie; j < 5; j++) html += '<span class="material-symbols-outlined">star_outline</span>'; // vides jusqu'à 5
+    for (var i = 0; i < pleines; i++) html += '<span class="material-symbols-outlined filled" aria-hidden="true">star</span>'; // étoiles pleines
+    if (demie) html += '<span class="material-symbols-outlined filled" aria-hidden="true">star_half</span>'; // demi-étoile
+    for (var j = pleines + demie; j < 5; j++) html += '<span class="material-symbols-outlined" aria-hidden="true">star_outline</span>'; // vides jusqu'à 5
     return html + '</span><span class="rating-text">' + note + '/5</span></div>'; // note textuelle + fermeture
 }
 
@@ -106,12 +106,12 @@ function afficherDisponibilite(produit) {                          // affiche l'
     var el = getById('produit-disponibilite'); if (!el) return;    // conteneur absent : rien
     if (produit.stock > 0) {                                       // en stock
         el.innerHTML = produit.stock <= 3                          // stock faible ?
-            ? '<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle">warning</span> <strong>Plus que ' + produit.stock + ' exemplaire' + (produit.stock > 1 ? 's' : '') + '</strong>' // alerte stock bas
-            : '<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle">check_circle</span> <strong>' + produit.stock + ' exemplaires</strong> disponibles'; // stock confortable
+            ? '<span class="material-symbols-outlined" style="font-size:.95rem;color:#f59e0b;vertical-align:middle" aria-hidden="true">warning</span> <strong>Plus que ' + produit.stock + ' exemplaire' + (produit.stock > 1 ? 's' : '') + '</strong>' // alerte stock bas
+            : '<span class="material-symbols-outlined" style="font-size:.95rem;color:#22c55e;vertical-align:middle" aria-hidden="true">check_circle</span> <strong>' + produit.stock + ' exemplaires</strong> disponibles'; // stock confortable
         el.style.borderColor = produit.stock <= 3 ? 'rgba(245,158,11,.3)' : 'rgba(34,197,94,.3)'; // bordure selon stock
         el.style.background  = produit.stock <= 3 ? 'rgba(245,158,11,.05)' : 'rgba(34,197,94,.05)'; // fond selon stock
     } else {                                                       // rupture
-        el.innerHTML = '<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle">cancel</span> <strong>Rupture de stock</strong>'; // message rupture
+        el.innerHTML = '<span class="material-symbols-outlined" style="font-size:.95rem;color:#ef4444;vertical-align:middle" aria-hidden="true">cancel</span> <strong>Rupture de stock</strong>'; // message rupture
         el.style.borderColor = 'rgba(239,68,68,.3)';               // bordure rouge
         el.style.background  = 'rgba(239,68,68,.05)';              // fond rouge
     }
@@ -200,7 +200,7 @@ function initBoutonPanier(produit) {                              // gère le bo
     var btn = getById('btn-ajouter-panier'); if (!btn) return;   // bouton absent : rien
     if (produit.stock === 0) {                                   // rupture de stock
         btn.disabled = true;                                    // désactive le bouton
-        btn.innerHTML = '<span class="material-symbols-outlined">remove_shopping_cart</span> Indisponible'; // libellé indispo
+        btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">remove_shopping_cart</span> Indisponible'; // libellé indispo
         return;                                                 // terminé
     }
     btn.addEventListener('click', async function() {            // au clic
@@ -215,7 +215,7 @@ function initBoutonPanier(produit) {                              // gère le bo
                : false;                                        // sinon échec
         } catch (_) { ok = false; }                            // erreur : échec
         if (ok) {                                              // succès
-            btn.innerHTML = '<span class="material-symbols-outlined">check</span> Ajouté !'; // feedback "ajouté"
+            btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">check</span> Ajouté !'; // feedback "ajouté"
             btn.classList.add('btn-success');                 // style succès
             setTimeout(function() {                            // après 2 s
                 btn.innerHTML = contenuOrigine;               // restaure le contenu
@@ -256,8 +256,8 @@ function afficherErreur(message) {                               // affiche un m
     var container = getById('produit-container') || document.querySelector('main'); // conteneur cible
     if (!container) return;                                     // absent : rien
     container.innerHTML = '<div style="text-align:center;padding:5rem 2rem">' // bloc centré
-        + '<span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem">error</span>' // icône erreur
+        + '<span class="material-symbols-outlined" style="font-size:4rem;color:var(--pink);display:block;margin-bottom:1rem" aria-hidden="true">error</span>' // icône erreur
         + '<h2>' + escapeHtml(message) + '</h2>'               // message échappé
         + '<a href="./page_catalogue.html" class="btn-primary" style="display:inline-flex;margin-top:1.5rem">' // bouton retour
-        + '<span class="material-symbols-outlined">arrow_back</span> Retour au catalogue</a></div>'; // lien catalogue
+        + '<span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Retour au catalogue</a></div>'; // lien catalogue
 }

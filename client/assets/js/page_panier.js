@@ -33,12 +33,12 @@ function genererPanierVide() {                                        // HTML de
     return `
         <div class="panier-vide">
             <div class="panier-vide-icon">
-                <span class="material-symbols-outlined" style="font-size:5rem">shopping_cart</span>
+                <span class="material-symbols-outlined" style="font-size:5rem" aria-hidden="true">shopping_cart</span>
             </div>
             <h2>Votre panier est vide</h2>
             <p>Découvrez notre catalogue et ajoutez vos mangas préférés</p>
             <a href="./page_catalogue.html" class="btn-primary">
-                <span class="material-symbols-outlined">explore</span>Découvrir le catalogue
+                <span class="material-symbols-outlined" aria-hidden="true">explore</span>Découvrir le catalogue
             </a>
         </div>`;                                                     // gabarit HTML du panier vide
 }
@@ -79,7 +79,7 @@ function genererItemPanier(produit) {                                 // HTML d'
                     <button class="btn-augmenter" data-id="${id}" aria-label="Augmenter">+</button>
                 </div>
                 <button class="btn-supprimer" data-id="${id}">
-                    <span class="material-symbols-outlined">delete</span> Retirer
+                    <span class="material-symbols-outlined" aria-hidden="true">delete</span> Retirer
                 </button>
             </div>
         </div>`;                                                     // gabarit HTML : image, infos, contrôles quantité, suppression
@@ -109,7 +109,7 @@ function genererResume(panierData) {                                 // HTML du 
                 <span><strong>${totalFinal} €</strong></span>
             </div>
             <button class="btn-primary btn-commander">
-                <span class="material-symbols-outlined">lock</span>Passer la commande
+                <span class="material-symbols-outlined" aria-hidden="true">lock</span>Passer la commande
             </button>
             <a href="./page_catalogue.html" class="continuer-achats">← Continuer mes achats</a>
         </div>`;                                                     // gabarit HTML du récapitulatif
@@ -125,7 +125,7 @@ function blocLivraisonGratuite(total, fraisPort) {                   // encart p
     if (fraisPort === 0) {                                          // déjà offerte
         return `
             <p class="livraison-gratuite">
-                <span class="material-symbols-outlined">local_shipping</span> Livraison offerte !
+                <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span> Livraison offerte !
             </p>`;                                                  // message "offerte"
     }
     const manque    = formaterPrix(50 - total);                     // montant restant pour l'offrir

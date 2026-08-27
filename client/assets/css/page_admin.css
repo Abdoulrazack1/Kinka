@@ -61,7 +61,7 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
 }
-.admin-entete h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
+.admin-entete h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
 .admin-entete p { color: var(--text-muted); font-size: .9rem; margin-top: .2rem; }
 
 .admin-section { display: none; }
@@ -221,7 +221,7 @@
 .admin-refus .material-symbols-outlined {
     font-size: 3rem; color: var(--text-light); margin-bottom: .5rem;
 }
-.admin-refus h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: .5rem; }
+.admin-refus h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: .5rem; }
 .admin-refus p { color: var(--text-muted); margin-bottom: 1.5rem; }
 
 /* ── Responsive ──────────────────────────────────────────────── */

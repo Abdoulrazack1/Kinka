@@ -603,7 +603,7 @@ header:hover {
     transform: scale(1.1);
 }
 
-.state-content h4 {
+.state-content h3 {
     font-size: 1rem;
     font-weight: 600;
     color: #1a1a1a;
@@ -832,14 +832,14 @@ footer {
     transition: all 0.3s ease;
 }
 
-.footer-section h4 {
+.footer-section h2 {
     font-size: 1rem;
     margin-bottom: 1.2rem;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
-.footer-section:hover h4 {
+.footer-section:hover h2 {
     color: #E03B8B;
 }
 

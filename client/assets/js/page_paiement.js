@@ -34,7 +34,7 @@
         }
         if (totalEl) totalEl.textContent = fmt(total);            // affiche le total
         if (payButton) payButton.innerHTML =                      // met à jour le libellé du bouton payer
-            '<span class="material-symbols-outlined">lock</span> Payer ' + fmt(total); // "Payer X €"
+            '<span class="material-symbols-outlined" aria-hidden="true">lock</span> Payer ' + fmt(total); // "Payer X €"
     }
 
     // ── Récupération du panier à facturer ─────────────────────────
@@ -201,7 +201,7 @@
             }
 
             payButton.disabled = true;                          // désactive le bouton
-            payButton.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Traitement…'; // état "en cours"
+            payButton.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">hourglass_top</span> Traitement…'; // état "en cours"
             try {                                               // tentative de création de commande
                 const commande = await KinkaAPI.commandes.create({ adresse_livraison: adresseVal }); // POST /api/commandes
                 localStorage.setItem('kinka_last_order', JSON.stringify(commande)); // garde la dernière commande
@@ -211,7 +211,7 @@
             } catch(err) {                                      // erreur
                 if (typeof showToast === 'function') showToast(err.message || 'Erreur lors du paiement.', 'error'); // message d'erreur
                 payButton.disabled = false;                     // réactive le bouton
-                payButton.innerHTML = '<span class="material-symbols-outlined">lock</span> Réessayer'; // libellé "réessayer"
+                payButton.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">lock</span> Réessayer'; // libellé "réessayer"
             }
         });
     }
