@@ -1387,103 +1387,127 @@ window._kinka_patchDynamicFunctions = function() {
 };
 
 // Dictionnaire rapide EN uniquement (lookup O(1)) utilisé par translateStr()
-window._kinkaEN = null;
+window._kinkaEN = null;                                            // rempli à la première demande
 function _getEN() {
-    if (window._kinkaEN) return window._kinkaEN;
-    window._kinkaEN = translations;
+    if (window._kinkaEN) return window._kinkaEN;                  // déjà construit : on le rend
+    window._kinkaEN = translations;                               // sinon on mémorise la référence
     return window._kinkaEN;
 }
 
 // Helper global exposé pour usage dans les JS dynamiques
 window.tr = function(txt) {
-    if (!txt || typeof txt !== 'string') return txt;
-    if (currentLang !== 'en') return txt;
-    const t = translateText(txt);
-    return t || txt;
+    if (!txt || typeof txt !== 'string') return txt;              // nombre, null, undefined : inchangé
+    if (currentLang !== 'en') return txt;                         // en français, rien à faire
+    const t = translateText(txt);                                 // cherche dans le dictionnaire
+    return t || txt;                                              // absent : on rend le texte d'origine
 };
 
 
 // ============================================================
 // ÉTAT
 // ============================================================
-let currentLang = localStorage.getItem('kinka_lang') || 'fr';
+let currentLang = localStorage.getItem('kinka_lang') || 'fr';      // langue retenue, français par défaut
 
-// Cache de lookup normalisé pour éviter les faux manquements dus aux espaces
-let _normIndex = null;
+// Cache de lookup normalisé pour éviter les faux manquements dus aux espaces.
+//
+// Le même texte peut arriver du HTML avec une indentation, un retour à la
+// ligne ou une espace double — « Voir tout » et « Voir  tout » sont deux clés
+// différentes pour un objet JavaScript. On construit donc une fois un index
+// où chaque clé est normalisée, et on s'en sert en dernier recours.
+let _normIndex = null;                                             // construit à la première recherche
 function getNormIndex() {
-    if (_normIndex) return _normIndex;
-    _normIndex = new Map();
-    for (const [fr] of Object.entries(translations)) {
-        _normIndex.set(fr.trim().replace(/\s+/g, ' '), fr);
+    if (_normIndex) return _normIndex;                            // déjà en cache
+    _normIndex = new Map();                                       // Map : clé normalisée -> clé d'origine
+    for (const [fr] of Object.entries(translations)) {            // parcourt les 1154 entrées, une fois
+        _normIndex.set(fr.trim().replace(/\s+/g, ' '), fr);       // trim + espaces multiples réduites à une
     }
     return _normIndex;
 }
 
+// Trois tentatives, de la moins chère à la plus chère.
 function translateText(txt) {
     if (!txt) return null;
     // Exact match
-    if (translations[txt]) return translations[txt];
+    if (translations[txt]) return translations[txt];              // 1 · correspondance stricte, O(1)
     // Normalized match (trim + collapse whitespace)
-    const norm = txt.trim().replace(/\s+/g, ' ');
-    if (translations[norm]) return translations[norm];
-    const origKey = getNormIndex().get(norm);
-    if (origKey) return translations[origKey];
-    return null;
+    const norm = txt.trim().replace(/\s+/g, ' ');                 // 2 · on normalise le texte reçu
+    if (translations[norm]) return translations[norm];            //     et on retente tel quel
+    const origKey = getNormIndex().get(norm);                     // 3 · sinon on passe par l'index
+    if (origKey) return translations[origKey];                    //     qui rend la clé d'origine
+    return null;                                                  // introuvable : l'appelant garde le français
 }
 
 // ============================================================
 // MOTEUR DE TRADUCTION v9 — couverture maximale
 // ============================================================
 function applyTranslations(lang) {
+    // Retour au français : l'intention est de restaurer le texte d'origine
+    // mémorisé dans data-i18n-original, plutôt que de traduire en sens inverse
+    // (ce qui ferait dériver le texte à chaque aller-retour).
+    //
+    // DÉFAUT CONNU : cet attribut n'est écrit nulle part dans le projet. Le
+    // sélecteur ne trouve donc aucun élément et cette ligne ne restaure rien —
+    // repasser en français laisse la page en anglais jusqu'au rechargement.
+    // Le correctif tient en une ligne dans walkNode() : mémoriser
+    // node.textContent sur l'élément parent avant de le remplacer.
     if (lang === 'fr') { document.querySelectorAll('[data-i18n-original]').forEach(function(el){el.textContent=el.getAttribute('data-i18n-original');}); return; }
 
     // 1. Attributs data-i18n (priorité absolue)
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
-        const key = el.getAttribute('data-i18n');
+        const key = el.getAttribute('data-i18n');                 // la clé est écrite dans le HTML
         const tr = translateText(key);
         if (tr) {
-            if (el.hasAttribute('data-i18n-attr')) {
-                el.setAttribute(el.getAttribute('data-i18n-attr'), tr);
+            if (el.hasAttribute('data-i18n-attr')) {               // traduire un attribut plutôt que le texte
+                el.setAttribute(el.getAttribute('data-i18n-attr'), tr); // ex. data-i18n-attr="placeholder"
             } else {
-                el.textContent = tr;
+                el.textContent = tr;                               // cas courant : le contenu textuel
             }
         }
     });
 
     // 2. Attributs interactifs — placeholder, title, alt, aria-label, aria-placeholder, data-tooltip
+    // Un lecteur d'écran lit ces attributs : les oublier laisserait la moitié
+    // de l'interface en français pour une personne aveugle passée en anglais.
     const ATTRS = ['placeholder', 'title', 'alt', 'aria-label', 'aria-placeholder', 'data-tooltip', 'data-title', 'value'];
     document.querySelectorAll('[placeholder],[title],[alt],[aria-label],[aria-placeholder],[data-tooltip],[data-title]').forEach(function(el) {
         ATTRS.forEach(function(attr) {
-            if (el.hasAttribute(attr)) {
+            if (el.hasAttribute(attr)) {                          // l'élément porte-t-il cet attribut ?
                 const val = el.getAttribute(attr);
-                if (!val) return;
+                if (!val) return;                                 // attribut vide : rien à traduire
                 const tr = translateText(val);
-                if (tr) el.setAttribute(attr, tr);
+                if (tr) el.setAttribute(attr, tr);                // remplacé seulement si une traduction existe
             }
         });
     });
 
     // 3. Options des <select>
+    // Le walker de l'étape 4 ne les atteint pas : le texte d'une <option> n'est
+    // pas un nœud texte ordinaire du point de vue du parcours.
     document.querySelectorAll('select option').forEach(function(opt) {
         const raw = opt.textContent;
-        if (!raw || !raw.trim()) return;
+        if (!raw || !raw.trim()) return;                          // option vide (« — choisir — »)
         const tr = translateText(raw.trim());
         if (tr) opt.textContent = tr;
     });
 
     // 4. Walker sur tous les nœuds texte du DOM
-    walkNode(document.body);
+    walkNode(document.body);                                      // le gros du travail, voir ci-dessous
 
     // 5. Titre de la page
+    // Le format est « Catalogue - KINKA.FR » : on tente le titre entier, puis
+    // sa première partie seule, pour ne pas avoir à lister toutes les
+    // combinaisons « page - marque » dans le dictionnaire.
     const titleParts = document.title.split(' - ');
     const titleTr = translateText(document.title) || translateText(titleParts[0]);
     if (titleTr) {
         document.title = titleParts.length > 1
             ? titleTr + ' - ' + (translateText(titleParts.slice(1).join(' - ')) || titleParts.slice(1).join(' - '))
-            : titleTr;
+            : titleTr;                                            // un seul morceau : rien à recoller
     }
 
     // 6. Meta description
+    // Invisible à l'écran, mais lue par les moteurs de recherche et les
+    // aperçus de partage : la laisser en français serait incohérent.
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc && metaDesc.content) {
         const tr = translateText(metaDesc.content);
@@ -1493,33 +1517,43 @@ function applyTranslations(lang) {
 
 function walkNode(node) {
     if (!node) return;
-    if (node.nodeType === Node.TEXT_NODE) {
+    if (node.nodeType === Node.TEXT_NODE) {                       // ── un nœud texte : on traduit
         const raw = node.textContent;
-        if (!raw || !raw.trim()) return;
+        if (!raw || !raw.trim()) return;                          // que des espaces : rien à faire
         const trimmed = raw.trim();
         // Tenter traduction directe
         let tr = translateText(trimmed);
         if (tr) {
-            const lead  = raw.match(/^\s*/)[0];
-            const trail = raw.match(/\s*$/)[0];
-            node.textContent = lead + tr + trail;
+            // L'espace autour du texte est significatif en HTML : « Voir » et
+            // « tout » collés donneraient « Voirtout ». On la remet telle quelle.
+            const lead  = raw.match(/^\s*/)[0];                   // espaces avant
+            const trail = raw.match(/\s*$/)[0];                   // espaces après
+            node.textContent = lead + tr + trail;                 // traduction réinsérée entre les deux
             return;
         }
         // Tenter sur le texte sans ponctuation finale si court
+        // « Bienvenue ! » n'est pas dans le dictionnaire, « Bienvenue » si :
+        // plutôt que d'ajouter chaque variante ponctuée, on retire le signe,
+        // on traduit, et on le recolle. Limité aux textes courts pour ne pas
+        // amputer une phrase entière de son point final.
         if (trimmed.length < 120) {
-            const stripped = trimmed.replace(/[!?.,;:]+$/, '');
-            if (stripped !== trimmed) {
+            const stripped = trimmed.replace(/[!?.,;:]+$/, '');   // retire la ponctuation finale
+            if (stripped !== trimmed) {                           // il y en avait bien une
                 const trS = translateText(stripped);
                 if (trS) {
-                    const punct = trimmed.slice(stripped.length);
+                    const punct = trimmed.slice(stripped.length); // le signe retiré, à recoller
                     const lead  = raw.match(/^\s*/)[0];
                     const trail = raw.match(/\s*$/)[0];
                     node.textContent = lead + trS + punct + trail;
                 }
             }
         }
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
+    } else if (node.nodeType === Node.ELEMENT_NODE) {             // ── un élément : on descend
         const tag = node.tagName;
+        // Traduire du code ou une saisie utilisateur le casserait : un extrait
+        // de code n'est pas de la prose, et une <textarea> contient ce que la
+        // personne a tapé. Le bouton de langue s'exclut lui-même, sinon son
+        // propre libellé « EN » serait traduit à chaque bascule.
         if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' || tag === 'PRE' || tag === 'TEXTAREA') return;
         if (node.id === 'translate-toggle') return;
         // Attributs inline sur chaque élément
@@ -1532,41 +1566,46 @@ function walkNode(node) {
                 }
             }
         });
-        node.childNodes.forEach(walkNode);
+        node.childNodes.forEach(walkNode);                        // récursion : tout le sous-arbre
     }
 }
 
 // ============================================================
 // BOUTON TRANSLATE
 // ============================================================
+// Le bouton n'est pas écrit dans les 43 pages : il est créé ici et inséré
+// dans la barre de navigation. Une seule source, donc aucune page ne peut
+// l'oublier ni en avoir une version différente.
 function injectTranslateBtn() {
+    // Deux ancres possibles : « Se connecter » pour un visiteur, le menu
+    // utilisateur pour un membre. La barre n'a jamais les deux à la fois.
     const anchor = document.querySelector('.connect-btn') || document.querySelector('.nav-user-wrap');
-    if (!anchor || document.getElementById('translate-toggle')) return;
+    if (!anchor || document.getElementById('translate-toggle')) return; // pas d'ancre, ou déjà posé
 
     const btn = document.createElement('button');
     btn.id = 'translate-toggle';
-    btn.className = 'icon-btn';
-    btn.title = currentLang === 'fr' ? 'Switch to English' : 'Passer en français';
-    btn.setAttribute('aria-label', btn.title);
+    btn.className = 'icon-btn';                                   // reprend le style des autres icônes
+    btn.title = currentLang === 'fr' ? 'Switch to English' : 'Passer en français'; // rédigé dans la langue d'arrivée
+    btn.setAttribute('aria-label', btn.title);                    // même intitulé pour le lecteur d'écran
     btn.innerHTML = `<span style="font-size:.75rem;font-weight:700;letter-spacing:.04em">${currentLang === 'fr' ? 'EN' : 'FR'}</span>`;
 
     btn.addEventListener('click', function() {
         if (currentLang === 'fr') {
             currentLang = 'en';
-            localStorage.setItem('kinka_lang', 'en');
+            localStorage.setItem('kinka_lang', 'en');             // la langue survit au rechargement
             btn.innerHTML = '<span style="font-size:.75rem;font-weight:700;letter-spacing:.04em">FR</span>';
-            btn.title = 'Passer en français';
+            btn.title = 'Passer en français';                     // le bouton annonce la bascule suivante
             btn.setAttribute('aria-label', btn.title);
-            applyTranslations('en');
-            startMutationObserver();
+            applyTranslations('en');                              // traduit ce qui est déjà à l'écran
+            startMutationObserver();                              // et surveille ce qui arrivera après
         } else {
             currentLang = 'fr';
             localStorage.setItem('kinka_lang', 'fr');
-            applyTranslations('fr');
+            applyTranslations('fr');                              // restaure les textes d'origine
         }
     });
 
-    anchor.parentNode.insertBefore(btn, anchor);
+    anchor.parentNode.insertBefore(btn, anchor);                  // placé juste avant l'ancre trouvée
 }
 
 // ============================================================
@@ -1582,29 +1621,36 @@ window.kinka_translate = function() {
 // ============================================================
 // MUTATION OBSERVER v9 — traduit les nœuds ET attributs injectés
 // ============================================================
-let _observerStarted = false;
+// Le problème que cet observateur résout : applyTranslations() ne traduit que
+// ce qui existe à l'instant où elle passe. Or les cartes produit, les
+// résultats de recherche et les lignes du panier sont fabriqués en JavaScript
+// APRÈS. Sans surveillance, ils resteraient en français au milieu d'une page
+// anglaise. Le MutationObserver prévient à chaque ajout dans le DOM.
+let _observerStarted = false;                                      // un seul observateur, jamais deux
 function startMutationObserver() {
-    if (_observerStarted || currentLang !== 'en' || !window.MutationObserver) return;
+    if (_observerStarted || currentLang !== 'en' || !window.MutationObserver) return; // inutile en français
     _observerStarted = true;
-    let debounce = null;
+    let debounce = null;                                          // même principe que la barre de recherche
     const obs = new MutationObserver(function(mutations) {
         const hasNew = mutations.some(m => m.addedNodes.length > 0 || m.type === 'characterData');
-        if (!hasNew) return;
-        clearTimeout(debounce);
-        debounce = setTimeout(function() {
+        if (!hasNew) return;                                      // mutation sans ajout : on ignore
+        clearTimeout(debounce);                                   // une injection de 100 cartes déclenche
+        debounce = setTimeout(function() {                        // 100 mutations : on ne traduit qu'une fois
             mutations.forEach(function(m) {
                 if (m.type === 'childList') {
                     m.addedNodes.forEach(function(n) {
-                        walkNode(n);
+                        walkNode(n);                              // le nœud ajouté et tout son sous-arbre
                         // Traduire aussi les select/options injectés
                         if (n.nodeType === Node.ELEMENT_NODE) {
                             n.querySelectorAll && n.querySelectorAll('select option').forEach(function(opt) {
-                                const raw = opt.textContent;
+                                const raw = opt.textContent;      // walkNode ne descend pas dans les <option>
                                 if (!raw || !raw.trim()) return;
                                 const tr = translateText(raw.trim());
                                 if (tr) opt.textContent = tr;
                             });
                             // Attributs sur les nœuds racines injectés
+                            // walkNode traite les attributs des enfants, mais le
+                            // nœud ajouté lui-même y échappe : d'où ce rattrapage.
                             ['placeholder','title','alt','aria-label'].forEach(function(attr) {
                                 if (n.hasAttribute && n.hasAttribute(attr)) {
                                     const val = n.getAttribute(attr);
@@ -1615,8 +1661,11 @@ function startMutationObserver() {
                     });
                 }
             });
-        }, 60);
+        }, 60);                                                   // 60 ms : assez pour grouper, invisible à l'œil
     });
+    // subtree:true suit toute la page ; characterData:false évite de réagir
+    // aux textes que l'observateur vient lui-même de modifier — sans quoi il
+    // se déclencherait en boucle sur son propre travail.
     obs.observe(document.body, { childList: true, subtree: true, characterData: false });
 }
 
