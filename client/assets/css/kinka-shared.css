@@ -4,37 +4,50 @@
 ================================================================ */
 
 /* ── RESET ───────────────────────────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}         /* padding et bordure compris dans la largeur */
+html{scroll-behavior:smooth}                                           /* défilement doux vers les ancres */
 body{
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  font-size:15px;line-height:1.6;color:var(--text);background:var(--bg);
-  -webkit-font-smoothing:antialiased;overflow-x:hidden
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; /* Inter, polices système en repli */
+  font-size:15px;line-height:1.6;color:var(--text);background:var(--bg);      /* 1.6 : interligne confortable */
+  -webkit-font-smoothing:antialiased;overflow-x:hidden                        /* coupe tout débordement latéral */
 }
-img{display:block;max-width:100%}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
-ul,ol{list-style:none}
-input,select,textarea{font-family:inherit}
+img{display:block;max-width:100%}                                      /* block : supprime l'espace sous l'image */
+a{color:inherit;text-decoration:none}                                  /* le lien prend la couleur de son parent */
+button{font-family:inherit;cursor:pointer;border:none;background:none} /* le bouton n'hérite pas de la police */
+ul,ol{list-style:none}                                                 /* listes utilisées comme structure */
+input,select,textarea{font-family:inherit}                             /* même oubli natif que pour button */
 
 /* ── VARIABLES ────────────────────────────────────────────────── */
+/* --text-muted et --text-light étaient à #6b7280 et #9ca3af, soit 4,38:1
+   et 2,54:1 sur fond clair — sous le minimum WCAG AA de 4,5:1 pour du texte
+   courant. Assombris à 5,43:1 et 4,83:1 en restant des gris secondaires. */
 :root{
-  --pink:#E03B8B;--pink-dark:#c42e75;--pink-light:#f472b6;
-  --pink-soft:rgba(224,59,139,0.09);--pink-glow:rgba(224,59,139,0.28);
-  --text:#1a1a1a;--text-muted:#5b6472;--text-light:#6b7280;/* --text-muted et --text-light étaient à #6b7280 et #9ca3af, soit 4,38:1 et 2,54:1 sur fond clair, sous le minimum WCAG AA de 4,5:1 pour du texte courant. Assombris à 5,43:1 et 4,83:1 en restant des gris secondaires. */
-  --bg:#ffffff;--bg-card:#ffffff;--bg-muted:#f9fafb;--bg-subtle:#f3f4f6;
-  --border:#e5e7eb;--border-dk:#d1d5db;
-  --shadow-xs:0 1px 3px rgba(0,0,0,0.06);
-  --shadow-sm:0 2px 8px rgba(0,0,0,0.08);
-  --shadow-md:0 6px 24px rgba(0,0,0,0.10);
-  --shadow-lg:0 16px 48px rgba(0,0,0,0.14);
-  --shadow-pink:0 6px 24px rgba(224,59,139,0.30);
-  --radius:8px;--radius-lg:12px;--radius-xl:20px;--radius-pill:999px;
-  --transition:all 0.2s cubic-bezier(.4,0,.2,1);
-  --transition-slow:all 0.4s cubic-bezier(.4,0,.2,1);
+  --pink:#E03B8B;--pink-dark:#c42e75;--pink-light:#f472b6;              /* la marque, sa version foncée et claire */
+  --pink-soft:rgba(224,59,139,0.09);--pink-glow:rgba(224,59,139,0.28);  /* rgba : le fond dessous reste visible */
+  --text:#1a1a1a;--text-muted:#5b6472;--text-light:#6b7280;             /* trois niveaux d'importance du texte */
+  --bg:#ffffff;--bg-card:#ffffff;--bg-muted:#f9fafb;--bg-subtle:#f3f4f6;/* fonds, du plus clair au plus marqué */
+  --border:#e5e7eb;--border-dk:#d1d5db;                                 /* filet discret, filet appuyé */
+  --shadow-xs:0 1px 3px rgba(0,0,0,0.06);                               /* quatre paliers d'élévation : plus */
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.08);                               /* l'élément est « haut », plus son */
+  --shadow-md:0 6px 24px rgba(0,0,0,0.10);                              /* ombre est large et diffuse */
+  --shadow-lg:0 16px 48px rgba(0,0,0,0.14);                             /* (menus, modales) */
+  --shadow-pink:0 6px 24px rgba(224,59,139,0.30);                       /* ombre teintée pour les boutons roses */
+  --radius:8px;--radius-lg:12px;--radius-xl:20px;--radius-pill:999px;   /* 999px : arrondi en gélule */
+  --transition:all 0.2s cubic-bezier(.4,0,.2,1);                        /* départ vif, fin douce (Material) */
+  --transition-slow:all 0.4s cubic-bezier(.4,0,.2,1);                   /* même courbe, deux fois plus lente */
 }
 
 /* ── KEYFRAMES ────────────────────────────────────────────────── */
+/* Les six animations du site. Elles jouent toutes sur opacity et transform,
+   les deux seules propriétés que le navigateur anime sans recalculer la mise
+   en page — donc sans à-coups. Trop longues pour un commentaire en bout de
+   ligne, elles sont décrites ici :
+     fadeIn    apparaît en montant de 8px     (contenus qui arrivent)
+     slideDown apparaît en descendant de 8px  (menus déroulants)
+     popIn     dépasse à 115% puis revient    (badges panier et favoris)
+     bounce    rebond amorti, deux paliers    (appels à l'action)
+     shimmer   reflet qui traverse            (squelettes de chargement)
+     spin      rotation continue              (indicateurs d'attente)      */
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes popIn{0%{transform:scale(.5);opacity:0}80%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
@@ -43,205 +56,225 @@ input,select,textarea{font-family:inherit}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── CONTAINER ────────────────────────────────────────────────── */
-.container{max-width:1440px;margin:0 auto;padding:2rem 2.5rem}
+.container{max-width:1440px;margin:0 auto;padding:2rem 2.5rem}         /* margin auto : centre le contenu */
 
 /* ── HEADER ───────────────────────────────────────────────────── */
 header{
-  background:rgba(255,255,255,0.96);backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:1000;height:60px;
-  transition:box-shadow .3s ease
+  background:rgba(255,255,255,0.96);backdrop-filter:blur(12px);        /* translucide + flou : effet verre dépoli */
+  -webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border); /* préfixe -webkit- pour Safari */
+  position:sticky;top:0;z-index:1000;height:60px;                      /* sticky : reste en haut au défilement */
+  transition:box-shadow .3s ease                                       /* l'ombre n'apparaît pas d'un coup */
 }
-header.scrolled{box-shadow:var(--shadow-md)}
+header.scrolled{box-shadow:var(--shadow-md)}                           /* classe posée en JS après défilement */
 /* Sélecteur restreint à l'en-tête : appliqué à l'élément `nav` nu, ce bloc
    touchait tous les <nav> du site. La navigation latérale du profil, par
    exemple, devenait un conteneur flex horizontal de 100% de hauteur : ses
    entrées se tassaient côte à côte et leurs libellés étaient rognés. */
 header nav{
-  display:flex;align-items:center;height:100%;
-  max-width:1440px;margin:0 auto;padding:0 2.5rem;gap:1.25rem
+  display:flex;align-items:center;height:100%;                         /* aligne tout sur une ligne, centré */
+  max-width:1440px;margin:0 auto;padding:0 2.5rem;gap:1.25rem           /* même largeur max que .container */
 }
 
 /* Logo */
-.logo{display:flex;align-items:center;gap:.5rem;flex-shrink:0;transition:var(--transition)}
-.logo:hover{opacity:.8}
-.logo-image{width:30px;height:30px;object-fit:contain;border-radius:6px}
-.logo-text{font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-.03em;white-space:nowrap}
-.logo-text .fr{color:var(--pink)}
+.logo{display:flex;align-items:center;gap:.5rem;flex-shrink:0;transition:var(--transition)} /* 0 : ne se comprime jamais */
+.logo:hover{opacity:.8}                                                /* retour visuel discret au survol */
+.logo-image{width:30px;height:30px;object-fit:contain;border-radius:6px}    /* contain : l'image entière, sans rogner */
+.logo-text{font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-.03em;white-space:nowrap} /* jamais coupé */
+.logo-text .fr{color:var(--pink)}                                      /* seul « .FR » passe en rose */
 
 /* Search */
-.search-bar{flex:0 1 380px;position:relative}
+.search-bar{flex:0 1 380px;position:relative}                          /* 380px, rétrécit mais ne grandit pas */
 .search-bar input{
-  width:100%;padding:.52rem 1rem .52rem 2.35rem;
-  border:1.5px solid var(--border);border-radius:var(--radius-pill);
+  width:100%;padding:.52rem 1rem .52rem 2.35rem;                       /* 2.35rem à gauche : place pour la loupe */
+  border:1.5px solid var(--border);border-radius:var(--radius-pill);   /* 1.5px : visible sans être lourd */
   font-size:.82rem;background:var(--bg-muted);color:var(--text);transition:var(--transition)
 }
-.search-bar input:hover{border-color:var(--pink-light);background:#fff}
+.search-bar input:hover{border-color:var(--pink-light);background:#fff} /* le champ « s'allume » au survol */
+/* outline:none est remplacé par un box-shadow de 3px : le repère de focus
+   reste visible, mais épouse l'arrondi du champ, ce qu'un outline ne fait pas. */
 .search-bar input:focus{outline:none;border-color:var(--pink);background:#fff;box-shadow:0 0 0 3px var(--pink-soft)}
-.search-bar input::placeholder{color:var(--text-light)}
+.search-bar input::placeholder{color:var(--text-light)}                /* le gris le plus clair : c'est un indice */
 .search-icon{
-  position:absolute;left:.72rem;top:50%;transform:translateY(-50%);
+  position:absolute;left:.72rem;top:50%;transform:translateY(-50%);    /* centré ; la loupe est cliquable */
   color:var(--text-light);font-size:1rem;pointer-events:auto;cursor:pointer;transition:var(--transition);z-index:1
 }
-.search-bar:focus-within .search-icon,.search-bar:hover .search-icon{color:var(--pink)}
+.search-bar:focus-within .search-icon,.search-bar:hover .search-icon{color:var(--pink)} /* focus-within : le parent réagit */
 
 /* Autocomplete dropdown */
 .search-dropdown{
-  position:absolute;top:calc(100% + 8px);left:0;right:0;
+  position:absolute;top:calc(100% + 8px);left:0;right:0;               /* 100% = sous le champ, +8px d'écart */
   background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-lg);z-index:9999;overflow:hidden;
-  animation:slideDown .15s ease;max-height:400px;overflow-y:auto
+  box-shadow:var(--shadow-lg);z-index:9999;overflow:hidden;            /* passe au-dessus de tout le reste */
+  animation:slideDown .15s ease;max-height:400px;overflow-y:auto       /* au-delà de 400px, on fait défiler */
 }
-.search-dropdown:empty{display:none}
+.search-dropdown:empty{display:none}                                   /* pas de cadre vide sans résultats */
 .search-result-item{
-  display:flex;align-items:center;gap:.75rem;padding:.65rem 1rem;
+  display:flex;align-items:center;gap:.75rem;padding:.65rem 1rem;      /* vignette et texte sur une ligne */
   cursor:pointer;transition:var(--transition);border-bottom:1px solid var(--border)
 }
-.search-result-item:last-child{border-bottom:none}
-.search-result-item:hover{background:var(--pink-soft)}
+.search-result-item:last-child{border-bottom:none}                     /* pas de filet sous le dernier */
+.search-result-item:hover{background:var(--pink-soft)}                 /* signale la ligne survolée */
+/* object-fit:cover remplit le cadre 38×50 quitte à rogner : les couvertures
+   n'ont pas toutes le même rapport, sans cela elles se déformeraient. */
 .search-result-img{width:38px;height:50px;object-fit:cover;border-radius:4px;flex-shrink:0;border:1px solid var(--border)}
-.search-result-info .title{font-size:.83rem;font-weight:600;color:var(--text);line-height:1.3}
-.search-result-info .meta{font-size:.73rem;color:var(--text-muted)}
-.search-result-info .price{font-size:.82rem;font-weight:700;color:var(--pink)}
-.search-no-result{padding:1.25rem;text-align:center;color:var(--text-muted);font-size:.85rem}
+.search-result-info .title{font-size:.83rem;font-weight:600;color:var(--text);line-height:1.3}  /* le titre porte le poids */
+.search-result-info .meta{font-size:.73rem;color:var(--text-muted)}    /* auteur et éditeur, en retrait */
+.search-result-info .price{font-size:.82rem;font-weight:700;color:var(--pink)} /* le prix ressort en rose */
+.search-no-result{padding:1.25rem;text-align:center;color:var(--text-muted);font-size:.85rem} /* « aucun résultat » */
 
-/* Nav menu */
-.nav-menu{display:flex;gap:2rem;align-items:center;margin-right:auto}
+/* Nav menu
+   La barre rose sous chaque entrée n'existe pas dans le HTML : c'est un
+   pseudo-élément ::after, toujours présent mais large de zéro, dont on
+   anime la largeur jusqu'à 100 %. Une border-bottom ne conviendrait pas —
+   elle ne s'anime pas de zéro à toute la largeur, elle est là ou pas. */
+.nav-menu{display:flex;gap:2rem;align-items:center;margin-right:auto}  /* auto : pousse le reste vers la droite */
 .nav-menu a{
-  color:var(--text-muted);font-size:.87rem;font-weight:500;
-  position:relative;padding-bottom:2px;transition:var(--transition);white-space:nowrap
+  color:var(--text-muted);font-size:.87rem;font-weight:500;            /* gris : l'entrée n'est pas la page courante */
+  position:relative;padding-bottom:2px;transition:var(--transition);white-space:nowrap /* relative : ancre la barre */
 }
 .nav-menu a::after{
-  content:'';position:absolute;bottom:-2px;left:0;
-  width:0;height:2px;background:var(--pink);border-radius:2px;transition:var(--transition)
+  content:'';position:absolute;bottom:-2px;left:0;                     /* content:'' obligatoire, sinon rien n'existe */
+  width:0;height:2px;background:var(--pink);border-radius:2px;transition:var(--transition) /* left:0 : pousse à droite */
 }
-.nav-menu a:hover{color:var(--text)}
-.nav-menu a.active{color:var(--pink);font-weight:600}
-.nav-menu a:hover::after,.nav-menu a.active::after{width:100%}
+.nav-menu a:hover{color:var(--text)}                                   /* le texte fonce en même temps */
+.nav-menu a.active{color:var(--pink);font-weight:600}                  /* la page courante, rose et plus grasse */
+.nav-menu a:hover::after,.nav-menu a.active::after{width:100%}         /* une règle, deux états : survol et « ici » */
 
 /* Nav actions */
-.nav-actions{display:flex;gap:.4rem;align-items:center;flex-shrink:0}
+.nav-actions{display:flex;gap:.4rem;align-items:center;flex-shrink:0}  /* favoris, profil, thème, langue, panier */
 
 .icon-btn{
-  width:36px;height:36px;border:1.5px solid var(--border);border-radius:var(--radius);
-  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border:1.5px solid var(--border);border-radius:var(--radius); /* carré de 36px : cible tactile */
+  display:flex;align-items:center;justify-content:center;              /* centre l'icône dans les deux axes */
   cursor:pointer;background:#fff;transition:var(--transition);
-  position:relative;flex-shrink:0;color:var(--text-muted)
+  position:relative;flex-shrink:0;color:var(--text-muted)              /* relative : ancre le badge du compteur */
 }
+/* L'icône est une police, pas une image : sa taille se règle en font-size
+   et sa couleur en color, comme du texte. */
 .icon-btn .material-symbols-outlined{font-size:1.1rem;transition:var(--transition);color:var(--text-muted)}
-.icon-btn:hover{border-color:var(--pink);background:var(--pink-soft);transform:translateY(-1px)}
-.icon-btn:hover .material-symbols-outlined{color:var(--pink)}
-.icon-btn:active{transform:translateY(0)}
+.icon-btn:hover{border-color:var(--pink);background:var(--pink-soft);transform:translateY(-1px)} /* -1px : se soulève */
+.icon-btn:hover .material-symbols-outlined{color:var(--pink)}          /* l'icône suit la bordure */
+.icon-btn:active{transform:translateY(0)}                              /* au clic il redescend : effet d'appui */
 
-/* Badge générique sur icon-btn (panier + favoris) */
+/* Badge générique sur icon-btn (panier + favoris)
+   Les deux blocs sont identiques : .nav-badge est le nom générique,
+   .panier-count le nom historique que le JavaScript cherche encore. */
 .nav-badge{
-  position:absolute;top:-5px;right:-5px;
-  background:var(--pink);color:#fff;font-size:.56rem;font-weight:700;
-  min-width:17px;height:17px;border-radius:var(--radius-pill);
-  display:flex;align-items:center;justify-content:center;padding:0 3px;
-  border:2px solid #fff;animation:popIn .25s ease
+  position:absolute;top:-5px;right:-5px;                               /* déborde du coin du bouton */
+  background:var(--pink);color:#fff;font-size:.56rem;font-weight:700;  /* minuscule mais très gras : lisible */
+  min-width:17px;height:17px;border-radius:var(--radius-pill);         /* min-width : « 99+ » s'élargit */
+  display:flex;align-items:center;justify-content:center;padding:0 3px;/* centre le chiffre dans la pastille */
+  border:2px solid #fff;animation:popIn .25s ease                      /* liseré blanc : détache du bouton */
 }
 .panier-count{
-  position:absolute;top:-5px;right:-5px;
+  position:absolute;top:-5px;right:-5px;                               /* copie de .nav-badge, nom hérité */
   background:var(--pink);color:#fff;font-size:.56rem;font-weight:700;
   min-width:17px;height:17px;border-radius:var(--radius-pill);
   display:flex;align-items:center;justify-content:center;padding:0 3px;
-  border:2px solid #fff;animation:popIn .25s ease
+  border:2px solid #fff;animation:popIn .25s ease                      /* popIn : dépasse puis revient */
 }
 
 .connect-btn{
-  background:var(--pink);color:#fff;padding:.48rem 1.2rem;
-  border-radius:var(--radius-pill);font-weight:600;font-size:.83rem;
-  transition:var(--transition);white-space:nowrap;letter-spacing:.01em
+  background:var(--pink);color:#fff;padding:.48rem 1.2rem;             /* le seul bouton plein de l'en-tête */
+  border-radius:var(--radius-pill);font-weight:600;font-size:.83rem;   /* gélule : se distingue des icônes */
+  transition:var(--transition);white-space:nowrap;letter-spacing:.01em /* nowrap : « Se connecter » sur une ligne */
 }
-.connect-btn:hover{background:var(--pink-dark);transform:translateY(-1px);box-shadow:var(--shadow-pink)}
-.connect-btn:active{transform:translateY(0)}
+.connect-btn:hover{background:var(--pink-dark);transform:translateY(-1px);box-shadow:var(--shadow-pink)} /* fonce et monte */
+.connect-btn:active{transform:translateY(0)}                           /* revient à plat : le clic se sent */
 
 /* ── NAV USER DROPDOWN ─────────────────────────────────────────── */
-.nav-user-wrap { position:relative; }
+.nav-user-wrap { position:relative; }                                  /* ancre le menu déroulant */
 
 .nav-user-btn {
-  display:flex; align-items:center; gap:.4rem;
-  padding:.38rem .72rem .38rem .42rem;
+  display:flex; align-items:center; gap:.4rem;                         /* pastille, prénom et chevron alignés */
+  padding:.38rem .72rem .38rem .42rem;                                 /* moins à gauche : la pastille est ronde */
   border:1.5px solid var(--border); border-radius:var(--radius-pill);
   background:#fff; cursor:pointer; transition:var(--transition);
   font-size:.82rem; font-weight:600; color:var(--text);
-  font-family:inherit;
+  font-family:inherit;                                                 /* sinon le <button> reprend Arial */
 }
 .nav-user-btn:hover { border-color:var(--pink); background:var(--pink-soft); color:var(--pink); }
-.nav-user-btn:hover .nav-user-chevron { color:var(--pink); }
+.nav-user-btn:hover .nav-user-chevron { color:var(--pink); }           /* le chevron suit le survol du parent */
 
 .nav-user-avatar {
-  width:26px; height:26px; border-radius:50%;
-  background:linear-gradient(135deg, var(--pink), var(--pink-dark));
-  display:flex; align-items:center; justify-content:center;
-  color:#fff; flex-shrink:0;
+  width:26px; height:26px; border-radius:50%;                          /* 50% sur un carré = cercle parfait */
+  background:linear-gradient(135deg, var(--pink), var(--pink-dark));   /* 135deg : dégradé en diagonale */
+  display:flex; align-items:center; justify-content:center;            /* centre l'initiale */
+  color:#fff; flex-shrink:0;                                           /* 0 : ne s'écrase pas si le nom est long */
 }
-.nav-user-name { max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.nav-user-chevron { font-size:.85rem; color:var(--text-muted); transition:transform .2s ease; }
-.nav-user-btn[aria-expanded="true"] .nav-user-chevron { transform:rotate(180deg); }
+.nav-user-name { max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } /* nom long : « … » */
+.nav-user-chevron { font-size:.85rem; color:var(--text-muted); transition:transform .2s ease; }  /* pivote à l'ouverture */
+.nav-user-btn[aria-expanded="true"] .nav-user-chevron { transform:rotate(180deg); } /* piloté par l'attribut ARIA */
 
+/* Le menu n'est pas masqué par display:none mais rendu transparent et
+   inerte : display ne s'anime pas, opacity et transform si. pointer-events
+   est ce qui l'empêche d'intercepter les clics tant qu'il est invisible. */
 .nav-user-dropdown {
-  position:absolute; top:calc(100% + 10px); right:0;
-  min-width:240px;
+  position:absolute; top:calc(100% + 10px); right:0;                   /* sous le bouton, aligné à droite */
+  min-width:240px;                                                     /* min- : s'élargit si le nom déborde */
   background:#fff; border:1.5px solid var(--border);
-  border-radius:var(--radius-xl); box-shadow:var(--shadow-lg);
-  padding:.5rem; z-index:9999;
-  opacity:0; pointer-events:none;
-  transform:translateY(-6px) scale(.97);
-  transition:opacity .18s ease, transform .18s ease;
+  border-radius:var(--radius-xl); box-shadow:var(--shadow-lg);         /* la plus forte : le menu « flotte » */
+  padding:.5rem; z-index:9999;                                         /* au-dessus de tout le reste */
+  opacity:0; pointer-events:none;                                      /* invisible ET intraversable */
+  transform:translateY(-6px) scale(.97);                               /* légèrement remonté et réduit */
+  transition:opacity .18s ease, transform .18s ease;                   /* deux propriétés nommées, pas « all » */
 }
 .nav-user-dropdown.open {
-  opacity:1; pointer-events:auto;
-  transform:translateY(0) scale(1);
+  opacity:1; pointer-events:auto;                                      /* classe .open posée en JavaScript */
+  transform:translateY(0) scale(1);                                    /* descend et reprend sa taille */
 }
 .nav-user-dropdown-head {
-  display:flex; align-items:center; gap:.75rem;
-  padding:.75rem .85rem 1rem;
+  display:flex; align-items:center; gap:.75rem;                        /* pastille + identité côte à côte */
+  padding:.75rem .85rem 1rem;                                          /* plus d'air en bas, avant le trait */
 }
 .nav-user-dropdown-avatar {
-  width:42px; height:42px; border-radius:50%; flex-shrink:0;
-  background:linear-gradient(135deg, rgba(224,59,139,.18), rgba(224,59,139,.08));
+  width:42px; height:42px; border-radius:50%; flex-shrink:0;           /* plus grande que celle du bouton */
+  background:linear-gradient(135deg, rgba(224,59,139,.18), rgba(224,59,139,.08)); /* rose très dilué */
   border:2px solid rgba(224,59,139,.3);
   display:flex; align-items:center; justify-content:center;
-  color:var(--pink);
+  color:var(--pink);                                                   /* l'initiale, en rose plein */
 }
-.nav-user-dropdown-info { flex:1; min-width:0; }
+.nav-user-dropdown-info { flex:1; min-width:0; }                       /* min-width:0 autorise le « … » */
 .nav-user-dropdown-name {
-  font-size:.88rem; font-weight:700; color:var(--text);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  font-size:.88rem; font-weight:700; color:var(--text);                /* le nom porte le poids visuel */
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;         /* le trio classique de la troncature */
 }
 .nav-user-dropdown-email {
-  font-size:.72rem; color:var(--text-muted);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  font-size:.72rem; color:var(--text-muted);                           /* secondaire : plus petit et plus pâle */
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;         /* un email est souvent trop long */
   margin-top:.1rem;
 }
 .nav-user-dropdown-plan {
-  display:inline-flex; align-items:center; gap:.25rem;
+  display:inline-flex; align-items:center; gap:.25rem;                 /* inline-flex : la pastille épouse son texte */
   margin-top:.4rem; padding:.18rem .6rem;
-  border-radius:999px; font-size:.6rem; font-weight:800; letter-spacing:.06em;
+  border-radius:999px; font-size:.6rem; font-weight:800; letter-spacing:.06em; /* très petit, très gras, espacé */
 }
-.plan-free     { background:var(--bg-subtle); color:var(--text-muted); border:1px solid var(--border); }
-.plan-premium  { background:rgba(251,191,36,.2); color:#92400e; border:1px solid rgba(251,191,36,.4); }
-.plan-collector{ background:rgba(167,139,250,.2); color:#5b21b6; border:1px solid rgba(167,139,250,.4); }
-.nav-user-dropdown-sep { height:1px; background:var(--border); margin:.25rem .5rem; }
+/* Trois formules, trois teintes. Chacune garde son texte foncé sur fond
+   dilué à 20 % : le contraste reste au-dessus du seuil WCAG. */
+.plan-free     { background:var(--bg-subtle); color:var(--text-muted); border:1px solid var(--border); }        /* gris */
+.plan-premium  { background:rgba(251,191,36,.2); color:#92400e; border:1px solid rgba(251,191,36,.4); }         /* ambre */
+.plan-collector{ background:rgba(167,139,250,.2); color:#5b21b6; border:1px solid rgba(167,139,250,.4); }       /* violet */
+.nav-user-dropdown-sep { height:1px; background:var(--border); margin:.25rem .5rem; } /* séparateur : une div de 1px */
 .nav-user-dropdown-item {
-  display:flex; align-items:center; gap:.65rem;
+  display:flex; align-items:center; gap:.65rem;                        /* icône puis libellé */
   padding:.65rem .85rem; border-radius:var(--radius);
   font-size:.84rem; font-weight:500; color:var(--text-muted);
   cursor:pointer; transition:var(--transition);
-  text-decoration:none; background:none; border:none;
-  width:100%; text-align:left; font-family:inherit;
+  text-decoration:none; background:none; border:none;                  /* neutralise <a> et <button> mêlés */
+  width:100%; text-align:left; font-family:inherit;                    /* un <button> centre son texte par défaut */
 }
-.nav-user-dropdown-item .material-symbols-outlined { font-size:1rem; flex-shrink:0; }
-.nav-user-dropdown-item:hover { background:var(--bg-muted); color:var(--text); }
-.nav-user-dropdown-item:hover .material-symbols-outlined { color:var(--pink); }
+.nav-user-dropdown-item .material-symbols-outlined { font-size:1rem; flex-shrink:0; } /* icône de taille fixe */
+.nav-user-dropdown-item:hover { background:var(--bg-muted); color:var(--text); }       /* la ligne s'éclaire */
+.nav-user-dropdown-item:hover .material-symbols-outlined { color:var(--pink); }        /* l'icône passe au rose */
+/* La déconnexion est en rouge : c'est la seule action irréversible du menu.
+   Les !important passent devant la règle .nav-user-dropdown-item ci-dessus,
+   qui a la même spécificité et est déclarée avant. */
 .nav-user-dropdown-logout { color:#ef4444 !important; }
-.nav-user-dropdown-logout:hover { background:#fef2f2 !important; color:#dc2626 !important; }
-.nav-user-dropdown-logout .material-symbols-outlined { color:#ef4444 !important; }
-body.dark-mode .nav-user-btn { background:var(--bg-card); border-color:var(--border); }
-body.dark-mode .nav-user-dropdown { background:var(--bg-card); border-color:var(--border); }
-body.dark-mode .nav-user-dropdown-item:hover { background:var(--bg-subtle); }
+.nav-user-dropdown-logout:hover { background:#fef2f2 !important; color:#dc2626 !important; }  /* fond rouge pâle */
+.nav-user-dropdown-logout .material-symbols-outlined { color:#ef4444 !important; }            /* icône rouge aussi */
+body.dark-mode .nav-user-btn { background:var(--bg-card); border-color:var(--border); }        /* variables inversées */
+body.dark-mode .nav-user-dropdown { background:var(--bg-card); border-color:var(--border); }   /* par darkmode.css */
+body.dark-mode .nav-user-dropdown-item:hover { background:var(--bg-subtle); }                  /* survol assombri */
 
 /* ── BUTTONS GLOBAUX ──────────────────────────────────────────── */
 /* Fond légèrement plus sombre que le rose de marque (--pink, #e03b8b).
@@ -250,33 +283,36 @@ body.dark-mode .nav-user-dropdown-item:hover { background:var(--bg-subtle); }
    perceptible — le rose de marque reste inchangé partout ailleurs (aplats,
    bordures, icônes). Revenir à var(--pink) ici si la nuance dérange. */
 .btn-primary{
-  display:inline-flex;align-items:center;gap:.45rem;
-  background:#d12d7d;color:#fff;padding:.7rem 1.5rem;
+  display:inline-flex;align-items:center;gap:.45rem;                   /* inline-flex : aligne texte et icône */
+  background:#d12d7d;color:#fff;padding:.7rem 1.5rem;                  /* couleur en dur, voir le bloc ci-dessus */
   border-radius:var(--radius-pill);font-weight:600;font-size:.88rem;
   transition:var(--transition);cursor:pointer;border:none;letter-spacing:.01em
 }
-.btn-primary:hover{background:var(--pink-dark);transform:translateY(-2px);box-shadow:var(--shadow-pink)}
-.btn-primary:active{transform:translateY(0)}
-.btn-primary .material-symbols-outlined{font-size:.95rem}
+.btn-primary:hover{background:var(--pink-dark);transform:translateY(-2px);box-shadow:var(--shadow-pink)} /* -2px + ombre */
+.btn-primary:active{transform:translateY(0)}                           /* retombe : sensation d'appui */
+.btn-primary .material-symbols-outlined{font-size:.95rem}              /* icône un peu plus petite que le texte */
 
+/* Le bouton secondaire vit sur une image (bandeaux d'accueil) : fond blanc
+   translucide plutôt qu'une couleur fixe, pour rester lisible quelle que
+   soit la photo derrière. */
 .btn-secondary{
   display:inline-flex;align-items:center;gap:.45rem;
-  background:rgba(255,255,255,.15);color:#fff;padding:.7rem 1.4rem;
+  background:rgba(255,255,255,.15);color:#fff;padding:.7rem 1.4rem;    /* 15 % de blanc : voile, pas aplat */
   border-radius:var(--radius-pill);font-weight:600;font-size:.88rem;
-  transition:var(--transition);cursor:pointer;border:1.5px solid rgba(255,255,255,.6)
+  transition:var(--transition);cursor:pointer;border:1.5px solid rgba(255,255,255,.6) /* bordure plus franche */
 }
-.btn-secondary:hover{background:rgba(255,255,255,.28);border-color:#fff}
+.btn-secondary:hover{background:rgba(255,255,255,.28);border-color:#fff} /* le voile s'épaissit */
 
 .btn-outline{
   display:inline-flex;align-items:center;gap:.45rem;
-  background:transparent;color:var(--pink);padding:.65rem 1.4rem;
+  background:transparent;color:var(--pink);padding:.65rem 1.4rem;      /* le troisième niveau : contour seul */
   border-radius:var(--radius-pill);font-weight:600;font-size:.88rem;
   transition:var(--transition);cursor:pointer;border:1.5px solid var(--pink)
 }
-.btn-outline:hover{background:var(--pink);color:#fff}
+.btn-outline:hover{background:var(--pink);color:#fff}                  /* s'inverse : le contour se remplit */
 
 /* ── PRODUCT CARDS ────────────────────────────────────────────── */
-.products-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.25rem}
+.products-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.25rem} /* 5 colonnes égales (1fr chacune) */
 
 /* ════════════════════════════════════════════════════════
    PRODUCT CARD — hover enrichi, bouton panier seul
@@ -1022,6 +1058,21 @@ body.dark-mode .product-card::before {
     rgba(255,255,255,0.03) 40%,
     transparent 65%
   );
+}
+
+/* ── ACCESSIBILITÉ : titre réservé aux lecteurs d'écran ────── */
+/* Quatre pages n'ont aucun titre principal visible : le paiement, l'accueil
+   dont le carrousel change de titre à chaque diapositive, l'administration
+   et ses panneaux, et le profil. Un <h1> y est nécessaire pour que la page
+   ait un titre de niveau 1, sans rien ajouter à l'écran.
+   display:none et visibility:hidden retireraient AUSSI le titre de la
+   restitution vocale, ce qui annulerait tout l'intérêt : on le sort donc du
+   flux visuel en lui laissant un pixel dans le document. */
+.titre-invisible{
+  position:absolute;width:1px;height:1px;                              /* un pixel, hors du flux */
+  padding:0;margin:-1px;overflow:hidden;                               /* marge négative : n'occupe rien */
+  clip:rect(0 0 0 0);clip-path:inset(50%);                             /* clip : ancien, clip-path : moderne */
+  white-space:nowrap;border:0                                          /* nowrap : pas de retour à la ligne */
 }
 
 /* ── ACCESSIBILITÉ : focus-visible global ──────────────────── */
