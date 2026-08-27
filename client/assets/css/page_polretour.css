@@ -982,6 +982,15 @@ footer {
     .sidebar-card {
         padding: 1.5rem;
     }
+
+    /* L'entrée par la droite part de translateX(30px) : sur un écran de
+       375 px, cela pousse la colonne à 389 px pendant les 600 ms de
+       l'animation, et une barre de défilement horizontale apparaît puis
+       disparaît. Sous 768 px la colonne passe de toute façon SOUS le
+       contenu : glisser depuis la droite n'a plus de sens. */
+    .sidebar {
+        animation-name: fadeIn;
+    }
     
     .footer-content {
         grid-template-columns: 1fr;

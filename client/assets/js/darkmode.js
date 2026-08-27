@@ -1,5 +1,5 @@
 // ============================================================
-// darkmode.js — Mode Sombre KINKA.FR v2
+// darkmode.js — Mode Sombre 
 // - Respecte prefers-color-scheme si pas de préf stockée
 // - Transition douce au toggle
 // - Accessible (aria-label dynamique, aria-pressed)

@@ -1060,6 +1060,57 @@ body.dark-mode .product-card::before {
   );
 }
 
+/* ── NAVIGATION MOBILE ──────────────────────────────────────────────
+   Sous 1000 px, .nav-menu passe en display:none (voir les media queries
+   plus bas). Rien ne le remplacait : les quatre entrees disparaissaient et
+   le site n'avait plus aucune navigation sur telephone. Le bouton et le
+   panneau ci-dessous sont crees par nav-mobile.js et n'existent qu'ici. */
+.nav-burger{display:none}                                              /* invisible en grand ecran */
+.nav-panneau{
+  display:none;position:sticky;top:60px;z-index:999;                   /* sous l'en-tete, qui fait 60px */
+  background:var(--bg-card);border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-md)
+}
+.nav-panneau ul{display:flex;flex-direction:column;padding:.4rem 0}    /* une entree par ligne */
+.nav-panneau a{
+  display:block;padding:.85rem 1.25rem;                                /* 44px de haut : cible tactile */
+  font-size:.95rem;font-weight:500;color:var(--text-muted);
+  border-left:3px solid transparent;transition:var(--transition)       /* le liseré remplace la barre */
+}
+.nav-panneau a:hover{background:var(--bg-muted);color:var(--text)}
+.nav-panneau a.active{color:var(--pink);border-left-color:var(--pink);font-weight:600}
+
+/* Le panneau ne s'ouvre que la ou .nav-menu est masque : les deux seuils
+   doivent rester identiques, sinon il existe une largeur sans navigation. */
+@media(max-width:1000px){
+  .nav-burger{display:flex}                                            /* .icon-btn est un flex */
+  .nav-panneau.ouvert{display:block;animation:slideDown .18s ease}
+  /* Les boutons d'icone descendaient a 30 px sur petit ecran parce que
+     sept devaient tenir dans la barre. Il n'en reste que deux — le menu
+     et le panier — donc la place existe pour une cible tactile
+     confortable. 42 px : au-dessus des 24 px exiges par WCAG 2.2, et
+     proche des 44 px recommandes. */
+  .nav-actions .icon-btn{width:42px;height:42px}
+  .nav-actions .icon-btn .material-symbols-outlined{font-size:1.25rem}
+  /* Dans le panneau, les boutons deplaces retrouvent aussi leur taille. */
+  .nav-panneau-actions .icon-btn{width:42px;height:42px}
+  .nav-panneau-actions .icon-btn .material-symbols-outlined{font-size:1.25rem}
+}
+/* Le tiroir d'actions : favoris, profil, theme, langue, connexion. Ils
+   vivent dans la barre en grand ecran et descendent ici en dessous de
+   1000 px, ou .nav-actions faisait a lui seul 315 px — de quoi pousser
+   toutes les pages en debordement horizontal. */
+.nav-panneau-actions{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;
+  padding:.9rem 1.25rem;border-top:1px solid var(--border)             /* separe des liens */
+}
+.nav-panneau-actions:empty{display:none}                               /* pas de trait sans contenu */
+.nav-panneau-actions .connect-btn{flex:1 1 auto;text-align:center}     /* prend la ligne restante */
+
+@media(max-width:768px){
+  .nav-panneau{top:56px}                                               /* l'en-tete y fait 56px */
+}
+
 /* ── ACCESSIBILITÉ : titre réservé aux lecteurs d'écran ────── */
 /* Quatre pages n'ont aucun titre principal visible : le paiement, l'accueil
    dont le carrousel change de titre à chaque diapositive, l'administration
